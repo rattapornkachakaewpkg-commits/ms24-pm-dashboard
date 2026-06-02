@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKG Attitude Transformation Program</title>
+    <style>
+        :root {
+            --pkg-blue: #003366;
+            --pkg-gold: #D4A843;
+            --pkg-green: #2E7D32;
+            --pkg-red: #C62828;
+            --light-bg: #f5f7fa;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--pkg-blue), #004080);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+        }
+        .header h1 { margin: 0 0 10px; font-size: 26px; }
+        .header p { margin: 0; opacity: 0.9; font-size: 14px; }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .nav-tab {
+            padding: 10px 18px;
+            background: white;
+            border: 2px solid var(--pkg-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .nav-tab:hover, .nav-tab.active {
+            background: var(--pkg-blue);
+            color: white;
+        }
+        
+        .section {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+        .section.active { display: block; }
+        
+        .section-title {
+            font-size: 20px;
+            color: var(--pkg-blue);
+            border-bottom: 3px solid var(--pkg-gold);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .module-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+        .module-card h3 {
+            margin: 0 0 10px;
+            color: var(--pkg-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .module-card .pkg-ref {
+            background: var(--pkg-gold);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: inline-block;
+            margin: 3px 2px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background: var(--pkg-blue);
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) { background: #f9f9f9; }
+        
+        .score-section {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .score-row:last-child { border: none; }
+        .score-label { flex: 2; font-weight: bold; }
+        .score-select { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; text-align: center; }
+        .score-ref { flex: 1.5; font-size: 12px; color: #666; }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .result-box.excellent { background: #e8f5e9; border: 2px solid var(--pkg-green); color: var(--pkg-green); }
+        .result-box.good { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
+        .result-box.warning { background: #f8d7da; border: 2px solid var(--pkg-red); color: var(--pkg-red); }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--pkg-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #004080; }
+        .btn-gold { background: var(--pkg-gold); }
+        .btn-gold:hover { background: #c49a35; }
+        
+        .philosophy-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fff8e1;
+            border: 1px solid var(--pkg-gold);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6d5200;
+            margin: 2px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--pkg-gold);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--pkg-blue);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 20px;
+            width: 14px;
+            height: 14px;
+            background: var(--pkg-gold);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .activity-card {
+            background: linear-gradient(135deg, #f5f7fa, #e8ecf1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 3px solid var(--pkg-blue);
+        }
+        .activity-card .time { font-size: 18px; font-weight: bold; color: var(--pkg-blue); }
+        .activity-card .name { font-size: 14px; margin: 8px 0; }
+        
+        .recognition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .recognition-card {
+            background: white;
+            border: 2px solid var(--pkg-gold);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .recognition-card .icon { font-size: 36px; margin-bottom: 10px; }
+        .recognition-card h4 { margin: 0 0 10px; color: var(--pkg-blue); }
+
+        /* Cobra Effect Styles */
+        .cobra-intro {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .cobra-intro h3 {
+            margin: 0 0 10px;
+            color: #856404;
+        }
+        .cobra-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+            border-left: 5px solid var(--pkg-red);
+        }
+        .cobra-card h3 {
+            margin: 0 0 10px;
+            color: var(--pkg-red);
+            font-size: 16px;
+        }
+        .cobra-risk {
+            background: #fff5f5;
+            border: 1px solid #ffcdd2;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin: 8px 0;
+        }
+        .cobra-risk .label {
+            font-weight: bold;
+            color: var(--pkg-red);
+        }
+        .cobra-shield {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin: 8px 0;
+        }
+        .cobra-shield .label {
+            font-weight: bold;
+            color: var(--pkg-green);
+        }
+        .cobra-rules {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            border: 2px solid var(--pkg-green);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        .cobra-rules h3 {
+            margin: 0 0 15px;
+            color: var(--pkg-green);
+        }
+        .rule-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .rule-item:last-child { border: none; }
+        .rule-num {
+            background: var(--pkg-green);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .rule-content h4 {
+            margin: 0 0 5px;
+            color: #333;
+        }
+        .rule-content p {
+            margin: 0;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .nav-tabs, .btn { display: none; }
+            .section { display: block !important; box-shadow: none; border: 1px solid #ddd; margin-bottom: 20px; }
+        }
+        @media (max-width: 600px) {
+            .score-row { flex-direction: column; gap: 5px; }
+            table { font-size: 11px; }
+            th, td { padding: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>📘 PKG Attitude Transformation Program</h1>
+        <p>เปลี่ยนทัศนคติ พลิกองค์กร ด้วย 6 รับ + Psychological Safety + Radical Candor</p>
+        <p style="font-size:12px;margin-top:8px;">อ้างอิง: Google (Project Aristotle) + Netflix (Keeper Test) + ปรัชญาองค์กร PKG</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="showSection('overview')">📋 ภาพรวม</div>
+        <div class="nav-tab" onclick="showSection('module1')">🧠 Module 1: 6 รับ</div>
+        <div class="nav-tab" onclick="showSection('module2')">🤝 Module 2: รับผิดชอบ</div>
+        <div class="nav-tab" onclick="showSection('module3')">👑 Module 3: ผู้นำผู้รับใช้</div>
+        <div class="nav-tab" onclick="showSection('daily')">📅 กิจกรรมประจำวัน</div>
+        <div class="nav-tab" onclick="showSection('scorecard')">📊 Scorecard</div>
+        <div class="nav-tab" onclick="showSection('roadmap')">🚀 Roadmap</div>
+        <div class="nav-tab" onclick="showSection('cobra')">🐍 Cobra Effect</div>
+    </div>
+
+    <!-- Section: Overview -->
+    <div id="overview" class="section active">
+        <h2 class="section-title">📋 ภาพรวมโครงการ</h2>
+        
+        <div class="module-card">
+            <h3>🎯 วัตถุประสงค์หลัก</h3>
+            <p>สร้างวัฒนธรรมองค์กรที่พนักงานมีทัศนคติเชิงบวก กล้าแสดงความคิดเห็น กล้าทดลองสิ่งใหม่ และทำงานร่วมกันอย่างมีความสุข โดยผสาน<strong>ค่านิยม 6 รับ</strong>ของ PKG เข้ากับหลัก <strong>Psychological Safety</strong> ของ Google และ <strong>Radical Candor</strong> ของ Netflix</p>
+        </div>
+
+        <div class="module-card">
+            <h3>🧩 ปรัชญา PKG ที่ใช้ในงานนี้</h3>
+            <div>
+                <span class="philosophy-tag">ค่านิยม 6 รับ</span>
+                <span class="philosophy-tag">มาตรฐาน 9</span>
+                <span class="philosophy-tag">วัฒนธรรม 20 ข้อ</span>
+                <span class="philosophy-tag">นโยบายสนับสนุนสมาชิก 10 ประการ</span>
+                <span class="philosophy-tag">อุปนิสัย 8 ประการ</span>
+                <span class="philosophy-tag">ผู้นำผู้รับใช้ 5 บทบาท</span>
+                <span class="philosophy-tag">บรรยากาศ 9</span>
+            </div>
+        </div>
+
+        <div class="module-card">
+            <h3>📊 โครงสร้างหลักสูตร 3 Modules</h3>
+            <table>
+                <tr><th>Module</th><th>หัวข้อ</th><th>เวลา</th><th>กลุ่มเป้าหมาย</th></tr>
+                <tr><td>1</td><td>6 รับ: รากฐานทัศนคติที่ดี</td><td>4 ชม.</td><td>พนักงานทุกระดับ</td></tr>
+                <tr><td>2</td><td>รับผิดชอบ + รับผิด: วัฒนธรรมไม่กลัวผิด</td><td>5 ชม.</td><td>พนักงานทุกระดับ</td></tr>
+                <tr><td>3</td><td>ผู้นำผู้รับใช้: สร้างบรรยากาศ 9</td><td>5.5 ชม.</td><td>หัวหน้างาน / ผู้บริหาร</td></tr>
+            </table>
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button>
+    </div>
+
+    <!-- Section: Module 1 -->
+    <div id="module1" class="section">
+        <h2 class="section-title">🧠 Module 1: 6 รับ - รากฐานทัศนคติที่ดี</h2>
+        <p><strong>แนวคิด:</strong> PKG ค่านิยม 6 รับ + Google Psychological Safety + Netflix Context not Control</p>
+
+        <div class="module-card">
+            <h3>📌 1.1 รับฟัง - ฟังอย่างลึก</h3>
+            <p><strong>วัตถุประสงค์:</strong> ฝึกฟังโดยปราศจากอคติและเงื่อนไข (ค่านิยม 6 รับ ข้อ 1)</p>
+            <p><strong>กิจกรรม: "Silent Listening"</strong></p>
+            <ul>
+                <li>จับคู่ ผลัดกันเล่าเรื่องงาน/ชีวิต 3 นาที</li>
+                <li>ผู้ฟัง<strong>ห้ามพูดแทรก ห้ามสอน ห้ามตัดสิน</strong></li>
+                <li>หลังจบ ให้สรุปสิ่งที่ได้ยิน (ไม่ใช่สิ่งที่อยากได้ยิน)</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">วัฒนธรรม #7: รักการแสดงความคิดเห็น</span>
+                <span class="pkg-ref">นโยบาย #9: ความเกรงใจเป็นอุปสรรค</span>
+            </div>
+            <p><strong>เวลา:</strong> 1.5 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 1.2 รับความจริง - ยอมรับข้อมูลจริง</h3>
+            <p><strong>วัตถุประสงค์:</strong> Data-Only Rule: จัดการบนพื้นฐานข้อเท็จจริง ไม่ใช้อารมณ์ (ค่านิยม 6 รับ ข้อ 5)</p>
+            <p><strong>กิจกรรม: "Fact vs Feeling"</strong></p>
+            <ul>
+                <li>ยกปัญหาจริงในทีม 1 เรื่อง</li>
+                <li>แยกแยะว่าอะไรคือ "ข้อเท็จจริง" (วัดได้/เห็นได้) อะไรคือ "ความรู้สึก" (คิดไปเอง/เดา)</li>
+                <li>ฝึกตัดสินใจโดยใช้เฉพาะ "ข้อเท็จจริง"</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">วัฒนธรรม #19: ยอมรับความจริง จัดการบนพื้นฐานข้อเท็จจริง</span>
+                <span class="pkg-ref">4 ระบบคิด: Data-Only Rule</span>
+            </div>
+            <p><strong>เวลา:</strong> 1.5 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 1.3 รับความเปลี่ยนแปลง - ละทิ้งอัตตา</h3>
+            <p><strong>วัตถุประสงค์:</strong> Growth Mindset + Netflix Freedom & Responsibility (ค่านิยม 6 รับ ข้อ 6)</p>
+            <p><strong>กิจกรรม: "My Comfort Zone"</strong></p>
+            <ul>
+                <li>เขียนสิ่งที่ตัวเองยึดติดอยู่ (วิธีการเดิมๆ, กฎเกณฑ์, ความเชื่อ)</li>
+                <li>พิจารณาว่าอะไรต้องปล่อย เพื่อเปิดรับสิ่งที่ดีกว่า</li>
+                <li>แชร์กับทีม: "สิ่งที่ฉันจะเปลี่ยนสัปดาห์นี้คือ..."</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">วัฒนธรรม #5: เปลี่ยนแปลงก่อนถูกบังคับ</span>
+                <span class="pkg-ref">วัฒนธรรม #6: รักการแสวงหาสิ่งที่ดีกว่า</span>
+            </div>
+            <p><strong>เวลา:</strong> 1 ชม.</p>
+        </div>
+    </div>
+
+    <!-- Section: Module 2 -->
+    <div id="module2" class="section">
+        <h2 class="section-title">🤝 Module 2: รับผิดชอบ + รับผิด - วัฒนธรรมไม่กลัวผิด</h2>
+        <p><strong>แนวคิด:</strong> PKG รับผิดชอบ/รับผิด + Netflix Radical Candor + Google Blameless Post-Mortem</p>
+
+        <div class="module-card">
+            <h3>📌 2.1 รับผิดชอบ - แก้ไขไม่รักษาหน้า</h3>
+            <p><strong>วัตถุประสงค์:</strong> ให้ปรับปรุงแก้ไขข้อผิดพลาดโดยไม่สนใจรักษา "หน้า" ตนเอง (ค่านิยม 6 รับ ข้อ 3)</p>
+            <p><strong>กิจกรรม: "No Excuses Role Play"</strong></p>
+            <ul>
+                <li>จำลองสถานการณ์ที่ทำงานผิด (เช่น ส่งงานล่าช้า, ข้อมูลผิด, บริการลูกค้าไม่ดี)</li>
+                <li>ฝึกพูด: <em>"ฉันรับผิดชอบ จะแก้ไขดังนี้..."</em> โดย<strong>ห้ามอ้างเหตุผล</strong></li>
+                <li>เพื่อนร่วมทีมให้ Feedback ว่าการตอบรับเป็นอย่างไร</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">นโยบายรับประกันความพึงพอใจ ข้อ 2: แก้ไขโดยไม่มีข้ออ้าง</span>
+            </div>
+            <p><strong>เวลา:</strong> 2 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 2.2 รับผิด - เสียสละเพื่อผู้อื่น</h3>
+            <p><strong>วัตถุประสงค์:</strong> การอุทิศตนเพื่อให้คุณค่ากับผู้อื่น (ค่านิยม 6 รับ ข้อ 4)</p>
+            <p><strong>กิจกรรม: "My Biggest Mistake"</strong></p>
+            <ul>
+                <li>แต่ละคนแชร์ความผิดพลาดใหญ่ที่สุดในชีวิตการทำงาน</li>
+                <li>สิ่งที่เรียนรู้ และวิธีป้องกันไม่ให้เกิดซ้ำ</li>
+                <li><strong>กฎ:</strong> ไม่มีใครตัดสิน ไม่มีใครวิจารณ์ มีแต่รับฟังและขอบคุณ</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">วัฒนธรรม #20: เปิดเผย โปร่งใส ตรงไปตรงมา</span>
+                <span class="pkg-ref">อุปนิสัย #6: การให้อภัย</span>
+            </div>
+            <p><strong>เวลา:</strong> 1.5 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 2.3 Blameless Culture - วัฒนธรรมไม่โทษคน</h3>
+            <p><strong>วัตถุประสงค์:</strong> ไม่จับจ้องที่ปัญหา แต่ทำงานมุ่งหาหนทางให้ได้ผล (วัฒนธรรม #9)</p>
+            <p><strong>กิจกรรม: "Process Over Person Simulation"</strong></p>
+            <ul>
+                <li>ยกกรณีศึกษาความผิดพลาดจริงในองค์กร</li>
+                <li>วิเคราะห์ว่า "กระบวนการ" ตรงไหนที่ทำให้ความผิดพลาดเกิดขึ้นได้</li>
+                <li>ออกแบบกระบวนการใหม่ที่ไม่ให้เกิดซ้ำ <strong>โดยไม่โทษบุคคล</strong></li>
+            </ul>
+            <div>
+                <span class="pkg-ref">วัฒนธรรม #8: ทุกปัญหามีทางแก้</span>
+                <span class="pkg-ref">วัฒนธรรม #9: ไม่จับจ้องปัญหา มุ่งหาหนทาง</span>
+                <span class="pkg-ref">นโยบาย #7: อดทนต่อความล้มเหลว</span>
+            </div>
+            <p><strong>เวลา:</strong> 1.5 ชม.</p>
+        </div>
+    </div>
+
+    <!-- Section: Module 3 -->
+    <div id="module3" class="section">
+        <h2 class="section-title">👑 Module 3: ผู้นำผู้รับใช้ - สร้างบรรยากาศ 9</h2>
+        <p><strong>แนวคิด:</strong> PKG Servant Leadership (8 อุปนิสัย + 5 บทบาท) + Google Project Oxygen + Netflix Keeper Test</p>
+
+        <div class="module-card">
+            <h3>📌 3.1 8 อุปนิสัยผู้นำผู้รับใช้</h3>
+            <p><strong>หัวข้อ:</strong> อดกลั้น, เมตตากรุณา, ถ่อมตน, เคารพ, ไม่เห็นแก่ตัว, ให้อภัย, ซื่อสัตย์, มุ่งมั่น</p>
+            <p><strong>กิจกรรม: "360° Servant Leadership Assessment"</strong></p>
+            <ul>
+                <li>หัวหน้าประเมินตัวเอง 8 ด้าน (คะแนน 1-5)</li>
+                <li>ให้ลูกทีมประเมินแบบลับ (Anonymous)</li>
+                <li>เปรียบเทียบผล: หัวหน้าเห็นตัวเอง vs ลูกทีมเห็นหัวหน้า</li>
+                <li>หาช่องว่าง (Gap) และวางแผนพัฒนา</li>
+            </ul>
+            <p><strong>เวลา:</strong> 2 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 3.2 5 บทบาทผู้นำผู้รับใช้</h3>
+            <p><strong>หัวข้อ:</strong> นักเดินทาง, ผู้รับใช้, ผู้สร้าง, นักพัฒนา, ผู้พิทักษ์</p>
+            <p><strong>กิจกรรม: "My Leadership DNA"</strong></p>
+            <ul>
+                <li>วิเคราะห์ว่าตัวเองเด่นบทบาทไหน (เลือก 2 อันดับแรก)</li>
+                <li>บทบาทไหนที่ขาด/อ่อนที่สุด</li>
+                <li>วางแผนเสริมบทบาทที่ขาดใน 30 วัน</li>
+            </ul>
+            <p><strong>เวลา:</strong> 1.5 ชม.</p>
+        </div>
+
+        <div class="module-card">
+            <h3>📌 3.3 สร้างบรรยากาศ 9 ในทีม</h3>
+            <p><strong>หัวข้อ:</strong> ความเชื่อมั่น, เคารพ, ตรงไปตรงมา, ซื่อสัตย์, เปิดเผย, มองบวก, อารมณ์ขัน, กระตือรือร้น, เดินไปข้างหน้าเป็นทีม</p>
+            <p><strong>กิจกรรม: "Team Climate Design Sprint"</strong></p>
+            <ul>
+                <li>ให้ทีมร่วมกันออกแบบ "กติกาทีม" เพื่อให้ได้บรรยากาศ 9 ข้อ</li>
+                <li>แต่ละข้อ: ทีมจะทำอย่างไรให้เป็นจริง?</li>
+                <li>ตกลงกฎ 3-5 ข้อที่ทีมจะยึดถือร่วมกัน</li>
+            </ul>
+            <div>
+                <span class="pkg-ref">บรรยากาศ 9 (Climate 9)</span>
+                <span class="pkg-ref">นโยบาย #3: วินัยและทีมคือพลัง</span>
+            </div>
+            <p><strong>เวลา:</strong> 2 ชม.</p>
+        </div>
+    </div>
+
+    <!-- Section: Daily Activities -->
+    <div id="daily" class="section">
+        <h2 class="section-title">📅 กิจกรรมระหว่างวัน</h2>
+
+        <div class="activity-grid">
+            <div class="activity-card">
+                <div class="time">08:30</div>
+                <div class="name">🌅 Morning "รับฟัง" Check</div>
+                <div style="font-size:12px;color:#666;">หัวหน้าถาม: "วันนี้พลังงานคุณ 1-10?"<br><em>(รับฟังโดยปราศจากอคติ)</em></div>
+                <div><span class="pkg-ref">6 รับ ข้อ 1</span></div>
+            </div>
+            <div class="activity-card">
+                <div class="time">10:00</div>
+                <div class="name">💡 Idea Flash</div>
+                <div style="font-size:12px;color:#666;">สุ่ม 1 คนแชร์ไอเดียใหม่<br><em>(ทีมต้องพูด "ขอบคุณที่แสดงความคิดเห็น")</em></div>
+                <div><span class="pkg-ref">วัฒนธรรม #7</span></div>
+            </div>
+            <div class="activity-card">
+                <div class="time">12:30</div>
+                <div class="name">🍽️ Lunch & Learn</div>
+                <div style="font-size:12px;color:#666;">พฤหัสบดี: เล่าเรื่อง "ความผิดพลาดที่ฉันรับผิดชอบ"</div>
+                <div><span class="pkg-ref">6 รับ ข้อ 3</span></div>
+            </div>
+            <div class="activity-card">
+                <div class="time">15:00</div>
+                <div class="name">🤝 Feedback "6 รับ" Coffee</div>
+                <div style="font-size:12px;color:#666;">จับคู่ 15 นาที ให้ Feedback ด้วยกรอบ 6 รับ</div>
+                <div><span class="pkg-ref">6 รับ (ทุกข้อ)</span></div>
+            </div>
+            <div class="activity-card">
+                <div class="time">16:30</div>
+                <div class="name">📊 Daily Wrap-Up</div>
+                <div style="font-size:12px;color:#666;">สรุปงาน + ถาม "วันนี้บริการเพื่อนร่วมทีมดีหรือไม่?"</div>
+                <div><span class="pkg-ref">มาตรฐาน 9 ข้อ 6</span></div>
+            </div>
+        </div>
+
+        <div class="module-card" style="margin-top:20px;">
+            <h3>📢 การสื่อสารภายในองค์กร 3 ระดับ</h3>
+            <table>
+                <tr><th>ระดับ</th><th>ความถี่</th><th>ช่องทาง</th><th>เนื้อหาหลัก</th></tr>
+                <tr><td>🟢 Daily Voice</td><td>ทุกวัน</td><td>LINE / MS24</td><td>6 รับประจำวัน + เสียงลูกค้า</td></tr>
+                <tr><td>🟡 Weekly Pulse</td><td>ทุกสัปดาห์</td><td>Email / Meeting</td><td>สมาชิกตัวอย่าง 6 รับ + Lesson of the Week</td></tr>
+                <tr><td>🔴 Monthly Townhall</td><td>ทุกเดือน</td><td>ประชุมทั้งองค์กร</td><td>CEO Message + Culture Dashboard + Open Q&A</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section: Scorecard -->
+    <div id="scorecard" class="section">
+        <h2 class="section-title">📊 PKG Culture Scorecard</h2>
+        <p>ประเมินทีมของคุณตามปรัชญาองค์กร PKG (เลือกคะแนน 1-5 สำหรับแต่ละมิติ)</p>
+
+        <div class="score-section">
+            <h3 style="color:var(--pkg-blue);">ค่านิยม 6 รับ</h3>
+            <div class="score-row">
+                <span class="score-label">1. รับฟัง - ฟังโดยปราศจากอคติ</span>
+                <select class="score-select" id="s1"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">2. รับใช้ - บริการอย่างยินดีเต็มใจ</span>
+                <select class="score-select" id="s2"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">3. รับผิดชอบ - แก้ไขไม่รักษาหน้า</span>
+                <select class="score-select" id="s3"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">4. รับผิด - เสียสละเพื่อผู้อื่น</span>
+                <select class="score-select" id="s4"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">5. รับความจริง - ตรงไปตรงมาโปร่งใส</span>
+                <select class="score-select" id="s5"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">6. รับความเปลี่ยนแปลง - ละทิ้งอัตตา</span>
+                <select class="score-select" id="s6"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+        </div>
+
+        <div class="score-section">
+            <h3 style="color:var(--pkg-blue);">มาตรฐาน 9 (บริการลูกค้า)</h3>
+            <div class="score-row">
+                <span class="score-label">ปฏิบัติตามมาตรฐาน 9 ครบถ้วน</span>
+                <select class="score-select" id="s7"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4.5 (95%)</span>
+            </div>
+        </div>
+
+        <div class="score-section">
+            <h3 style="color:var(--pkg-blue);">บรรยากาศ 9 (Climate)</h3>
+            <div class="score-row">
+                <span class="score-label">ความเชื่อมั่น/เคารพ/มองบวก/กระตือรือร้น/เป็นทีม</span>
+                <select class="score-select" id="s8"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref">Target: ≥ 4</span>
+            </div>
+        </div>
+
+        <div class="score-section">
+            <h3 style="color:var(--pkg-blue);">วัฒนธรรมองค์กร (เลือกปฏิบัติ)</h3>
+            <div class="score-row">
+                <span class="score-label">#7 รักการแสดงความคิดเห็น</span>
+                <select class="score-select" id="s9"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref"></span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">#9 ไม่จับจ้องปัญหา มุ่งหาหนทาง</span>
+                <select class="score-select" id="s10"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref"></span>
+            </div>
+            <div class="score-row">
+                <span class="score-label">#14 ทำงานเป็นทีม ทุกคนทำงานเพื่อกัน</span>
+                <select class="score-select" id="s11"><option value="0">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <span class="score-ref"></span>
+            </div>
+        </div>
+
+        <div id="resultBox" class="result-box warning">
+            📊 กรุณาเลือกคะแนนให้ครบทุกข้อ
+        </div>
+    </div>
+
+    <!-- Section: Roadmap -->
+    <div id="roadmap" class="section">
+        <h2 class="section-title">🚀 แผนดำเนินการ (Implementation Roadmap)</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Phase 1: สำรวจ Baseline (สัปดาห์ 1-2)</h3>
+                <p>สำรวจคะแนน 6 รับ, มาตรฐาน 9, บรรยากาศ 9 แบบลับ</p>
+                <div><span class="pkg-ref">นโยบาย #10: การตรวจสอบเป็นเรื่องปกติ</span></div>
+            </div>
+            <div class="timeline-item">
+                <h3>Phase 2: อบรม Module 1 (สัปดาห์ 3-4)</h3>
+                <p>6 รับ: รากฐานทัศนคติที่ดี - รับฟัง, รับความจริง, รับความเปลี่ยนแปลง</p>
+                <div><span class="pkg-ref">6 รับ + วัฒนธรรม #5,#6,#19</span></div>
+            </div>
+            <div class="timeline-item">
+                <h3>Phase 3: กิจกรรมประจำวัน + มาตรฐาน 9 (สัปดาห์ 5-8)</h3>
+                <p>เริ่ม Morning Check, Idea Flash, Feedback Coffee, Daily Wrap-Up</p>
+                <div><span class="pkg-ref">มาตรฐาน 9 + บรรยากาศ 9</span></div>
+            </div>
+            <div class="timeline-item">
+                <h3>Phase 4: อบรม Module 2-3 (เดือน 2-3)</h3>
+                <p>รับผิดชอบ/รับผิด + ผู้นำผู้รับใช้ (8 อุปนิสัย + 5 บทบาท)</p>
+                <div><span class="pkg-ref">6 รับ ข้อ 3-4 + 8 Characters + 5 Roles</span></div>
+            </div>
+            <div class="timeline-item">
+                <h3>Phase 5: เปิดระบบวัดผล + รางวัล (เดือน 3)</h3>
+                <p>เริ่มให้รางวัล 6 รับ Champion, ทีมรับใช้ดีเด่น, นวัตกรรมทดลองใหม่</p>
+                <div><span class="pkg-ref">6 รับ + วัฒนธรรม #14 + นโยบาย #7</span></div>
+            </div>
+            <div class="timeline-item">
+                <h3>Phase 6: Culture Review + ปรับแผน (เดือน 6)</h3>
+                <p>ทบทวนผลสำรวจ, ปรับกิจกรรม, รับฟังความคิดเห็นสมาชิก</p>
+                <div><span class="pkg-ref">นโยบาย #2: อิสระทางความคิดเห็น</span></div>
+            </div>
+        </div>
+
+        <div class="module-card" style="margin-top:20px;">
+            <h3>🎁 ระบบรางวัลและการยกย่อง</h3>
+            <div class="recognition-grid">
+                <div class="recognition-card">
+                    <div class="icon">🏆</div>
+                    <h4>6 รับ Champion</h4>
+                    <p>ปฏิบัติค่านิยม 6 รับ อย่างโดดเด่น ครบทั้ง 6 ข้อ</p>
+                    <div><span class="pkg-ref">ทุกเดือน</span></div>
+                </div>
+                <div class="recognition-card">
+                    <div class="icon">🤝</div>
+                    <h4>ทีมรับใช้ดีเด่น</h4>
+                    <p>ทีมที่ทำงานเพื่อกันและกัน ตรงกับวัฒนธรรม #14</p>
+                    <div><span class="pkg-ref">ทุกเดือน</span></div>
+                </div>
+                <div class="recognition-card">
+                    <div class="icon">🚀</div>
+                    <h4>นวัตกรรมทดลองใหม่</h4>
+                    <p>กล้าทดลองสิ่งใหม่ แม้ล้มเหลวแต่เรียนรู้ได้</p>
+                    <div><span class="pkg-ref">ทุกเดือน</span></div>
+                </div>
+                <div class="recognition-card">
+                    <div class="icon">💎</div>
+                    <h4>ผู้นำผู้รับใช้ยอดเยี่ยม</h4>
+                    <p>คะแนน 8 อุปนิสัย + 5 บทบาท สูงสุด</p>
+                    <div><span class="pkg-ref">ทุกไตรมาส</span></div>
+                </div>
+                <div class="recognition-card">
+                    <div class="icon">🌟</div>
+                    <h4>มาตรฐาน 9 Perfect</h4>
+                    <p>ปฏิบัติตามมาตรฐาน 9 ครบทุกข้อ 3 เดือนติด</p>
+                    <div><span class="pkg-ref">ทุกไตรมาส</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Cobra Effect Prevention Guide -->
+    <div id="cobra" class="section">
+        <h2 class="section-title">🐍 Cobra Effect Prevention Guide</h2>
+        <p>คู่มือป้องกัน "ผลงูเห่า" — เมื่อระบบรางวัล/ตัวชี้วัดที่ออกแบบไม่ดี กลับสร้างพฤติกรรมที่เลวร้ายกว่าเดิม</p>
+
+        <div class="cobra-intro">
+            <h3>📖 Cobra Effect คืออะไร?</h3>
+            <p>ในยุคล่าอาณานิคม อังกฤษออกกฎ: <em>"ใครฆ่างูเห่าเอามาแลก จะได้รับเงินรางวัล"</em> ผลคือประชาชน<strong>เลี้ยงงูเห่าเพื่อฆ่าแลกเงิน</strong> เมื่อรัฐบาลรู้จึงยกเลิกรางวัล คนจึงปล่อยงูที่เลี้ยงไว้ → <strong>งูเห่าในเมืองเพิ่มขึ้นกว่าเดิม!</strong></p>
+            <p><strong>บทเรียน:</strong> การออกแบบระบบวัดผล/รางวัลที่ไม่ดี จะกระตุ้นให้คน "เล่นเกมระบบ" แทนที่จะทำสิ่งที่เราต้องการจริงๆ</p>
+        </div>
+
+        <h3 style="color:var(--pkg-blue);border-bottom:2px solid var(--pkg-gold);padding-bottom:8px;">⚠️ Phase ที่เสี่ยง Cobra Effect</h3>
+
+        <div class="cobra-card">
+            <h3>Phase 1: สำรวจ Baseline — ข้อมูลสวยแต่ไม่จริง</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span> พนักงานให้คะแนนสูงเกินจริงเพราะกลัวถูกมองว่า "ทัศนคติแย่" (Social Desirability Bias) → ข้อมูล Baseline คลาดเคลื่อน → ตัดสินใจผิดตั้งแต่เริ่ม
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span>
+                <ul style="margin:8px 0 0;padding-left:20px;">
+                    <li>ทำแบบสำรวจแบบ <strong>Anonymous 100%</strong> + ระบุชัดว่า "ไม่มีผลต่อการประเมินบุคคล"</li>
+                    <li>ใช้คำถามเชิงพฤติกรรม เช่น <em>"ครั้งล่าสุดที่กล้าเห็นต่างจากหัวหน้าคือเมื่อไหร่?"</em> แทนคำถามทั่วไป</li>
+                    <li>เปรียบเทียบผล Anonymous vs Non-anonymous เพื่อหา Gap</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>Phase 2: อบรม Module 1 — มาตัวแต่ไม่เปิดใจ</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span> พนักงานมาอบรมเพราะ "บังคับ" แต่ไม่เปิดใจจริง → ผ่านหน้างาน แต่พฤติกรรมไม่เปลี่ยน → ได้แค่ "เช็คชื่อ" ไม่ได้ "เปลี่ยนคน"
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span>
+                <ul style="margin:8px 0 0;padding-left:20px;">
+                    <li><strong>ไม่เช็คชื่อเข้าเรียน</strong> แต่ให้ "สะท้อนสิ่งที่ได้เรียน" หลังอบรม</li>
+                    <li>วัดผลจากการเปลี่ยนแปลงพฤติกรรมจริงใน 30 วันหลังอบรม</li>
+                    <li>ให้หัวหน้าติดตาม: "ลูกทีมใช้สิ่งที่เรียนไปจริงหรือไม่?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>Phase 3: กิจกรรมประจำวัน — Checklist ไร้ความหมาย</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span> ทำกิจกรรมแบบ "ส่งๆ ให้ครบ" เช่น Morning Check แค่ถาม 1-10 โดยไม่ฟังคำตอบ → กลายเป็นพิธีกรรมที่ไร้คุณค่า
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span>
+                <ul style="margin:8px 0 0;padding-left:20px;">
+                    <li>หัวหน้าต้อง <strong>"เล่าสิ่งที่ได้ยิน"</strong> หลัง Morning Check</li>
+                    <li>มีระบบสุ่ม Audit โดย HR (ไม่ใช่ตรวจทุกวัน แต่สุ่มฟัง)</li>
+                    <li>ถามพนักงานว่า: "หัวหน้าฟังคุณจริงๆ หรือแค่ถามให้ครบ?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>Phase 5: เปิดระบบรางวัล — สร้างภาพเพื่อแย่งรางวัล (เสี่ยงที่สุด!)</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span> พนักงาน "แกล้งทำดี" หน้ารางวัล แต่ทำลับหลังอีกอย่าง → แข่งกันสร้างภาพ → วัฒนธรรมพังเพราะรางวัล</div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span> <strong>ดูรายละเอียดรางวัลทั้ง 5 ประเภทด้านล่าง</strong>
+            </div>
+        </div>
+
+        <h3 style="color:var(--pkg-blue);border-bottom:2px solid var(--pkg-gold);padding-bottom:8px;margin-top:25px;">🏆 รางวัล 5 ประเภท: Cobra Effect และวิธีป้องกัน</h3>
+
+        <div class="cobra-card">
+            <h3>🏆 1. 6 รับ Champion</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span><br>
+                • แกล้งทำดีเฉพาะหน้ารางวัล (Surface Compliance)<br>
+                • ทำเรื่องเล็กๆ ง่ายๆ เพื่อให้ได้คะแนน แต่เลี่ยงงานใหญ่<br>
+                • ได้รางวัลเดือนแรกแล้วหยุดทำ (One-Hit Wonder)
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span><br>
+                • ใช้ <strong>Peer Nomination</strong> (เพื่อนเสนอเพื่อน พร้อมหลักฐานเชิงพฤติกรรม) ไม่ใช่หัวหน้าเลือกคนเดียว<br>
+                • ต้องแสดง <strong>ครบทั้ง 6 รับ</strong> ในเรื่องเดียวกัน<br>
+                • ต้องได้ <strong>2 เดือนติดกัน</strong> ถึงจะได้รับรางวัล + มี Hall of Fame สำหรับ 6 เดือนติด
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>🤝 2. ทีมรับใช้ดีเด่น</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span><br>
+                • ทีมทำงานดีภายใน แต่ไม่ช่วยทีมอื่น (Silo Mentality)<br>
+                • หัวหน้ากดดันลูกทีมจน Burnout เพื่อให้ได้รางวัล
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span><br>
+                • เพิ่มเกณฑ์ <strong>Cross-Team Collaboration</strong> — ทีมอื่นต้องยืนยันว่าเคยช่วยเหลือ<br>
+                • วัด <strong>Psychological Safety ในทีม</strong> ร่วมด้วย — ถ้าคะแนนต่ำ ตัดสิทธิ์ทันที
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>🚀 3. นวัตกรรมทดลองใหม่</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span><br>
+                • เสนอไอเดียเยอะแต่คุณภาพต่ำ (Quantity over Quality)<br>
+                • ทดลองเรื่องปลอดภัยเกินไป → ไม่เกิดนวัตกรรมจริง<br>
+                • ทดลองเรื่องสำคัญโดยไม่ประเมินความเสี่ยง
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span><br>
+                • วัดที่ <strong>Impact</strong> (ผลกระทบจริง) ไม่ใช่จำนวนไอเดีย<br>
+                • ให้คะแนน <strong>Failed Experiment with Great Learnings</strong> สูงกว่า Small Success<br>
+                • ต้องมี <strong>Risk Assessment</strong> ก่อนทดลอง + จำกัดขอบเขตความเสียหาย (นโยบาย #7)
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>💎 4. ผู้นำผู้รับใช้ยอดเยี่ยม</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span><br>
+                • หัวหน้าประจบลูกทีมเพื่อให้ได้คะแนน (Popularity Contest)<br>
+                • หัวหน้าหลีกเลี่ยงการตัดสินใจยากๆ เพราะกลัวลูกทีมไม่ชอบ
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span><br>
+                • ใช้ <strong>360° Feedback</strong> (ลูกทีม + เพื่อนหัวหน้า + ลูกค้า)<br>
+                • เพิ่มเกณฑ์ <strong>Tough Decisions with Transparency</strong> — กล้าตัดสินใจเรื่องยากแต่สื่อสารโปร่งใส
+            </div>
+        </div>
+
+        <div class="cobra-card">
+            <h3>🌟 5. มาตรฐาน 9 Perfect</h3>
+            <div class="cobra-risk">
+                <span class="label">🐍 ความเสี่ยง:</span><br>
+                • ปฏิบัติแบบ "ขอไปที" — ทำครบข้อ แต่ลูกค้าไม่พอใจจริง<br>
+                • หลีกเลี่ยงเคสยากๆ ที่อาจทำให้มาตรฐาน 9 ไม่ครบ
+            </div>
+            <div class="cobra-shield">
+                <span class="label">🛡️ วิธีป้องกัน:</span><br>
+                • วัด <strong>Customer Satisfaction Score</strong> ร่วมด้วย — มาตรฐาน 9 ครบ แต่ลูกค้าไม่พอใจ = ไม่ได้รางวัล<br>
+                • ให้คะแนน <strong>Complex Case Handling</strong> — ทีมที่จัดการเคสยากได้ดี ได้โบนัส
+            </div>
+        </div>
+
+        <div class="cobra-rules">
+            <h3>🎯 กฎเหล็ก 5 ข้อ ป้องกัน Cobra Effect ในทุกระบบรางวัล</h3>
+
+            <div class="rule-item">
+                <div class="rule-num">1</div>
+                <div class="rule-content">
+                    <h4>วัดพฤติกรรม ไม่ใช่จำนวน</h4>
+                    <p>ไม่ให้รางวัลเพราะ "ทำ 100 ครั้ง" แต่ให้เพราะ "ทำถูกต้อง 1 ครั้งที่ส่งผลกระทบใหญ่"</p>
+                    <span class="pkg-ref">วัฒนธรรม #13: สนใจแต่การสร้างคุณค่าจากการทำงาน</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">2</div>
+                <div class="rule-content">
+                    <h4>เพื่อนเสนอเพื่อน</h4>
+                    <p>ไม่ใช่หัวหน้าเลือกคนเดียว แต่ให้เพื่อนร่วมงานเสนอพร้อมหลักฐานเชิงพฤติกรรม</p>
+                    <span class="pkg-ref">ค่านิยม 6 รับ: รับฟัง + รับความจริง</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">3</div>
+                <div class="rule-content">
+                    <h4>ต้องยั่งยืน ไม่ใช่ครั้งเดียว</h4>
+                    <p>รางวัลใหญ่ต้องทำได้อย่างน้อย 2-3 เดือนติดกัน</p>
+                    <span class="pkg-ref">วัฒนธรรม #6: รักการแสวงหาสิ่งที่ดีกว่าเป็นชีวิตประจำวัน</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">4</div>
+                <div class="rule-content">
+                    <h4>วัดผลรอบด้าน</h4>
+                    <p>ไม่ใช่แค่ตัวชี้วัดเดียว แต่ต้องรวม Psychological Safety + Customer Satisfaction + Cross-Team</p>
+                    <span class="pkg-ref">มาตรฐาน 9 + บรรยากาศ 9</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">5</div>
+                <div class="rule-content">
+                    <h4>ยกย่องความล้มเหลวที่เรียนรู้</h4>
+                    <p>รางวัล "Best Failed Experiment" สำคัญเท่ากับ "Best Success"</p>
+                    <span class="pkg-ref">นโยบาย #7: อดทนต่อความล้มเหลว</span>
+                    <span class="pkg-ref">วัฒนธรรม #10: ปัญหาคือโอกาส</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+        <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์เอกสารทั้งหมด / บันทึก PDF</button>
+    </div>
+</div>
+
+<script>
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// Scorecard auto-calculate
+const selects = document.querySelectorAll('#scorecard .score-select');
+selects.forEach(sel => sel.addEventListener('change', calculateScore));
+
+function calculateScore() {
+    const vals = [];
+    let allFilled = true;
+    for (let i = 1; i <= 11; i++) {
+        const v = parseInt(document.getElementById('s' + i).value);
+        if (!v) { allFilled = false; break; }
+        vals.push(v);
+    }
+    
+    const box = document.getElementById('resultBox');
+    if (!allFilled) {
+        box.className = 'result-box warning';
+        box.textContent = '📊 กรุณาเลือกคะแนนให้ครบทุกข้อ';
+        return;
+    }
+    
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    
+    if (avg >= 4.5) {
+        box.className = 'result-box excellent';
+        box.innerHTML = '🌟 ยอดเยี่ยม! คะแนนเฉลี่ย ' + avg.toFixed(1) + '/5<br>ทีมของคุณเป็นแบบอย่างของ PKG Attitude Culture!';
+    } else if (avg >= 3.5) {
+        box.className = 'result-box good';
+        box.innerHTML = '✅ ดี! คะแนนเฉลี่ย ' + avg.toFixed(1) + '/5<br>อยู่ในเกณฑ์ดี แต่ยังมีจุดที่ต้องพัฒนาเพิ่มเติม';
+    } else {
+        box.className = 'result-box warning';
+        box.innerHTML = '⚠️ ต้องพัฒนา! คะแนนเฉลี่ย ' + avg.toFixed(1) + '/5<br>ควรเร่งอบรมและทำกิจกรรมเสริมทัศนคติทันที';
+    }
+}
+</script>
+
+</body>
+</html>

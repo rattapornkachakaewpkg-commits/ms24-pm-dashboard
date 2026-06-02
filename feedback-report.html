@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 รายงานสรุปผลประเมิน Feedback ทีมบัญชี/การเงิน</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.7;padding:16px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:1.3em;color:#1a237e;text-align:center;margin-bottom:6px}
+.subtitle{text-align:center;color:#546e7a;font-size:0.85em;margin-bottom:20px}
+.section{background:#fff;border:1px solid #e0e6ed;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+h2{font-size:1.05em;color:#7c3aed;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #7c3aed}
+h3{font-size:0.95em;color:#1a237e;margin:16px 0 8px}
+table{width:100%;border-collapse:collapse;margin:8px 0}
+th{background:#7c3aed;color:#fff;padding:8px 10px;text-align:center;font-size:0.82em}
+td{padding:8px 10px;border-bottom:1px solid #e0e6ed;font-size:0.88em;text-align:center}
+tr:nth-child(even){background:#f5f3ff}
+.bar{height:22px;border-radius:4px;min-width:2px;transition:width 0.3s}
+.bar-5{background:#16a34a}.bar-4{background:#22c55e}.bar-3{background:#f59e0b}.bar-2{background:#f97316}.bar-1{background:#dc2626}
+.score-big{font-size:1.8em;font-weight:700;color:#7c3aed}
+.score-label{font-size:0.78em;color:#546e7a}
+.stat-box{display:inline-block;text-align:center;padding:12px 20px;margin:4px;background:#f5f3ff;border-radius:10px;border:1px solid #e0e0e0}
+.suggestion{background:#f5f3ff;border-left:3px solid #7c3aed;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-size:0.88em}
+.suggestion .name{font-weight:600;color:#7c3aed;font-size:0.82em}
+.company-tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.78em;font-weight:600;margin:2px}
+.tag-aamg{background:#dbeafe;color:#1e40af}
+.tag-raf{background:#fef3c7;color:#92400e}
+.tag-cpdg{background:#d1fae5;color:#065f46}
+.tag-pmsg{background:#ede9fe;color:#5b21b6}
+.tag-rplcg{background:#fce7f3;color:#9d174d}
+.tag-pkg{background:#e0e7ff;color:#3730a3}
+.footer{text-align:center;color:#78909c;font-size:0.78em;margin-top:20px;padding-top:12px;border-top:1px solid #e0e6ed}
+.highlight{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #7c3aed;border-radius:12px;padding:16px;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📊 รายงานสรุปผลประเมิน Feedback</h1>
+<p class="subtitle">ทีมบัญชี & ทีมการเงิน PKG | 28-29 พฤษภาคม 2569</p>
+
+<!-- สรุปภาพรวม -->
+<div class="highlight" style="text-align:center">
+<div style="display:flex;justify-content:center;gap:30px;flex-wrap:wrap">
+<div class="stat-box">
+<div class="score-big">45</div>
+<div class="score-label">ผู้ตอบทั้งหมด</div>
+</div>
+<div class="stat-box">
+<div class="score-big">4.27</div>
+<div class="score-label">คะแนนเฉลี่ย ทีมบัญชี</div>
+</div>
+<div class="stat-box">
+<div class="score-big">4.29</div>
+<div class="score-label">คะแนนเฉลี่ย ทีมการเงิน</div>
+</div>
+</div>
+</div>
+
+<!-- แยกตามบริษัท -->
+<div class="section">
+<h2>🏢 จำนวนผู้ตอบแยกตามบริษัท</h2>
+<table>
+<tr><th>บริษัท</th><th>จำนวน</th><th>สัดส่วน</th></tr>
+<tr><td><span class="company-tag tag-aamg">AAMG</span></td><td>23</td><td>51.1%</td></tr>
+<tr><td><span class="company-tag tag-raf">RAFCOG</span></td><td>7</td><td>15.6%</td></tr>
+<tr><td><span class="company-tag tag-cpdg">CPDG</span></td><td>5</td><td>11.1%</td></tr>
+<tr><td><span class="company-tag tag-pmsg">PMSG</span></td><td>5</td><td>11.1%</td></tr>
+<tr><td><span class="company-tag tag-rplcg">RPLCG</span></td><td>4</td><td>8.9%</td></tr>
+<tr><td><span class="company-tag tag-pkg">PKG</span></td><td>1</td><td>2.2%</td></tr>
+</table>
+</div>
+
+<!-- ทีมบัญชี -->
+<div class="section">
+<h2>📋 ทีมบัญชี — คะแนนเฉลี่ย</h2>
+<table>
+<tr><th>หัวข้อประเมิน</th><th>คะแนนเฉลี่ย</th><th>รูปแบบ</th></tr>
+<tr><td style="text-align:left">ความสะดวก</td><td><strong>4.36</strong></td><td><div class="bar bar-4" style="width:87%">4.36</div></td></tr>
+<tr><td style="text-align:left">ความรวดเร็ว</td><td><strong>4.27</strong></td><td><div class="bar bar-4" style="width:85%">4.27</div></td></tr>
+<tr><td style="text-align:left">ประสิทธิภาพ</td><td><strong>3.98</strong></td><td><div class="bar bar-3" style="width:80%">3.98</div></td></tr>
+<tr><td style="text-align:left">ความถูกต้อง</td><td><strong>4.33</strong></td><td><div class="bar bar-4" style="width:87%">4.33</div></td></tr>
+<tr><td style="text-align:left">คำปรึกษา</td><td><strong>4.33</strong></td><td><div class="bar bar-4" style="width:87%">4.33</div></td></tr>
+<tr><td style="text-align:left">พึงพอใจโดยรวม</td><td><strong>4.33</strong></td><td><div class="bar bar-4" style="width:87%">4.33</div></td></tr>
+</table>
+<p style="margin-top:10px;font-size:0.82em;color:#dc2626">⚠️ <strong>ประสิทธิภาพ ต่ำสุด (3.98)</strong> — จุดที่ควรปรับปรุง</p>
+</div>
+
+<!-- ทีมการเงิน -->
+<div class="section">
+<h2>💰 ทีมการเงิน — คะแนนเฉลี่ย</h2>
+<table>
+<tr><th>หัวข้อประเมิน</th><th>คะแนนเฉลี่ย</th><th>รูปแบบ</th></tr>
+<tr><td style="text-align:left">ความสะดวก</td><td><strong>4.44</strong></td><td><div class="bar bar-4" style="width:89%">4.44</div></td></tr>
+<tr><td style="text-align:left">ความรวดเร็ว</td><td><strong>4.27</strong></td><td><div class="bar bar-4" style="width:85%">4.27</div></td></tr>
+<tr><td style="text-align:left">ประสิทธิภาพ</td><td><strong>4.00</strong></td><td><div class="bar bar-3" style="width:80%">4.00</div></td></tr>
+<tr><td style="text-align:left">ความถูกต้อง</td><td><strong>4.36</strong></td><td><div class="bar bar-4" style="width:87%">4.36</div></td></tr>
+<tr><td style="text-align:left">คำปรึกษา</td><td><strong>4.38</strong></td><td><div class="bar bar-4" style="width:88%">4.38</div></td></tr>
+<tr><td style="text-align:left">พึงพอใจโดยรวม</td><td><strong>4.27</strong></td><td><div class="bar bar-4" style="width:85%">4.27</div></td></tr>
+</table>
+<p style="margin-top:10px;font-size:0.82em;color:#dc2626">⚠️ <strong>ประสิทธิภาพ ต่ำสุด (4.00)</strong> — จุดที่ควรปรับปรุง</p>
+</div>
+
+<!-- การกระจายคะแนน -->
+<div class="section">
+<h2>📊 การกระจายคะแนน</h2>
+<table>
+<tr><th>คะแนน</th><th>ทีมบัญชี</th><th>ทีมการเงิน</th></tr>
+<tr><td>⭐⭐⭐⭐⭐ (5)</td><td>105 (38.9%)</td><td>113 (41.9%)</td></tr>
+<tr><td>⭐⭐⭐⭐ (4)</td><td>138 (51.1%)</td><td>124 (45.9%)</td></tr>
+<tr><td>⭐⭐⭐ (3)</td><td>22 (8.1%)</td><td>31 (11.5%)</td></tr>
+<tr><td>⭐⭐ (2)</td><td>4 (1.5%)</td><td>1 (0.4%)</td></tr>
+<tr><td>⭐ (1)</td><td>1 (0.4%)</td><td>1 (0.4%)</td></tr>
+</table>
+<p style="margin-top:10px;font-size:0.82em;color:#16a34a">✅ <strong>90% ให้คะแนน 4-5</strong> — ความพึงพอใจสูง</p>
+</div>
+
+<!-- เปรียบเทียบ -->
+<div class="section">
+<h2>⚖️ เปรียบเทียบ ทีมบัญชี vs ทีมการเงิน</h2>
+<table>
+<tr><th>หัวข้อ</th><th>ทีมบัญชี</th><th>ทีมการเงิน</th><th>ผล</th></tr>
+<tr><td>ความสะดวก</td><td>4.36</td><td>4.44</td><td style="color:#16a34a">การเงิน +0.08</td></tr>
+<tr><td>ความรวดเร็ว</td><td>4.27</td><td>4.27</td><td style="color:#546e7a">เท่ากัน</td></tr>
+<tr><td>ประสิทธิภาพ</td><td>3.98</td><td>4.00</td><td style="color:#16a34a">การเงิน +0.02</td></tr>
+<tr><td>ความถูกต้อง</td><td>4.33</td><td>4.36</td><td style="color:#16a34a">การเงิน +0.03</td></tr>
+<tr><td>คำปรึกษา</td><td>4.33</td><td>4.38</td><td style="color:#16a34a">การเงิน +0.05</td></tr>
+<tr><td>พึงพอใจโดยรวม</td><td>4.33</td><td>4.27</td><td style="color:#7c3aed">บัญชี +0.06</td></tr>
+</table>
+</div>
+
+<!-- ข้อเสนอแนะทีมบัญชี -->
+<div class="section">
+<h2>📝 ข้อเสนอแนะ — ทีมบัญชี</h2>
+
+<div class="suggestion">อยากให้ช่วยตรวจสอบงบของแต่ละสาขา รายการที่มีค่าใช้จ่ายเด่นๆ เพิ่มมากขึ้น</div>
+<div class="suggestion">อยากให้ตอบรวดเร็วเวลาสาขาปรึกษา สอบถาม อยากให้มีมาตรฐานเวลาให้หน้างานรับทราบว่าถึงขั้นตอนไหนแล้ว</div>
+<div class="suggestion">อยากให้ทีมบัญชีเชื่อมข้อมูลเป็นความแจ้งเตือนค่าใช้จ่ายประจำเดือน/ปีของแต่ละสาขา ป้องกันการเกินกำหนดและมีค่าปรับ</div>
+<div class="suggestion">อยากให้มีระบบตัดเงินโอนอัตโนมัติ เพราะเป็นการทำงานซ้ำซ้อน และเวลากระทบยอดอยากให้ตรวจสอบอย่างละเอียดโดยไม่ต้องมอบให้ทางสาขา</div>
+<div class="suggestion">อยากให้มีเครื่องช่วยแจ้งเตือนกรณีที่สาขาแจ้งทีมบัญชีกลับผัง แจ้งเตือนว่ามีการกลับผังเรียบร้อยแล้ว</div>
+<div class="suggestion">อยากให้ทุกคนมีส่วนร่วมในการรับฟังข่าวสาร อยากให้มีการสื่อสารเงื่อนไข กติกา ให้ชัดเจน เข้าใจง่าย และครบถ้วน</div>
+<div class="suggestion">ควรลงไปคุยกับหน้างานให้ใกล้ชิดกว่านี้</div>
+<div class="suggestion">อยากให้มีมาตรฐานในการโอนเงินให้ลูกค้าไม่เกิน 30 นาที หลังจากที่หน้างานกดข้อมูลไปแล้ว โดยไม่มีข้อยกเว้น</div>
+<div class="suggestion">การเบิกจ่ายเงินจัดสินเชื่อไม่มีการนัดหมายระยะเวลา ทำลูกค้าต้องรอโดยไม่มีเวลาที่ชัดเจน</div>
+</div>
+
+<!-- ข้อเสนอแนะทีมการเงิน -->
+<div class="section">
+<h2>📝 ข้อเสนอแนะ — ทีมการเงิน</h2>
+
+<div class="suggestion">ไม่ค่อยรับผิดชอบ อยากให้ตรวจสอบความถูกต้องก่อนโอนเงิน เช่น การโอนเงินผิด</div>
+<div class="suggestion">อยากให้มีระบบแจ้งเตือนเงินเข้าบัญชีลูกค้าแล้วทุกราย เพื่อสาขาจะได้รับรู้ในเรื่องการเบิกเงิน</div>
+<div class="suggestion">อยากให้พัฒนาเรื่องการวางยอด Statement ให้ขึ้นอัตโนมัติ เพื่อความสะดวกและรวดเร็ว</div>
+<div class="suggestion">อยากให้พัฒนาบอร์ดโอนเงิน E-banking ให้เสถียรและโอนเงินได้เร็วขึ้น</div>
+<div class="suggestion">อยากให้ระบบเบิกเงินแก้ไขเอกสารได้เลยไม่ต้องทำการเบิกใหม่ เงินเข้าในวันเดียวกัน</div>
+<div class="suggestion">อยากให้มีบอร์ดเช็คสถานะเงินเข้าบัญชีให้หน้างาน เช่น รออนุมัติ/ดำเนินการโอน/โอนเรียบร้อย</div>
+<div class="suggestion">อยากให้มีป็อปอัพแจ้งเตือนเมื่อเงินเข้าบัญชีลูกค้า หรือส่งข้อความแจ้งเตือนเข้าโทรศัพท์ลูกค้า</div>
+<div class="suggestion">อยากให้เงินเข้าช่วงเช้าเลย เพราะบางทีสำรองเงินหลักพัน จำเป็นต้องใช้เงิน</div>
+<div class="suggestion">ติดปัญหาเรื่องเปิดเอกสารฟินการ์ดไม่ได้ อยากให้แก้ไขในส่วนนี้</div>
+<div class="suggestion">อยากให้หน้างานทราบว่าเงินได้โอนเข้าบัญชีลูกค้าแล้วหรือยัง ลดการต้องถามเป็นเคสๆ</div>
+<div class="suggestion">อยากให้ก่อนยกเลิกฟินการ์ดมีการสอบถามก่อน เพราะบางทีผิดที่ระบบไม่โชว์เอกสาร และอยากให้ตรวจเอกสารเร็วขึ้น</div>
+</div>
+
+<!-- สรุปจุดปรับปรุง -->
+<div class="section">
+<h2>🎯 สรุปจุดที่ควรปรับปรุง (Top Issues)</h2>
+
+<h3>🔴 ประเด็นเร่งด่วน</h3>
+<div class="suggestion" style="border-left-color:#dc2626">
+<strong>1. ระบบแจ้งเตือนเงินเข้าบัญชีลูกค้า</strong><br>
+มีผู้เสนอหลายคน — ต้องการรู้สถานะเงินเข้าบัญชี แจ้งเตือนอัตโนมัติ
+</div>
+<div class="suggestion" style="border-left-color:#dc2626">
+<strong>2. ความถูกต้องก่อนโอนเงิน</strong><br>
+มีกรณีโอนเงินผิด — ต้องตรวจสอบความถูกต้องก่อนดำเนินการ
+</div>
+
+<h3>🟡 ประเด็นสำคัญ</h3>
+<div class="suggestion" style="border-left-color:#f59e0b">
+<strong>3. มาตรฐานเวลาตอบ/ดำเนินการ</strong><br>
+ต้องการมาตรฐานเวลาที่ชัดเจน รู้ว่าถึงขั้นตอนไหนแล้ว
+</div>
+<div class="suggestion" style="border-left-color:#f59e0b">
+<strong>4. ประสิทธิภาพ (ต่ำสุดในทั้ง 2 ทีม)</strong><br>
+บัญชี 3.98 / การเงิน 4.00 — หัวข้อที่ได้คะแนนต่ำสุด
+</div>
+<div class="suggestion" style="border-left-color:#f59e0b">
+<strong>5. ระบบ E-banking / Statement อัตโนมัติ</strong><br>
+อยากให้วางยอด Statement อัตโนมัติ บอร์ดโอนเงินเสถียรขึ้น
+</div>
+
+<h3>🟢 ประเด็นเสริม</h3>
+<div class="suggestion" style="border-left-color:#16a34a">
+<strong>6. สื่อสารให้ชัดเจน/ใกล้ชิดหน้างานมากขึ้น</strong><br>
+อยากให้ลงไปคุยกับหน้างาน สื่อสารเงื่อนไขให้เข้าใจง่าย
+</div>
+<div class="suggestion" style="border-left-color:#16a34a">
+<strong>7. ระบบเบิกเงิน — แก้ไขเอกสารได้โดยไม่ต้องเบิกใหม่</strong><br>
+ลดขั้นตอน เพิ่มความยืดหยุ่น
+</div>
+</div>
+
+<div class="footer">
+#feedback-form | ข้อมูล 28-29 พ.ค. 2569 | 45 ผู้ตอบ | สร้างโดย AliClaw 🐾
+</div>
+
+</div>
+</body>
+</html>

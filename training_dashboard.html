@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Dashboard สรุปผลการอบรม PKG ปี 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .header .subtitle { font-size: 1.1em; opacity: 0.9; margin-top: 10px; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; }
+        .section h2 { color: #1a73e8; font-size: 1.8em; margin-bottom: 20px; border-bottom: 3px solid #1a73e8; padding-bottom: 10px; display: flex; align-items: center; }
+        .section h2 .icon { font-size: 1.2em; margin-right: 10px; }
+
+        /* KPI Cards */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border-top: 5px solid #1a73e8; transition: transform 0.2s; }
+        .kpi-card:hover { transform: translateY(-3px); }
+        .kpi-card.green { border-top-color: #28a745; }
+        .kpi-card.orange { border-top-color: #ffc107; }
+        .kpi-card.red { border-top-color: #ea4335; }
+        .kpi-card.purple { border-top-color: #9c27b0; }
+        .kpi-card.teal { border-top-color: #009688; }
+        .kpi-value { font-size: 2.5em; font-weight: 700; color: #1a73e8; }
+        .kpi-card.green .kpi-value { color: #28a745; }
+        .kpi-card.orange .kpi-value { color: #f57f17; }
+        .kpi-card.red .kpi-value { color: #ea4335; }
+        .kpi-card.purple .kpi-value { color: #9c27b0; }
+        .kpi-card.teal .kpi-value { color: #009688; }
+        .kpi-label { font-size: 14px; color: #666; margin-top: 8px; font-weight: 600; }
+        .kpi-sub { font-size: 12px; color: #999; margin-top: 4px; }
+
+        /* Score Distribution */
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .score-box { text-align: center; padding: 25px; border-radius: 15px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+        .score-box.s100 { background: linear-gradient(135deg, #e6f4ea, #ceead6); }
+        .score-box.s80 { background: linear-gradient(135deg, #e8f0fe, #d2e3fc); }
+        .score-box.s60 { background: linear-gradient(135deg, #fef7e0, #feefc3); }
+        .score-box.s0 { background: linear-gradient(135deg, #fce8e6, #f8d7da); }
+        .score-box .val { font-size: 2.2em; font-weight: 700; }
+        .score-box.s100 .val { color: #137333; }
+        .score-box.s80 .val { color: #1a73e8; }
+        .score-box.s60 .val { color: #b06000; }
+        .score-box.s0 .val { color: #c5221f; }
+        .score-box .lbl { font-size: 13px; color: #666; margin-top: 8px; font-weight: 500; }
+
+        /* Two column */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Monthly Chart */
+        .chart-box { background: #f8f9fa; border-radius: 15px; padding: 30px; }
+        .bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 220px; padding: 0 10px; }
+        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .bar { width: 100%; max-width: 45px; border-radius: 6px 6px 0 0; transition: height 0.3s; }
+        .bar-label { font-size: 12px; color: #666; margin-top: 8px; text-align: center; font-weight: 600; }
+        .bar-value { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 6px; }
+        .chart-legend { display: flex; gap: 20px; justify-content: center; margin-top: 16px; font-size: 13px; color: #666; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 6px; vertical-align: middle; }
+
+        /* Tables */
+        .table-wrap { max-height: 500px; overflow-y: auto; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 14px 10px; text-align: left; font-weight: 600; position: sticky; top: 0; }
+        td { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; }
+        tr:hover { background: #f8f9fa; }
+        tr:nth-child(even) { background: #fafafa; }
+        tr:nth-child(even):hover { background: #f0f2f5; }
+        code { background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+
+        /* Badges */
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-green { background: #e6f4ea; color: #137333; }
+        .badge-orange { background: #fef7e0; color: #b06000; }
+        .badge-red { background: #fce8e6; color: #c5221f; }
+        .badge-blue { background: #e8f0fe; color: #1a73e8; }
+
+        /* Progress Bar */
+        .progress-bar { background: #e8eaed; border-radius: 8px; height: 12px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 8px; transition: width 0.3s; }
+        .progress-green { background: linear-gradient(90deg, #34a853, #81c995); }
+        .progress-blue { background: linear-gradient(90deg, #1a73e8, #8ab4f8); }
+        .progress-orange { background: linear-gradient(90deg, #f9ab00, #fdd663); }
+
+        /* BU Cards */
+        .bu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .bu-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); border-left: 4px solid #1a73e8; }
+        .bu-card h4 { color: #1a73e8; font-size: 1.1em; margin-bottom: 10px; }
+        .bu-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+        .bu-stat { text-align: center; }
+        .bu-stat .val { font-size: 1.5em; font-weight: 700; color: #333; }
+        .bu-stat .lbl { font-size: 11px; color: #999; }
+
+        /* Not Attended Section */
+        .warning-box { background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 25px; border-radius: 15px; margin: 20px 0; border-left: 5px solid #ff9800; }
+        .warning-box h4 { color: #f57f17; margin-bottom: 15px; font-size: 1.3em; }
+
+        /* Footer */
+        .footer { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 30px; text-align: center; }
+        .footer p { margin: 5px 0; }
+        .highlight-badge { background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; display: inline-block; margin: 4px; font-weight: 500; }
+
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 Dashboard สรุปผลการอบรม PKG ปี 2026</h1>
+        <p class="subtitle">ข้อมูลสรุปผลการฝึกอบรมสมาชิกองค์กร PKG Group</p>
+        <p style="margin-top: 15px; font-size: 1em; opacity: 0.9;">
+            อัปเดตล่าสุด: 14 พฤษภาคม 2026 | แหล่งข้อมูล: Google Sheets Training Records
+        </p>
+    </div>
+
+    <div class="content">
+
+        <!-- Quote -->
+        <div style="background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; text-align: center; font-style: italic; font-size: 1.2em; line-height: 1.6;">
+            "การพัฒนาสมาชิก คือการลงทุนที่คุ้มค่าที่สุด"<br>
+            <span style="font-size: 0.85em; opacity: 0.85;">— PKG Training Dashboard 2026</span>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="section">
+            <h2><span class="icon">📈</span> ตัวชี้วัดหลัก (KPIs)</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-value">9,075</div>
+                    <div class="kpi-label">จำนวนบันทึกทั้งหมด</div>
+                    <div class="kpi-sub">494 สมาชิก (ไม่ซ้ำ)</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-value">87.1%</div>
+                    <div class="kpi-label">อัตราการเข้าอบรม</div>
+                    <div class="kpi-sub">เข้า 7,909 | ไม่เข้า 1,161</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-value">99.3</div>
+                    <div class="kpi-label">คะแนนเฉลี่ย</div>
+                    <div class="kpi-sub">สูงสุด 100 | ต่ำสุด 0</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-value">74</div>
+                    <div class="kpi-label">หลักสูตรทั้งหมด</div>
+                    <div class="kpi-sub">หลักสูตรภายใน</div>
+                </div>
+                <div class="kpi-card teal">
+                    <div class="kpi-value">8</div>
+                    <div class="kpi-label">BU/หน่วยงาน</div>
+                    <div class="kpi-sub">PMSG · AAMG · CPDG · RPLCG · RAFCOG · PKG · PGHG</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Distribution -->
+        <div class="section">
+            <h2><span class="icon">🎯</span> การกระจายคะแนนสอบ</h2>
+            <div class="score-grid">
+                <div class="score-box s100">
+                    <div class="val">7,006</div>
+                    <div class="lbl">คะแนน 100 (88.6%)</div>
+                </div>
+                <div class="score-box s80">
+                    <div class="val">790</div>
+                    <div class="lbl">คะแนน 80-99 (10.0%)</div>
+                </div>
+                <div class="score-box s60">
+                    <div class="val">112</div>
+                    <div class="lbl">คะแนน 60-79 (1.4%)</div>
+                </div>
+                <div class="score-box s0">
+                    <div class="val">4</div>
+                    <div class="lbl">คะแนน &lt;60 (0.05%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Trend & BU Breakdown -->
+        <div class="two-col">
+            <div class="section">
+                <h2><span class="icon">📅</span> แนวโน้มรายเดือน 2026</h2>
+                <div class="chart-box">
+                    <div class="bar-chart" id="monthlyChart"></div>
+                    <div class="chart-legend">
+                        <span><span class="legend-dot" style="background:#1a73e8;opacity:0.3"></span>ทั้งหมด</span>
+                        <span><span class="legend-dot" style="background:#28a745"></span>เข้าอบรม</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h2><span class="icon">🏢</span> สรุปตาม BU (หน่วยงาน)</h2>
+                <div class="bu-grid">
+                    <div class="bu-card" style="border-left-color: #28a745;">
+                        <h4>PMSG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">5,400</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#28a745">4,940</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#28a745">91.5%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #28a745;">
+                        <h4>AAMG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">1,978</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#28a745">1,729</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#28a745">87.4%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #ffc107;">
+                        <h4>CPDG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">733</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">607</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">82.8%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #ffc107;">
+                        <h4>RPLCG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">404</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">336</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">83.2%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #ffc107;">
+                        <h4>RAFCOG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">268</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">218</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">81.3%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #ffc107;">
+                        <h4>PKG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">222</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">184</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#f57f17">82.9%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #999;">
+                        <h4>#N/A</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">58</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#666">56</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#666">96.6%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                    <div class="bu-card" style="border-left-color: #999;">
+                        <h4>PGHG</h4>
+                        <div class="bu-stats">
+                            <div class="bu-stat"><div class="val">18</div><div class="lbl">ทั้งหมด</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#666">16</div><div class="lbl">เข้าอบรม</div></div>
+                            <div class="bu-stat"><div class="val" style="color:#666">88.9%</div><div class="lbl">อัตราเข้า</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Summary Table -->
+        <div class="section">
+            <h2><span class="icon">📚</span> สรุปผลตามหลักสูตร (Top 30)</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px" class="text-center">ลำดับ</th>
+                            <th>รหัส</th>
+                            <th>ชื่อหลักสูตร</th>
+                            <th class="text-center" style="width:70px">ทั้งหมด</th>
+                            <th class="text-center" style="width:70px">เข้าอบรม</th>
+                            <th style="width:140px">อัตราเข้า</th>
+                            <th class="text-center" style="width:70px">ผ่าน</th>
+                            <th class="text-center" style="width:70px">อัตราผ่าน</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Not Started Courses -->
+        <div class="section">
+            <h2><span class="icon">⏳</span> หลักสูตรที่ยังไม่เริ่ม / ยังไม่มีสมาชิกเข้าอบรม</h2>
+            <div class="warning-box">
+                <h4>⚠️ มี 7 หลักสูตรที่ยังไม่เริ่มดำเนินการ</h4>
+                <table>
+                    <thead>
+                        <tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th class="text-center">จำนวนที่ลงทะเบียน</th><th>สถานะ</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>23010786</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 พฤษภาคม 26</td><td class="text-center">225</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010787</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 พฤษภาคม 26</td><td class="text-center">134</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010765</code></td><td>ความรู้เรื่อง ISUZU และระบบเสียงลูกค้าภายนอก PMSG</td><td class="text-center">99</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010785</code></td><td>Automate web/application Test ด้วย Agent AI</td><td class="text-center">19</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010764</code></td><td>หลักสูตรการบริหารแผนงาน/โครงการ สำหรับผู้รับใช้ทีม</td><td class="text-center">12</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010784</code></td><td>แผนธุรกิจPKG_2026</td><td class="text-center">8</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                        <tr><td><code>23010761</code></td><td>ระบบประเมินเครดิต ประจำปี 2026</td><td class="text-center">1</td><td><span class="badge badge-red">ยังไม่เริ่ม</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Not Attended Members -->
+        <div class="section">
+            <h2><span class="icon">⚠️</span> สมาชิกที่ยังไม่เข้าอบรม (Top 20 - หลักสูตรค้างมากที่สุด)</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>รหัสสมาชิก</th><th>ชื่อ-นามสกุล</th><th>BU</th><th>หลักสูตรที่ยังไม่เข้า</th><th class="text-center">จำนวนค้าง</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>6604216</td><td>สลักจิตร บัวแก้ว</td><td>AAMG</td><td>การบริหารองค์กร ด้วย BP LL, การทดสอบ/ตรวจสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">3</span></td></tr>
+                        <tr><td>9601009</td><td>โกมล ไชยประสูตร</td><td>PMSG</td><td>การบริหารองค์กร ด้วย BP LL, Speech Analytics, Alignment PMSG, การทดสอบ Internet, ความรู้เกี่ยวกับรถยนต์, แผนธุรกิจPKG_2026, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">7</span></td></tr>
+                        <tr><td>9916014</td><td>อัจฉรา คชพันธุ์</td><td>PMSG</td><td>การทดสอบ Internet, ความรู้เกี่ยวกับรถยนต์, แผนธุรกิจPKG_2026, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">5</span></td></tr>
+                        <tr><td>5604030</td><td>คณิศร ฉัยยา</td><td>CPDG</td><td>Speech Analytics, หลักสูตรบริหารแผนงาน, การทดสอบ Internet, แผนธุรกิจPKG_2026, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">6</span></td></tr>
+                        <tr><td>3305002</td><td>นพรัตน์ คงรอด</td><td>PMSG</td><td>หลักสูตรบริหารแผนงาน, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เกี่ยวกับรถยนต์, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">5</span></td></tr>
+                        <tr><td>5512141</td><td>พัชรินทร์ ไชยราช</td><td>PMSG</td><td>หลักสูตรบริหารแผนงาน, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เกี่ยวกับรถยนต์, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">5</span></td></tr>
+                        <tr><td>5405057</td><td>ณัฐธยาน์ ภูมี</td><td>PMSG</td><td>ความรู้เรื่อง ISUZU (2x), การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6006083</td><td>ณัฐฑริณี คำนึง</td><td>CPDG</td><td>การทดสอบ Internet, ระบบประเมินเครดิต 2026, ความรู้เทคโนโลยี พ.ค. 26, ทดสอบระบบจ่าย MSP 2026 (3x)</td><td class="text-center"><span class="badge badge-red">7</span></td></tr>
+                        <tr><td>5411167</td><td>พีรพัฒน์ สารศักดิ์</td><td>PMSG</td><td>Speech Analytics, การทดสอบ Internet, แผนธุรกิจPKG_2026, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>5606065</td><td>สุดฤทัย วานิชล</td><td>PMSG</td><td>หลักสูตรบริหารแผนงาน, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เกี่ยวกับรถยนต์, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">5</span></td></tr>
+                        <tr><td>6806033</td><td>ธีรภัทร งามกิจ</td><td>PMSG</td><td>Alignment PMSG, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6806034</td><td>ประพันธ์ วิชัยกตัญญูกุล</td><td>PMSG</td><td>Alignment PMSG, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6807035</td><td>ธิติมา พุ่มพวง</td><td>PMSG</td><td>Alignment PMSG, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6807036</td><td>อรอมล ชุมพล</td><td>PMSG</td><td>Alignment PMSG, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6608242</td><td>ขวัญฤทัย โชคเจริญวงศ์</td><td>PMSG</td><td>ความรู้เทคโนโลยี ม.ค. 26, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6609246</td><td>สุโกมล บุญญนรังษี</td><td>PMSG</td><td>ความรู้เทคโนโลยี ม.ค. 26, ความรู้เรื่อง ISUZU, การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>5706109</td><td>อรรถชัย ทินภูมิ์</td><td>CPDG</td><td>การทดสอบ Internet, ทดสอบระบบจ่าย MSP, แผนธุรกิจPKG_2026, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>5702018</td><td>ไชยา เงื้อมผา</td><td>CPDG</td><td>AI วิเคราะห์เสียง, การทดสอบ Internet, Automate web/application Test, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6503020</td><td>สุวัฒน์ สวยงาม</td><td>CPDG</td><td>AI ช่วยสร้างหน้าเว็บ, การทดสอบ Internet, Automate web/application Test, ความรู้เทคโนโลยี พ.ค. 26</td><td class="text-center"><span class="badge badge-red">4</span></td></tr>
+                        <tr><td>6810050</td><td>วันชนะ เจริญทรัพย์</td><td>CPDG</td><td>การทดสอบ Internet, ความรู้เทคโนโลยี พ.ค. 26, ทดสอบระบบจ่าย MSP 2026</td><td class="text-center"><span class="badge badge-red">3</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p><strong>📊 PKG Training Dashboard 2026</strong></p>
+        <p>ข้อมูลจาก Google Sheets Training Records</p>
+        <p style="margin-top: 15px;">
+            <span class="highlight-badge">📅 อัปเดต: 14 พฤษภาคม 2026</span>
+            <span class="highlight-badge">👥 สมาชิก 494 คน</span>
+            <span class="highlight-badge">📚 74 หลักสูตร</span>
+            <span class="highlight-badge">🏢 8 BU</span>
+        </p>
+    </div>
+</div>
+
+<script>
+// Monthly Chart
+const monthlyData = [
+    { key: 'ม.ค.', total: 1110, attended: 1090 },
+    { key: 'ก.พ.', total: 2188, attended: 2188 },
+    { key: 'มี.ค.', total: 2692, attended: 2622 },
+    { key: 'เม.ย.', total: 2206, attended: 2162 },
+    { key: 'พ.ค.', total: 816, attended: 1 },
+    { key: 'มิ.ย.', total: 46, attended: 0 },
+    { key: 'ก.ค.', total: 23, attended: 23 }
+];
+
+const monthlyChart = document.getElementById('monthlyChart');
+const maxTotal = Math.max(...monthlyData.map(d => d.total));
+
+monthlyData.forEach(d => {
+    const totalHeight = (d.total / maxTotal) * 200;
+    const attendHeight = (d.attended / maxTotal) * 200;
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    col.innerHTML = `
+        <div class="bar-value">${d.total.toLocaleString()}</div>
+        <div style="display:flex;gap:3px;align-items:flex-end;height:200px;">
+            <div class="bar" style="height:${totalHeight}px;background:#1a73e8;opacity:0.3;width:22px;" title="ทั้งหมด: ${d.total}"></div>
+            <div class="bar" style="height:${attendHeight}px;background:#28a745;width:22px;" title="เข้าอบรม: ${d.attended}"></div>
+        </div>
+        <div class="bar-label">${d.key}</div>
+    `;
+    monthlyChart.appendChild(col);
+});
+
+// Course Table
+const courses = [
+    {"code":"23010436","name":"Alignment PMSG","total":244,"attended":200,"passed":200},
+    {"code":"23010754","name":"5 เทคนิค ที่คนทำคอนเทนต์ใน TikTok ต้องรู้!","total":236,"attended":236,"passed":236},
+    {"code":"23010753","name":"Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว","total":236,"attended":236,"passed":236},
+    {"code":"23010735","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม1 กุมภาพันธ์ 26","total":235,"attended":235,"passed":235},
+    {"code":"23010738","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มีนาคม 26","total":233,"attended":233,"passed":233},
+    {"code":"23010762","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม1 เมษายน 26","total":226,"attended":226,"passed":226},
+    {"code":"23010713","name":"สร้างคอนเทนต์ให้คนหยุดดูด้วยเทคนิค ปาด ชง ตบ","total":219,"attended":219,"passed":219},
+    {"code":"23010726","name":"รถบรรทุกอีซูซุคิงออฟทรัคส์รุ่น NLR","total":218,"attended":218,"passed":218},
+    {"code":"23010727","name":"เริ่มต้นขายผ่าน Facebook","total":218,"attended":218,"passed":218},
+    {"code":"23010728","name":"Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว","total":218,"attended":218,"passed":218},
+    {"code":"23010731","name":"ข้อมูลผลิตภัณฑ์อีซูซุ ดีแมคซ์ เอมเอชอีวี","total":218,"attended":218,"passed":218},
+    {"code":"23010732","name":"แนะนำผลิตภัณฑ์อีซูซุรุ่นใหม่และข้อมูลเปรียบเทียบ","total":218,"attended":218,"passed":218},
+    {"code":"23010755","name":"5 คาถากันเฟซบุ๊กเพจโดนปิด","total":213,"attended":213,"passed":213},
+    {"code":"23010756","name":"การใช้งานฝาท้าย Smart Tailgate ด้วยระบบ Step Sensor","total":213,"attended":213,"passed":213},
+    {"code":"23010757","name":"หลักสูตรการใช้งานระบบความบันเทิง Isuzu Ultimate Entertainment","total":213,"attended":213,"passed":213},
+    {"code":"23010774","name":"ความรู้ผลิตภัณฑ์อีซูซุประเภทรถปิกอัพและรถยนต์นั่งอเนกประสงค์","total":212,"attended":212,"passed":212},
+    {"code":"23010775","name":"ความรู้เบื้องต้นเกี่ยวกับผลิตภัณฑ์อีซูซุ","total":212,"attended":212,"passed":212},
+    {"code":"23010737","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม2 มีนาคม 26","total":132,"attended":132,"passed":132},
+    {"code":"23010736","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม2 กุมภาพันธ์ 26","total":130,"attended":130,"passed":130},
+    {"code":"23010705","name":"ความรู้เทคโนโลยีจากบทความ กลุ่ม2 มกราคม 26","total":113,"attended":113,"passed":113},
+    {"code":"23010703","name":"การบริหารองค์กร ด้วย BP LL","total":111,"attended":94,"passed":94},
+    {"code":"23010766","name":"ความรู้เบื้องต้องการขับเคลื่อนผลงานด้วย OKR และ KPI","total":100,"attended":100,"passed":100},
+    {"code":"23010781","name":"หลักสูตร นิยามเกรด และวงเงินพิเศษ","total":97,"attended":97,"passed":97},
+    {"code":"23010707","name":"เปลี่ยน Data เป็นความใส่ใจ: ยกระดับ Social Commerce ให้รู้ใจด้วย AI","total":93,"attended":93,"passed":93},
+    {"code":"23010730","name":"การดึงพิกัดบ้านลูกค้า","total":93,"attended":93,"passed":93},
+    {"code":"23010719","name":"แผนงานโครงการทหารรับจ้างOutsource","total":80,"attended":80,"passed":80},
+    {"code":"23010720","name":"แสวงหานายหน้า(พาซื้อหลักทรัพย์แพมโค้)","total":80,"attended":80,"passed":80},
+    {"code":"23010708","name":"ประเมินและพัฒนาคุณภาพการให้บริการและการขายด้วย AI","total":79,"attended":79,"passed":79},
+    {"code":"23010752","name":"หลักสูตร การสั่งซื้ออุปกรณ์สำนักงาน","total":74,"attended":74,"passed":74},
+    {"code":"23010768","name":"LIA 2.0","total":72,"attended":72,"passed":72}
+];
+
+const tbody = document.getElementById('courseTable');
+courses.forEach((c, i) => {
+    const attendRate = ((c.attended / c.total) * 100).toFixed(1);
+    const passRate = c.attended > 0 ? ((c.passed / c.attended) * 100).toFixed(1) : '0.0';
+    const barColor = attendRate >= 90 ? 'progress-green' : attendRate >= 70 ? 'progress-blue' : 'progress-orange';
+    const badgeClass = attendRate >= 90 ? 'badge-green' : attendRate >= 70 ? 'badge-blue' : 'badge-orange';
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td class="text-center">${i + 1}</td>
+        <td><code>${c.code}</code></td>
+        <td>${c.name}</td>
+        <td class="text-center">${c.total}</td>
+        <td class="text-center">${c.attended}</td>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="progress-bar" style="flex:1;"><div class="progress-fill ${barColor}" style="width:${attendRate}%"></div></div>
+                <span class="badge ${badgeClass}">${attendRate}%</span>
+            </div>
+        </td>
+        <td class="text-center">${c.passed}</td>
+        <td class="text-center"><span class="badge badge-green">${passRate}%</span></td>
+    `;
+    tbody.appendChild(tr);
+});
+</script>
+
+</body>
+</html>

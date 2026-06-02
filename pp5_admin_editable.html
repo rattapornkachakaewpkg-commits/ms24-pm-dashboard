@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PP5 - Admin Pad (แก้ไขข้อมูลได้)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f1f5f9;min-height:100vh}
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:linear-gradient(180deg,#0f172a,#1e293b);color:#fff;position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-header{padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo{display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:1em}
+.sidebar-logo .text{font-size:0.95em;font-weight:800}
+.sidebar-logo .sub{font-size:0.65em;color:#94a3b8;margin-top:2px}
+.sidebar-nav{flex:1;padding:12px 0}
+.nav-group{margin-bottom:8px}
+.nav-group-title{font-size:0.6em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748b;padding:8px 20px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:0.82em;font-weight:500;color:#cbd5e1;cursor:pointer;transition:0.15s}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:#fff}
+.nav-item.active{background:rgba(59,130,246,0.15);color:#60a5fa;border-right:3px solid #3b82f6}
+.nav-item .ni-icon{width:20px;text-align:center}
+.nav-item .ni-badge{margin-left:auto;background:#ef4444;color:#fff;padding:2px 7px;border-radius:8px;font-size:0.7em;font-weight:700}
+.sidebar-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px}
+.sidebar-footer .sf-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:700}
+.sidebar-footer .sf-info{flex:1}
+.sidebar-footer .sf-name{font-size:0.82em;font-weight:600}
+.sidebar-footer .sf-role{font-size:0.65em;color:#94a3b8}
+.main{flex:1;margin-left:260px}
+.topbar{background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar h1{font-size:1em;font-weight:700;color:#0f172a}
+.topbar .breadcrumb{font-size:0.72em;color:#94a3b8;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.search-box{display:flex;align-items:center;background:#f1f5f9;border-radius:10px;padding:8px 12px;gap:8px;min-width:240px}
+.search-box input{border:none;background:transparent;outline:none;font-size:0.82em;color:#0f172a;width:100%;font-family:inherit}
+.topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1em;position:relative}
+.topbar-btn:hover{background:#f8fafc}
+.topbar-btn .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+.content{padding:24px}
+.card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:16px}
+.card-header{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:0.9em;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center}
+.stat-card .sc-value{font-size:1.5em;font-weight:800;color:#0f172a}
+.stat-card .sc-label{font-size:0.72em;color:#64748b;margin-top:2px}
+.badge{display:inline-flex;padding:3px 8px;border-radius:6px;font-size:0.7em;font-weight:600}
+.badge.success{background:#dcfce7;color:#166534}
+.badge.warning{background:#fef3c7;color:#92400e}
+.badge.danger{background:#fee2e2;color:#991b1b}
+.badge.info{background:#dbeafe;color:#1e40af}
+.badge.purple{background:#ede9fe;color:#6b21a8}
+table{width:100%;border-collapse:collapse;font-size:0.8em}
+th{background:#f8fafc;padding:10px 12px;text-align:left;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0}
+td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+tr:hover td{background:#f8fafc}
+.rationale{background:#f0f9ff;border-left:4px solid #2563eb;padding:16px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+.rationale strong{display:block;font-size:0.82em;color:#0369a1;margin-bottom:4px}
+.rationale p{font-size:0.82em;color:#0c4a6e}
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:0.82em;font-weight:600;transition:0.15s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-secondary{background:#fff;border:1px solid #e2e8f0;color:#475569}
+.btn-secondary:hover{background:#f8fafc}
+.btn-success{background:#10b981;color:#fff}
+.btn-success:hover{background:#059669}
+.btn-danger{background:#ef4444;color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-sm{padding:4px 10px;font-size:0.75em}
+
+/* EDIT FORM */
+.edit-form{background:#f8fafc;border-radius:12px;padding:20px;border:1px solid #e2e8f0;margin-top:16px;display:none}
+.edit-form.active{display:block}
+.edit-form h4{font-size:0.9em;font-weight:700;color:#0f172a;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:0.75em;font-weight:600;color:#475569}
+.form-group input,.form-group select,.form-group textarea{padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;font-family:inherit;outline:none;transition:0.15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+.form-group textarea{resize:vertical;min-height:60px}
+.form-actions{display:flex;gap:8px;margin-top:16px}
+.tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:0.68em;font-weight:600}
+.tag-org{background:#dbeafe;color:#1e40af}
+.tag-human{background:#fef3c7;color:#92400e}
+.tag-it{background:#d1fae5;color:#065f46}
+
+/* EDITABLE ROW */
+.editable-row{background:#fffbeb;border-left:3px solid #f59e0b}
+.edit-input{padding:4px 8px;border:1px solid #2563eb;border-radius:4px;font-size:0.82em;font-family:inherit;width:100%;outline:none}
+.edit-input:focus{box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+
+/* MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:16px;width:90%;max-width:600px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,0.2)}
+.modal-header{padding:20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1em;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:8px;border:none;background:#f1f5f9;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:#e2e8f0}
+.modal-body{padding:20px}
+.modal-footer{padding:16px 20px;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:8px}
+
+@media(max-width:1024px){.sidebar{width:0;overflow:hidden}.main{margin-left:0}.stats-row{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.stats-row,.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="sidebar">
+<div class="sidebar-header"><div class="sidebar-logo"><div class="icon">PP5</div><div><div class="text">PKG AI School</div><div class="sub">Admin Pad Portal</div></div></div></div>
+<div class="sidebar-nav">
+<div class="nav-group"><div class="nav-group-title">เมนูหลัก</div>
+<div class="nav-item active" onclick="showPage('overview',this)"><span class="ni-icon">📊</span>ภาพรวม Dashboard</div>
+<div class="nav-item" onclick="showPage('members',this)"><span class="ni-icon">👥</span>จัดการสมาชิก<span class="ni-badge">แก้ไขได้</span></div>
+<div class="nav-item" onclick="showPage('courses',this)"><span class="ni-icon">📚</span>จัดการหลักสูตร<span class="ni-badge">แก้ไขได้</span></div>
+<div class="nav-item" onclick="showPage('approvals',this)"><span class="ni-icon">✅</span>อนุมัติงาน<span class="ni-badge" style="background:#f59e0b">3</span></div>
+</div>
+<div class="nav-group"><div class="nav-group-title">พัฒนา</div>
+<div class="nav-item" onclick="showPage('journey',this)"><span class="ni-icon">🔄</span>วงจรการเรียนรู้</div>
+<div class="nav-item" onclick="showPage('ai-roleplay',this)"><span class="ni-icon">🤖</span>AI ตรวจ Role Play</div>
+</div>
+<div class="nav-group"><div class="nav-group-title">วิเคราะห์</div>
+<div class="nav-item" onclick="showPage('reports',this)"><span class="ni-icon">📈</span>รายงาน & Analytics</div>
+<div class="nav-item" onclick="showPage('capital',this)"><span class="ni-icon">💰</span>จัดการ 3 ทุน</div>
+</div>
+<div class="nav-group"><div class="nav-group-title">ระบบ</div>
+<div class="nav-item" onclick="showPage('settings',this)"><span class="ni-icon">⚙️</span>ตั้งค่าระบบ<span class="ni-badge">แก้ไขได้</span></div>
+<div class="nav-item" onclick="showPage('backup',this)"><span class="ni-icon">💾</span>Backup & Restore</div>
+</div>
+</div>
+<div class="sidebar-footer"><div class="sf-avatar">L</div><div class="sf-info"><div class="sf-name">lookmee</div><div class="sf-role">ADMIN PAD</div></div></div>
+</div>
+
+<div class="main">
+<div class="topbar">
+<div><h1 id="pageTitle">📊 ภาพรวม Dashboard</h1><div class="breadcrumb" id="breadcrumb">Admin Pad -> หน้าแรก</div></div>
+<div class="topbar-right">
+<div class="search-box"><span>🔍</span><input placeholder="ค้นหาสมาชิก, หลักสูตร..."></div>
+<div class="topbar-btn">🔔<span class="dot"></span></div>
+</div>
+</div>
+<div class="content">
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="page active" id="pageOverview">
+<div class="rationale"><strong>Admin Pad ต้องแก้ไขข้อมูลได้ทุกจุด</strong><p>ทุกเมนูมีปุ่ม "แก้ไข" - คลิกแล้วเปิดฟอร์มแก้ไขทันที ไม่ต้องเข้าหน้าใหม่</p></div>
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value">492</div><div class="sc-label">สมาชิกทั้งหมด</div></div>
+<div class="stat-card"><div class="sc-value">78.3%</div><div class="sc-label">ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="sc-value">105</div><div class="sc-label">หลักสูตร</div></div>
+<div class="stat-card"><div class="sc-value">3</div><div class="sc-label">งานค้างอนุมัติ</div></div>
+</div>
+<div class="card"><div class="card-header"><h3>✅ งานค้างอนุมัติ (แก้ไข/อนุมัติได้ทันที)</h3></div>
+<div class="card-body">
+<table><thead><tr><th>รายการ</th><th>ผู้ขอ</th><th>วันที่</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>สมัคร "ภาวะผู้นำยุคใหม่"</td><td>นาย โกมล</td><td>22 พ.ค.</td><td><span class="badge warning">รออนุมัติ</span></td><td><button class="btn btn-success btn-sm" onclick="openModal('approve')">อนุมัติ</button> <button class="btn btn-secondary btn-sm">แก้ไข</button></td></tr>
+<tr><td>ส่งงาน Role Play</td><td>น.ส. สมหญิง</td><td>21 พ.ค.</td><td><span class="badge purple">รอ AI ตรวจ</span></td><td><button class="btn btn-primary btn-sm">AI ตรวจ</button> <button class="btn btn-secondary btn-sm">แก้ไข</button></td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+<!-- ==================== MEMBERS (แก้ไขได้) ==================== -->
+<div class="page" id="pageMembers">
+<div class="rationale"><strong>แก้ไขข้อมูลสมาชิกได้ทันที</strong><p>คลิก "แก้ไข" -> เปิดฟอร์มแก้ไขในหน้าเดิม (Inline Edit) -> แก้ไข -> บันทึก -> เห็นผลทันที ไม่ต้องโหลดหน้าใหม่</p></div>
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+<button class="btn btn-primary" onclick="openModal('addMember')">เพิ่มสมาชิกใหม่</button>
+<button class="btn btn-secondary">Import Excel</button>
+<button class="btn btn-secondary">Export PDF</button>
+</div>
+<div class="card"><div class="card-header"><h3>👥 รายชื่อสมาชิก (คลิกแก้ไขได้)</h3></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>ID</th><th>ชื่อ-สกุล</th><th>BU</th><th>ทีม</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>123456</td><td>นาย โกมล ไชยประสูตร</td><td>PMSG</td><td>ตรวจสอบธุรกิจ</td><td>28/44</td><td>3.80</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td>
+<button class="btn btn-primary btn-sm" onclick="openModal('editMember')">แก้ไข</button>
+<button class="btn btn-secondary btn-sm">ดูรายละเอียด</button>
+</td></tr>
+<tr><td>5604030</td><td>คณิศร ฉัยยา</td><td>CPDG</td><td>บริการลูกค้า</td><td>22/44</td><td>3.92</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td>
+<button class="btn btn-primary btn-sm" onclick="openModal('editMember')">แก้ไข</button>
+<button class="btn btn-secondary btn-sm">ดูรายละเอียด</button>
+</td></tr>
+<tr><td>6006083</td><td>ณัฐฑริณี คำนึง</td><td>CPDG</td><td>ADM</td><td>20/44</td><td>3.60</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td>
+<button class="btn btn-primary btn-sm" onclick="openModal('editMember')">แก้ไข</button>
+<button class="btn btn-secondary btn-sm">ดูรายละเอียด</button>
+</td></tr>
+<tr class="editable-row"><td>9600001</td><td><input class="edit-input" value="โกมล ไชยประสูตร"></td><td><select class="edit-input"><option selected>PMSG</option><option>CPDG</option><option>AAMG</option></select></td><td><input class="edit-input" value="ตรวจสอบธุรกิจ"></td><td>44/44</td><td>3.80</td><td><span class="badge success">ผ่านแล้ว</span></td><td>
+<button class="btn btn-success btn-sm">บันทึก</button>
+<button class="btn btn-secondary btn-sm">ยกเลิก</button>
+</td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+<!-- ==================== COURSES (แก้ไขได้) ==================== -->
+<div class="page" id="pageCourses">
+<div class="rationale"><strong>แก้ไขหลักสูตรได้ทันที</strong><p>แก้ไขชื่อ, ทุน, วิทยากร, วันที่, สถานะ - คลิกแก้ไข -> เปิดฟอร์ม -> บันทึก -> อัปเดตทันที</p></div>
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+<button class="btn btn-primary" onclick="openModal('addCourse')">เพิ่มหลักสูตรใหม่</button>
+<button class="btn btn-secondary">กรองตามทุน</button>
+</div>
+<div class="card"><div class="card-header"><h3>📚 หลักสูตรทั้งหมด (แก้ไขได้)</h3></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th>ทุน</th><th>วิทยากร</th><th>วันที่</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td><span class="badge info">องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="badge success">เสร็จสิ้น</span></td><td>
+<button class="btn btn-primary btn-sm" onclick="openModal('editCourse')">แก้ไข</button>
+</td></tr>
+<tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">23010710</code></td><td>cost down pkg</td><td><span class="badge info">องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="badge success">เสร็จสิ้น</span></td><td>
+<button class="btn btn-primary btn-sm" onclick="openModal('editCourse')">แก้ไข</button>
+</td></tr>
+<tr class="editable-row"><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">NEW-AI-01</code></td><td><input class="edit-input" value="การใช้ AI เพื่อการตัดสินใจ"></td><td><select class="edit-input"><option>องค์กร</option><option>มนุษย์</option><option selected>สารสนเทศ</option></select></td><td><input class="edit-input" value="AI Expert"></td><td><input class="edit-input" type="date" value="2026-10-05"></td><td><select class="edit-input"><option>รอดำเนินการ</option><option selected>เปิดรับสมัคร</option><option>เสร็จสิ้น</option></select></td><td>
+<button class="btn btn-success btn-sm">บันทึก</button>
+<button class="btn btn-secondary btn-sm">ยกเลิก</button>
+</td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+<!-- ==================== APPROVALS ==================== -->
+<div class="page" id="pageApprovals">
+<div class="rationale"><strong>อนุมัติ/แก้ไขงานได้ทันที</strong><p>เห็นงานค้าง -> กดอนุมัติ/ปฏิเสธ ได้ในหน้าเดียว -> หรือแก้ไขรายละเอียดก่อนอนุมัติ</p></div>
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value" style="color:#d97706">3</div><div class="sc-label">รออนุมัติ</div></div>
+<div class="stat-card"><div class="sc-value" style="color:#10b981">12</div><div class="sc-label">อนุมัติแล้ว (สัปดาห์นี้)</div></div>
+<div class="stat-card"><div class="sc-value" style="color:#ef4444">1</div><div class="sc-label">ปฏิเสธ (สัปดาห์นี้)</div></div>
+<div class="stat-card"><div class="sc-value">2.3 นาที</div><div class="sc-label">เวลาอนุมัติเฉลี่ย</div></div>
+</div>
+<div class="card"><div class="card-header"><h3>✅ รายการรออนุมัติ (แก้ไขได้ก่อนอนุมัติ)</h3></div>
+<div class="card-body">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0">
+<div style="width:44px;height:44px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.2em">📋</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</div><div style="font-size:0.8em;color:#64748b;margin-top:2px">รออนุมัติ | 22 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px">
+<button class="btn btn-success btn-sm" onclick="openModal('approve')">อนุมัติ</button>
+<button class="btn btn-secondary btn-sm" onclick="openModal('editApproval')">แก้ไข</button>
+<button class="btn btn-danger btn-sm">ปฏิเสธ</button>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0">
+<div style="width:44px;height:44px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:1.2em">📤</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">น.ส. สมหญิง ส่งงาน Role Play</div><div style="font-size:0.8em;color:#64748b;margin-top:2px">รอ AI ตรวจ | 21 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px">
+<button class="btn btn-primary btn-sm">AI ตรวจ</button>
+<button class="btn btn-secondary btn-sm" onclick="openModal('editApproval')">แก้ไข</button>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- ==================== JOURNEY ==================== -->
+<div class="page" id="pageJourney">
+<div class="rationale"><strong>แก้ไข/จัดการวงจรการเรียนรู้ได้</strong><p>เพิ่ม/ลบ/แก้ไขก้าวการพัฒนา, กำหนดหลักสูตรแต่ละก้าว, ปรับเกณฑ์ผ่าน</p></div>
+<div style="display:flex;gap:8px;margin-bottom:16px">
+<button class="btn btn-primary" onclick="openModal('addStep')">เพิ่มก้าวใหม่</button>
+<button class="btn btn-secondary">แก้ไขเกณฑ์ผ่าน</button>
+</div>
+<div class="card"><div class="card-header"><h3>🔄 วงจรการเรียนรู้ - 9 ก้าว (แก้ไขได้)</h3></div>
+<div class="card-body">
+<div style="position:relative;padding-left:28px">
+<div style="position:absolute;left:11px;top:0;bottom:0;width:2px;background:#e2e8f0"></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2">✓</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 1: สมาชิกใหม่ (Day 1)</div><div style="font-size:0.75em;color:#64748b">ปฐมนิเทศ, วัฒนธรรม, เปิด Account, IDP</div><div style="margin-top:6px;display:flex;gap:4px"><span class="tag tag-org">องค์กร</span><span class="tag tag-human">มนุษย์</span><span class="tag tag-it">สารสนเทศ</span></div><div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="openModal('editStep')">แก้ไข</button></div></div></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#3b82f6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2;box-shadow:0 0 0 4px #dbeafe">4</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:2px solid #3b82f6"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 4: ทำงานจริง (เดือนที่ 3-6) ← กำลังอยู่</div><div style="font-size:0.75em;color:#64748b">ปฏิบัติงานจริง, เก็บชั่วโมง, สะสมหน่วยกิต</div><div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="openModal('editStep')">แก้ไข</button></div></div></div>
+</div>
+</div></div>
+</div>
+
+<!-- ==================== AI ROLEPLAY ==================== -->
+<div class="page" id="pageAiRoleplay">
+<div class="rationale"><strong>แก้ไข Rubric / เกณฑ์ AI ตรวจได้</strong><p>ADMIN กำหนด Rubric การให้คะแนน, เกณฑ์ผ่าน, Feedback Template - แก้ไขได้ตลอดเวลา</p></div>
+<div style="display:flex;gap:8px;margin-bottom:16px">
+<button class="btn btn-primary" onclick="openModal('editRubric')">แก้ไข Rubric</button>
+<button class="btn btn-secondary">ดูประวัติการตรวจ</button>
+</div>
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value">24</div><div class="sc-label">รอ AI ตรวจ</div></div>
+<div class="stat-card"><div class="sc-value">156</div><div class="sc-label">ตรวจแล้ว (เดือนนี้)</div></div>
+<div class="stat-card"><div class="sc-value">30 วิ</div><div class="sc-label">เวลาตรวจเฉลี่ย</div></div>
+<div class="stat-card"><div class="sc-value">80%</div><div class="sc-label">ลดภาระงานครู</div></div>
+</div>
+</div>
+
+<!-- ==================== REPORTS ==================== -->
+<div class="page" id="pageReports">
+<div class="rationale"><strong>สร้างรายงาน + Export ได้</strong><p>เลือกช่วงเวลา, กรองตาม BU/ทุน, Export PDF/Excel ได้ทันที</p></div>
+<div class="card"><div class="card-header"><h3>📈 สร้างรายงาน</h3></div>
+<div class="card-body">
+<div class="form-grid">
+<div class="form-group"><label>ประเภทรายงาน</label><select><option>ภาพรวมองค์กร</option><option>Progress รายบุคคล</option><option>แยก 3 ทุน</option><option>AI Role Play</option></select></div>
+<div class="form-group"><label>ช่วงเวลา</label><input type="month" value="2026-05"></div>
+<div class="form-group"><label>BU</label><select><option>ทั้งหมด</option><option>PMSG</option><option>CPDG</option><option>AAMG</option></select></div>
+<div class="form-group"><label>รูปแบบ Export</label><select><option>PDF</option><option>Excel</option><option>CSV</option></select></div>
+</div>
+<div class="form-actions"><button class="btn btn-primary">สร้างรายงาน</button><button class="btn btn-secondary">ดูตัวอย่าง</button></div>
+</div></div>
+</div>
+
+<!-- ==================== CAPITAL ==================== -->
+<div class="page" id="pageCapital">
+<div class="rationale"><strong>แก้ไข/จัดการ 3 ทุนได้</strong><p>เพิ่ม/แก้ไขหลักสูตรแต่ละทุน, กำหนดเกณฑ์, ดูความคืบหน้าแยกทุน</p></div>
+<div class="card"><div class="card-header"><h3>💰 จัดการ 3 ทุน (แก้ไขได้)</h3><button class="btn btn-primary btn-sm" onclick="openModal('editCapital')">แก้ไขเกณฑ์</button></div>
+<div class="card-body">
+<table><thead><tr><th>ทุน</th><th>หลักสูตร</th><th>ชม.อบรม</th><th>ผ่านเกณฑ์</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td><span class="badge info">🏢 ทุนองค์กร</span></td><td>38</td><td>3,200</td><td>89.0%</td><td><button class="btn btn-primary btn-sm" onclick="openModal('editCapital')">แก้ไข</button></td></tr>
+<tr><td><span class="badge" style="background:#fef3c7;color:#92400e">👤 ทุนมนุษย์</span></td><td>35</td><td>2,800</td><td>76.5%</td><td><button class="btn btn-primary btn-sm" onclick="openModal('editCapital')">แก้ไข</button></td></tr>
+<tr><td><span class="badge" style="background:#d1fae5;color:#065f46">💻 ทุนสารสนเทศ</span></td><td>32</td><td>2,023</td><td>82.1%</td><td><button class="btn btn-primary btn-sm" onclick="openModal('editCapital')">แก้ไข</button></td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+<!-- ==================== SETTINGS (แก้ไขได้) ==================== -->
+<div class="page" id="pageSettings">
+<div class="rationale"><strong>ตั้งค่าระบบ - แก้ไขได้ทุกจุด</strong><p>เกณฑ์ GPA, หน่วยกิต, ผ่านที่, สิทธิ์ผู้ใช้, BU/ทีม, การแจ้งเตือน - แก้ไขได้ทันที</p></div>
+<div class="card"><div class="card-header"><h3>⚙️ ตั้งค่าระบบ (แก้ไขได้)</h3></div>
+<div class="card-body">
+<div class="form-grid">
+<div class="form-group"><label>GPA ขั้นต่ำ</label><input type="number" step="0.01" value="3.50"></div>
+<div class="form-group"><label>หน่วยกิตเป้าหมาย</label><input type="number" value="44"></div>
+<div class="form-group"><label>ผ่านที่ (ระดับ)</label><select><option>ผ่านที่ 1</option><option>ผ่านที่ 2</option><option selected>ผ่านที่ 3</option></select></div>
+<div class="form-group"><label>ชั่วโมงอบรมเป้าหมาย</label><input type="number" value="40"></div>
+</div>
+<div class="form-actions"><button class="btn btn-success">บันทึกการเปลี่ยนแปลง</button><button class="btn btn-secondary">ยกเลิก</button></div>
+</div></div>
+
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>🔐 จัดการสิทธิ์ผู้ใช้</h3><button class="btn btn-primary btn-sm" onclick="openModal('addUser')">เพิ่มผู้ใช้</button></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>ชื่อ</th><th>Role</th><th>BU</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>lookmee</td><td><span class="badge info">ADMIN PAD</span></td><td>ทั้งหมด</td><td><span class="badge success">เปิดใช้งาน</span></td><td><button class="btn btn-primary btn-sm" onclick="openModal('editUser')">แก้ไข</button></td></tr>
+<tr><td>admin_hr</td><td><span class="badge purple">HR</span></td><td>ทั้งหมด</td><td><span class="badge success">เปิดใช้งาน</span></td><td><button class="btn btn-primary btn-sm" onclick="openModal('editUser')">แก้ไข</button></td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+<!-- ==================== BACKUP ==================== -->
+<div class="page" id="pageBackup">
+<div class="rationale"><strong>Backup/Restore ข้อมูลระบบ</strong><p>Backup อัตโนมัติทุกวัน, Restore เลือกวันที่ได้, ดูประวัติทั้งหมด</p></div>
+<div class="card"><div class="card-header"><h3>💾 Backup & Restore</h3></div>
+<div class="card-body">
+<div style="display:flex;gap:8px;margin-bottom:16px">
+<button class="btn btn-primary" onclick="openModal('backup')">Backup ตอนนี้</button>
+<button class="btn btn-secondary" onclick="openModal('restore')">Restore จาก Backup</button>
+</div>
+<table><thead><tr><th>วันที่</th><th>ประเภท</th><th>ขนาด</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>26 พ.ค. 69 02:00</td><td>อัตโนมัติ</td><td>45 MB</td><td><span class="badge success">สำเร็จ</span></td><td><button class="btn btn-secondary btn-sm">ดาวน์โหลด</button></td></tr>
+<tr><td>25 พ.ค. 69 02:00</td><td>อัตโนมัติ</td><td>44 MB</td><td><span class="badge success">สำเร็จ</span></td><td><button class="btn btn-secondary btn-sm">ดาวน์โหลด</button></td></tr>
+</tbody></table>
+</div></div>
+</div>
+
+</div></div></div>
+
+<!-- ==================== MODALS ==================== -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+<div class="modal-header"><h3 id="modalTitle">แก้ไขข้อมูล</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+<div class="modal-body" id="modalBody"></div>
+<div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">ยกเลิก</button><button class="btn btn-primary" id="modalSaveBtn" onclick="saveModal()">บันทึก</button></div>
+</div>
+</div>
+
+<script>
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var pages = { 'overview':'pageOverview', 'members':'pageMembers', 'courses':'pageCourses', 'approvals':'pageApprovals', 'journey':'pageJourney', 'ai-roleplay':'pageAiRoleplay', 'reports':'pageReports', 'capital':'pageCapital', 'settings':'pageSettings', 'backup':'pageBackup' };
+  var titles = { 'overview':['📊 ภาพรวม Dashboard','Admin Pad -> หน้าแรก'], 'members':['👥 จัดการสมาชิก (แก้ไขได้)','Admin Pad -> สมาชิก'], 'courses':['📚 จัดการหลักสูตร (แก้ไขได้)','Admin Pad -> หลักสูตร'], 'approvals':['✅ อนุมัติงาน (แก้ไขได้)','Admin Pad -> อนุมัติ'], 'journey':['🔄 วงจรการเรียนรู้ (แก้ไขได้)','Admin Pad -> Journey'], 'ai-roleplay':['🤖 AI ตรวจ Role Play (แก้ไขได้)','Admin Pad -> AI'], 'reports':['📈 รายงาน & Analytics','Admin Pad -> รายงาน'], 'capital':['💰 จัดการ 3 ทุน (แก้ไขได้)','Admin Pad -> ทุน'], 'settings':['⚙️ ตั้งค่าระบบ (แก้ไขได้)','Admin Pad -> ตั้งค่า'], 'backup':['💾 Backup & Restore','Admin Pad -> Backup'] };
+  var target = document.getElementById(pages[page]);
+  if (target) target.classList.add('active');
+  if (el) el.classList.add('active');
+  if (titles[page]) { document.getElementById('pageTitle').textContent = titles[page][0]; document.getElementById('breadcrumb').textContent = titles[page][1]; }
+}
+
+function openModal(type) {
+  var overlay = document.getElementById('modalOverlay');
+  var title = document.getElementById('modalTitle');
+  var body = document.getElementById('modalBody');
+  var content = '';
+  if (type === 'editMember') {
+    title.textContent = 'แก้ไขข้อมูลสมาชิก';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อ-สกุล</label><input value="นาย โกมล ไชยประสูตร"></div><div class="form-group"><label>BU</label><select><option selected>PMSG</option><option>CPDG</option><option>AAMG</option></select></div><div class="form-group"><label>ทีม</label><input value="ทีมตรวจสอบธุรกิจ"></div><div class="form-group"><label>อีเมล</label><input type="email" value="gomol@pkg.co.th"></div><div class="form-group"><label>สถานะ</label><select><option selected>ใช้งาน</option><option>ระงับ</option></select></div><div class="form-group"><label>หมายเหตุ</label><textarea>แก้ไขข้อมูลส่วนตัว</textarea></div></div>';
+  } else if (type === 'addMember') {
+    title.textContent = 'เพิ่มสมาชิกใหม่';
+    content = '<div class="form-grid"><div class="form-group"><label>ID</label><input placeholder="เช่น 123456"></div><div class="form-group"><label>ชื่อ-สกุล</label><input placeholder="เช่น นาย สมชาย ใจดี"></div><div class="form-group"><label>BU</label><select><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>PKG</option><option>PGHG</option></select></div><div class="form-group"><label>ทีม</label><input placeholder="เช่น ทีมตรวจสอบธุรกิจ"></div><div class="form-group"><label>อีเมล</label><input type="email" placeholder="email@pkg.co.th"></div><div class="form-group"><label>โทรศัพท์</label><input placeholder="08x-xxx-xxxx"></div></div>';
+  } else if (type === 'editCourse') {
+    title.textContent = 'แก้ไขหลักสูตร';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อหลักสูตร</label><input value="การใช้ AI เพื่อการตัดสินใจ"></div><div class="form-group"><label>ทุน</label><select><option>องค์กร</option><option>มนุษย์</option><option selected>สารสนเทศ</option></select></div><div class="form-group"><label>วิทยากร</label><input value="AI Expert"></div><div class="form-group"><label>วันที่</label><input type="date" value="2026-10-05"></div><div class="form-group"><label>หน่วยกิต</label><input type="number" value="4"></div><div class="form-group"><label>ชั่วโมง</label><input type="number" value="6"></div><div class="form-group"><label>สถานะ</label><select><option>รอดำเนินการ</option><option selected>เปิดรับสมัคร</option><option>เสร็จสิ้น</option><option>ยกเลิก</option></select></div><div class="form-group"><label>จำนวนที่รับ</label><input type="number" value="50"></div></div><div class="form-group" style="margin-top:12px"><label>รายละเอียด</label><textarea>หลักสูตรนี้สอนการใช้ AI เพื่อการตัดสินใจในองค์กร ครอบคลุมทั้ง Machine Learning, Data Analysis, และ Automation</textarea></div>';
+  } else if (type === 'addCourse') {
+    title.textContent = 'เพิ่มหลักสูตรใหม่';
+    content = '<div class="form-grid"><div class="form-group"><label>รหัสหลักสูตร</label><input placeholder="เช่น NEW-001"></div><div class="form-group"><label>ชื่อหลักสูตร</label><input placeholder="เช่น การใช้ AI เพื่อการตลาด"></div><div class="form-group"><label>ทุน</label><select><option>องค์กร</option><option>มนุษย์</option><option>สารสนเทศ</option></select></div><div class="form-group"><label>วิทยากร</label><input placeholder="เช่น คุณสมชาย"></div><div class="form-group"><label>วันที่เริ่ม</label><input type="date"></div><div class="form-group"><label>หน่วยกิต</label><input type="number" placeholder="เช่น 4"></div><div class="form-group"><label>ชั่วโมง</label><input type="number" placeholder="เช่น 6"></div><div class="form-group"><label>จำนวนที่รับ</label><input type="number" placeholder="เช่น 50"></div></div>';
+  } else if (type === 'approve') {
+    title.textContent = 'อนุมัติ: สมัครอบรม "ภาวะผู้นำยุคใหม่"';
+    content = '<div style="padding:16px;background:#f0fdf4;border-radius:10px;margin-bottom:16px"><div style="font-size:0.85em;font-weight:600;color:#166534">รายละเอียด</div><div style="font-size:0.82em;color:#0c4a6e;margin-top:8px">ผู้ขอ: นาย โกมล ไชยประสูตร (PMSG)<br>หลักสูตร: ภาวะผู้นำยุคใหม่<br>วันที่: 20 มิ.ย. 69<br>หน่วยกิต: 4 | ชั่วโมง: 6</div></div><div class="form-group"><label>หมายเหตุ (ถ้ามี)</label><textarea placeholder="เพิ่มหมายเหตุก่อนอนุมัติ..."></textarea></div>';
+  } else if (type === 'editApproval') {
+    title.textContent = 'แก้ไขรายการอนุมัติ';
+    content = '<div class="form-grid"><div class="form-group"><label>ผู้ขอ</label><input value="นาย โกมล ไชยประสูตร"></div><div class="form-group"><label>หลักสูตร</label><input value="ภาวะผู้นำยุคใหม่"></div><div class="form-group"><label>วันที่</label><input type="date" value="2026-06-20"></div><div class="form-group"><label>สถานะ</label><select><option selected>รออนุมัติ</option><option>อนุมัติแล้ว</option><option>ปฏิเสธ</option></select></div></div><div class="form-group" style="margin-top:12px"><label>หมายเหตุ</label><textarea>แก้ไขวันที่อบรม</textarea></div>';
+  } else if (type === 'editStep') {
+    title.textContent = 'แก้ไขก้าวการพัฒนา';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อก้าว</label><input value="ก้าวที่ 1: สมาชิกใหม่ (Day 1)"></div><div class="form-group"><label>ช่วงเวลา</label><input value="Day 1"></div><div class="form-group"><label>ทุนที่เกี่ยวข้อง</label><select multiple style="height:80px"><option selected>องค์กร</option><option selected>มนุษย์</option><option selected>สารสนเทศ</option></select></div><div class="form-group"><label>เกณฑ์ผ่าน</label><textarea>เข้าอบรมปฐมนิเทศ, เปิด Account ระบบ, กำหนด IDP</textarea></div></div>';
+  } else if (type === 'addStep') {
+    title.textContent = 'เพิ่มก้าวการพัฒนาใหม่';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อก้าว</label><input placeholder="เช่น ก้าวที่ 10: นวัตกรรม"></div><div class="form-group"><label>ช่วงเวลา</label><input placeholder="เช่น ปีที่ 3"></div><div class="form-group"><label>ทุนที่เกี่ยวข้อง</label><select multiple style="height:80px"><option>องค์กร</option><option>มนุษย์</option><option>สารสนเทศ</option></select></div><div class="form-group"><label>เกณฑ์ผ่าน</label><textarea placeholder="กำหนดเกณฑ์ผ่าน..."></textarea></div></div>';
+  } else if (type === 'editRubric') {
+    title.textContent = 'แก้ไข Rubric AI ตรวจ Role Play';
+    content = '<div class="form-grid"><div class="form-group"><label>Communication (คะแนนเต็ม)</label><input type="number" value="30"></div><div class="form-group"><label>Content (คะแนนเต็ม)</label><input type="number" value="40"></div><div class="form-group"><label>Body Language (คะแนนเต็ม)</label><input type="number" value="30"></div><div class="form-group"><label>เกณฑ์ผ่าน (คะแนนรวม)</label><input type="number" value="70"></div></div>';
+  } else if (type === 'editCapital') {
+    title.textContent = 'แก้ไขเกณฑ์ 3 ทุน';
+    content = '<div style="padding:12px;background:#eff6ff;border-radius:8px;margin-bottom:12px"><strong style="color:#1e40af;font-size:0.85em">ทุนองค์กร</strong><div class="form-grid" style="margin-top:8px"><div class="form-group"><label>หน่วยกิตขั้นต่ำ</label><input type="number" value="15"></div><div class="form-group"><label>ชั่วโมงขั้นต่ำ</label><input type="number" value="20"></div></div></div><div style="padding:12px;background:#fffbeb;border-radius:8px;margin-bottom:12px"><strong style="color:#92400e;font-size:0.85em">ทุนมนุษย์</strong><div class="form-grid" style="margin-top:8px"><div class="form-group"><label>หน่วยกิตขั้นต่ำ</label><input type="number" value="15"></div><div class="form-group"><label>ชั่วโมงขั้นต่ำ</label><input type="number" value="20"></div></div></div><div style="padding:12px;background:#d1fae5;border-radius:8px"><strong style="color:#065f46;font-size:0.85em">ทุนสารสนเทศ</strong><div class="form-grid" style="margin-top:8px"><div class="form-group"><label>หน่วยกิตขั้นต่ำ</label><input type="number" value="14"></div><div class="form-group"><label>ชั่วโมงขั้นต่ำ</label><input type="number" value="18"></div></div></div>';
+  } else if (type === 'editUser') {
+    title.textContent = 'แก้ไขผู้ใช้';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อ</label><input value="lookmee"></div><div class="form-group"><label>Role</label><select><option selected>ADMIN PAD</option><option>HR</option><option>BMC</option></select></div><div class="form-group"><label>BU</label><select><option selected>ทั้งหมด</option><option>PMSG</option><option>CPDG</option></select></div><div class="form-group"><label>สถานะ</label><select><option selected>เปิดใช้งาน</option><option>ระงับ</option></select></div></div>';
+  } else if (type === 'addUser') {
+    title.textContent = 'เพิ่มผู้ใช้ใหม่';
+    content = '<div class="form-grid"><div class="form-group"><label>ชื่อผู้ใช้</label><input placeholder="เช่น admin_new"></div><div class="form-group"><label>อีเมล</label><input type="email" placeholder="email@pkg.co.th"></div><div class="form-group"><label>Role</label><select><option>ADMIN PAD</option><option>HR</option><option>BMC</option></select></div><div class="form-group"><label>BU</label><select><option>ทั้งหมด</option><option>PMSG</option><option>CPDG</option></select></div></div>';
+  } else if (type === 'backup') {
+    title.textContent = 'Backup ข้อมูลตอนนี้';
+    content = '<div style="padding:16px;background:#f0f9ff;border-radius:10px;text-align:center"><div style="font-size:2em;margin-bottom:8px">💾</div><div style="font-size:0.9em;font-weight:600">Backup ข้อมูลทั้งหมด</div><div style="font-size:0.8em;color:#64748b;margin-top:4px">สมาชิก, หลักสูตร, ผลอบรม, การตั้งค่า</div><div style="font-size:0.75em;color:#94a3b8;margin-top:8px">ขนาดประมาณ: 45 MB</div></div>';
+  } else if (type === 'restore') {
+    title.textContent = 'Restore จาก Backup';
+    content = '<div class="form-group"><label>เลือกวันที่ Backup</label><select><option>26 พ.ค. 69 02:00 (45 MB)</option><option>25 พ.ค. 69 02:00 (44 MB)</option><option>24 พ.ค. 69 02:00 (44 MB)</option></select></div><div style="padding:12px;background:#fef2f2;border-radius:8px;margin-top:12px"><div style="font-size:0.8em;color:#991b1b">⚠️ คำเตือน: การ Restore จะแทนที่ข้อมูลปัจจุบันทั้งหมด</div></div>';
+  }
+  body.innerHTML = content;
+  overlay.classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+function saveModal() {
+  closeModal();
+  alert('บันทึกเรียบร้อยแล้ว! ✅');
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>

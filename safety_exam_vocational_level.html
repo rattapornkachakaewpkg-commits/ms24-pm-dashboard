@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Exam - จป. ระดับอาชีวะ</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Sarabun','Segoe UI',Tahoma,sans-serif;background:#f5f5f5;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:10px;}
+        .quiz-container{max-width:650px;width:100%;background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden;}
+        .header{background:linear-gradient(135deg,#e65100 0%,#f57c00 100%);color:white;padding:16px;}
+        .header h1{font-size:16px;margin-bottom:4px;}
+        .header .subtitle{font-size:12px;opacity:0.9;}
+        .progress-bar{background:#e8e8e8;height:8px;border-radius:4px;margin:12px 0 6px;overflow:hidden;}
+        .progress-fill{height:100%;background:#ffb74d;border-radius:4px;transition:width 0.3s;}
+        .progress-info{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.9);}
+        .score-display{display:flex;gap:10px;}
+        .score-item{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:10px;font-size:11px;}
+        .score-correct,.score-wrong{background:rgba(255,255,255,0.2);color:#fff;}
+        .question-area{padding:20px 16px;}
+        .category-tag{display:inline-block;background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:10px;font-size:11px;margin-bottom:10px;}
+        .question-number{font-size:13px;color:#666;margin-bottom:6px;}
+        .question-text{font-size:17px;color:#333;line-height:1.6;margin-bottom:20px;font-weight:500;}
+        .options{display:flex;flex-direction:column;gap:10px;}
+        .option-btn{display:flex;align-items:center;gap:10px;padding:14px;background:#f8f9fa;border:2px solid #e8e8e8;border-radius:10px;cursor:pointer;transition:all 0.2s;width:100%;font-size:15px;text-align:left;}
+        .option-btn:hover:not(.disabled){background:#fff3e0;border-color:#e65100;}
+        .option-btn.correct{background:#e8f5e9;border-color:#4caf50;}
+        .option-btn.wrong{background:#ffebee;border-color:#f44336;}
+        .option-btn.disabled{cursor:default;opacity:0.7;}
+        .option-label{width:28px;height:28px;border-radius:50%;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;}
+        .option-btn.correct .option-label{background:#4caf50;color:white;}
+        .option-btn.wrong .option-label{background:#f44336;color:white;}
+        .explanation{display:none;margin-top:16px;padding:14px;background:#f8f9fa;border-radius:10px;border-left:4px solid #e65100;}
+        .explanation.show{display:block;}
+        .explanation h4{color:#e65100;margin-bottom:6px;font-size:13px;}
+        .explanation p{color:#555;line-height:1.6;font-size:13px;}
+        .next-btn{display:none;width:100%;padding:14px;background:linear-gradient(135deg,#e65100 0%,#f57c00 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;}
+        .next-btn.show{display:block;}
+        .results{display:none;padding:24px 16px;text-align:center;}
+        .results.show{display:block;}
+        .results .score-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#e65100 0%,#f57c00 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:white;}
+        .results .score-circle .score-num{font-size:30px;font-weight:700;}
+        .results .score-circle .score-total{font-size:12px;opacity:0.9;}
+        .results h2{font-size:20px;color:#333;margin-bottom:6px;}
+        .results .grade{font-size:14px;color:#666;margin-bottom:20px;}
+        .results .summary{text-align:left;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:16px;max-height:400px;overflow-y:auto;}
+        .results .summary h3{font-size:13px;color:#333;margin-bottom:10px;}
+        .result-item{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;color:#555;}
+        .restart-btn{width:100%;padding:14px;background:linear-gradient(135deg,#e65100 0%,#f57c00 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;}
+        @media(max-width:480px){.question-text{font-size:15px;}.option-btn{padding:10px;font-size:14px;}}
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>🔧 Mock Exam - จป. ระดับอาชีวะ</h1>
+            <div class="subtitle">ตามคู่มือการปฏิบัติงานเจ้าหน้าที่ความปลอดภัยในการทำงาน ระดับเทคนิค/อาชีวะ</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            <div class="progress-info">
+                <span id="qNum">1 / 30</span>
+                <div class="score-display">
+                    <span class="score-item score-wrong">✗ <span id="wrongCount">0</span></span>
+                    <span class="score-item score-correct">✓ <span id="correctCount">0</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="question-area" id="questionArea">
+            <span class="category-tag" id="categoryTag"></span>
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="explanation" id="explanation"><h4>💡 คำอธิบาย</h4><p id="explanationText"></p></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">ถัดไป →</button>
+        </div>
+        <div class="results" id="resultsArea">
+            <div class="score-circle"><span class="score-num" id="finalScore">0</span><span class="score-total">/ 30</span></div>
+            <h2 id="resultTitle">เสร็จสิ้น!</h2>
+            <div class="grade" id="resultGrade"></div>
+            <div class="summary"><h3>📝 สรุปคำตอบ</h3><div id="summaryList"></div></div>
+            <button class="restart-btn" onclick="restartQuiz()">🔄 ทำข้อสอบใหม่</button>
+        </div>
+    </div>
+    <script>
+const questions = [
+{category:"หน้าที่ จป.",question:"จป.ระดับอาชีวะ มีหน้าที่หลักในการทำอะไร?",options:["กำหนดนโยบาย","ปฏิบัติงานด้านความปลอดภัยประจำวัน ตรวจหน้างาน และให้คำแนะนำลูกจ้าง","บริหารงบประมาณ","จ้างพนักงาน"],answer:1,explain:"จป.ระดับอาชีวะ ปฏิบัติงานด้านความปลอดภัยประจำวัน ตรวจหน้างาน และให้คำแนะนำลูกจ้าง"},
+{category:"หน้าที่ จป.",question:"จป.ระดับอาชีวะ ต้องรายงานผลต่อใคร?",options:["ลูกค้า","จป.ระดับวิชาชีพ หรือ จป.ระดับบริหาร","สื่อ","ประชาชน"],answer:1,explain:"จป.ระดับอาชีวะ ต้องรายงานผลต่อ จป.ระดับวิชาชีพ หรือ จป.ระดับบริหาร"},
+{category:"หน้าที่ จป.",question:"จป.ระดับอาชีวะ ต้องตรวจความปลอดภัยกี่ครั้ง?",options:["ไม่ตรวจ","ตรวจทุกวัน ตามแผนงานที่ จป.ระดับวิชาชีพกำหนด","ทุก 5 ปี","ทุก 10 ปี"],answer:1,explain:"จป.ระดับอาชีวะ ตรวจความปลอดภัยทุกวัน ตามแผนงานที่ จป.ระดับวิชาชีพกำหนด"},
+{category:"PPE",question:"หมวกนิรภัย (Safety Helmet) ต้องสวมเมื่อใด?",options:["เฉพาะวันจันทร์","เมื่อเข้าไปในพื้นที่ก่อสร้างหรือพื้นที่ที่มีวัตถุหล่นใส่ศีรษะ","เมื่ออยู่บ้าน","เมื่อไปเที่ยว"],answer:1,explain:"ต้องสวมหมวกนิรภัยเมื่อเข้าไปในพื้นที่ก่อสร้างหรือพื้นที่ที่มีวัตถุหล่นใส่ศีรษะ"},
+{category:"PPE",question:"รองเท้าเซฟตี้ (Safety Shoe) มีคุณสมบัติอย่างไร?",options:["สวยงาม","หัวเหล็ก ป้องกันเท้ากระแทก วัตถุหล่นใส่ พื้นกันลื่น","ราคาถูก","สีสวย"],answer:1,explain:"รองเท้าเซฟตี้มีหัวเหล็ก ป้องกันเท้ากระแทก วัตถุหล่นใส่ และพื้นกันลื่น"},
+{category:"PPE",question:"แว่นตานิรภัย (Safety Goggles) ใช้ป้องกันอะไร?",options:["แสงแดด","เศษวัตถุ ฝุ่นละออง สารเคมีกระเด็นเข้าตา","ความงาม","ลม"],answer:1,explain:"แว่นตานิรภัยป้องกัน เศษวัตถุ ฝุ่นละออง สารเคมีกระเด็นเข้าตา"},
+{category:"PPE",question:"ถุงมือกันสารเคมี ต้องเลือกอย่างไร?",options:["ถุงมือผ้าทั่วไป","ถุงมือที่เหมาะสมกับสารเคมีแต่ละชนิด ตาม SDS","ถุงมือหนัง","ถุงมือยางทั่วไป"],answer:1,explain:"ต้องเลือกถุงมือที่เหมาะสมกับสารเคมีแต่ละชนิด ตามข้อมูลใน SDS"},
+{category:"PPE",question:"หน้ากากกรองอากาศ (Respirator) ใช้เมื่อใด?",options:["ทุกกรณี","เมื่อต้องทำงานในพื้นที่ที่มีฝุ่น ไอระเหย หรือสารเคมี","เมื่อออกกำลังกาย","เมื่ออยู่บ้าน"],answer:1,explain:"ใช้เมื่อต้องทำงานในพื้นที่ที่มีฝุ่น ไอระเหย หรือสารเคมี"},
+{category:"PPE",question:"ที่อุดหู (Ear Plugs) ใช้ลดเสียงได้ประมาณกี่ dB?",options:["0 dB","15-30 dB","100 dB","200 dB"],answer:1,explain:"ที่อุดหูสามารถลดเสียงได้ประมาณ 15-30 dB ขึ้นอยู่กับชนิดและการใช้งานที่ถูกต้อง"},
+{category:"PPE",question:"อุปกรณ์คุ้มครองความปลอดภัยส่วนบุคคล (PPE) ใครต้องจ่าย?",options:["ลูกจ้างซื้อเอง","นายจ้างจัดให้ฟรี","รัฐบาลจ่าย","ไม่ต้องใช้"],answer:1,explain:"นายจ้างต้องจัด PPE ให้ลูกจ้างใช้ฟรี ตาม พ.ร.บ.ความปลอดภัยฯ"},
+{category:"PPE",question:"ถ้าลูกจ้างไม่ยอมสวม PPE นายจ้างทำได้หรือไม่?",options:["ไม่ได้","นายจ้างมีสิทธิ์สั่งให้ลูกจ้างสวม PPE และห้ามทำงานถ้าไม่สวม","ให้ลูกจ้างเลือกเอง","ไม่สนใจ"],answer:1,explain:"นายจ้างมีสิทธิ์สั่งให้ลูกจ้างสวม PPE และห้ามทำงานถ้าไม่สวม เพื่อความปลอดภัย"},
+{category:"การตรวจหน้างาน",question:"สิ่งแรกที่ จป.ระดับอาชีวะ ต้องทำเมื่อเริ่มงานประจำวันคือ?",options:["กินข้าว","ตรวจสภาพเครื่องจักร อุปกรณ์ PPE และสภาพแวดล้อมก่อนเริ่มงาน","เล่นมือถือ","นอน"],answer:1,explain:"ต้องตรวจสภาพเครื่องจักร อุปกรณ์ PPE และสภาพแวดล้อมก่อนเริ่มงาน"},
+{category:"การตรวจหน้างาน",question:"Unsafe Act ตัวอย่างใดถูกต้อง?",options:["พื้นลื่น","ไม่สวมหมวกนิรภัยในพื้นที่ก่อสร้าง","ไฟเสีย","เสียงดัง"],answer:1,explain:"ไม่สวมหมวกนิรภัย = Unsafe Act (การกระทำที่ไม่ปลอดภัย) พื้นลื่น ไฟเสีย = Unsafe Condition"},
+{category:"การตรวจหน้างาน",question:"Unsafe Condition ตัวอย่างใดถูกต้อง?",options:["ไม่สวมแว่นตานิรภัย","พื้นลื่นมีน้ำมันหก","สูบบุหรี่ในพื้นที่ห้ามสูบ","วิ่งในโรงงาน"],answer:1,explain:"พื้นลื่นมีน้ำมันหก = Unsafe Condition (สภาพที่ไม่ปลอดภัย) การไม่สวมแว่นตา = Unsafe Act"},
+{category:"การตรวจหน้างาน",question:"เมื่อพบ Unsafe Act จป.ระดับอาชีวะ ต้องทำอะไร?",options:["ปล่อยผ่าน","ตักเตือน แนะนำ และรายงานหัวหน้างาน","ถ่ายภาพเผยแพร่","ไล่ออกทันที"],answer:1,explain:"ต้องตักเตือน แนะนำลูกจ้าง และรายงานหัวหน้างาน"},
+{category:"การตรวจหน้างาน",question:"เมื่อพบ Unsafe Condition จป.ระดับอาชีวะ ต้องทำอะไร?",options:["เพิกเฉย","รายงานหัวหน้างาน และติดตามการแก้ไข","โทษคน","แจ้งตำรวจ"],answer:1,explain:"ต้องรายงานหัวหน้างาน และติดตามการแก้ไขให้แล้วเสร็จ"},
+{category:"กฎหมาย",question:"จป.ระดับอาชีวะ ต้องผ่านการอบรมจากไหน?",options:["ไม่ต้องอบรม","หน่วยงานที่กรมสวัสดิการและคุ้มครองแรงงานรับรอง","มหาวิทยาลัย","โรงเรียน"},answer:1,explain:"จป.ระดับอาชีวะ ต้องผ่านการอบรมจากหน่วยงานที่กรมสวัสดิการและคุ้มครองแรงงานรับรอง"},
+{category:"กฎหมาย",question:"ลูกจ้างต้องเข้ารับการตรวจสุขภาพเมื่อใด?",options:["ไม่เคยตรวจ","ก่อนเข้าทำงาน และตรวจเป็นระยะตามที่กำหนด","เฉพาะเมื่อป่วย","ทุกสัปดาห์"],answer:1,explain:"ลูกจ้างต้องเข้ารับการตรวจสุขภาพก่อนเข้าทำงาน และตรวจเป็นระยะตามที่กำหนด"},
+{category:"กฎหมาย",question:"ป้ายเตือนอันตราย ต้องมีลักษณะอย่างไร?",options:["เล็กมาก","เด่นชัด อ่านง่าย ติดในตำแหน่งที่มองเห็นชัดเจน","ไม่ต้องติด","ติดซ่อนไว้"],answer:1,explain:"ป้ายเตือนอันตรายต้องเด่นชัด อ่านง่าย และติดในตำแหน่งที่มองเห็นชัดเจน"},
+{category:"กฎหมาย",question:"ทางหนีไฟ ต้องเป็นอย่างไร?",options:["เก็บของไว้","ไม่มีสิ่งกีดขวาง มีป้ายชี้ทางชัดเจน เปิดได้ตลอดเวลา","ล็อคไว้","มืด"],answer:1,explain:"ทางหนีไฟต้องไม่มีสิ่งกีดขวาง มีป้ายชี้ทางชัดเจน และเปิดได้ตลอดเวลา"},
+{category:"กฎหมาย",question:"ถังดับเพลิง ต้องตรวจสอบกี่ครั้ง?",options:["ไม่ตรวจ","อย่างน้อยทุกเดือน","ทุก 5 ปี","ทุก 10 ปี"],answer:1,explain:"ถังดับเพลิงต้องตรวจสอบอย่างน้อยทุกเดือน เพื่อให้พร้อมใช้งาน"},
+{category:"สารเคมี",question:"เมื่อสารเคมีหกรั่วไหล จป.ระดับอาชีวะ ต้องทำอะไรก่อน?",options:["ล้างด้วยน้ำ","อพยพคนออกจากพื้นที่ แจ้งหัวหน้างาน และสวม PPE ที่เหมาะสม","ใช้มือเก็บ","ซ่อนไว้"],answer:1,explain:"ต้องอพยพคนออกจากพื้นที่ แจ้งหัวหน้างาน และสวม PPE ที่เหมาะสมก่อนจัดการ"},
+{category:"สารเคมี",question:"SDS คืออะไร?",options:["Safety Data Sheet - เอกสารข้อมูลความปลอดภัยสารเคมี","Student Development System","Standard Design Specification","System Data Security"],answer:0,explain:"SDS = Safety Data Sheet เอกสารข้อมูลความปลอดภัยสารเคมี มี 16 หมวด"},
+{category:"สารเคมี",question:"สารไวไฟ ต้องเก็บห่างจากแหล่งความร้อนอย่างน้อยกี่เมตร?",options:["0 เมตร","อย่างน้อย 3-5 เมตร","100 เมตร","1 กิโลเมตร"],answer:1,explain:"สารไวไฟต้องเก็บห่างจากแหล่งความร้อนอย่างน้อย 3-5 เมตร"},
+{category:"ไฟฟ้า",question:"ก่อนซ่อมบำรุงเครื่องจักร ต้องทำอะไร?",options:["ซ่อมเลย","Lockout/Tagout (LOTO) ตัดพลังงาน ล็อค และติดป้ายเตือน","บอกเพื่อน","ปิดไฟ"],answer:1,explain:"ต้องทำ Lockout/Tagout (LOTO) ตัดพลังงาน ล็อค และติดป้ายเตือนก่อนซ่อมบำรุง"},
+{category:"ไฟฟ้า",question:"LOTO ย่อมาจากอะไร?",options:["Lockout/Tagout","Long Out Time","Loss Of Time Operation","Level Of Technical Operation"],answer:0,explain:"LOTO = Lockout/Tagout การตัดพลังงาน ล็อค และติดป้ายเตือนก่อนซ่อมบำรุง"},
+{category:"ไฟฟ้า",question:"สายไฟที่ชำรุด ต้องทำอย่างไร?",options:["ใช้ต่อไป","หยุดใช้งาน แจ้งหัวหน้างาน และเปลี่ยนสายใหม่","พันเทปแล้วใช้ต่อ","ซ่อนไว้"],answer:1,explain:"ต้องหยุดใช้งาน แจ้งหัวหน้างาน และเปลี่ยนสายใหม่ ห้ามใช้สายไฟที่ชำรุด"},
+{category:"อุบัติเหตุ",question:"เมื่อเกิดอุบัติเหตุ ต้องแจ้งใครเป็นอันดับแรก?",options:["สื่อ","หัวหน้างาน และ จป.","Facebook","YouTube"],answer:1,explain:"ต้องแจ้งหัวหน้างาน และ จป. เป็นอันดับแรก เพื่อช่วยเหลือและสอบสวน"},
+{category:"การปฐมพยาบาล",question:"กล่องปฐมพยาบาล ต้องอยู่ที่ไหน?",options:["ซ่อนไว้","ตำแหน่งที่เข้าถึงง่าย เห็นชัดเจน มีรายการยาครบ","ในบ้าน จป.","ในรถ"],answer:1,explain:"กล่องปฐมพยาบาลต้องอยู่ที่ตำแหน่งที่เข้าถึงง่าย เห็นชัดเจน และมีรายการยาครบ"},
+{category:"การปฐมพยาบาล",question:"ถ้าลูกจ้างถูกไฟฟ้าดูด ต้องทำอย่างไร?",options:["ดึงมือด้วยมือเปล่า","ตัดไฟก่อน แล้วใช้วัสดุที่ไม่เป็นตัวนำดึงผู้ประสบภัย","ราดน้ำ","วิ่งหนี"],answer:1,explain:"ต้องตัดไฟก่อน แล้วใช้วัสดุที่ไม่เป็นตัวนำ เช่น ไม้แห้ง ดึงผู้ประสบภัย ห้ามใช้มือเปล่า"}
+];
+let currentQ = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let userAnswers = [];
+
+function loadQuestion() {
+    answered = false;
+    const q = questions[currentQ];
+    document.getElementById('categoryTag').textContent = q.category;
+    document.getElementById('questionNumber').textContent = `ข้อที่ ${currentQ + 1}/30`;
+    document.getElementById('questionText').textContent = q.question;
+    document.getElementById('qNum').textContent = `${currentQ + 1} / 30`;
+    document.getElementById('progressFill').style.width = `${(currentQ / 30) * 100}%`;
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => selectAnswer(i);
+        container.appendChild(btn);
+    });
+    document.getElementById('explanation').classList.remove('show');
+    document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectAnswer(index) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach((btn, i) => {
+        btn.classList.add('disabled');
+        if (i === q.answer) btn.classList.add('correct');
+        else if (i === index && i !== q.answer) btn.classList.add('wrong');
+    });
+    if (index === q.answer) { correct++; document.getElementById('correctCount').textContent = correct; }
+    else { wrong++; document.getElementById('wrongCount').textContent = wrong; }
+    userAnswers.push({question: q.question, user: index, correct: q.answer, isCorrect: index === q.answer, category: q.category});
+    document.getElementById('explanationText').textContent = q.explain;
+    document.getElementById('explanation').classList.add('show');
+    document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) loadQuestion();
+    else showResults();
+}
+
+function showResults() {
+    document.getElementById('questionArea').style.display = 'none';
+    document.getElementById('resultsArea').classList.add('show');
+    document.getElementById('finalScore').textContent = correct;
+    const percent = (correct / 30) * 100;
+    let grade = '';
+    if (percent >= 80) grade = '🌟 ดีมาก! ผ่านเกณฑ์พร้อมปฏิบัติงาน!';
+    else if (percent >= 60) grade = '👍 ดี! แต่ควรทบทวนเพิ่มเติม';
+    else if (percent >= 40) grade = '📚 พอใช้! ต้องทบทวนอย่างจริงจัง';
+    else grade = '💪 ต้องศึกษาเพิ่ม! สู้ๆ!';
+    document.getElementById('resultGrade').textContent = `${percent.toFixed(0)}% — ${grade}`;
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    let summary = '';
+    userAnswers.forEach((a, i) => {
+        const icon = a.isCorrect ? '✅' : '❌';
+        summary += `<div class="result-item"><span class="icon">${icon}</span> ข้อ ${i+1} (${a.category}): ตอบ ${labels[a.user]} / เฉลย ${labels[a.correct]}</div>`;
+    });
+    document.getElementById('summaryList').innerHTML = summary;
+}
+
+function restartQuiz() {
+    currentQ = 0; correct = 0; wrong = 0; userAnswers = [];
+    document.getElementById('correctCount').textContent = '0';
+    document.getElementById('wrongCount').textContent = '0';
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultsArea').classList.remove('show');
+    loadQuestion();
+}
+
+loadQuestion();
+    </script>
+</body>
+</html>

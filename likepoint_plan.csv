@@ -1,0 +1,17 @@
+﻿Priority,หมวดหมู่,Task,รายละเอียด,ผู้รับผิดชอบ,กำหนดเสร็จ,สถานะ,KPI Target
+🔴 P0,Security,BUpoint Authen (Task #25),สร้างระบบ Auth แยกเป็นอิสระ + 2FA + Session Management + Token Rotation,โอม,Q1/2026,⏳ ยังไม่เริ่ม,Auth Fail Rate < 1%
+🔴 P0,Security,Fraud Detection (Task #24),Algorithm เช็ค Transaction ผิดปกติ + Anomaly Detection + ระงับการ Cash-out,WahWah,Q1/2026,⏳ ยังไม่เริ่ม,Fraud Rate < 0.1%
+🔴 P0,Security,Cash-out Risk Controls,Daily Limit + Cool-down Period + Multi-signature Approval,WahWah,Q1/2026,⏳ ยังไม่เริ่ม,ผลเสียหายจาก Cash-out = 0 บาท
+🟠 P1,Metrics,Product Metrics Dashboard,"สร้าง Dashboard วัด DAU, MAU, Retention, NPS, LTV, CAC + User Journey Funnel",PM + Dev,Q1/2026,⏳ ยังไม่เริ่ม,MAU +20%/เดือน
+🟠 P1,UX,UX Re-design,ลด Step 3 clicks > 1 click + Progressive Disclosure + Onboarding Flow ใหม่,ขิง + โอม,Q1/2026,⏳ ยังไม่เริ่ม,Avg Session > 5 นาที
+🟠 P1,Documentation,API Documentation & Developer Portal,สร้าง Developer Portal + API Doc + SDK + Sandbox สำหรับ BU ทดสอบ,โอม + WahWah,Q1/2026,⏳ ยังไม่เริ่ม,BU Integration Time < 1 สัปดาห์
+🟡 P2,Architecture,Modular Architecture Maturity,API Versioning + Dependency Map + Feature Flag Management,โอม,Q2/2026,⏳ ยังไม่เริ่ม,Deploy พัง Production = 0
+🟡 P2,Architecture,BU Self-Service Portal,Template สำหรับ BU เปิด Feature + Analytics วัด ROI แต่ละ Feature,PM + โอม,Q2/2026,⏳ ยังไม่เริ่ม,BU Onboarding 2 BU/เดือน
+🟡 P2,Infrastructure,Redis Caching + Master-Replica DB,เพิ่ม Caching Layer สำหรับ Leaderboard/Spin State + แยก Read/Write DB,WahWah + โอม,Q2/2026,⏳ ยังไม่เริ่ม,API Response P95 < 500ms
+🟢 P3,Gamification,Gamification 2.0,Achievement System + Streak Rewards + Social Proof + Seasonal Events,ขิง + โอม,Q2/2026,⏳ ยังไม่เริ่ม,Spin/Lotto Rate > 40%
+🟢 P3,Gamification,Loyalty Program - Money Buddy (#26),ระบบ Loyalty สำหรับ Money Buddy,WahWah,Q1/2026,⏳ ยังไม่เริ่ม,Retention +15%
+🟢 P3,Gamification,Tap2Earn Design System (#27),ออกแบบ Tap2Earn ระบบใหม่,โอม,Q1/2026,⏳ ยังไม่เริ่ม,Engagement +20%
+🟢 P3,Revenue,Revenue Model Optimization,Premium Tier + Transaction Fee + Data Insights Package สำหรับ BU,PM,Q2/2026,⏳ ยังไม่เริ่ม,ARPU +15%/ไตรมาส
+🟢 P3,Compliance,Compliance & Regulatory,AML Policy + PDPA/GDPR + Audit Trail ทุก Transaction,PM + โอม,Q2/2026,⏳ ยังไม่เริ่ม,ผ่าน Audit 100%
+🟡 P2,Infrastructure,CI/CD Pipeline,Deploy แต่ละ Module แยกกัน + Staging Environment,WahWah + โอม,Q2/2026,⏳ ยังไม่เริ่ม,Deploy Time < 30 นาที
+🟡 P2,Infrastructure,Cost Monitoring,ติดตามค่าใช้จ่าย Cloud Run + Auto Scale + Alert งบเกิน,WahWah,Q2/2026,⏳ ยังไม่เริ่ม,Uptime > 99.9%

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical PM Learning Path — รู้ครบทุกด้าน สำหรับ Product Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f172a; --blue: #3b82f6; --blue-dark: #2563eb;
+            --green: #16a34a; --green-bg: #f0fdf4;
+            --gold: #f59e0b; --gold-bg: #fffbeb;
+            --purple: #7c3aed; --purple-bg: #f5f3ff;
+            --red: #dc2626; --red-bg: #fef2f2;
+            --cyan: #06b6d4; --cyan-bg: #ecfeff;
+            --orange: #ea580c; --orange-bg: #fff7ed;
+            --pink: #ec4899; --pink-bg: #fdf2f8;
+            --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+            --text: #0f172a; --text-muted: #64748b; --text-light: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.7; font-size: 15px; padding: 0;
+        }
+        .topbar {
+            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
+            color: white; padding: 16px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topbar .brand { font-size: 16px; font-weight: 800; }
+        .topbar .brand span { color: var(--gold); }
+
+        .main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 60px; }
+
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue-dark) 100%);
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px;
+        }
+        .hero h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; margin-bottom: 8px; }
+        .hero .sub { opacity: 0.9; font-size: 15px; max-width: 700px; margin: 0 auto; }
+
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 20px; }
+        .topic-chip {
+            background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px; text-align: center;
+        }
+        .topic-chip .icon { font-size: 24px; margin-bottom: 4px; }
+        .topic-chip .name { font-size: 12px; font-weight: 700; }
+
+        .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .overview-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+        }
+        .overview-card .icon { font-size: 28px; margin-bottom: 6px; }
+        .overview-card .title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+        .overview-card .desc { font-size: 12px; color: var(--text-muted); }
+
+        .phase-section { margin-bottom: 32px; }
+        .phase-header {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .phase-num {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800; color: white; flex-shrink: 0;
+        }
+        .phase-info h2 { font-size: 1.2rem; font-weight: 800; color: var(--navy); }
+        .phase-info p { font-size: 14px; color: var(--text-muted); }
+
+        .topic-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .topic-header {
+            padding: 16px 20px; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.15s;
+        }
+        .topic-header:hover { background: #f8fafc; }
+        .topic-header .left { display: flex; align-items: center; gap: 12px; }
+        .topic-header .icon-box {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .topic-header h3 { font-size: 15px; font-weight: 700; color: var(--navy); }
+        .topic-header .weeks { font-size: 12px; color: var(--text-muted); }
+        .topic-header .arrow { font-size: 16px; color: var(--text-light); transition: transform 0.2s; }
+        .topic-card.active .arrow { transform: rotate(180deg); }
+        .topic-body {
+            padding: 0 20px 20px; display: none;
+            border-top: 1px solid var(--border);
+        }
+        .topic-card.active .topic-body { display: block; }
+
+        .content-block { margin-top: 16px; }
+        .content-block h4 {
+            font-size: 14px; font-weight: 800; margin-bottom: 8px;
+            padding-bottom: 4px; border-bottom: 2px solid var(--gold); display: inline-block;
+        }
+        .content-block ul, .content-block ol { margin-left: 20px; }
+        .content-block li { margin-bottom: 4px; font-size: 14px; }
+
+        .concept-table { width: 100%; border-collapse: collapse; margin: 12px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+        .concept-table th { background: #f1f5f9; padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--navy); }
+        .concept-table td { padding: 8px 12px; border-top: 1px solid var(--border); font-size: 13px; }
+
+        .tip {
+            background: var(--gold-bg); border-left: 4px solid var(--gold);
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+            font-size: 13px;
+        }
+        .tip strong { color: var(--navy); }
+        .prompt-box {
+            background: var(--navy); color: #e2e8f0; border-radius: 10px;
+            padding: 16px 20px; margin: 12px 0; font-family: 'Sarabun', monospace;
+            font-size: 13px; line-height: 1.6; position: relative;
+        }
+        .prompt-box::before {
+            content: '📝 Prompt'; position: absolute; top: -10px; left: 16px;
+            background: var(--gold); color: var(--navy); padding: 2px 10px;
+            border-radius: 4px; font-size: 11px; font-weight: 800;
+        }
+
+        .checklist { list-style: none; margin: 12px 0; }
+        .checklist li {
+            padding: 8px 0; border-bottom: 1px solid var(--border);
+            display: flex; align-items: flex-start; gap: 10px; font-size: 14px;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist .check {
+            width: 20px; height: 20px; border: 2px solid var(--border);
+            border-radius: 4px; flex-shrink: 0; cursor: pointer; margin-top: 2px;
+        }
+        .checklist .checked .check {
+            background: var(--green); border-color: var(--green);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .checklist .checked .check::after { content: '✓'; color: white; font-size: 12px; }
+        .checklist .checked span { text-decoration: line-through; color: var(--text-light); }
+
+        .progress-container { margin: 16px 0; }
+        .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 4px; transition: width 0.3s; }
+        .progress-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; text-align: right; }
+
+        .bottom {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-top: 32px; text-align: center;
+        }
+        .bottom h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .bottom p { font-size: 14px; color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .topics-grid { grid-template-columns: repeat(3, 1fr); }
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="brand">⬡ Technical PM <span>Learning Path</span></div>
+</div>
+
+<div class="main">
+
+<div class="hero">
+    <h1>📘 Technical PM Learning Path</h1>
+    <p class="sub">รู้ครบ 6 ด้าน สำหรับ Product Manager ที่สร้าง App ด้วย AI — เข้าใจ ตัดสินใจได้ ตรวจงานได้</p>
+    <div class="topics-grid">
+        <div class="topic-chip"><div class="icon">🎨</div><div class="name">Frontend</div></div>
+        <div class="topic-chip"><div class="icon">⚙️</div><div class="name">Backend</div></div>
+        <div class="topic-chip"><div class="icon">🗄️</div><div class="name">Database</div></div>
+        <div class="topic-chip"><div class="icon">🏗️</div><div class="name">Architecture</div></div>
+        <div class="topic-chip"><div class="icon">🎭</div><div class="name">Design / UI/UX</div></div>
+        <div class="topic-chip"><div class="icon">🔒</div><div class="name">Security</div></div>
+    </div>
+</div>
+
+<div class="overview-grid">
+    <div class="overview-card">
+        <div class="icon">⏱️</div>
+        <div class="title">ระยะเวลา</div>
+        <div class="desc">10 สัปดาห์ (เรียน 1-2 ชม./วัน)</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">🎯</div>
+        <div class="title">เป้าหมาย</div>
+        <div class="desc">เข้าใจทุกด้าน — ไม่ต้องเขียนเอง</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">🤖</div>
+        <div class="title">ใช้ AI</div>
+        <div class="desc">ทุกขั้นตอน — ถามได้ทันที</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">📱</div>
+        <div class="title">ผลลัพธ์</div>
+        <div class="desc">สร้าง App เองได้ + ตรวจงาน Dev ได้</div>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:14px;font-weight:700;color:var(--navy);">📊 ความคืบหน้า</span>
+        <span style="font-size:13px;color:var(--text-muted);" id="progressPercent">0 รายการ</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text" id="progressText">เริ่มเมื่อพร้อม!</div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 1: FRONTEND -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--blue);">1</div>
+        <div class="phase-info">
+            <h2>🎨 Frontend — สิ่งที่ผู้ใช้เห็น</h2>
+            <p>สัปดาห์ที่ 1-2 · เข้าใจโครงสร้าง หน้าจอ การทำงาน</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="fe1">
+        <div class="topic-header" onclick="toggleTopic('fe1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--cyan-bg);">🌐</div>
+                <div>
+                    <h3>HTML/CSS/JavaScript — พื้นฐาน Frontend</h3>
+                    <div class="weeks">สัปดาห์ที่ 1 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ทำไม PM ต้องรู้</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>HTML</strong></td><td>โครงสร้างหน้าเว็บ (ปุ่ม, ช่องกรอก, ตาราง)</td><td>รู้ว่าหน้าจอนี้มีอะไรบ้าง</td></tr>
+                        <tr><td><strong>CSS</strong></td><td>ตกแต่งหน้าเว็บ (สี, ขนาด, ตำแหน่ง)</td><td>สั่ง Designer/Dev ได้ชัดเจน</td></tr>
+                        <tr><td><strong>JavaScript</strong></td><td>ทำให้หน้าเว็บ "ทำงานได้" (กดปุ่ม → เกิดอะไร)</td><td>เข้าใจ Flow การทำงาน</td></tr>
+                        <tr><td><strong>DOM</strong></td><td>ตัวแทนของหน้าจอในโค้ด</td><td>รู้ว่า Dev เปลี่ยนหน้าจอยังไง</td></tr>
+                        <tr><td><strong>Responsive</strong></td><td>หน้าเว็บปรับตามขนาดจอ</td><td>ทดสอบ Mobile/Tablet/Desktop ได้</td></tr>
+                    </tbody>
+                </table>
+                <div class="tip">
+                    <strong>💡 ไม่ต้องเขียนเป็น — แค่ "อ่านออก" ว่าโค้ดนี้ทำอะไร</strong>
+                </div>
+                <h4 style="margin-top:16px;">📝 สิ่งที่ต้องทำ</h4>
+                <ol>
+                    <li>ดูวิดีโอ "HTML & CSS in 100 Seconds" (YouTube) — 5 นาที</li>
+                    <li>ดูวิดีโอ "JavaScript in 100 Seconds" — 5 นาที</li>
+                    <li>เปิดโค้ดหน้าเว็บใดๆ (คลิกขวา → View Source) — ลองอ่านดู</li>
+                    <li>ส่งโค้ดมาให้ผมอธิบาย ว่าแต่ละบรรทัดทำอะไร</li>
+                </ol>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ดูวิดีโอ HTML/CSS/JS (15 นาที)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เปิด View Source หน้าเว็บ — ลองอ่าน</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจว่า HTML = โครงสร้าง, CSS = ตกแต่ง, JS = ทำงาน</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="topic-card" id="fe2">
+        <div class="topic-header" onclick="toggleTopic('fe2')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--purple-bg);">🧩</div>
+                <div>
+                    <h3>Framework Frontend — React, Vue, Angular</h3>
+                    <div class="weeks">สัปดาห์ที่ 1-2 · 1 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Framework</th><td>ใครใช้</th><td>จุดเด่น</td></tr></thead>
+                    <tbody>
+                        <tr><td><strong>React</strong></td><td>Facebook, Netflix, Airbnb</td><td>ยืดหยุ่น, Community ใหญ่</td></tr>
+                        <tr><td><strong>Vue</strong></td><td>Alibaba, Xiaomi</td><td>เรียนรู้ง่าย, เบา</td></tr>
+                        <tr><td><strong>Angular</strong></td><td>Google, Microsoft</td><td>ครบวงจร, เหมาะกับ Enterprise</td></tr>
+                        <tr><td><strong>Flutter</strong></td><td>Google, BMW</td><td>เขียนครั้งเดียว ได้ทั้ง iOS+Android</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">🔑 Concept สำคัญ</h4>
+                <ul>
+                    <li><strong>Component</strong> = ชิ้นส่วน UI ที่ใช้ซ้ำได้ (เช่น ปุ่ม, การ์ด, Navbar)</li>
+                    <li><strong>State</strong> = ข้อมูลที่เปลี่ยนแปลงได้ (เช่น จำนวนในตะกร้า)</li>
+                    <li><strong>Props</strong> = ข้อมูลที่ส่งระหว่าง Component</li>
+                    <li><strong>Routing</strong> = การเปลี่ยนหน้า</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 สำหรับ PM:</strong> รู้ว่า App ใช้ Framework อะไร → รู้ว่า Developer หาคนแทนง่ายไหม, Community มีไหม
+                </div>
+                <div class="prompt-box">
+ฉันเป็น Product Manager App ของฉันใช้ React
+ช่วยอธิบายให้ฉันเข้าใจว่า:
+1. React ทำงานยังไง (แบบง่ายๆ)
+2. Component, State, Props คืออะไร
+3. ทำไมทีมถึงเลือก React แทน Vue/Angular
+4. ฉันต้องรู้อะไรบ้างเพื่อตรวจงาน Developer
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>รู้ว่า App ของตัวเองใช้ Framework อะไร</span></li>
+                <li onclick="toggleCheck(this)><div class="check"></div><span>เข้าใจ Component, State, Props, Routing</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>บอกได้ว่าทำไมทีมเลือก Framework นี้</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 2: BACKEND -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--green);">2</div>
+        <div class="phase-info">
+            <h2>⚙️ Backend — ระบบด้านหลัง</h2>
+            <p>สัปดาห์ที่ 2-3 · เข้าใจ API, Server, Logic</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="be1">
+        <div class="topic-header" onclick="toggleTopic('be1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--green-bg);">🔌</div>
+                <div>
+                    <h3>API — ตัวเชื่อม Frontend ↔ Backend</h3>
+                    <div class="weeks">สัปดาห์ที่ 2 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ตัวอย่าง</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>API</strong></td><td>ตัวเชื่อมระหว่าง Frontend กับ Backend</td><td>หน้า Login → ส่ง username/password → API ตรวจสอบ → ตอบกลับมา</td></tr>
+                        <tr><td><strong>REST API</strong></td><td>รูปแบบ API ที่นิยมที่สุด</td><td>GET /users, POST /login, PUT /users/1, DELETE /users/1</td></tr>
+                        <tr><td><strong>HTTP Methods</strong></td><td>GET (อ่าน), POST (สร้าง), PUT (แก้ไข), DELETE (ลบ)</td><td>CRUD Operations</td></tr>
+                        <tr><td><strong>Request/Response</strong></td><td>ส่งอะไรไป → ได้อะไรกลับมา</td><td>ส่ง {username, password} → ได้ {token, user}</td></tr>
+                        <tr><td><strong>Status Code</strong></td><td>200 = สำเร็จ, 400 = ข้อมูลผิด, 401 = ไม่มีสิทธิ์, 500 = Server พัง</td><td>รู้ได้ว่า Error เกิดจากอะไร</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">🔑 ทำไม PM ต้องรู้ API?</h4>
+                <ul>
+                    <li>เขียน API Spec ให้ Developer ได้</li>
+                    <li>รู้ว่า Frontend ต้องเรียก API อะไรบ้าง</li>
+                    <li>อ่าน Error Log ได้ → บอก Dev ถูกว่าปัญหาอยู่ที่ไหน</li>
+                    <li>ทดสอบ API เองได้ (ใช้ Postman)</li>
+                </ul>
+                <div class="prompt-box">
+ช่วยออกแบบ API Spec สำหรับ App "[ชื่อ App]"
+โดยรวมถึง:
+- ทุก Endpoint ที่ต้องมี
+- HTTP Method (GET/POST/PUT/DELETE)
+- Request Body (ส่งอะไรไป)
+- Response (ได้อะไรกลับมา)
+- Status Code (200, 400, 401, 500)
+แสดงเป็นตาราง
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ GET, POST, PUT, DELETE</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ Status Code (200, 400, 401, 500)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>อ่าน API Spec ออก</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เขียน API Spec เบื้องต้นได้ (ด้วย AI)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="topic-card" id="be2">
+        <div class="topic-header" onclick="toggleTopic('be2')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--orange-bg);">🖥️</div>
+                <div>
+                    <h3>Server, Logic, Authentication</h3>
+                    <div class="weeks">สัปดาห์ที่ 3 · 1 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ทำไม PM ต้องรู้</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Server</strong></td><td>คอมพิวเตอร์ที่รัน Backend</td><td>รู้ว่าจะต้อง Deploy ที่ไหน</td></tr>
+                        <tr><td><strong>Business Logic</strong></td><td>กฎการทำงาน (เช่น คำนวณราคา, ตรวจสอบสิทธิ์)</td><td>เขียน Requirement ได้ชัดเจน</td></tr>
+                        <tr><td><strong>Authentication</strong></td><td>ยืนยันตัวตน (Login)</td><td>รู้ว่าระบบ Login ปลอดภัยไหม</td></tr>
+                        <tr><td><strong>Authorization</strong></td><td>ตรวจสอบสิทธิ์ (Admin vs User)</td><td>ออกแบบ Role/Permission ได้</td></tr>
+                        <tr><td><strong>JWT/Token</strong></td><td>บัตรผ่านดิจิทัล หลัง Login</td><td>เข้าใจว่า Session ทำงานยังไง</td></tr>
+                        <tr><td><strong>Middleware</strong></td><td>ตัวกรองก่อนเข้า Backend (เช่น ตรวจสอบ Token)</td><td>เข้าใจ Flow การทำงาน</td></tr>
+                    </tbody>
+                </table>
+                <div class="tip">
+                    <strong>💡 สำหรับ PM:</strong> ไม่ต้องเขียน Backend เป็น แต่ต้องรู้ว่า "Backend ต้องทำอะไรบ้าง" และ "ทดสอบยังไงว่าทำงานถูกต้อง"
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ Server, Business Logic, AuthN/AuthZ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ JWT/Token ทำงานยังไง</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ออกแบบ Role/Permission เบื้องต้นได้</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 3: DATABASE -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--purple);">3</div>
+        <div class="phase-info">
+            <h2>🗄️ Database Design — ออกแบบที่เก็บข้อมูล</h2>
+            <p>สัปดาห์ที่ 3-4 · ตาราง, ความสัมพันธ์, SQL</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="db1">
+        <div class="topic-header" onclick="toggleTopic('db1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--purple-bg);">📊</div>
+                <div>
+                    <h3>Relational Database — ตาราง & ความสัมพันธ์</h3>
+                    <div class="weeks">สัปดาห์ที่ 3 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ตัวอย่าง</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Table</strong></td><td>ตารางเก็บข้อมูล</td><td>users, orders, products</td></tr>
+                        <tr><td><strong>Column/Field</strong></td><td>คอลัมน์ในตาราง</td><td>id, name, email, created_at</td></tr>
+                        <tr><td><strong>Row/Record</strong></td><td>แถวข้อมูล</td><td>1 แถว = 1 ผู้ใช้</td></tr>
+                        <tr><td><strong>Primary Key</strong></td><td>คอลัมน์ที่ระบุแถวไม่ซ้ำ</td><td>id (auto increment)</td></tr>
+                        <tr><td><strong>Foreign Key</strong></td><td>คอลัมน์ที่เชื่อมตารางอื่น</td><td>orders.user_id → เชื่อม users.id</td></tr>
+                        <tr><td><strong>Relationship</strong></td><td>1:1, 1:N, N:M</td><td>1 ผู้ใช้ มี หลายออเดอร์ (1:N)</td></tr>
+                        <tr><td><strong>ER Diagram</strong></td><td>แผนภาพความสัมพันธ์</td><td>เห็นภาพรวม Database ทั้งหมด</td></tr>
+                        <tr><td><strong>Index</strong></td><td>ทำให้ค้นหาเร็วขึ้น</td><td>Index on email → ค้นหาด้วย email เร็ว</td></tr>
+                    </tbody>
+                </table>
+                <div class="prompt-box">
+จาก Requirement Document ของ App "[ชื่อ App]"
+ช่วยออกแบบ Database Schema ให้ โดยรวมถึง:
+- ตารางทั้งหมดที่ต้องมี
+- คอลัมน์ในแต่ละตาราง (ชื่อ, ประเภท, เป็น PK/FK ไหม)
+- ความสัมพันธ์ระหว่างตาราง
+- แสดงเป็น ER Diagram (Text-based)
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ Table, Column, Row, PK, FK</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ 1:1, 1:N, N:M Relationship</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>อ่าน ER Diagram ออก</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ออกแบบ Database Schema เบื้องต้นได้ (ด้วย AI)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="topic-card" id="db2">
+        <div class="topic-header" onclick="toggleTopic('db2')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--cyan-bg);">💾</div>
+                <div>
+                    <h3>SQL เบื้องต้น + NoSQL</h3>
+                    <div class="weeks">สัปดาห์ที่ 4 · 1 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 SQL ที่ PM ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>คำสั่ง</th><th>ทำอะไร</th><th>ตัวอย่าง</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>SELECT</strong></td><td>อ่านข้อมูล</td><td>SELECT * FROM users WHERE age > 18;</td></tr>
+                        <tr><td><strong>INSERT</strong></td><td>เพิ่มข้อมูล</td><td>INSERT INTO users (name, email) VALUES ('Nan', 'nan@pkg.com');</td></tr>
+                        <tr><td><strong>UPDATE</strong></td><td>แก้ไขข้อมูล</td><td>UPDATE users SET email = 'new@pkg.com' WHERE id = 1;</td></tr>
+                        <tr><td><strong>DELETE</strong></td><td>ลบข้อมูล</td><td>DELETE FROM users WHERE id = 1;</td></tr>
+                        <tr><td><strong>JOIN</strong></td><td>เชื่อมตาราง</td><td>SELECT * FROM orders JOIN users ON orders.user_id = users.id;</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">NoSQL vs SQL</h4>
+                <table class="concept-table">
+                    <thead><tr><th></th><th>SQL (Relational)</th><th>NoSQL</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>ตัวอย่าง</strong></td><td>PostgreSQL, MySQL, SQLite</td><td>MongoDB, Firebase, Supabase</td></tr>
+                        <tr><td><strong>โครงสร้าง</strong></td><td>ตาราง (Table) — ข้อมูลมีโครงสร้างชัดเจน</td><td>Document/Key-Value — ยืดหยุ่นกว่า</td></tr>
+                        <tr><td><strong>เหมาะกับ</strong></td><td>ข้อมูลที่มีความสัมพันธ์ชัดเจน (User-Order-Product)</td><td>ข้อมูลที่โครงสร้างไม่คงที่</td></tr>
+                        <tr><td><strong>PM ต้องรู้</strong></td><td>ออกแบบ ER Diagram → ให้ Dev สร้าง</td><td>รู้ว่าเมื่อไหร่ควรใช้ NoSQL</td></tr>
+                    </tbody>
+                </table>
+                <div class="tip">
+                    <strong>💡 สำหรับ PM:</strong> ไม่ต้องเขียน SQL เองเป็น แต่ต้อง "อ่านออก" ว่า Query นี้ทำอะไร และรู้ว่า Dev ดึงข้อมูลมาถูกต้องไหม
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>อ่าน SQL SELECT, INSERT, UPDATE, DELETE ออก</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ JOIN ว่าเชื่อมตารางยังไง</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจความแตกต่าง SQL vs NoSQL</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เขียน SQL ง่ายๆ ได้ (ด้วย AI)</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 4: ARCHITECTURE -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--orange);">4</div>
+        <div class="phase-info">
+            <h2>🏗️ Architecture — โครงสร้างระบบ</h2>
+            <p>สัปดาห์ที่ 4-5 · เข้าใจภาพรวม การเชื่อมต่อกัน การตัดสินใจ</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="ar1">
+        <div class="topic-header" onclick="toggleTopic('ar1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--orange-bg);">🏛️</div>
+                <div>
+                    <h3>System Architecture Patterns</h3>
+                    <div class="weeks">สัปดาห์ที่ 4-5 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Architecture Patterns ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Pattern</th><th>คืออะไร</th><th>เหมาะกับ</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Monolithic</strong></td><td>ทุกอย่างอยู่ใน App เดียว</td><td>App เล็ก-กลาง, เริ่มต้นเร็ว</td></tr>
+                        <tr><td><strong>Client-Server</strong></td><td>Frontend (Client) ↔ Backend (Server)</td><td>Web App ทั่วไป</td></tr>
+                        <tr><td><strong>Microservices</strong></td><td>แบ่งเป็น Service ย่อยๆ</td><td>App ใหญ่, ทีมหลายคน</td></tr>
+                        <tr><td><strong>Serverless</strong></td><td>ไม่ต้องจัดการ Server เอง</td><td>App ที่ใช้งานไม่สม่ำเสมอ</td></tr>
+                        <tr><td><strong>3-Tier</strong></td><td>Presentation → Logic → Data</td><td>Enterprise App</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">🔑 Tech Stack Decision</h4>
+                <p style="font-size:14px;margin-bottom:8px;">PM ต้องรู้ว่าแต่ละ Layer ใช้อะไร และทำไม:</p>
+                <table class="concept-table">
+                    <thead><tr><th>Layer</th><th>ตัวเลือก</th><th>ข้อดี</th><th>ข้อเสีย</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Frontend</strong></td><td>React / Vue / Flutter</td><td>React = Community ใหญ่</td><td>React = เรียนรู้ยากกว่า</td></tr>
+                        <tr><td><strong>Backend</strong></td><td>Node.js / Python / Go</td><td>Node.js = ใช้ JS เดียวกัน</td><td>Python = ช้ากว่า</td></tr>
+                        <tr><td><strong>Database</strong></td><td>PostgreSQL / MongoDB</td><td>PostgreSQL = มาตรฐาน</td><td>MongoDB = Query ยาก</td></tr>
+                        <tr><td><strong>Cloud</strong></td><td>AWS / GCP / Vercel</td><td>Vercel = ง่ายสุด</td><td>AWS = ยืดหยุ่นกว่า</td></tr>
+                    </tbody>
+                </table>
+                <div class="prompt-box">
+จาก Requirement Document ของ App "[ชื่อ App]"
+ช่วยแนะนำ System Architecture ที่เหมาะสม โดยรวมถึง:
+- Architecture Pattern ที่แนะนำ + เหตุผล
+- Tech Stack แต่ละ Layer (Frontend, Backend, Database, Cloud)
+- Diagram แสดงการเชื่อมต่อกัน
+- ข้อดี-ข้อเสีย ของแต่ละตัวเลือก
+- ประมาณค่าใช้จ่ายต่อเดือน
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ Monolithic, Client-Server, Microservices</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ Tech Stack แต่ละ Layer</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>อ่าน Architecture Diagram ออก</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตัดสินใจเลือก Tech Stack ได้ (ร่วมกับ Dev)</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 5: DESIGN / UI/UX -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--pink);">5</div>
+        <div class="phase-info">
+            <h2>🎭 Design / UI/UX — ออกแบบประสบการณ์ผู้ใช้</h2>
+            <p>สัปดาห์ที่ 5-6 · Wireframe, User Flow, Design System</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="ds1">
+        <div class="topic-header" onclick="toggleTopic('ds1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--pink-bg);">🎨</div>
+                <div>
+                    <h3>UI/UX Fundamentals</h3>
+                    <div class="weeks">สัปดาห์ที่ 5 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ทำไม PM ต้องรู้</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>UI (User Interface)</strong></td><td>หน้าตาของ App (สี, ฟอนต์, ปุ่ม)</td><td>ตรวจงาน Designer ได้</td></tr>
+                        <tr><td><strong>UX (User Experience)</strong></td><td>ความรู้สึกเมื่อใช้ App (ง่ายไหม, สับสนไหม)</td><td>ตัดสินใจเรื่อง Flow ได้</td></tr>
+                        <tr><td><strong>Wireframe</strong></td><td>โครงร่างหน้าจอ (ไม่มีสี/รูป)</td><td>คุยกับ Dev ก่อนออกแบบจริง</td></tr>
+                        <tr><td><strong>Mockup</strong></td><td>หน้าจอที่มีสี/รูป เหมือนจริง</td><td>เห็นหน้าตาจริงก่อนสร้าง</td></tr>
+                        <tr><td><strong>Prototype</strong></td><td>หน้าจอที่กดได้ (เหมือน App จริง)</td><td>ทดสอบก่อนเขียนโค้ด</td></tr>
+                        <tr><td><strong>Design System</strong></td><td>ชุดกฎการออกแบบ (สี, ฟอนต์, Component)</td><td>รักษาความสม่ำเสมอ</td></tr>
+                        <tr><td><strong>User Flow</strong></td><td>เส้นทางที่ผู้ใช้เดินใน App</td><td>รู้ว่าต้องสร้างกี่หน้าจอ</td></tr>
+                        <tr><td><strong>Accessibility</strong></td><td>ทำให้ทุกคนใช้ได้ (รวมถึงผู้พิการ)</td><td>กฎหมาย + คุณธรรม</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">🔑 กฎ UI/UX พื้นฐาน</h4>
+                <ul>
+                    <li><strong>Less is More</strong> — หน้าจอที่เรียบง่าย = ใช้ง่าย</li>
+                    <li><strong>Consistency</strong> — ปุ่มเดียวกัน หน้าตาเดียวกัน ทุกหน้า</li>
+                    <li><strong>Feedback</strong> — ทุก Action ต้องมีตอบกลับ (Loading, Success, Error)</li>
+                    <li><strong>Hierarchy</strong> — สิ่งสำคัญต้องเด่นที่สุด</li>
+                    <li><strong>3-Click Rule</strong> — ผู้ใช้ควรหาสิ่งที่ต้องการได้ใน 3 คลิก</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 สำหรับ PM:</strong> ไม่ต้องออกแบบเองเป็น แต่ต้อง "ดูออก" ว่า Design นี้ดีไหม และบอก Designer/Dev ได้ว่าต้องแก้ตรงไหน
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ UI vs UX, Wireframe vs Mockup vs Prototype</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจกฎ UI/UX พื้นฐาน 5 ข้อ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตรวจงาน Designer ได้ (ดูออกว่าดี/ไม่ดี)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้าง Wireframe เบื้องต้นได้ (ด้วย AI/Figma)</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODULE 6: SECURITY -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--red);">6</div>
+        <div class="phase-info">
+            <h2>🔒 Security — ความปลอดภัย</h2>
+            <p>สัปดาห์ที่ 6-7 · รู้จักช่องโหว่ มาตรการป้องกัน</p>
+        </div>
+    </div>
+
+    <div class="topic-card" id="sc1">
+        <div class="topic-header" onclick="toggleTopic('sc1')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--red-bg);">🛡️</div>
+                <div>
+                    <h3>Security Basics — ช่องโหว่ที่พบบ่อย</h3>
+                    <div class="weeks">สัปดาห์ที่ 6 · 1-2 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 ช่องโหว่ OWASP Top 10 ที่ PM ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>#</th><th>ช่องโหว่</th><th>คืออะไร</th><th>ป้องกันยังไง</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><strong>SQL Injection</strong></td><td>แฮกเกอร์ใส่ SQL ผ่านฟอร์ม → เข้า Database ได้</td><td>ใช้ Parameterized Query</td></tr>
+                        <tr><td>2</td><td><strong>XSS</strong></td><td>แฮกเกอร์ใส่ JavaScript → ขโมยข้อมูลผู้ใช้</td><td>Escape Input, Content Security Policy</td></tr>
+                        <tr><td>3</td><td><strong>Broken Authentication</strong></td><td>ระบบ Login ไม่ปลอดภัย → แฮกเข้าสู่ระบบ</td><td>ใช้ JWT, Multi-Factor Auth, Rate Limiting</td></tr>
+                        <tr><td>4</td><td><strong>Broken Access Control</strong></td><td>User เข้าถึงข้อมูลของคนอื่นได้</td><td>ตรวจสอบสิทธิ์ทุก Request</td></tr>
+                        <tr><td>5</td><td><strong>Sensitive Data Exposure</strong></td><td>ข้อมูลสำคัญไม่เข้ารหัส → ถูกดักจับ</td><td>HTTPS, Encrypt Password (bcrypt)</td></tr>
+                    </tbody>
+                </table>
+                <h4 style="margin-top:16px;">🔑 Security Checklist สำหรับ PM</h4>
+                <ul>
+                    <li>✅ ใช้ HTTPS ทุกหน้า</li>
+                    <li>✅ Password เข้ารหัส (bcrypt, ไม่เก็บ Plain Text)</li>
+                    <li>✅ มี Rate Limiting (ป้องกัน Brute Force)</li>
+                    <li>✅ Input Validation ทุกฟอร์ม</li>
+                    <li>✅ Session Timeout (อัตโนมัติ Logout)</li>
+                    <li>✅ Backup Database สม่ำเสมอ</li>
+                    <li>✅ Log ทุก Action สำคัญ</li>
+                    <li>✅ PDPA Compliance (ขอ Consent, ลบข้อมูลได้)</li>
+                </ul>
+                <div class="prompt-box">
+จาก App "[ชื่อ App]" ช่วยวิเคราะห์ Security Risk โดยรวมถึง:
+1. ช่องโหว่ที่อาจมี (ตาม OWASP Top 10)
+2. มาตรการป้องกันที่แนะนำ
+3. Security Checklist ที่ต้องตรวจสอบก่อน Deploy
+4. PDPA Requirements ที่ต้องทำ
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ OWASP Top 10 (5 อันดับแรก)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ HTTPS, JWT, bcrypt</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>รู้ว่าต้องถาม Dev ว่า "ป้องกัน SQL Injection ยังไง?"</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ PDPA Requirements พื้นฐาน</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="topic-card" id="sc2">
+        <div class="topic-header" onclick="toggleTopic('sc2')">
+            <div class="left">
+                <div class="icon-box" style="background:var(--gold-bg);">🔐</div>
+                <div>
+                    <h3>Authentication & Authorization</h3>
+                    <div class="weeks">สัปดาห์ที่ 7 · 1 ชม./วัน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="topic-body">
+            <div class="content-block">
+                <h4>📖 Concept ที่ต้องรู้</h4>
+                <table class="concept-table">
+                    <thead><tr><th>Concept</th><th>คืออะไร</th><th>ตัวอย่าง</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Authentication (AuthN)</strong></td><td>ยืนยันตัวตน = "คุณคือใคร?"</td><td>Login ด้วย Username/Password</td></tr>
+                        <tr><td><strong>Authorization (AuthZ)</strong></td><td>ตรวจสอบสิทธิ์ = "คุณทำอะไรได้บ้าง?"</td><td>Admin ลบข้อมูลได้, User ดูได้อย่างเดียว</td></tr>
+                        <tr><td><strong>Session</strong></td><td>สถานะการ Login</td><td>หลังจาก Login → Server จำว่าคุณ Login แล้ว</td></tr>
+                        <tr><td><strong>Token (JWT)</strong></td><td>บัตรผ่านดิจิทัล</td><td>Login สำเร็จ → ได้ Token → ใช้ Token เข้าหน้าอื่น</td></tr>
+                        <tr><td><strong>OAuth / SSO</strong></td><td>Login ด้วยบัญชีอื่น (Google, Facebook)</td><td>"Login with Google"</td></tr>
+                        <tr><td><strong>Multi-Factor Auth</strong></td><td>ยืนยัน 2 ชั้น (Password + OTP)</td><td>เข้าธนาคารออนไลน์</td></tr>
+                        <tr><td><strong>RBAC</strong></td><td>Role-Based Access Control</td><td>Admin, Editor, Viewer — สิทธิ์ต่างกัน</td></tr>
+                    </tbody>
+                </table>
+                <div class="tip">
+                    <strong>💡 สำหรับ PM:</strong> ต้องรู้ว่า App ของตัวเองใช้ Auth แบบไหน และ "ปลอดภัยพอไหม"
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ AuthN vs AuthZ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เข้าใจ JWT, Session, OAuth, MFA</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ออกแบบ RBAC เบื้องต้นได้ (Admin, User, etc.)</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SUMMARY TABLE -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--navy);">📋</div>
+        <div class="phase-info">
+            <h2>สรุป — สิ่งที่ PM ต้องรู้ในแต่ละด้าน</h2>
+            <p>ไม่ต้องเขียนเองเป็น — แต่ต้องเข้าใจ ตัดสินใจได้ ตรวจงานได้</p>
+        </div>
+    </div>
+
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr><th>ด้าน</th><th>ต้องรู้</th><th>ไม่ต้องรู้</th><th>ถาม Dev ว่าอะไร</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>🎨 Frontend</strong></td>
+                    <td>HTML/CSS/JS ทำงานยังไง, Framework ที่ใช้, Component, State</td>
+                    <td>เขียนโค้ด CSS สวยๆ, จำ Syntax</td>
+                    <td>"ใช้ Framework อะไร? ทำไม? Responsive ไหม?"</td>
+                </tr>
+                <tr>
+                    <td><strong>⚙️ Backend</strong></td>
+                    <td>API, HTTP Methods, Status Code, AuthN/AuthZ, Business Logic</td>
+                    <td>เขียน Backend เอง, Setup Server</td>
+                    <td>"API มีกี่ Endpoint? ป้องกัน SQL Injection ยังไง?"</td>
+                </tr>
+                <tr>
+                    <td><strong>🗄️ Database</strong></td>
+                    <td>Table, Column, PK, FK, Relationship, SQL เบื้องต้น, ER Diagram</td>
+                    <td>เขียน Query ซับซ้อน, Optimize Database</td>
+                    <td>"Database Schema เป็นยังไง? มี Index ตรงไหน?"</td>
+                </tr>
+                <tr>
+                    <td><strong>🏗️ Architecture</strong></td>
+                    <td>Pattern (Monolithic, Microservices), Tech Stack แต่ละ Layer</td>
+                    <td>ออกแบบ Architecture เอง, Setup Infrastructure</td>
+                    <td>"ใช้ Architecture แบบไหน? ทำไม? Scalable ไหม?"</td>
+                </tr>
+                <tr>
+                    <td><strong>🎭 Design/UI/UX</strong></td>
+                    <td>UI vs UX, Wireframe, User Flow, Design System, กฎพื้นฐาน</td>
+                    <td>ออกแบบเองใน Figma, ทำ Prototype สวยๆ</td>
+                    <td>"User Flow เป็นยังไง? ผ่าน User Testing แล้วหรือยัง?"</td>
+                </tr>
+                <tr>
+                    <td><strong>🔒 Security</strong></td>
+                    <td>OWASP Top 10, HTTPS, JWT, bcrypt, PDPA, RBAC</td>
+                    <td>เขียนโค้ดป้องกันเอง, Penetration Testing</td>
+                    <td>"ป้องกัน XSS/SQL Injection ยังไง? Password เข้ารหัสไหม?"</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- BOTTOM -->
+<div class="bottom">
+    <h3>🐾 ผมอยู่ตรงนี้ครับคุณแนน</h3>
+    <p>ทุกหัวข้อ — ส่งคำถามมาได้เลย ผมจะอธิบายแบบง่ายๆ ให้เข้าใจ<br>
+    ไม่ต้องเก่งทุกด้าน — แค่ "พอเข้าใจ" ก็สร้าง App ได้แล้วครับ!</p>
+    <p style="margin-top:12px;font-size:13px;color:var(--text-light);">Technical PM Learning Path · LIA 2.0 · สร้างโดย AliClaw · 26 พฤษภาคม 2569</p>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function toggleTopic(id) {
+    document.getElementById(id).classList.toggle('active');
+}
+
+function toggleCheck(li) {
+    li.classList.toggle('checked');
+    updateProgress();
+}
+
+function updateProgress() {
+    const items = document.querySelectorAll('.checklist li');
+    const checked = document.querySelectorAll('.checklist li.checked');
+    const pct = Math.round((checked.length / items.length) * 100);
+
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPercent').textContent = checked.length + ' / ' + items.length + ' รายการ';
+
+    if (pct === 0) {
+        document.getElementById('progressText').textContent = 'เริ่มเมื่อพร้อม!';
+    } else if (pct < 30) {
+        document.getElementById('progressText').textContent = '🎨 Frontend — กำลังเรียนรู้!';
+    } else if (pct < 50) {
+        document.getElementById('progressText').textContent = '⚙️ Backend — กำลังเรียนรู้!';
+    } else if (pct < 65) {
+        document.getElementById('progressText').textContent = '🗄️ Database — กำลังเรียนรู้!';
+    } else if (pct < 75) {
+        document.getElementById('progressText').textContent = '🏗️ Architecture — กำลังเรียนรู้!';
+    } else if (pct < 85) {
+        document.getElementById('progressText').textContent = '🎭 Design/UI/UX — กำลังเรียนรู้!';
+    } else if (pct < 100) {
+        document.getElementById('progressText').textContent = '🔒 Security — กำลังเรียนรู้!';
+    } else {
+        document.getElementById('progressText').textContent = '🎉 ครบทุกด้าน! พร้อมสร้าง App!';
+    }
+}
+
+document.getElementById('fe1').classList.add('active');
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📘 CEO Dashboard — คู่มือการทำงาน</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.7;padding:16px}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:1.4em;color:#1a237e;text-align:center;margin-bottom:20px;padding-bottom:12px;border-bottom:3px solid #7c3aed}
+h2{font-size:1.1em;color:#7c3aed;margin:24px 0 12px;padding-left:12px;border-left:4px solid #7c3aed}
+h3{font-size:0.95em;color:#1a237e;margin:16px 0 8px}
+.section{background:#fff;border:1px solid #e0e6ed;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+ul{margin:8px 0 8px 20px}
+li{margin:4px 0}
+li::marker{color:#7c3aed}
+.code{background:#f5f3ff;border:1px solid #e0e0e0;border-radius:6px;padding:12px 16px;font-family:'Courier New',monospace;font-size:0.88em;overflow-x:auto;margin:8px 0;color:#4a1d96}
+.badge-red{background:#dc2626;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.78em;font-weight:600}
+.badge-yellow{background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.78em;font-weight:600}
+.badge-green{background:#16a34a;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.78em;font-weight:600}
+table{width:100%;border-collapse:collapse;margin:8px 0}
+th{background:#7c3aed;color:#fff;padding:8px 12px;text-align:left;font-size:0.85em}
+td{padding:8px 12px;border-bottom:1px solid #e0e6ed;font-size:0.88em}
+tr:nth-child(even){background:#f5f3ff}
+.link{color:#7c3aed;text-decoration:none;word-break:break-all}
+.link:hover{text-decoration:underline}
+.step{display:flex;align-items:flex-start;gap:12px;margin:8px 0}
+.step-num{background:#7c3aed;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85em;flex-shrink:0;margin-top:2px}
+.step-text{flex:1}
+.warning{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:0.88em}
+.tip{background:#d4edda;border:1px solid:#28a745;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:0.88em}
+.footer{text-align:center;color:#78909c;font-size:0.78em;margin-top:24px;padding-top:16px;border-top:1px solid #e0e6ed}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📘 CEO Dashboard — คู่มือการทำงาน</h1>
+
+<!-- โครงสร้าง -->
+<div class="section">
+<h2>🏗️ โครงสร้างระบบ</h2>
+<ul>
+<li><strong>Google Sheets</strong> (ID: <code>1E9wn_4vgWTpOvBxcztMkEmUmlj66MqOIt0RWpSRWGZY</code>)<br>
+Sheets: CEO_Contract, OKRs, KPIs, Members, Accountability, Purpose, Growth_Tracker, Task_Tracker, Approval_Log, _AuditLog</li>
+<li><strong>Google Apps Script (.gs)</strong> → Backend API</li>
+<li><strong>HTML Form</strong> → Frontend (CEO Contract Form)</li>
+<li><strong>Telegram Bot</strong> (NANPAD_bot) → แจ้งเตือน</li>
+</ul>
+</div>
+
+<!-- Workflow -->
+<div class="section">
+<h2>📋 วิธีทำงาน (Workflow)</h2>
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-text"><strong>เปิดลิงก์</strong> → เลือกสมาชิก (พิมพ์ ID/ชื่อ → autocomplete)</div>
+</div>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-text"><strong>กรอกข้อมูล:</strong>
+<ul>
+<li>ข้อมูลสมาชิก (auto-fill)</li>
+<li>ผู้รับใช้ทีม / พี่เลี้ยง (autocomplete)</li>
+<li>Accountability (หน้าที่รับผิดชอบ)</li>
+<li>Purpose & Vision (จุดมุ่งหมาย/ภาพความสำเร็จ)</li>
+<li>OKR BU + OKR Team (วัตถุประสงค์ + Key Results)</li>
+<li>Personal Growth (เป้าหมายการเติบโต)</li>
+<li>KPI (ตัวชี้วัด)</li>
+</ul>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-text"><strong>กด "💾 บันทึกข้อมูล"</strong> → บันทึกลง Sheets + แสดงวันที่+เวลา</div>
+</div>
+
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-text"><strong>กด "ส่งสัญญา ✉️"</strong> → บันทึก + ส่งแจ้งเตือน Telegram</div>
+</div>
+</div>
+
+<!-- ฟังก์ชัน -->
+<div class="section">
+<h2>⚙️ ฟังก์ชันหลัก</h2>
+<table>
+<tr><th>ฟังก์ชัน</th><th>หน้าที่</th></tr>
+<tr><td><code>serveCEOContract()</code></td><td>แสดงหน้าเว็บ</td></tr>
+<tr><td><code>getMembersForClient()</code></td><td>ดึงรายชื่อสมาชิก</td></tr>
+<tr><td><code>saveAllData()</code></td><td>บันทึกข้อมูลทั้งหมด</td></tr>
+<tr><td><code>submitCEOContract()</code></td><td>บันทึก + ส่ง Telegram</td></tr>
+<tr><td><code>submitCEOContractWithImage()</code></td><td>บันทึก + ส่ง Telegram (พร้อม caption)</td></tr>
+<tr><td><code>readSheetData()</code></td><td>อ่านข้อมูลจาก Sheet</td></tr>
+<tr><td><code>setTelegramConfig()</code></td><td>ตั้งค่า Telegram Bot (รันทุกครั้งหลัง New Deployment)</td></tr>
+</table>
+</div>
+
+<!-- ข้อจำกัด -->
+<div class="section">
+<h2>⚠️ ข้อจำกัดที่ต้องทำต่อ</h2>
+
+<h3><span class="badge-red">🔴</span> 1. Telegram ส่งได้แค่ข้อความ — ยังส่งรูปภาพไม่ได้</h3>
+<ul>
+<li><strong>สาเหตุ:</strong> GAS UrlFetchApp ส่ง Blob ไป Telegram ไม่ได้ (known issue)</li>
+<li><strong>แก้ชั่วคราว:</strong> ส่งข้อความแทนรูป</li>
+<li><strong>แนวทางแก้:</strong> อัปโหลดรูปไป Google Drive → ส่งลิงก์ หรือใช้ Telegram sendPhoto ผ่าน URL</li>
+</ul>
+
+<h3><span class="badge-yellow">🟡</span> 2. Double Save — กด "ส่งสัญญา" บันทึก 2 ครั้ง</h3>
+<ul>
+<li><strong>สาเหตุ:</strong> HTML เรียก submitCEOContract ก่อน แล้ว submitCEOContractWithImage เรียกอีกครั้งข้างใน</li>
+<li><strong>ผล:</strong> ข้อมูลอาจถูกบันทึก 2 ครั้ง</li>
+<li><strong>แนวทางแก้:</strong> เอา submitCEOContract call ออกจาก HTML หรือเอา internal call ออกจาก submitCEOContractWithImage</li>
+</ul>
+
+<h3><span class="badge-yellow">🟡</span> 3. ลบไฟล์ .gs เก่า</h3>
+<ul>
+<li>ต้องลบ "Ceo code.gs" ออกจากโปรเจค (ฟังก์ชันซ้ำกับไฟล์ใหม่)</li>
+</ul>
+
+<h3><span class="badge-green">🟢</span> 4. เพิ่ม _AuditLog</h3>
+<ul>
+<li>เพิ่ม logging การบันทึกทุกครั้ง</li>
+</ul>
+</div>
+
+<!-- ข้อสำคัญ -->
+<div class="section">
+<h2>🔑 ข้อสำคัญ</h2>
+<div class="warning">
+⚠️ ทุกครั้งหลัง <strong>New Deployment</strong> → ต้องรัน <code>setTelegramConfig()</code> 1 ครั้ง
+</div>
+<div class="warning">
+⚠️ ไฟล์ .gs ทุกไฟล์ในโปรเจคเป็น global → <strong>ห้ามมีฟังก์ชันซ้ำชื่อ</strong>
+</div>
+<div class="tip">
+💡 GAS Caja sanitizer บล็อกข้อมูลฝังใน HTML → ใช้ <code>google.script.run</code> แทน
+</div>
+<div class="tip">
+💡 GAS sandbox บล็อก <code>alert()</code> จาก cross-origin iframe → ใช้ <code>showToast()</code> แทน
+</div>
+</div>
+
+<!-- ลิงก์ -->
+<div class="section">
+<h2>🔗 ลิงก์สำคัญ</h2>
+<table>
+<tr><th>รายการ</th><th>ลิงก์</th></tr>
+<tr><td>CEO Contract Form</td><td><a class="link" href="https://script.google.com/macros/s/AKfycby-On1pHpZdvtZNBcLk_dMbieR3TQ_84OEWpf0Q1KP646XK5szhu5TFl-k8t4-9jsle/exec">https://script.google.com/macros/s/...jsle/exec</a></td></tr>
+<tr><td>Google Sheets</td><td><a class="link" href="https://docs.google.com/spreadsheets/d/1E9wn_4vgWTpOvBxcztMkEmUmlj66MqOIt0RWpSRWGZY">1E9wn_4vgWTpOvBxcztMkEmUmlj66MqOIt0RWpSRWGZY</a></td></tr>
+<tr><td>Telegram Bot</td><td>NANPAD_bot</td></tr>
+</table>
+</div>
+
+<div class="footer">
+#ceo-dashboard v6.5 | อัปเดต: 30 พฤษภาคม 2569
+</div>
+
+</div>
+</body>
+</html>

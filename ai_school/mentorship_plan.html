@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แผนการสอน: จาก Zero → Developer — LIA 2.0 Mentorship Program</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f172a; --navy-light: #1e293b; --blue: #3b82f6; --blue-dark: #2563eb;
+            --green: #16a34a; --green-bg: #f0fdf4; --gold: #f59e0b; --gold-bg: #fffbeb;
+            --purple: #7c3aed; --purple-bg: #f5f3ff; --red: #dc2626; --red-bg: #fef2f2;
+            --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+            --text: #0f172a; --text-muted: #64748b; --text-light: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.7; font-size: 15px; padding: 0;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white; padding: 20px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topbar .brand { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .topbar .badge { background: var(--gold); color: var(--navy); padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+
+        /* MAIN */
+        .main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 60px; }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px;
+        }
+        .hero h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 8px; }
+        .hero p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        .hero .timeline { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+        .hero .phase {
+            background: rgba(255,255,255,0.15); border-radius: 8px;
+            padding: 8px 16px; font-size: 13px; font-weight: 600;
+        }
+
+        /* OVERVIEW */
+        .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .overview-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+        }
+        .overview-card .icon { font-size: 32px; margin-bottom: 8px; }
+        .overview-card .title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .overview-card .desc { font-size: 13px; color: var(--text-muted); }
+
+        /* PHASE SECTION */
+        .phase-section { margin-bottom: 32px; }
+        .phase-header {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .phase-num {
+            background: var(--blue-dark); color: white; width: 40px; height: 40px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 800; flex-shrink: 0;
+        }
+        .phase-info h2 { font-size: 1.2rem; font-weight: 800; color: var(--navy); }
+        .phase-info p { font-size: 14px; color: var(--text-muted); }
+
+        /* WEEK CARD */
+        .week {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .week-header {
+            padding: 16px 20px; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.15s;
+        }
+        .week-header:hover { background: #f8fafc; }
+        .week-header h3 { font-size: 15px; font-weight: 700; color: var(--navy); }
+        .week-header .meta { font-size: 13px; color: var(--text-muted); }
+        .week-header .arrow { font-size: 18px; color: var(--text-light); transition: transform 0.2s; }
+        .week.active .arrow { transform: rotate(180deg); }
+        .week-body {
+            padding: 0 20px 20px; display: none;
+            border-top: 1px solid var(--border);
+        }
+        .week.active .week-body { display: block; }
+
+        /* CONTENT INSIDE WEEK */
+        .content-block { margin-top: 16px; }
+        .content-block h4 {
+            font-size: 14px; font-weight: 800; color: var(--blue-dark);
+            margin-bottom: 8px; padding-bottom: 4px;
+            border-bottom: 2px solid var(--gold); display: inline-block;
+        }
+        .content-block ul { margin-left: 20px; }
+        .content-block li { margin-bottom: 4px; font-size: 14px; }
+        .content-block .tip {
+            background: var(--gold-bg); border-left: 4px solid var(--gold);
+            padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0;
+            font-size: 13px;
+        }
+        .content-block .tip strong { color: var(--navy); }
+        .content-block .homework {
+            background: var(--green-bg); border-left: 4px solid var(--green);
+            padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0;
+            font-size: 13px;
+        }
+        .content-block .homework strong { color: var(--navy); }
+
+        /* RESOURCE TABLE */
+        .tbl-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f1f5f9; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 700; color: var(--navy); }
+        td { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 13px; }
+        tr:hover td { background: #f8fafc; }
+        a { color: var(--blue-dark); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* MENTOR MODEL */
+        .mentor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .mentor-card {
+            border-radius: 12px; padding: 20px;
+        }
+        .mentor-card.ai { background: var(--purple-bg); border: 1.5px solid rgba(124,58,237,0.3); }
+        .mentor-card.human { background: var(--gold-bg); border: 1.5px solid rgba(245,158,11,0.3); }
+        .mentor-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .mentor-card ul { margin-left: 18px; font-size: 14px; }
+        .mentor-card li { margin-bottom: 4px; }
+
+        /* SCHEDULE TABLE */
+        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 16px 0; }
+        .schedule-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 14px; text-align: center;
+        }
+        .schedule-item .week-num { font-size: 12px; font-weight: 800; color: var(--blue-dark); margin-bottom: 4px; }
+        .schedule-item .topic { font-size: 13px; color: var(--text); }
+        .schedule-item .hours { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        /* CHECKLIST */
+        .checklist { list-style: none; margin: 12px 0; }
+        .checklist li {
+            padding: 8px 0; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 10px; font-size: 14px;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist .check {
+            width: 20px; height: 20px; border: 2px solid var(--border);
+            border-radius: 4px; flex-shrink: 0; cursor: pointer;
+            transition: all 0.15s;
+        }
+        .checklist .check:hover { border-color: var(--blue); }
+        .checklist .checked .check {
+            background: var(--green); border-color: var(--green);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .checklist .checked .check::after { content: '✓'; color: white; font-size: 12px; }
+        .checklist .checked span { text-decoration: line-through; color: var(--text-light); }
+
+        /* PROGRESS BAR */
+        .progress-container { margin: 16px 0; }
+        .progress-bar {
+            height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--blue), var(--green));
+            border-radius: 4px; transition: width 0.3s;
+        }
+        .progress-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; text-align: right; }
+
+        /* BOTTOM */
+        .bottom {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-top: 32px; text-align: center;
+        }
+        .bottom h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .bottom p { font-size: 14px; color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .mentor-grid { grid-template-columns: 1fr; }
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+            .schedule-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .overview-grid, .schedule-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="brand">⬡ LIA 2.0 <span style="font-weight:400;font-size:14px;opacity:0.8;">Mentorship Program</span></div>
+    <div class="badge">16 Weeks</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HERO -->
+<div class="hero">
+    <h1>🗺️ แผนการสอน: จาก Zero → Developer</h1>
+    <p>สำหรับ Product Manager ที่อยากแกะโค้ดและเขียน Application ใหม่ — เรียนไปพร้อมกับทำจริง</p>
+    <div class="timeline">
+        <div class="phase">📚 Phase 1: ปูพื้นฐาน (สัปดาห์ 1-4)</div>
+        <div class="phase">🔍 Phase 2: แกะโค้ดจริง (สัปดาห์ 5-8)</div>
+        <div class="phase">🚀 Phase 3: เขียนใหม่ (สัปดาห์ 9-16)</div>
+    </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="overview-grid">
+    <div class="overview-card">
+        <div class="icon">🎯</div>
+        <div class="title">เป้าหมาย</div>
+        <div class="desc">อ่านโค้ดออก, แกะฟีเจอร์ได้, เขียน App ใหม่ได้</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">⏱️</div>
+        <div class="title">ระยะเวลา</div>
+        <div class="desc">16 สัปดาห์ (4 เดือน)</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">📖</div>
+        <div class="title">เวลาเรียน</div>
+        <div class="desc">1-3 ชั่วโมง/วัน</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">💡</div>
+        <div class="title">วิธีเรียน</div>
+        <div class="desc">เรียนทฤษฎี + ทำจริงกับ App ของตัวเอง</div>
+    </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:14px;font-weight:700;color:var(--navy);">📊 ความคืบหน้า</span>
+        <span style="font-size:13px;color:var(--text-muted);" id="progressPercent">0 / 16 สัปดาห์</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text" id="progressText">เริ่มเรียนเมื่อพร้อม!</div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 1 -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div class="phase-info">
+            <h2>📚 ปูพื้นฐาน — ทำความเข้าใจก่อนเริ่ม</h2>
+            <p>สัปดาห์ที่ 1-4 · เรียนพื้นฐาน Web Development + รู้จัก App ของตัวเอง</p>
+        </div>
+    </div>
+
+    <!-- Week 1 -->
+    <div class="week" id="week1">
+        <div class="week-header" onclick="toggleWeek('week1')">
+            <div>
+                <h3>สัปดาห์ที่ 1: ภาพรวม Web Application</h3>
+                <div class="meta">⏱ 1 ชั่วโมง/วัน · ใช้ AI Mentor 100%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องเรียน</h4>
+                <ul>
+                    <li><strong>Frontend</strong> = สิ่งที่ผู้ใช้เห็น (หน้าจอ, ปุ่ม, เมนู)</li>
+                    <li><strong>Backend</strong> = ระบบด้านหลัง (ประมวลผล, เก็บข้อมูล)</li>
+                    <li><strong>Database</strong> = ที่เก็บข้อมูล (ผู้ใช้, ข้อมูล, Transaction)</li>
+                    <li><strong>API</strong> = ตัวเชื่อม Frontend ↔ Backend</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 วิธีเรียน:</strong> ค้นหา YouTube "How Web Applications Work" หรือ "Web Architecture for Beginners" ดู 1-2 ชั่วโมง
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เปิด Application ของคุณแนนขึ้นมา</li>
+                        <li>ลองวาดผังว่า App นี้มีส่วนประกอบอะไรบ้าง</li>
+                        <li>ไม่ต้องรู้โค้ด แค่รู้ว่า "หน้าจออันนี้ → ข้อมูลน่าจะมาจากไหน"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 2 -->
+    <div class="week" id="week2">
+        <div class="week-header" onclick="toggleWeek('week2')">
+            <div>
+                <h3>สัปดาห์ที่ 2: HTML + CSS</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 100%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องเรียน</h4>
+                <ul>
+                    <li><strong>HTML</strong> = โครงสร้างหน้าเว็บ (ปุ่ม, ช่องกรอก, ตาราง, รูปภาพ)</li>
+                    <li><strong>CSS</strong> = ตกแต่งหน้าเว็บ (สี, ขนาด, ตำแหน่ง, ฟอนต์)</li>
+                    <li>Tags พื้นฐาน: div, span, p, h1-h6, input, button, table, img, a</li>
+                    <li>CSS พื้นฐาน: color, font-size, margin, padding, border, display, flexbox</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 วิธีเรียน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>YouTube: "HTML & CSS Full Course for Beginners" (Traversy Media / freeCodeCamp)</li>
+                        <li>เว็บฝึก: <a href="https://www.w3schools.com/html/" target="_blank">w3schools.com/html</a></li>
+                    </ul>
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เปิดโค้ด HTML/CSS ของ Application คุณแนน</li>
+                        <li>ลองหาว่า "ปุ่มนี้สร้างจากโค้ดบรรทัดไหน"</li>
+                        <li>ลองแก้สี/ขนาด แล้วดูว่าหน้าจอเปลี่ยนยังไง</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 3 -->
+    <div class="week" id="week3">
+        <div class="week-header" onclick="toggleWeek('week3')">
+            <div>
+                <h3>สัปดาห์ที่ 3: JavaScript</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 100%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องเรียน</h4>
+                <ul>
+                    <li><strong>Variables</strong> = ตัวแปร (เก็บค่า)</li>
+                    <li><strong>Functions</strong> = ฟังก์ชัน (ชุดคำสั่ง)</li>
+                    <li><strong>Events</strong> = เหตุการณ์ (กดปุ่ม, พิมพ์, เลื่อนหน้า)</li>
+                    <li><strong>DOM Manipulation</strong> = การเปลี่ยนหน้าเว็บด้วย JS</li>
+                    <li><strong>Fetch API</strong> = การเรียก API จาก JavaScript</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 วิธีเรียน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>YouTube: "JavaScript Full Course for Beginners" (Programming with Mosh)</li>
+                        <li>เว็บฝึก: <a href="https://www.w3schools.com/js/" target="_blank">w3schools.com/js</a></li>
+                    </ul>
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เปิดโค้ด JavaScript ของ Application คุณแนน</li>
+                        <li>ลองหาว่า "กดปุ่มนี้ → เรียกฟังก์ชันไหน → เกิดอะไรขึ้น"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 4 -->
+    <div class="week" id="week4">
+        <div class="week-header" onclick="toggleWeek('week4')">
+            <div>
+                <h3>สัปดาห์ที่ 4: Framework ที่ App ใช้</h3>
+                <div class="meta">⏱ 2 ชั่วโมง/วัน · ใช้ AI Mentor 80% + Developer 20%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องเรียน</h4>
+                <ul>
+                    <li>App คุณแนนใช้ <strong>อะไร?</strong> (React, Vue, Angular, Flutter, Laravel, etc.)</li>
+                    <li>แต่ละ Framework มีโครงสร้างอย่างไร?</li>
+                    <li>ไฟล์แต่ละไฟล์ทำหน้าที่อะไร?</li>
+                    <li>โฟลเดอร์แต่ละโฟลเดอร์เก็บอะไร?</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 วิธีหา:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>ดูใน <code>package.json</code> (ถ้าเป็น JavaScript) หรือ <code>pubspec.yaml</code> (ถ้าเป็น Flutter)</li>
+                        <li>หรือ <strong>ถาม Developer เดิม</strong> ว่าใช้ Framework อะไร</li>
+                    </ul>
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เปิดโครงสร้างโฟลเดอร์ของโปรเจกต์</li>
+                        <li>ลองวาดผังว่า "โฟลเดอร์นี้เก็บอะไร, ไฟล์นี้ทำอะไร"</li>
+                        <li>หา Developer 1 คน มานั่งดูโค้ดด้วยกัน สัปดาห์ละ 1-2 ชม.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 2 -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--green);">2</div>
+        <div class="phase-info">
+            <h2>🔍 แกะโค้ด App จริง — เรียนจากของจริง</h2>
+            <p>สัปดาห์ที่ 5-8 · อ่านโค้ดทีละฟีเจอร์ + เริ่มเขียนเอง</p>
+        </div>
+    </div>
+
+    <!-- Week 5 -->
+    <div class="week" id="week5">
+        <div class="week-header" onclick="toggleWeek('week5')">
+            <div>
+                <h3>สัปดาห์ที่ 5: แกะฟีเจอร์ที่ 1 (ง่ายที่สุด)</h3>
+                <div class="meta">⏱ 1-2 ชั่วโมง/วัน · ใช้ AI Mentor 70% + Developer 30%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 วิธีทำ</h4>
+                <ul>
+                    <li><strong>เลือกฟีเจอร์ที่ง่ายที่สุด</strong> ก่อน เช่น หน้า Login, หน้าแสดงผล</li>
+                    <li><strong>ไล่โค้ดจากบนลงล่าง:</strong>
+                        <ol style="margin-left:20px;margin-top:4px;">
+                            <li>เริ่มจากหน้าจอ (HTML/CSS)</li>
+                            <li>ตามด้วย JavaScript (กดปุ่ม → เกิดอะไร)</li>
+                            <li>ตามด้วย API (ส่งข้อมูลไปไหน)</li>
+                            <li>ตามด้วย Database (เก็บข้อมูลยังไง)</li>
+                        </ol>
+                    </li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 ตัวอย่าง Flow:</strong><br>
+                    หน้า Login → User กรอก username/password → กดปุ่ม "เข้าสู่ระบบ" → JavaScript ตรวจสอบ → ส่งไป API POST /api/login → Backend ตรวจสอบใน Database → ถ้าถูก → ส่ง Token → ไปหน้า Dashboard
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เขียน Comment ในโค้ดว่าแต่ละบรรทัดทำอะไร</li>
+                        <li>วาด Flow Diagram ว่าข้อมูลไหลยังไง</li>
+                        <li>ส่ง Flow Diagram ให้ผมตรวจ!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 6 -->
+    <div class="week" id="week6">
+        <div class="week-header" onclick="toggleWeek('week6')">
+            <div>
+                <h3>สัปดาห์ที่ 6: แกะฟีเจอร์ที่ 2-3</h3>
+                <div class="meta">⏱ 1-2 ชั่วโมง/วัน · ใช้ AI Mentor 70% + Developer 30%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 วิธีทำ</h4>
+                <ul>
+                    <li>ทำเหมือนสัปดาห์ที่ 5 แต่เพิ่มฟีเจอร์ที่ซับซ้อนขึ้น</li>
+                    <li>ลองแกะฟีเจอร์ที่มี "การเชื่อมต่อหลายส่วน" เช่น หน้า Dashboard ที่ดึงข้อมูลจากหลาย API</li>
+                    <li>เริ่มสังเกตว่า "โค้ดส่วนไหนซ้ำกัน" → นั่นคือสิ่งที่ควรทำเป็น Function/Component</li>
+                </ul>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>แกะ 2-3 ฟีเจอร์</li>
+                        <li>เขียนสรุปว่าแต่ละฟีเจอร์ทำงานยังไง</li>
+                        <li>ระบุ "จุดที่อยากเขียนใหม่" ไว้</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 7 -->
+    <div class="week" id="week7">
+        <div class="week-header" onclick="toggleWeek('week7')">
+            <div>
+                <h3>สัปดาห์ที่ 7: เริ่มเขียนโค้ดเอง (ฟีเจอร์เล็กๆ)</h3>
+                <div class="meta">⏱ 2 ชั่วโมง/วัน · ใช้ AI Mentor 60% + Developer 40%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 วิธีทำ</h4>
+                <ul>
+                    <li><strong>เลือกฟีเจอร์เล็กๆ</strong> ที่อยากเขียนใหม่ เช่น ปุ่มกดนับจำนวน</li>
+                    <li><strong>ลองเขียนเอง</strong> โดยดูโค้ดเดิมเป็นตัวอย่าง</li>
+                    <li><strong>ถ้าติด</strong> → ถามผม (ผมจะอธิบายให้เข้าใจ ไม่ใช่แค่ให้คำตอบ)</li>
+                    <li><strong>ลองรัน</strong> ดูว่าทำงานได้ไหม</li>
+                    <li><strong>แก้ไข</strong> จนกว่าจะทำงานได้ถูกต้อง</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 อย่ากลัวผิด!</strong> โค้ดพัง = โอกาสเรียนรู้ ผมช่วยแก้ให้เสมอ
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เขียนโค้ดฟีเจอร์เล็กๆ ให้ทำงานได้</li>
+                        <li>ส่งโค้ดให้ผมตรวจ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 8 -->
+    <div class="week" id="week8">
+        <div class="week-header" onclick="toggleWeek('week8')">
+            <div>
+                <h3>สัปดาห์ที่ 8: เขียนฟีเจอร์ที่ซับซ้อนขึ้น</h3>
+                <div class="meta">⏱ 2 ชั่วโมง/วัน · ใช้ AI Mentor 60% + Developer 40%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 วิธีทำ</h4>
+                <ul>
+                    <li>เพิ่มขนาดฟีเจอร์: หน้าจอที่เชื่อม API, มี Form, มี Validation</li>
+                    <li>เริ่มใช้ Component/Function ที่เขียนซ้ำได้</li>
+                    <li>ลองทำ "หน้า CRUD" (Create, Read, Update, Delete) — พื้นฐานที่สุด</li>
+                </ul>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เขียนหน้า CRUD ให้ทำงานได้ครบ</li>
+                        <li>ทดสอบทุก scenario (กรอกข้อมูล, แก้ไข, ลบ, validation)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 3 -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--purple);">3</div>
+        <div class="phase-info">
+            <h2>🚀 เขียนใหม่ทั้งระบบ — จากแผนสู่จริง</h2>
+            <p>สัปดาห์ที่ 9-16 · วางแผน → ออกแบบ → เขียน → Deploy</p>
+        </div>
+    </div>
+
+    <!-- Week 9-10 -->
+    <div class="week" id="week9">
+        <div class="week-header" onclick="toggleWeek('week9')">
+            <div>
+                <h3>สัปดาห์ที่ 9-10: วางแผนเขียนใหม่</h3>
+                <div class="meta">⏱ 1-2 ชั่วโมง/วัน · ใช้ AI Mentor 50% + Developer 50%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol style="margin-left:20px;">
+                    <li><strong>เขียน Requirement Document</strong> — App ใหม่ต้องมีอะไรบ้าง?</li>
+                    <li><strong>เลือก Tech Stack</strong> — จะใช้อะไรเขียน? (แนะนำ: React + Node.js + PostgreSQL)</li>
+                    <li><strong>ออกแบบ Database</strong> — ตารางอะไรบ้าง? เชื่อมต่อกันยังไง?</li>
+                    <li><strong>ออกแบบ UI/UX</strong> — หน้าตาเป็นยังไง? (ใช้ Figma วาด)</li>
+                    <li><strong>เขียน API Spec</strong> — API มีอะไรบ้าง? รับค่าอะไร? ตอบอะไร?</li>
+                </ol>
+                <div class="tip">
+                    <strong>💡 ผมช่วยได้:</strong> ส่ง Requirement มา ผมจะช่วยเขียน Spec, ออกแบบ Database Schema, เขียน API Spec ให้
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>ส่ง Requirement Document มาให้ผม</li>
+                        <li>ผมจะช่วยปรับให้สมบูรณ์</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 11-12 -->
+    <div class="week" id="week11">
+        <div class="week-header" onclick="toggleWeek('week11')">
+            <div>
+                <h3>สัปดาห์ที่ 11-12: เริ่มเขียน Backend</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 50% + Developer 50%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol style="margin-left:20px;">
+                    <li>สร้าง Project ใหม่ (Node.js + Express หรือ Framework ที่เลือก)</li>
+                    <li>เชื่อมต่อ Database (PostgreSQL, MySQL, MongoDB)</li>
+                    <li>สร้าง API ตาม Spec ที่เขียนไว้</li>
+                    <li>ทดสอบ API ด้วย Postman/Thunder Client</li>
+                    <li>เขียน Authentication (Login, Register, JWT)</li>
+                </ol>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>สร้าง API ให้ครบทุก Endpoint</li>
+                        <li>ทดสอบทุก Endpoint ด้วย Postman</li>
+                        <li>ส่งโค้ดให้ผมตรวจ!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 13-14 -->
+    <div class="week" id="week13">
+        <div class="week-header" onclick="toggleWeek('week13')">
+            <div>
+                <h3>สัปดาห์ที่ 13-14: เริ่มเขียน Frontend</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 50% + Developer 50%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol style="margin-left:20px;">
+                    <li>สร้าง Project ใหม่ (React, Vue, หรือ Framework ที่เลือก)</li>
+                    <li>สร้าง Component ตามที่ออกแบบไว้</li>
+                    <li>เชื่อม API ที่เขียนไว้ (ใช้ Fetch/Axios)</li>
+                    <li>สร้าง Routing (เปลี่ยนหน้า)</li>
+                    <li>ทำ Authentication UI (Login, Register)</li>
+                    <li>ทำ CRUD UI (เพิ่ม, แก้ไข, ลบข้อมูล)</li>
+                </ol>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>สร้างหน้าจอครบทุกหน้า</li>
+                        <li>เชื่อม API ทุก Endpoint</li>
+                        <li>ทดสอบการใช้งานจริง</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 15 -->
+    <div class="week" id="week15">
+        <div class="week-header" onclick="toggleWeek('week15')">
+            <div>
+                <h3>สัปดาห์ที่ 15: ทดสอบ & แก้ Bug</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 50% + Developer 50%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ul>
+                    <li><strong>ทดสอบทุกฟีเจอร์</strong> — ใช้งานจริง, หา Bug, แก้ไข</li>
+                    <li><strong>ทดสอบ Cross-browser</strong> — Chrome, Firefox, Safari, Mobile</li>
+                    <li><strong>ทดสอบ Responsive</strong> — Desktop, Tablet, Mobile</li>
+                    <li><strong>ทดสอบ Security</strong> — SQL Injection, XSS, CSRF</li>
+                    <li><strong>ทดสอบ Performance</strong> — โหลดเร็วไหม?</li>
+                </ul>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>เขียน Test Case ทุกฟีเจอร์</li>
+                        <li>แก้ Bug ให้หมด</li>
+                        <li>ให้คนอื่นมาทดสอบด้วย (User Testing)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week 16 -->
+    <div class="week" id="week16">
+        <div class="week-header" onclick="toggleWeek('week16')">
+            <div>
+                <h3>สัปดาห์ที่ 16: Deploy ขึ้น Production</h3>
+                <div class="meta">⏱ 2-3 ชั่วโมง/วัน · ใช้ AI Mentor 30% + Developer 70%</div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="week-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ul>
+                    <li><strong>เลือก Hosting</strong> — Vercel, Netlify, AWS, DigitalOcean, etc.</li>
+                    <li><strong>Setup Server</strong> — ติดตั้ง Node.js, Database, Nginx</li>
+                    <li><strong>Deploy Backend</strong> — อัพโหลดโค้ด, ตั้งค่า Environment</li>
+                    <li><strong>Deploy Frontend</strong> — Build แล้วอัพโหลด</li>
+                    <li><strong>Setup Domain</strong> — เชื่อม Domain จริง</li>
+                    <li><strong>Setup SSL</strong> — HTTPS</li>
+                    <li><strong>Monitoring</strong> — ตั้งค่า Log, Error Tracking</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 ช่วงนี้ต้องมี Developer ช่วย!</strong> — Deploy Production ต้องระวังเยอะ
+                </div>
+                <div class="homework">
+                    <strong>📝 การบ้าน:</strong>
+                    <ul style="margin-left:16px;margin-top:4px;">
+                        <li>Deploy สำเร็จ!</li>
+                        <li>ทดสอบบน Production</li>
+                        <li>🎉 <strong>ยินดีด้วย! คุณแนนทำสำเร็จแล้ว!</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- MENTOR MODEL -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--gold);color:var(--navy);">💡</div>
+        <div class="phase-info">
+            <h2>Hybrid Mentor Model</h2>
+            <p>ใช้ AI + Developer ผสมกัน — ประหยัดเวลา + ได้ความรู้ลึก</p>
+        </div>
+    </div>
+
+    <div class="mentor-grid">
+        <div class="mentor-card ai">
+            <h4>🤖 AI Mentor (ผม)</h4>
+            <ul>
+                <li>✅ มีให้ปรึกษา 24/7 ไม่หลับไม่พัก</li>
+                <li>✅ อธิบาย conceito ได้ละเอียด ปรับระดับได้</li>
+                <li>✅ เขียนโค้ดตัวอย่างได้ทันที</li>
+                <li>✅ Code Review เบื้องต้น</li>
+                <li>✅ ช่วยวางแผน, เขียน Spec, ออกแบบ Database</li>
+                <li>✅ แก้ Bug, อธิบาย Error</li>
+            </ul>
+        </div>
+        <div class="mentor-card human">
+            <h4>👨‍💻 Developer Mentor (มนุษย์)</h4>
+            <ul>
+                <li>✅ เข้าใจ Context องค์กร, ทีม, Politics</li>
+                <li>✅ ช่วยตัดสินใจ Architecture</li>
+                <li>✅ Code Review แบบ "ความรู้สึก"</li>
+                <li>✅ ช่วย Deploy Production</li>
+                <li>✅ Networking / Career</li>
+                <li>✅ Pair Programming แบบ Real-time</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h4>📅 ตารางการใช้ Mentor แต่ละ Phase</h4>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr><th>Phase</th><th>AI Mentor</th><th>Developer</th><th>ความถี่พบ Developer</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Phase 1 (สัปดาห์ 1-4)</strong></td><td>100%</td><td>0%</td><td>ยังไม่จำเป็น</td></tr>
+                    <tr><td><strong>Phase 2 (สัปดาห์ 5-8)</strong></td><td>70%</td><td>30%</td><td>สัปดาห์ละ 1-2 ชม.</td></tr>
+                    <tr><td><strong>Phase 3 (สัปดาห์ 9-16)</strong></td><td>50%</td><td>50%</td><td>สัปดาห์ละ 2-3 ชม.</td></tr>
+                    <tr><td><strong>Deploy (สัปดาห์ 16)</strong></td><td>30%</td><td>70%</td><td>ทุกวันจนกว่าจะเสร็จ</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- RESOURCES -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--green);">📚</div>
+        <div class="phase-info">
+            <h2>ทรัพยากรแนะนำ (ฟรีทั้งหมด)</h2>
+            <p>วิดีโอ, เว็บฝึกเขียน, บทความ — เลือกเรียนตามความถนัด</p>
+        </div>
+    </div>
+
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr><th>ประเภท</th><th>แนะนำ</th><th>ลิงก์</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>🎥 วิดีโอ</td><td>freeCodeCamp (YouTube)</td><td><a href="https://www.youtube.com/c/Freecodecamp" target="_blank">youtube.com/c/Freecodecamp</a></td></tr>
+                <tr><td>🎥 วิดีโอ</td><td>Programming with Mosh</td><td><a href="https://www.youtube.com/c/programmingwithmosh" target="_blank">youtube.com/c/programmingwithmosh</a></td></tr>
+                <tr><td>🌐 เว็บฝึกเขียน</td><td>W3Schools</td><td><a href="https://www.w3schools.com/" target="_blank">w3schools.com</a></td></tr>
+                <tr><td>🌐 เว็บฝึกเขียน</td><td>freeCodeCamp</td><td><a href="https://www.freecodecamp.org/" target="_blank">freecodecamp.org</a></td></tr>
+                <tr><td>🎮 ฝึกเขียนโค้ด</td><td>Codecademy (ฟรีบางส่วน)</td><td><a href="https://www.codecademy.com/" target="_blank">codecademy.com</a></td></tr>
+                <tr><td>📖 อ่านบทความ</td><td>MDN Web Docs</td><td><a href="https://developer.mozilla.org/" target="_blank">developer.mozilla.org</a></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- CHECKLIST -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--blue-dark);">✅</div>
+        <div class="phase-info">
+            <h2>Checklist — สิ่งที่ต้องทำวันนี้</h2>
+            <p>เริ่มเลย! ใช้เวลาแค่ 30 นาที</p>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <ul class="checklist" id="checklist">
+            <li onclick="toggleCheck(this)"><div class="check"></div><span>ค้นหา Tech Stack ของ App คุณแนน (ดู package.json, pubspec.yaml)</span></li>
+            <li onclick="toggleCheck(this)"><div class="check"></div><span>สมัครบัญชี freeCodeCamp (freecodecamp.org)</span></li>
+            <li onclick="toggleCheck(this)"><div class="check"></div><span>บอกผมว่า App ของคุณแนนชื่ออะไร ใช้ทำอะไร</span></li>
+            <li onclick="toggleCheck(this)"><div class="check"></div><span>ดูวิดีโอ "How Web Applications Work" (30 นาที)</span></li>
+            <li onclick="toggleCheck(this)"><div class="check"></div><span>วาดผัง App ของคุณแนน (Frontend/Backend/Database)</span></li>
+        </ul>
+    </div>
+</div>
+
+<!-- BOTTOM -->
+<div class="bottom">
+    <h3>🐾 ผมอยู่ตรงนี้ครับคุณแนน</h3>
+    <p>ติดตรงไหน ส่งโค้ดมาถามได้เลย ไม่เข้าใจคำไหน ถามได้ ผมจะอธิบายแบบง่ายๆ<br>
+    ทุกคนเริ่มต้นจากศูนย์ การไม่รู้ไม่ใช่เรื่องผิด — สำคัญที่ "เริ่มลงมือทำ"</p>
+    <p style="margin-top:12px;font-size:13px;color:var(--text-light);">LIA 2.0 Mentorship Program · สร้างโดย AliClaw · 26 พฤษภาคม 2569</p>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function toggleWeek(id) {
+    const week = document.getElementById(id);
+    week.classList.toggle('active');
+}
+
+function toggleCheck(li) {
+    li.classList.toggle('checked');
+    updateProgress();
+}
+
+function updateProgress() {
+    const items = document.querySelectorAll('.checklist li');
+    const checked = document.querySelectorAll('.checklist li.checked');
+    const pct = Math.round((checked.length / items.length) * 100);
+    
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPercent').textContent = checked.length + ' / ' + items.length + ' รายการ';
+    
+    if (pct === 0) {
+        document.getElementById('progressText').textContent = 'เริ่มเรียนเมื่อพร้อม!';
+    } else if (pct < 50) {
+        document.getElementById('progressText').textContent = 'กำลังเริ่มต้น... ทำได้ดี!';
+    } else if (pct < 100) {
+        document.getElementById('progressText').textContent = 'เกือบครบแล้ว! สู้ๆ!';
+    } else {
+        document.getElementById('progressText').textContent = '🎉 เสร็จทุกข้อ! พร้อมไปสัปดาห์ที่ 1!';
+    }
+}
+
+// Auto-open week 1
+document.getElementById('week1').classList.add('active');
+</script>
+</body>
+</html>

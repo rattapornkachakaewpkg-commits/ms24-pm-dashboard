@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "searxng": {
+      "version": "1.0.3",
+      "installedAt": 1776255382914
+    },
+    "canva-connect": {
+      "version": "1.0.0",
+      "installedAt": 1780367005678
+    }
+  }
+}

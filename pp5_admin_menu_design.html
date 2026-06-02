@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PP5 - Admin Pad Menu Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f1f5f9;min-height:100vh}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:linear-gradient(180deg,#0f172a 0%,#1e293b 100%);color:#fff;position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-header{padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo{display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:1em}
+.sidebar-logo .text{font-size:0.95em;font-weight:800}
+.sidebar-logo .sub{font-size:0.65em;color:#94a3b8;margin-top:2px}
+.sidebar-nav{flex:1;padding:12px 0}
+.nav-group{margin-bottom:8px}
+.nav-group-title{font-size:0.6em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748b;padding:8px 20px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:0.82em;font-weight:500;color:#cbd5e1;cursor:pointer;transition:all 0.15s;position:relative}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:#fff}
+.nav-item.active{background:rgba(59,130,246,0.15);color:#60a5fa;border-right:3px solid #3b82f6}
+.nav-item .ni-icon{width:20px;text-align:center;font-size:1em}
+.nav-item .ni-badge{margin-left:auto;background:#ef4444;color:#fff;padding:2px 7px;border-radius:8px;font-size:0.7em;font-weight:700}
+.nav-item .ni-badge.info{background:#3b82f6}
+.sidebar-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px}
+.sidebar-footer .sf-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:700}
+.sidebar-footer .sf-info{flex:1}
+.sidebar-footer .sf-name{font-size:0.82em;font-weight:600}
+.sidebar-footer .sf-role{font-size:0.65em;color:#94a3b8}
+
+/* MAIN */
+.main{flex:1;margin-left:260px}
+.topbar{background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar h1{font-size:1em;font-weight:700;color:#0f172a}
+.topbar .breadcrumb{font-size:0.72em;color:#94a3b8;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.search-box{display:flex;align-items:center;background:#f1f5f9;border-radius:10px;padding:8px 12px;gap:8px;min-width:240px}
+.search-box input{border:none;background:transparent;outline:none;font-size:0.82em;color:#0f172a;width:100%;font-family:inherit}
+.topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1em;transition:0.15s;position:relative}
+.topbar-btn:hover{background:#f8fafc}
+.topbar-btn .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+
+.content{padding:24px}
+
+/* CARDS */
+.card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:16px}
+.card-header{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:0.9em;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+
+/* MENU GRID */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.menu-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:24px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.menu-card:hover{box-shadow:0 8px 25px rgba(0,0,0,0.08);transform:translateY(-2px);border-color:#3b82f6}
+.menu-card .mc-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3em;margin-bottom:12px}
+.menu-card .mc-icon.blue{background:#eff6ff;color:#2563eb}
+.menu-card .mc-icon.green{background:#f0fdf4;color:#059669}
+.menu-card .mc-icon.yellow{background:#fffbeb;color:#d97706}
+.menu-card .mc-icon.purple{background:#faf5ff;color:#7c3aed}
+.menu-card .mc-icon.red{background:#fef2f2;color:#dc2626}
+.menu-card .mc-icon.teal{background:#f0fdfa;color:#0d9488}
+.menu-card .mc-title{font-size:0.92em;font-weight:700;color:#0f172a;margin-bottom:4px}
+.menu-card .mc-desc{font-size:0.78em;color:#64748b;margin-bottom:12px;line-height:1.5}
+.menu-card .mc-items{display:flex;flex-wrap:wrap;gap:4px}
+.menu-card .mc-item{padding:3px 8px;background:#f1f5f9;border-radius:6px;font-size:0.68em;color:#475569;font-weight:500}
+.menu-card .mc-badge{position:absolute;top:12px;right:12px;padding:3px 8px;border-radius:6px;font-size:0.65em;font-weight:700}
+.menu-card .mc-badge.urgent{background:#fef2f2;color:#dc2626}
+.menu-card .mc-badge.new{background:#eff6ff;color:#2563eb}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center}
+.stat-card .sc-value{font-size:1.5em;font-weight:800;color:#0f172a}
+.stat-card .sc-label{font-size:0.72em;color:#64748b;margin-top:2px}
+
+/* TABLE */
+.table-scroll{overflow-x:auto;border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:0.8em}
+th{background:#f8fafc;padding:10px 12px;text-align:left;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0;font-size:0.9em}
+td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+tr:hover td{background:#f8fafc}
+
+/* BADGES */
+.badge{display:inline-flex;padding:3px 8px;border-radius:6px;font-size:0.7em;font-weight:600}
+.badge.success{background:#dcfce7;color:#166534}
+.badge.warning{background:#fef3c7;color:#92400e}
+.badge.danger{background:#fee2e2;color:#991b1b}
+.badge.info{background:#dbeafe;color:#1e40af}
+
+/* RATIONALE */
+.rationale{background:#f0f9ff;border-left:4px solid #2563eb;padding:16px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+.rationale strong{display:block;font-size:0.82em;color:#0369a1;margin-bottom:4px}
+.rationale p{font-size:0.82em;color:#0c4a6e}
+
+@media(max-width:1024px){.sidebar{width:0;overflow:hidden}.main{margin-left:0}.stats-row{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.stats-row,.menu-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR - Admin Pad Menu -->
+<div class="sidebar">
+<div class="sidebar-header">
+<div class="sidebar-logo">
+<div class="icon">PP5</div>
+<div><div class="text">PKG AI School</div><div class="sub">Admin Pad Portal</div></div>
+</div>
+</div>
+
+<div class="sidebar-nav">
+<div class="nav-group">
+<div class="nav-group-title">เมนูหลัก</div>
+<div class="nav-item active" onclick="showPage('overview',this)"><span class="ni-icon">📊</span>ภาพรวม Dashboard</div>
+<div class="nav-item" onclick="showPage('members',this)"><span class="ni-icon">👥</span>จัดการสมาชิก</div>
+<div class="nav-item" onclick="showPage('courses',this)"><span class="ni-icon">📚</span>จัดการหลักสูตร</div>
+<div class="nav-item" onclick="showPage('approvals',this)"><span class="ni-icon">✅</span>อนุมัติงาน<span class="ni-badge">3</span></div>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">พัฒนา</div>
+<div class="nav-item" onclick="showPage('journey',this)"><span class="ni-icon">🔄</span>วงจรการเรียนรู้</div>
+<div class="nav-item" onclick="showPage('ai-roleplay',this)"><span class="ni-icon">🤖</span>AI ตรวจ Role Play<span class="ni-badge info">ใหม่</span></div>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">วิเคราะห์</div>
+<div class="nav-item" onclick="showPage('reports',this)"><span class="ni-icon">📈</span>รายงาน & Analytics</div>
+<div class="nav-item" onclick="showPage('capital',this)"><span class="ni-icon">💰</span>จัดการ 3 ทุน</div>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">ระบบ</div>
+<div class="nav-item" onclick="showPage('settings',this)"><span class="ni-icon">⚙️</span>ตั้งค่าระบบ</div>
+<div class="nav-item" onclick="showPage('backup',this)"><span class="ni-icon">💾</span>Backup & Restore</div>
+</div>
+</div>
+
+<div class="sidebar-footer">
+<div class="sf-avatar">L</div>
+<div class="sf-info"><div class="sf-name">lookmee</div><div class="sf-role">ADMIN PAD</div></div>
+</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+<div class="topbar">
+<div><h1 id="pageTitle">📊 ภาพรวม Dashboard</h1><div class="breadcrumb" id="breadcrumb">Admin Pad -> หน้าแรก</div></div>
+<div class="topbar-right">
+<div class="search-box"><span>🔍</span><input placeholder="ค้นหาสมาชิก, หลักสูตร..."></div>
+<div class="topbar-btn">🔔<span class="dot"></span></div>
+<div class="topbar-btn">⚙️</div>
+</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== PAGE: OVERVIEW ==================== -->
+<div class="page active" id="pageOverview">
+<div class="rationale">
+<strong>เหตุผล: ทำไมต้องเป็นหน้าแรก?</strong>
+<p>ADMIN PAD ต้องเห็นภาพรวมทั้งหมดในหน้าเดียว - KPI ด่วน, งานค้างอนุมัติ, สถานะสมาชิก - เพื่อตัดสินใจได้ทันทีไม่ต้องกดเข้าหลายหน้า</p>
+</div>
+
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value">492</div><div class="sc-label">สมาชิกทั้งหมด</div></div>
+<div class="stat-card"><div class="sc-value">78.3%</div><div class="sc-label">ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="sc-value">105</div><div class="sc-label">หลักสูตร</div></div>
+<div class="stat-card"><div class="sc-value">8,023</div><div class="sc-label">ชม.อบรมรวม</div></div>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>🔔 งานค้างอนุมัติ (3 รายการ)</h3><span class="badge danger">ด่วน</span></div>
+<div class="card-body">
+<table><thead><tr><th>รายการ</th><th>ประเภท</th><th>ผู้ขอ</th><th>วันที่</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>สมัครอบรม "ภาวะผู้นำยุคใหม่"</td><td><span class="badge info">สมัคร</span></td><td>นาย โกมล</td><td>22 พ.ค.</td><td><span class="badge warning">รออนุมัติ</span></td><td><button style="padding:4px 10px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:0.75em;cursor:pointer">อนุมัติ</button> <button style="padding:4px 10px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ปฏิเสธ</button></td></tr>
+<tr><td>ส่งงาน Role Play - การบริการลูกค้า</td><td><span class="badge purple">ส่งงาน</span></td><td>น.ส. สมหญิง</td><td>21 พ.ค.</td><td><span class="badge warning">รอ AI ตรวจ</span></td><td><button style="padding:4px 10px;background:#3b82f6;color:#fff;border:none;border-radius:6px;font-size:0.75em;cursor:pointer">AI ตรวจ</button></td></tr>
+<tr><td>เปิดหลักสูตรใหม่ "AI Strategy 2026"</td><td><span class="badge info">เปิดหลักสูตร</span></td><td>ทีม HR</td><td>20 พ.ค.</td><td><span class="badge warning">รอดำเนินการ</span></td><td><button style="padding:4px 10px;background:#3b82f6;color:#fff;border:none;border-radius:6px;font-size:0.75em;cursor:pointer">เปิด</button></td></tr>
+</tbody></table>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>📊 KPI / Progress แยก 3 ทุน</h3></div>
+<div class="card-body">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+<div style="padding:16px;background:#eff6ff;border-radius:10px"><div style="font-size:0.8em;font-weight:600;color:#1e40af;margin-bottom:8px">ทุนองค์กร</div><div style="font-size:1.5em;font-weight:800;color:#1e40af">89.0%</div><div style="height:6px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:89%;background:#3b82f6;border-radius:3px"></div></div><div style="font-size:0.7em;color:#64748b;margin-top:5px">4,806 / 5,400 ผ่านเกณฑ์</div></div>
+<div style="padding:16px;background:#fffbeb;border-radius:10px"><div style="font-size:0.8em;font-weight:600;color:#92400e;margin-bottom:8px">ทุนมนุษย์</div><div style="font-size:1.5em;font-weight:800;color:#92400e">76.5%</div><div style="height:6px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:76.5%;background:#f59e0b;border-radius:3px"></div></div><div style="font-size:0.7em;color:#64748b;margin-top:5px">2,850 / 3,725 ผ่านเกณฑ์</div></div>
+<div style="padding:16px;background:#f0fdfa;border-radius:10px"><div style="font-size:0.8em;font-weight:600;color:#065f46;margin-bottom:8px">ทุนสารสนเทศ</div><div style="font-size:1.5em;font-weight:800;color:#065f46">82.1%</div><div style="height:6px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:82.1%;background:#10b981;border-radius:3px"></div></div><div style="font-size:0.7em;color:#64748b;margin-top:5px">1,642 / 2,000 ผ่านเกณฑ์</div></div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>👥 สถานะสมาชิกล่าสุด (5 ลำดับ)</h3><button style="padding:5px 12px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ดูทั้งหมด</button></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>สมาชิก</th><th>BU</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th><th></th></tr></thead><tbody>
+<tr><td style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700">G</div><div><div style="font-weight:600">นาย โกมล</div><div style="font-size:0.7em;color:#64748b">PMSG</div></div></td><td>PMSG</td><td>28/44</td><td>3.80</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ดูรายละเอียด</button></td></tr>
+<tr><td style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#10b981,#34d399);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700">ค</div><div><div style="font-weight:600">คณิศร ฉัยยา</div><div style="font-size:0.7em;color:#64748b">CPDG</div></div></td><td>CPDG</td><td>22/44</td><td>3.92</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ดูรายละเอียด</button></td></tr>
+<tr><td style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700">ณ</div><div><div style="font-weight:600">ณัฐฑริณี คำนึง</div><div style="font-size:0.7em;color:#64748b">CPDG</div></div></td><td>CPDG</td><td>20/44</td><td>3.60</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ดูรายละเอียด</button></td></tr>
+<tr><td style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700">✓</div><div><div style="font-weight:600">โกมล ไชยประสูตร</div><div style="font-size:0.7em;color:#64748b">PMSG</div></div></td><td>PMSG</td><td>44/44</td><td>3.80</td><td><span class="badge success">ผ่านแล้ว</span></td><td><button style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.75em;cursor:pointer">ดูรายละเอียด</button></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: MEMBERS ==================== -->
+<div class="page" id="pageMembers">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้าจัดการสมาชิก?</strong><p>ADMIN ต้องดู/แก้ไข/เพิ่มข้อมูลสมาชิก, กำหนด BU/ทีม, ดูสถานะการอบรม, ติดตามความคืบหน้ารายบุคคล - เป็นงานหลักที่ทำทุกวัน</p></div>
+
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+<button style="padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:0.82em;font-weight:600;cursor:pointer">เพิ่มสมาชิกใหม่</button>
+<button style="padding:8px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;cursor:pointer">Import Excel</button>
+<button style="padding:8px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;cursor:pointer">Export PDF</button>
+<button style="padding:8px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;cursor:pointer">กรองตาม BU</button>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>👥 รายชื่อสมาชิกทั้งหมด (492 คน)</h3></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>ID</th><th>ชื่อ-สกุล</th><th>BU</th><th>ทีม</th><th>หน่วยกิต</th><th>GPA</th><th>ชม.</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td>123456</td><td>นาย โกมล ไชยประสูตร</td><td>PMSG</td><td>ตรวจสอบธุรกิจ</td><td>28/44</td><td>3.80</td><td>24</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+<tr><td>5604030</td><td>คณิศร ฉัยยา</td><td>CPDG</td><td>บริการลูกค้า</td><td>22/44</td><td>3.92</td><td>18</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+<tr><td>6006083</td><td>ณัฐฑริณี คำนึง</td><td>CPDG</td><td>ADM</td><td>20/44</td><td>3.60</td><td>16</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+<tr><td>9601009</td><td>โกมล ไชยประสูตร</td><td>PMSG</td><td>ตรวจสอบธุรกิจ</td><td>44/44</td><td>3.80</td><td>48</td><td><span class="badge success">ผ่านแล้ว</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: COURSES ==================== -->
+<div class="page" id="pageCourses">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้าจัดการหลักสูตร?</strong><p>ADMIN ต้องสร้าง/แก้ไขหลักสูตร, กำหนดทุน (องค์กร/มนุษย์/สารสนเทศ), กำหนดวิทยากร, วันที่, จำนวนที่รับ - เป็นเนื้อหาหลักของระบบ</p></div>
+
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+<button style="padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:0.82em;font-weight:600;cursor:pointer">เพิ่มหลักสูตรใหม่</button>
+<button style="padding:8px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;cursor:pointer">กรองตามทุน</button>
+<button style="padding:8px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;font-size:0.82em;cursor:pointer">Export</button>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>📚 หลักสูตรทั้งหมด (105 หลักสูตร)</h3></div>
+<div class="card-body" style="padding:0">
+<table><thead><tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th>ทุน</th><th>วิทยากร</th><th>วันที่</th><th>ผู้สมัคร</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+<tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td><span class="badge info">องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td>474</td><td><span class="badge success">เสร็จสิ้น</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+<tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">23010710</code></td><td>cost down pkg</td><td><span class="badge info">องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td>437</td><td><span class="badge success">เสร็จสิ้น</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+<tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em">NEW-AI-01</code></td><td>การใช้ AI เพื่อการตัดสินใจ</td><td><span class="badge" style="background:#d1fae5;color:#065f46">สารสนเทศ</span></td><td>AI Expert</td><td>ต.ค. 69</td><td>0</td><td><span class="badge warning">รอดำเนินการ</span></td><td><button style="padding:3px 8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;font-size:0.7em;cursor:pointer">แก้ไข</button></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: APPROVALS ==================== -->
+<div class="page" id="pageApprovals">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องแยกหน้าอนุมัติ?</strong><p>งานอนุมัติเป็นงานสำคัญที่สุดของ ADMIN - ต้องเห็นชัดเจน, แยกออกจากหน้าอื่น, มีปุ่มอนุมัติ/ปฏิเสธในหน้าเดียว - ลดจาก 5-6 คลิก เหลือ 2 คลิก</p></div>
+
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value" style="color:#d97706">3</div><div class="sc-label">รออนุมัติ</div></div>
+<div class="stat-card"><div class="sc-value" style="color:#059669">12</div><div class="sc-label">อนุมัติแล้ว (สัปดาห์นี้)</div></div>
+<div class="stat-card"><div class="sc-value" style="color:#dc2626">1</div><div class="sc-label">ปฏิเสธ (สัปดาห์นี้)</div></div>
+<div class="stat-card"><div class="sc-value">2.3 นาที</div><div class="sc-label">เวลาอนุมัติเฉลี่ย</div></div>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>✅ รายการรออนุมัติ</h3></div>
+<div class="card-body">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0">
+<div style="width:44px;height:44px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.2em">📋</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</div><div style="font-size:0.8em;color:#64748b;margin-top:2px">รออนุมัติจาก ADMIN PAD | 22 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button style="padding:6px 14px;border-radius:6px;border:none;background:#10b981;color:#fff;font-size:0.8em;cursor:pointer;font-weight:600">อนุมัติ</button><button style="padding:6px 14px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:0.8em;cursor:pointer">ปฏิเสธ</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0">
+<div style="width:44px;height:44px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:1.2em">📤</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">น.ส. สมหญิง ส่งงาน Role Play</div><div style="font-size:0.8em;color:#64748b;margin-top:2px">รอ AI ตรวจ + ADMIN ทวนสอบ | 21 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button style="padding:6px 14px;border-radius:6px;border:none;background:#3b82f6;color:#fff;font-size:0.8em;cursor:pointer;font-weight:600">AI ตรวจ</button><button style="padding:6px 14px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:0.8em;cursor:pointer">ดูงาน</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0">
+<div style="width:44px;height:44px;border-radius:12px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:1.2em">📚</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">หลักสูตรใหม่ "AI Strategy 2026"</div><div style="font-size:0.8em;color:#64748b;margin-top:2px">รอเปิดรับสมัคร | 20 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button style="padding:6px 14px;border-radius:6px;border:none;background:#3b82f6;color:#fff;font-size:0.8em;cursor:pointer;font-weight:600">เปิดรับสมัคร</button><button style="padding:6px 14px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:0.8em;cursor:pointer">แก้ไข</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: JOURNEY ==================== -->
+<div class="page" id="pageJourney">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้าวงจรการเรียนรู้?</strong><p>ADMIN ต้องเห็น/จัดการเส้นทางการพัฒนาสมาชิก 9 ก้าว ตั้งแต่ Day 1 ถึง ผู้นำ - เพื่อวางแผน, ติดตาม, ปรับปรุงเส้นทางพัฒนา</p></div>
+
+<div class="card">
+<div class="card-header"><h3>🔄 วงจรการเรียนรู้สมาชิก 1 คน - 9 ก้าว</h3></div>
+<div class="card-body">
+<div style="position:relative;padding-left:28px">
+<div style="position:absolute;left:11px;top:0;bottom:0;width:2px;background:#e2e8f0"></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2">✓</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 1: สมาชิกใหม่ (Day 1)</div><div style="font-size:0.75em;color:#64748b">ปฐมนิเทศ, เรียนรู้วัฒนธรรม, เปิด Account, กำหนด IDP</div><div style="display:flex;gap:4px;margin-top:6px"><span class="badge info">องค์กร</span><span class="badge" style="background:#fef3c7;color:#924000">มนุษย์</span><span class="badge" style="background:#d1fae5;color:#065f46">สารสนเทศ</span></div></div></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2">✓</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 2: อบรมปฐมนิเทศ (เดือนที่ 1)</div><div style="font-size:0.75em;color:#64748b">LIA, Cost Down, ความปลอดภัย, การใช้ AI</div></div></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2">✓</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 3: พัฒนาทุนมนุษย์ (เดือนที่ 2-3)</div><div style="font-size:0.75em;color:#64748b">การสื่อสาร, ทีมเวิร์ค, การแก้ปัญหา</div></div></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#3b82f6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2;box-shadow:0 0 0 4px #dbeafe">4</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:2px solid #3b82f6"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 4: ทำงานจริง (เดือนที่ 3-6) ← กำลังอยู่</div><div style="font-size:0.75em;color:#64748b">ปฏิบัติงานจริง, เก็บชั่วโมง, สะสมหน่วยกิต</div></div></div>
+<div style="position:relative;padding-bottom:24px"><div style="position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2;border:2px solid #e2e8f0">5</div><div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;opacity:0.7"><div style="font-size:0.85em;font-weight:700;margin-bottom:4px">ก้าวที่ 5: ผ่านประเมิน (เดือนที่ 6)</div><div style="font-size:0.75em;color:#64748b">หน่วยกิต >= 44, GPA >= 3.5, ผ่านที่ 3</div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: AI ROLEPLAY ==================== -->
+<div class="page" id="pageAiRoleplay">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้า AI ตรวจ Role Play?</strong><p>ใช้ AI วิเคราะห์ Role Play -> ให้คะแนนตาม Rubric -> สร้าง Feedback อัตโนมัติ - ลดเวลาตรวจจาก 3-5 วัน -> 30 วินาที, ลดภาระงานครู 80%</p></div>
+
+<div class="stats-row">
+<div class="stat-card"><div class="sc-value">24</div><div class="sc-label">รอ AI ตรวจ</div></div>
+<div class="stat-card"><div class="sc-value">156</div><div class="sc-label">ตรวจแล้ว (เดือนนี้)</div></div>
+<div class="stat-card"><div class="sc-value">30 วิ</div><div class="sc-label">เวลาตรวจเฉลี่ย</div></div>
+<div class="stat-card"><div class="sc-value">80%</div><div class="sc-label">ลดภาระงานครู</div></div>
+</div>
+
+<div class="card">
+<div class="card-header"><h3>🤖 Workflow: AI ตรวจ Role Play</h3></div>
+<div class="card-body">
+<div style="display:flex;gap:0;align-items:flex-start;overflow-x:auto;padding:8px 0">
+<div style="flex:1;min-width:120px;text-align:center;position:relative"><div style="width:40px;height:40px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px">✓</div><div style="font-size:0.75em;font-weight:700">อัด Video</div><div style="font-size:0.65em;color:#64748b">ครูฝึก/สมาชิก</div></div>
+<div style="flex:1;min-width:120px;text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px">✓</div><div style="font-size:0.75em;font-weight:700">อัปโหลด</div><div style="font-size:0.65em;color:#64748b">เข้าระบบ PP5</div></div>
+<div style="flex:1;min-width:120px;text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:#3b82f6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px;box-shadow:0 0 0 4px #dbeafe">AI</div><div style="font-size:0.75em;font-weight:700">AI วิเคราะห์</div><div style="font-size:0.65em;color:#64748b">ตรวจตาม Rubric</div></div>
+<div style="flex:1;min-width:120px;text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px;border:2px solid #e2e8f0">FB</div><div style="font-size:0.75em;font-weight:700">Feedback</div><div style="font-size:0.65em;color:#64748b">AI สร้างคำแนะนำ</div></div>
+<div style="flex:1;min-width:120px;text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px;border:2px solid #e2e8f0">✓</div><div style="font-size:0.75em;font-weight:700">ครูทวนสอบ</div><div style="font-size:0.65em;color:#64748b">ยืนยัน/แก้ไข</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: REPORTS ==================== -->
+<div class="page" id="pageReports">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้ารายงาน?</strong><p>ADMIN ต้อง Export PDF/Excel ส่งผู้บริหาร, ดู KPI แต่ละ BU, วิเคราะห์แนวโน้ม - เป็นงานที่ทำสัปดาห์ละครั้ง</p></div>
+
+<div class="menu-grid">
+<div class="menu-card"><div class="mc-icon blue">📊</div><div class="mc-title">รายงานภาพรวม</div><div class="mc-desc">KPI ทั้งองค์กร, ผ่านเกณฑ์, ชม.อบรม</div><div class="mc-items"><span class="mc-item">PDF</span><span class="mc-item">Excel</span><span class="mc-item">แยก BU</span></div></div>
+<div class="menu-card"><div class="mc-icon green">📈</div><div class="mc-title">รายงาน Progress</div><div class="mc-desc">ความคืบหน้ารายบุคคล, รายทีม</div><div class="mc-items"><span class="mc-item">Timeline</span><span class="mc-item">เปรียบเทียบ</span></div></div>
+<div class="menu-card"><div class="mc-icon yellow">💰</div><div class="mc-title">รายงาน 3 ทุน</div><div class="mc-desc">แยกทุนองค์กร/มนุษย์/สารสนเทศ</div><div class="mc-items"><span class="mc-item">เปรียบเทียบ</span><span class="mc-item">แนวโน้ม</span></div></div>
+<div class="menu-card"><div class="mc-icon purple">🤖</div><div class="mc-title">รายงาน AI Role Play</div><div class="mc-desc">ผลการตรวจ, Feedback, สถิติ</div><div class="mc-items"><span class="mc-item">Rubric</span><span class="mc-item">คะแนน</span></div></div>
+</div>
+</div>
+
+<!-- ==================== PAGE: CAPITAL ==================== -->
+<div class="page" id="pageCapital">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้าจัดการ 3 ทุน?</strong><p>ADMIN ต้องกำหนด/แก้ไขหลักสูตรแต่ละทุน, ดูความคืบหน้าแยกทุน, วางแผนพัฒนาทั้ง 3 ทุนให้สมดุล</p></div>
+
+<div class="menu-grid">
+<div class="menu-card"><div class="mc-icon blue">🏢</div><div class="mc-title">ทุนองค์กร</div><div class="mc-desc">วัฒนธรรม, กระบวนการ, กลยุทธ์ PKG</div><div class="mc-items"><span class="mc-item">38 หลักสูตร</span><span class="mc-item">3,200 ชม.</span><span class="mc-item">89.0% ผ่าน</span></div></div>
+<div class="menu-card"><div class="mc-icon yellow">👤</div><div class="mc-title">ทุนมนุษย์</div><div class="mc-desc">ทักษะ, ภาวะผู้นำ, การสื่อสาร</div><div class="mc-items"><span class="mc-item">35 หลักสูตร</span><span class="mc-item">2,800 ชม.</span><span class="mc-item">76.5% ผ่าน</span></div></div>
+<div class="menu-card"><div class="mc-icon green">💻</div><div class="mc-title">ทุนสารสนเทศ</div><div class="mc-desc">AI, Digital, Automation</div><div class="mc-items"><span class="mc-item">32 หลักสูตร</span><span class="mc-item">2,023 ชม.</span><span class="mc-item">82.1% ผ่าน</span></div></div>
+</div>
+</div>
+
+<!-- ==================== PAGE: SETTINGS ==================== -->
+<div class="page" id="pageSettings">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้าตั้งค่า?</strong><p>ADMIN ต้องกำหนดเกณฑ์ (GPA, หน่วยกิต), จัดการสิทธิ์, Backup ข้อมูล - เป็นงานที่ทำเดือนละครั้ง</p></div>
+
+<div class="menu-grid">
+<div class="menu-card"><div class="mc-icon blue">📏</div><div class="mc-title">เกณฑ์การประเมิน</div><div class="mc-desc">GPA ขั้นต่ำ, หน่วยกิต, ผ่านที่</div><div class="mc-items"><span class="mc-item">GPA >= 3.5</span><span class="mc-item">44 หน่วยกิต</span><span class="mc-item">ผ่านที่ 3</span></div></div>
+<div class="menu-card"><div class="mc-icon green">🔐</div><div class="mc-title">จัดการสิทธิ์</div><div class="mc-desc">ADMIN, สมาชิก, BMC, HR</div><div class="mc-items"><span class="mc-item">Role-Based</span><span class="mc-item">BU Filter</span></div></div>
+<div class="menu-card"><div class="mc-icon yellow">🏷️</div><div class="mc-title">จัดการ BU/ทีม</div><div class="mc-desc">เพิ่ม/แก้ไข BU, ทีม, โครงสร้าง</div><div class="mc-items"><span class="mc-item">7 BU</span><span class="mc-item">แก้ไขได้</span></div></div>
+<div class="menu-card"><div class="mc-icon red">🔔</div><div class="mc-title">แจ้งเตือน</div><div class="mc-desc">Email, Line, In-App Notification</div><div class="mc-items"><span class="mc-item">เปิด/ปิด</span><span class="mc-item">กำหนดเวลา</span></div></div>
+</div>
+</div>
+
+<!-- ==================== PAGE: BACKUP ==================== -->
+<div class="page" id="pageBackup">
+<div class="rationale"><strong>เหตุผล: ทำไมต้องมีหน้า Backup?</strong><p>ADMIN ต้อง Backup ข้อมูลระบบ, Restore เมื่อมีปัญหา - เป็นงานที่ทำเดือนละครั้ง แต่สำคัญมาก</p></div>
+
+<div class="menu-grid">
+<div class="menu-card"><div class="mc-icon blue">💾</div><div class="mc-title">Backup ข้อมูล</div><div class="mc-desc">Backup สมาชิก, หลักสูตร, ผลอบรม</div><div class="mc-items"><span class="mc-item">อัตโนมัติ</span><span class="mc-item">ด้วยมือ</span></div></div>
+<div class="menu-card"><div class="mc-icon green">🔄</div><div class="mc-title">Restore ข้อมูล</div><div class="mc-desc">กู้คืนข้อมูลจาก Backup</div><div class="mc-items"><span class="mc-item">เลือกวันที่</span><span class="mc-item">ยืนยัน</span></div></div>
+<div class="menu-card"><div class="mc-icon yellow">📋</div><div class="mc-title">ประวัติ Backup</div><div class="mc-desc">ดูรายการ Backup ทั้งหมด</div><div class="mc-items"><span class="mc-item">วันที่</span><span class="mc-item">ขนาด</span><span class="mc-item">สถานะ</span></div></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var pages = { 'overview': 'pageOverview', 'members': 'pageMembers', 'courses': 'pageCourses', 'approvals': 'pageApprovals', 'journey': 'pageJourney', 'ai-roleplay': 'pageAiRoleplay', 'reports': 'pageReports', 'capital': 'pageCapital', 'settings': 'pageSettings', 'backup': 'pageBackup' };
+  var titles = { 'overview': ['ภาพรวม Dashboard', 'Admin Pad -> หน้าแรก'], 'members': ['จัดการสมาชิก', 'Admin Pad -> สมาชิก'], 'courses': ['จัดการหลักสูตร', 'Admin Pad -> หลักสูตร'], 'approvals': ['อนุมัติงาน', 'Admin Pad -> อนุมัติ'], 'journey': ['วงจรการเรียนรู้', 'Admin Pad -> Journey'], 'ai-roleplay': ['AI ตรวจ Role Play', 'Admin Pad -> AI'], 'reports': ['รายงาน & Analytics', 'Admin Pad -> รายงาน'], 'capital': ['จัดการ 3 ทุน', 'Admin Pad -> ทุน'], 'settings': ['ตั้งค่าระบบ', 'Admin Pad -> ตั้งค่า'], 'backup': ['Backup & Restore', 'Admin Pad -> Backup'] };
+  var target = document.getElementById(pages[page]);
+  if (target) target.classList.add('active');
+  if (el) el.classList.add('active');
+  if (titles[page]) {
+    document.getElementById('pageTitle').innerHTML = titles[page][0];
+    document.getElementById('breadcrumb').textContent = titles[page][1];
+  }
+}
+</script>
+</body>
+</html>

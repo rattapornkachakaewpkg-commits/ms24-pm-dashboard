@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PKG Data Hub — Workflow & Data Flow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #f8f9fc;
+    --card: #ffffff;
+    --primary: #4f46e5;
+    --primary-light: #eef2ff;
+    --accent: #10b981;
+    --accent-light: #ecfdf5;
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans Thai', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+    color: white;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+    opacity: 0.85;
+    font-weight: 300;
+  }
+
+  .hero .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ===== Architecture Diagram ===== */
+  .arch-section {
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Flow diagram */
+  .flow-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .flow-row:last-child { margin-bottom: 0; }
+
+  .flow-box {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 120px;
+    position: relative;
+  }
+
+  .flow-box.user { background: #dbeafe; color: #1d4ed8; border: 1.5px solid #93c5fd; }
+  .flow-box.frontend { background: #fce7f3; color: #be185d; border: 1.5px solid #f9a8d4; }
+  .flow-box.backend { background: var(--primary-light); color: var(--primary); border: 2px solid #a5b4fc; }
+  .flow-box.db { background: #ecfdf5; color: #047857; border: 1.5px solid #6ee7b7; }
+  .flow-box.notify { background: #fffbeb; color: #b45309; border: 1.5px solid #fcd34d; }
+
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* ===== Program Cards ===== */
+  .program-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 0;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .program-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .program-header {
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .program-number {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .p1 .program-number { background: var(--primary); }
+  .p2 .program-number { background: #0ea5e9; }
+  .p3 .program-number { background: #8b5cf6; }
+  .p4 .program-number { background: #f59e0b; }
+  .p5 .program-number { background: var(--accent); }
+
+  .program-title-group { flex: 1; }
+
+  .program-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .program-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .status-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .status-ready { background: #dcfce7; color: #15803d; }
+  .status-wait { background: #fef3c7; color: #92400e; }
+
+  .program-body {
+    padding: 24px 28px;
+  }
+
+  /* Purpose */
+  .purpose-box {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary);
+    font-size: 0.92rem;
+  }
+
+  .purpose-label {
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 4px;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Viewpoint tags */
+  .viewpoint-section {
+    margin-bottom: 20px;
+  }
+
+  .viewpoint-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .viewpoint-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .vtag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+
+  .vtag-fullstack { background: #ede9fe; color: #6d28d9; }
+  .vtag-qc { background: #fce7f3; color: #be185d; }
+  .vtag-design { background: #dbeafe; color: #1d4ed8; }
+  .vtag-ux { background: #ecfdf5; color: #047857; }
+  .vtag-frontend { background: #fef3c7; color: #92400e; }
+  .vtag-analyst { background: #e0e7ff; color: #4338ca; }
+  .vtag-backend { background: #f3e8ff; color: #7c3aed; }
+  .vtag-devops { background: #fee2e2; color: #b91c1c; }
+
+  /* Data Flow visual */
+  .dataflow-section {
+    margin-bottom: 20px;
+  }
+
+  .df-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .df-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    width: 2px;
+    height: calc(100% - 4px);
+    background: var(--border);
+  }
+
+  .df-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .df-dot-primary { background: var(--primary-light); color: var(--primary); border: 2px solid var(--primary); }
+  .df-dot-green { background: #ecfdf5; color: #059669; border: 2px solid #059669; }
+  .df-dot-blue { background: #dbeafe; color: #2563eb; border: 2px solid #2563eb; }
+  .df-dot-amber { background: #fffbeb; color: #d97706; border: 2px solid #d97706; }
+
+  .df-text {
+    padding-top: 4px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Workflow table */
+  .wf-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .wf-table th {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: left;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-table td {
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-table tr:last-child td { border-bottom: none; }
+
+  .wf-table tr:nth-child(even) td { background: #f8fafc; }
+
+  /* Screen flow */
+  .screen-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+
+  .screen-box {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .screen-arrow {
+    color: var(--text-light);
+    font-size: 1.2rem;
+  }
+
+  /* ===== Summary Section ===== */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .summary-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .summary-card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .check-yes { color: var(--accent); }
+  .check-no { color: var(--text-light); }
+
+  /* ===== Timeline ===== */
+  .timeline {
+    position: relative;
+    padding-left: 36px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+
+  .tl-content {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+  }
+
+  .tl-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .tl-meta {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 32px 16px 28px; }
+    .hero h1 { font-size: 1.5rem; }
+    .container { padding: 20px 14px 40px; }
+    .program-header { padding: 16px 18px; }
+    .program-body { padding: 18px; }
+    .flow-row { gap: 8px; }
+    .flow-box { min-width: 90px; padding: 10px 12px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🐾 PKG Data Hub</h1>
+  <p class="subtitle">Workflow & Data Flow Complete Design</p>
+  <div class="badge-row">
+    <span class="badge">🏗️ Dev Full-Stack</span>
+    <span class="badge">🧪 QC Test</span>
+    <span class="badge">💡 Design Thinking</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== Architecture ===== -->
+  <div class="arch-section">
+    <div class="section-title">
+      <span class="icon" style="background:#eef2ff;color:#4f46e5;">🏗️</span>
+      ภาพรวมระบบ
+    </div>
+    <div class="flow-container">
+      <!-- Row 1: Users -->
+      <div class="flow-row">
+        <div class="flow-box user">👥 สมาชิก 492 คน</div>
+        <div class="flow-box user">👩‍💼 แอดมิน (คุณแนน)</div>
+        <div class="flow-box user">👔 ผู้บริหาร</div>
+      </div>
+      <div class="flow-row"><span class="flow-arrow">↓</span></div>
+      <!-- Row 2: Frontend -->
+      <div class="flow-row">
+        <div class="flow-box frontend">📋 Google Form</div>
+        <div class="flow-box frontend">💻 HTML Form</div>
+        <div class="flow-box frontend">💬 Telegram</div>
+        <div class="flow-box frontend">📊 Dashboard</div>
+      </div>
+      <div class="flow-row"><span class="flow-arrow">↓</span></div>
+      <!-- Row 3: Backend -->
+      <div class="flow-row">
+        <div class="flow-box backend" style="min-width:320px;">
+          ⚙️ GAS API v3.2 (Backend)<br>
+          <span style="font-size:0.78rem;opacity:0.8;">Auth · Validation · Rate Limit · Dedup · Audit · Backup</span>
+        </div>
+      </div>
+      <div class="flow-row"><span class="flow-arrow">↓</span></div>
+      <!-- Row 4: Database -->
+      <div class="flow-row">
+        <div class="flow-box db" style="min-width:320px;">
+          📊 Google Sheets (Database)<br>
+          <span style="font-size:0.78rem;opacity:0.8;">Feedback · Members · _AuditLog · _Backup · _Config</span>
+        </div>
+      </div>
+      <div class="flow-row"><span class="flow-arrow">↓</span></div>
+      <!-- Row 5: Notification -->
+      <div class="flow-row">
+        <div class="flow-box notify">📨 Telegram Notification — แจ้งเตือนทุกครั้งที่มีข้อมูลใหม่</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Program 1: GAS API ===== -->
+  <div class="program-card p1">
+    <div class="program-header">
+      <div class="program-number">1</div>
+      <div class="program-title-group">
+        <div class="program-title">GAS API v3.2</div>
+        <div class="program-subtitle">Backend กลาง — รับ-ส่งข้อมูลทุกช่องทาง</div>
+      </div>
+      <span class="status-badge status-ready">✅ พร้อม Deploy</span>
+    </div>
+    <div class="program-body">
+      <div class="purpose-box">
+        <div class="purpose-label">วัตถุประสงค์</div>
+        ระบบ Backend กลางที่รับ-ส่งข้อมูลระหว่าง Frontend ทุกช่องทางกับ Google Sheets
+      </div>
+
+      <div class="viewpoint-section">
+        <div class="viewpoint-label">มุมมองที่ใช้ทำงาน</div>
+        <div class="viewpoint-tags">
+          <span class="vtag vtag-fullstack">🏗️ Dev Full-Stack</span>
+          <span class="vtag vtag-qc">🧪 QC Test</span>
+          <span class="vtag vtag-design">💡 Design Thinking</span>
+        </div>
+      </div>
+
+      <div class="dataflow-section">
+        <div class="viewpoint-label">Data Flow</div>
+        <div class="df-step">
+          <div class="df-dot df-dot-primary">1</div>
+          <div class="df-text">Request เข้า → <strong>Parse</strong> → <strong>Auth Check</strong> (401 ถ้าไม่มี key)</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-primary">2</div>
+          <div class="df-text"><strong>Rate Limit</strong> (429 ถ้าเกิน) → <strong>Validation</strong> (400 ถ้าผิด)</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-green">3</div>
+          <div class="df-text"><strong>Process</strong> → <strong>Audit Log</strong> → 200 OK + data</div>
+        </div>
+      </div>
+
+      <div class="viewpoint-label">Workflow (28 Actions)</div>
+      <table class="wf-table">
+        <thead><tr><th>หมวด</th><th>Actions</th><th>Auth?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>READ</strong></td><td>listSheets, readSheet, getCell, getSheetInfo, health, apiDocs</td><td>❌</td></tr>
+          <tr><td><strong>WRITE</strong></td><td>addSheet, setHeaders, writeRow, writeRows, setCell, setRange, insertRowAt, updateRow</td><td>✅</td></tr>
+          <tr><td><strong>DELETE</strong></td><td>deleteSheet (+backup), deleteRow (+backup), clearSheet, clearRange</td><td>✅</td></tr>
+          <tr><td><strong>FORM</strong></td><td>createFormSheet, submitForm, lookupMember</td><td>❌</td></tr>
+          <tr><td><strong>CONFIG</strong></td><td>getConfig, setConfig, getApiKey, setupTelegram, telegramNotify, setupFormTrigger</td><td>✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Program 2: Google Form ===== -->
+  <div class="program-card p2">
+    <div class="program-header">
+      <div class="program-number">2</div>
+      <div class="program-title-group">
+        <div class="program-title">Google Form</div>
+        <div class="program-subtitle">ช่องทางสมาชิก — กรอกแบบสำรวจง่าย</div>
+      </div>
+      <span class="status-badge status-wait">⏳ รอ Deploy</span>
+    </div>
+    <div class="program-body">
+      <div class="purpose-box" style="background:#e0f2fe;border-left-color:#0ea5e9;">
+        <div class="purpose-label" style="color:#0ea5e9;">วัตถุประสงค์</div>
+        ให้สมาชิก 492 คนกรอกแบบสำรวจได้ง่าย ผ่านลิงก์ใน LINE/Telegram
+      </div>
+
+      <div class="viewpoint-section">
+        <div class="viewpoint-label">มุมมองที่ใช้ทำงาน</div>
+        <div class="viewpoint-tags">
+          <span class="vtag vtag-design">💡 Design Thinking (Empathize)</span>
+          <span class="vtag vtag-ux">🎨 UX Designer</span>
+        </div>
+      </div>
+
+      <div class="dataflow-section">
+        <div class="viewpoint-label">Data Flow</div>
+        <div class="df-step">
+          <div class="df-dot df-dot-blue">1</div>
+          <div class="df-text">สมาชิกกรอก Google Form</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-blue">2</div>
+          <div class="df-text">Google Form Submit → GAS onFormSubmitHandler (Trigger อัตโนมัติ)</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-green">3</div>
+          <div class="df-text">เขียนข้อมูลลง Sheet "Feedback" + บันทึก Audit Log + ส่ง Telegram</div>
+        </div>
+      </div>
+
+      <div class="viewpoint-label">Workflow</div>
+      <table class="wf-table">
+        <thead><tr><th>ขั้น</th><th>ทำอะไร</th><th>ใครทำ</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>สร้าง Google Form (12 ข้อ + 2 ข้อเสนอแนะ)</td><td>คุณแนน</td></tr>
+          <tr><td>2</td><td>ตั้งค่า Form ส่งข้อมูลไป Spreadsheet เดิม</td><td>คุณแนน</td></tr>
+          <tr><td>3</td><td>รัน <code>setupFormTrigger</code> เปิด onFormSubmit</td><td>AliClaw</td></tr>
+          <tr><td>4</td><td>ทดสอบกรอก 1 ครั้ง → ตรวจ Sheet + Telegram</td><td>AliClaw</td></tr>
+          <tr><td>5</td><td>ส่งลิงก์ Form ใน LINE กลุ่มบริษัท</td><td>คุณแนน</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Program 3: HTML Form ===== -->
+  <div class="program-card p3">
+    <div class="program-header">
+      <div class="program-number">3</div>
+      <div class="program-title-group">
+        <div class="program-title">HTML Form</div>
+        <div class="program-subtitle">ช่องทางแอดมิน — ดึงข้อมูลสมาชิกอัตโนมัติ</div>
+      </div>
+      <span class="status-badge status-wait">⏳ อัปเดต</span>
+    </div>
+    <div class="program-body">
+      <div class="purpose-box" style="background:#f3e8ff;border-left-color:#8b5cf6;">
+        <div class="purpose-label" style="color:#8b5cf6;">วัตถุประสงค์</div>
+        แบบสำรวจแบบอินเทอแอคทีฟ ดึงข้อมูลสมาชิกอัตโนมัติ ป้องกันส่งซ้ำ แสดงผล Real-time
+      </div>
+
+      <div class="viewpoint-section">
+        <div class="viewpoint-label">มุมมองที่ใช้ทำงาน</div>
+        <div class="viewpoint-tags">
+          <span class="vtag vtag-frontend">🎨 Frontend Dev</span>
+          <span class="vtag vtag-fullstack">🏗️ Full-Stack Dev</span>
+          <span class="vtag vtag-design">💡 Design Thinking</span>
+        </div>
+      </div>
+
+      <div class="dataflow-section">
+        <div class="viewpoint-label">Data Flow</div>
+        <div class="df-step">
+          <div class="df-dot df-dot-primary">1</div>
+          <div class="df-text">แอดมินเปิด HTML Form → กรอกรหัสสมาชิก</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-blue">2</div>
+          <div class="df-text">GAS API → <strong>lookupMember</strong> → แสดง ชื่อ/ทีม/บริษัท อัตโนมัติ</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-primary">3</div>
+          <div class="df-text">ให้คะแนน 12 ข้อ + เสนอแนะ 2 ข้อ → กด "ส่งแบบสำรวจ"</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-green">4</div>
+          <div class="df-text">GAS API → <strong>submitForm</strong> → Dedup Check → เขียนลง Sheet → Audit → Telegram</div>
+        </div>
+      </div>
+
+      <div class="viewpoint-label">Workflow (หน้าจอ)</div>
+      <div class="screen-flow">
+        <div class="screen-box">🔑 กรอกรหัสสมาชิก</div>
+        <span class="screen-arrow">→</span>
+        <div class="screen-box">📊 คะแนนทีมบัญชี (6 ข้อ)</div>
+        <span class="screen-arrow">→</span>
+        <div class="screen-box">📊 คะแนนทีมการเงิน (6 ข้อ)</div>
+        <span class="screen-arrow">→</span>
+        <div class="screen-box">✅ ตรวจสอบ → ส่ง</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Program 4: Dashboard ===== -->
+  <div class="program-card p4">
+    <div class="program-header">
+      <div class="program-number">4</div>
+      <div class="program-title-group">
+        <div class="program-title">Dashboard</div>
+        <div class="program-subtitle">ช่องทางผู้บริหาร — กราฟ + ตาราง + สรุป</div>
+      </div>
+      <span class="status-badge status-wait">⏳ สร้างใหม่</span>
+    </div>
+    <div class="program-body">
+      <div class="purpose-box" style="background:#fffbeb;border-left-color:#f59e0b;">
+        <div class="purpose-label" style="color:#d97706;">วัตถุประสงค์</div>
+        ให้ผู้บริหารดูผลแบบสำรวจแบบ Real-time กราฟ + ตาราง + สรุป
+      </div>
+
+      <div class="viewpoint-section">
+        <div class="viewpoint-label">มุมมองที่ใช้ทำงาน</div>
+        <div class="viewpoint-tags">
+          <span class="vtag vtag-frontend">🎨 Frontend Dev</span>
+          <span class="vtag vtag-analyst">📈 Data Analyst</span>
+          <span class="vtag vtag-design">💡 Design Thinking</span>
+        </div>
+      </div>
+
+      <div class="dataflow-section">
+        <div class="viewpoint-label">Data Flow</div>
+        <div class="df-step">
+          <div class="df-dot df-dot-amber">1</div>
+          <div class="df-text">ผู้บริหารเปิด Dashboard</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-blue">2</div>
+          <div class="df-text">GAS API → <strong>readSheet</strong> (Feedback)</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-green">3</div>
+          <div class="df-text">กราฟคะแนนเฉลี่ย + ตารางผลล่าสุด 20 รายการ + สรุป + Filter</div>
+        </div>
+      </div>
+
+      <div class="viewpoint-label">Workflow (หน้าจอ)</div>
+      <div class="screen-flow">
+        <div class="screen-box">📈 ภาพรวม</div>
+        <span class="screen-arrow">→</span>
+        <div class="screen-box">📋 รายละเอียด + Filter</div>
+        <span class="screen-arrow">→</span>
+        <div class="screen-box">💬 ข้อเสนอแนะ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Program 5: Telegram Command ===== -->
+  <div class="program-card p5">
+    <div class="program-header">
+      <div class="program-number">5</div>
+      <div class="program-title-group">
+        <div class="program-title">Telegram Command</div>
+        <div class="program-subtitle">ช่องทางสั่งงาน — สร้าง/ลบ/กรอก/อ่าน/รายงาน</div>
+      </div>
+      <span class="status-badge status-ready">✅ พร้อมใช้</span>
+    </div>
+    <div class="program-body">
+      <div class="purpose-box" style="background:#ecfdf5;border-left-color:#10b981;">
+        <div class="purpose-label" style="color:#059669;">วัตถุประสงค์</div>
+        ให้คุณแนนสั่งงานผ่านแชท Telegram — สร้าง/ลบ Sheet, กรอกข้อมูล, อ่านผล, รายงานสถานะ
+      </div>
+
+      <div class="viewpoint-section">
+        <div class="viewpoint-label">มุมมองที่ใช้ทำงาน</div>
+        <div class="viewpoint-tags">
+          <span class="vtag vtag-backend">⚙️ Backend Dev</span>
+          <span class="vtag vtag-devops">🛠️ DevOps</span>
+          <span class="vtag vtag-design">💡 Design Thinking</span>
+        </div>
+      </div>
+
+      <div class="dataflow-section">
+        <div class="viewpoint-label">Data Flow</div>
+        <div class="df-step">
+          <div class="df-dot df-dot-green">1</div>
+          <div class="df-text">คุณแนนพิมพ์คำสั่งใน Telegram → AliClaw วิเคราะห์คำสั่ง</div>
+        </div>
+        <div class="df-step">
+          <div class="df-dot df-dot-primary">2</div>
+          <div class="df-text">เรียก GAS API ตาม action → ได้ผลลัพธ์กลับ → สรุปให้คุณแนน</div>
+        </div>
+      </div>
+
+      <div class="viewpoint-label">คำสั่งที่ใช้ได้</div>
+      <table class="wf-table">
+        <thead><tr><th>คำสั่ง</th><th>Action</th><th>ตัวอย่าง</th></tr></thead>
+        <tbody>
+          <tr><td>สร้าง Sheet</td><td>addSheet</td><td>"สร้าง Sheet ชื่อ KPI_2026"</td></tr>
+          <tr><td>ลบ Sheet</td><td>deleteSheet</td><td>"ลบ Sheet ชื่อ test"</td></tr>
+          <tr><td>กรอกข้อมูล</td><td>writeRow</td><td>"เพิ่มข้อมูลใน Sheet Members: EMP001, สมชาย, บัญชี"</td></tr>
+          <tr><td>อ่านผลสำรวจ</td><td>readSheet</td><td>"อ่านผลสำรวจ Feedback"</td></tr>
+          <tr><td>รายงานสถานะ</td><td>health</td><td>"รายงานสถานะระบบ"</td></tr>
+          <tr><td>ตั้งค่า Telegram</td><td>setupTelegram</td><td>"ตั้งค่า Telegram"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Summary ===== -->
+  <div class="arch-section">
+    <div class="section-title">
+      <span class="icon" style="background:#ecfdf5;color:#059669;">📊</span>
+      สรุป: มุมมองที่ใช้ในแต่ละโปรแกรม
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>🏗️ Full-Stack</h3>
+        <div class="summary-row"><span>GAS API v3.2</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>HTML Form</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Dashboard</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Telegram Command</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Google Form</span><span class="check-no">—</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>🧪 QC Test</h3>
+        <div class="summary-row"><span>GAS API v3.2</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>HTML Form</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Dashboard</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Google Form</span><span class="check-no">—</span></div>
+        <div class="summary-row"><span>Telegram Command</span><span class="check-no">—</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>💡 Design Thinking</h3>
+        <div class="summary-row"><span>GAS API v3.2</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Google Form</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>HTML Form</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Dashboard</span><span class="check-yes">✅</span></div>
+        <div class="summary-row"><span>Telegram Command</span><span class="check-yes">✅</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Timeline ===== -->
+  <div class="arch-section">
+    <div class="section-title">
+      <span class="icon" style="background:#fef3c7;color:#d97706;">📅</span>
+      ลำดับงานพรุ่งนี้
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">1. Deploy GAS v3.2</div>
+          <div class="tl-meta">คุณแนน + AliClaw · ~12 นาที</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">2. ทดสอบ Health Check</div>
+          <div class="tl-meta">AliClaw · ~2 นาที</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">3. อัปเดต HTML Form เชื่อม API v3.2</div>
+          <div class="tl-meta">AliClaw · ~30 นาที</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">4. สร้าง Google Form + Trigger</div>
+          <div class="tl-meta">คุณแนน + AliClaw · ~15 นาที</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">5. ใส่ข้อมูลสมาชิก 492 คน</div>
+          <div class="tl-meta">คุณแนน</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-title">6. สร้าง Dashboard</div>
+          <div class="tl-meta">AliClaw · ~1 ชม.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

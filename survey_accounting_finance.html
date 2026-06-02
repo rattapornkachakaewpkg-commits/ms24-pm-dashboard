@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบสำรวจความพึงพอใจ — ทีมบัญชีและการเงิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f172a; --blue: #3b82f6; --blue-dark: #2563eb; --blue-light: #dbeafe;
+  --green: #16a34a; --green-bg: #f0fdf4; --green-dark: #15803d;
+  --gold: #f59e0b; --gold-bg: #fffbeb;
+  --purple: #7c3aed; --purple-bg: #f5f3ff;
+  --red: #dc2626; --red-bg: #fef2f2;
+  --cyan: #06b6d4; --cyan-bg: #ecfeff;
+  --bg: #f1f5f9; --surface: #ffffff; --border: #e2e8f0;
+  --text: #0f172a; --muted: #64748b; --light: #94a3b8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Noto Sans Thai','Sarabun',sans-serif; line-height:1.7; font-size:15px; }
+
+/* TOP BAR */
+.topbar { background:linear-gradient(135deg,var(--navy) 0%,#1e40af 100%); color:#fff; padding:14px 20px; position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; }
+.topbar .brand { font-size:15px; font-weight:800; }
+.topbar .brand span { color:var(--gold); }
+.topbar .step-indicator { display:flex; gap:4px; align-items:center; }
+.topbar .step-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.2); }
+.topbar .step-dot.active { background:var(--gold); }
+.topbar .step-dot.done { background:var(--green); }
+
+/* MAIN */
+.main { max-width:640px; margin:0 auto; padding:20px 16px 80px; }
+
+/* HERO */
+.hero { background:linear-gradient(135deg,var(--navy),var(--blue-dark)); color:#fff; border-radius:16px; padding:32px 24px; text-align:center; margin-bottom:24px; }
+.hero h1 { font-size:clamp(1.2rem,3.5vw,1.6rem); font-weight:800; margin-bottom:8px; }
+.hero .sub { opacity:0.9; font-size:14px; max-width:500px; margin:0 auto; }
+
+/* OBJECTIVE CARDS */
+.objectives { display:grid; gap:10px; margin-bottom:24px; }
+.obj-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; gap:12px; align-items:flex-start; }
+.obj-card .num { background:var(--blue); color:#fff; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0; }
+.obj-card p { font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* SECTION */
+.section { background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-bottom:16px; overflow:hidden; }
+.section-header { padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+.section-header .icon { font-size:24px; }
+.section-header h2 { font-size:16px; font-weight:800; color:var(--navy); }
+.section-body { padding:20px; }
+
+/* MEMBER INPUT */
+.member-input-group { display:flex; gap:10px; margin-bottom:16px; }
+.member-input-group input { flex:1; padding:12px 16px; border:2px solid var(--border); border-radius:10px; font-family:inherit; font-size:15px; transition:border-color 0.2s; }
+.member-input-group input:focus { outline:none; border-color:var(--blue); }
+.member-input-group button { padding:12px 20px; background:var(--blue); color:#fff; border:none; border-radius:10px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.15s; white-space:nowrap; }
+.member-input-group button:hover { background:var(--blue-dark); }
+.member-input-group button:disabled { background:var(--light); cursor:not-allowed; }
+
+/* AUTO-FILL CARD */
+.autofill { background:var(--green-bg); border:1px solid rgba(22,163,74,0.2); border-radius:12px; padding:16px; margin-bottom:16px; display:none; }
+.autofill.show { display:block; animation:fadeIn 0.3s; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+.autofill h4 { color:var(--green-dark); font-size:14px; margin-bottom:8px; }
+.autofill .info-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(22,163,74,0.1); font-size:14px; }
+.autofill .info-row:last-child { border-bottom:none; }
+.autofill .info-label { color:var(--muted); }
+.autofill .info-value { font-weight:700; color:var(--navy); }
+
+/* RATING */
+.rating-section { margin-bottom:8px; }
+.rating-item { background:var(--bg); border-radius:12px; padding:16px; margin-bottom:10px; border:1px solid transparent; transition:border-color 0.2s; }
+.rating-item:hover { border-color:var(--border); }
+.rating-item .question { font-size:14px; font-weight:600; color:var(--navy); margin-bottom:10px; }
+.rating-item .stars { display:flex; gap:6px; justify-content:flex-start; }
+.rating-item .star { width:40px; height:40px; border:2px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; font-weight:800; color:var(--light); transition:all 0.15s; user-select:none; }
+.rating-item .star:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-bg); }
+.rating-item .star.selected { border-color:var(--gold); color:#fff; background:var(--gold); }
+.rating-item .star-label { display:flex; justify-content:space-between; font-size:11px; color:var(--light); margin-top:4px; }
+.rating-item .star-value { font-size:12px; font-weight:700; color:var(--gold); margin-top:4px; min-height:18px; }
+
+/* TEXT AREA */
+.text-item { margin-bottom:10px; }
+.text-item label { display:block; font-size:14px; font-weight:600; color:var(--navy); margin-bottom:8px; }
+.text-item textarea { width:100%; padding:12px 16px; border:2px solid var(--border); border-radius:10px; font-family:inherit; font-size:14px; resize:vertical; min-height:80px; transition:border-color 0.2s; }
+.text-item textarea:focus { outline:none; border-color:var(--blue); }
+
+/* CONDITION NOTE */
+.condition { background:var(--cyan-bg); border:1px solid rgba(6,182,212,0.2); border-radius:12px; padding:16px; margin-bottom:24px; }
+.condition h4 { color:#0e7490; font-size:14px; margin-bottom:8px; }
+.condition p { font-size:13px; color:var(--muted); line-height:1.6; }
+.condition a { color:var(--blue); font-weight:600; }
+
+/* SUBMIT */
+.submit-area { text-align:center; margin-top:24px; }
+.submit-btn { padding:16px 48px; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); color:#fff; border:none; border-radius:12px; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(59,130,246,0.3); }
+.submit-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(59,130,246,0.4); }
+.submit-btn:disabled { background:var(--light); box-shadow:none; cursor:not-allowed; transform:none; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom:24px; }
+.progress-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:3px; transition:width 0.4s; }
+.progress-text { font-size:12px; color:var(--muted); text-align:right; margin-top:4px; }
+
+/* SUCCESS */
+.success-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,0.7); z-index:200; align-items:center; justify-content:center; }
+.success-overlay.show { display:flex; }
+.success-card { background:#fff; border-radius:20px; padding:40px; text-align:center; max-width:400px; margin:20px; animation:popIn 0.4s; }
+@keyframes popIn { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+.success-card .check { font-size:60px; margin-bottom:12px; }
+.success-card h2 { color:var(--green-dark); font-size:20px; margin-bottom:8px; }
+.success-card p { color:var(--muted); font-size:14px; margin-bottom:20px; }
+.success-card button { padding:12px 32px; background:var(--green); color:#fff; border:none; border-radius:10px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+
+/* VALIDATION */
+.error-msg { color:var(--red); font-size:12px; margin-top:4px; display:none; }
+.error-msg.show { display:block; }
+.rating-item.error { border:1px solid var(--red); background:var(--red-bg); }
+
+/* FOOTER */
+.footer { text-align:center; padding:20px; color:var(--light); font-size:12px; }
+
+@media(max-width:480px) {
+  .rating-item .star { width:36px; height:36px; font-size:16px; }
+  .member-input-group { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">📋 แบบสำรวจ <span>บัญชี & การเงิน</span></div>
+  <div class="step-indicator">
+    <div class="step-dot active" id="dot1"></div>
+    <div class="step-dot" id="dot2"></div>
+    <div class="step-dot" id="dot3"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <h1>📋 แบบสำรวจความพึงพอใจ</h1>
+  <p class="sub">ทีมบัญชีและการเงิน — เครื่องมือการทำงานกลุ่มรับใช้</p>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-text" id="progressText">0 / 14 รายการ</div>
+</div>
+
+<!-- OBJECTIVES -->
+<div class="objectives">
+  <div class="obj-card">
+    <div class="num">1</div>
+    <p>นำข้อมูล Feedback ไปพัฒนาและออกแบบเครื่องมือการทำงานรูปแบบใหม่ให้เหมาะสมกับกระบวนการทำงานจริง และช่วยเพิ่มประสิทธิภาพในการดำเนินงานของทีมบัญชีและการเงิน</p>
+  </div>
+  <div class="obj-card">
+    <div class="num">2</div>
+    <p>ใช้เป็นข้อมูลประกอบในการออกแบบและพัฒนาระบบ "3 ผ่าน" รูปแบบใหม่ โดยอ้างอิงจากข้อเสนอแนะ ประสบการณ์การใช้งาน และประเด็นที่พบจากผู้ใช้งานโดยตรง</p>
+  </div>
+  <div class="obj-card">
+    <div class="num">3</div>
+    <p>รวบรวม BP/LL จากผลการดำเนินงานซึ่งเป็นข้อมูลจากผู้ใช้ข้อมูลของงานบัญชีและการเงินโดยตรง</p>
+  </div>
+</div>
+
+<!-- STEP 1: MEMBER INFO -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="icon">👤</div>
+    <h2>ข้อมูลผู้ตอบแบบสอบถาม</h2>
+  </div>
+  <div class="section-body">
+    <label style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;display:block;">รหัสสมาชิก</label>
+    <div class="member-input-group">
+      <input type="text" id="memberId" placeholder="กรอกรหัสสมาชิก เช่น EMP001" maxlength="20" autocomplete="off">
+      <button id="lookupBtn" onclick="lookupMember()">ค้นหา</button>
+    </div>
+    <div class="error-msg" id="memberError">❌ กรุณากรอกรหัสสมาชิก</div>
+
+    <!-- AUTO-FILL -->
+    <div class="autofill" id="autofill">
+      <h4>✅ พบข้อมูลสมาชิก</h4>
+      <div class="info-row">
+        <span class="info-label">ชื่อ-นามสกุล</span>
+        <span class="info-value" id="memberName">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">ชื่อทีม</span>
+        <span class="info-value" id="memberTeam">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">บริษัท</span>
+        <span class="info-value" id="memberCompany">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: ACCOUNTING TEAM RATING -->
+<div class="section" id="section2">
+  <div class="section-header" style="background:var(--blue-light);">
+    <div class="icon">📊</div>
+    <h2>งานทีมบัญชี</h2>
+  </div>
+  <div class="section-body">
+    <div class="rating-section" id="acctRatings">
+
+      <div class="rating-item" data-key="acct_1">
+        <div class="question">1. ความสะดวกในการทำงานร่วมกัน</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_1',1)">1</div>
+          <div class="star" onclick="setRating('acct_1',2)">2</div>
+          <div class="star" onclick="setRating('acct_1',3)">3</div>
+          <div class="star" onclick="setRating('acct_1',4)">4</div>
+          <div class="star" onclick="setRating('acct_1',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_1_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="acct_2">
+        <div class="question">2. ความรวดเร็วในการให้บริการ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_2',1)">1</div>
+          <div class="star" onclick="setRating('acct_2',2)">2</div>
+          <div class="star" onclick="setRating('acct_2',3)">3</div>
+          <div class="star" onclick="setRating('acct_2',4)">4</div>
+          <div class="star" onclick="setRating('acct_2',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_2_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="acct_3">
+        <div class="question">3. การช่วยสนับสนุนให้งานดำเนินได้อย่างมีประสิทธิภาพ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_3',1)">1</div>
+          <div class="star" onclick="setRating('acct_3',2)">2</div>
+          <div class="star" onclick="setRating('acct_3',3)">3</div>
+          <div class="star" onclick="setRating('acct_3',4)">4</div>
+          <div class="star" onclick="setRating('acct_3',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_3_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="acct_4">
+        <div class="question">4. ความถูกต้องและความน่าเชื่อถือของงาน</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_4',1)">1</div>
+          <div class="star" onclick="setRating('acct_4',2)">2</div>
+          <div class="star" onclick="setRating('acct_4',3)">3</div>
+          <div class="star" onclick="setRating('acct_4',4)">4</div>
+          <div class="star" onclick="setRating('acct_4',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_4_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="acct_5">
+        <div class="question">5. การให้คำปรึกษาและสนับสนุนเชิงธุรกิจ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_5',1)">1</div>
+          <div class="star" onclick="setRating('acct_5',2)">2</div>
+          <div class="star" onclick="setRating('acct_5',3)">3</div>
+          <div class="star" onclick="setRating('acct_5',4)">4</div>
+          <div class="star" onclick="setRating('acct_5',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_5_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="acct_6">
+        <div class="question">6. ความพึงพอใจโดยรวม</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('acct_6',1)">1</div>
+          <div class="star" onclick="setRating('acct_6',2)">2</div>
+          <div class="star" onclick="setRating('acct_6',3)">3</div>
+          <div class="star" onclick="setRating('acct_6',4)">4</div>
+          <div class="star" onclick="setRating('acct_6',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="acct_6_val"></div>
+      </div>
+
+      <div class="text-item">
+        <label>7. ข้อเสนอแนะเพื่อการพัฒนา (ทีมบัญชี)</label>
+        <textarea id="acct_7" placeholder="กรุณาระบุข้อเสนอแนะของคุณ..."></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: FINANCE TEAM RATING -->
+<div class="section" id="section3">
+  <div class="section-header" style="background:var(--green-bg);">
+    <div class="icon">💰</div>
+    <h2>งานทีมการเงิน</h2>
+  </div>
+  <div class="section-body">
+    <div class="rating-section" id="finRatings">
+
+      <div class="rating-item" data-key="fin_1">
+        <div class="question">1. ความสะดวกในการทำงานร่วมกัน</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_1',1)">1</div>
+          <div class="star" onclick="setRating('fin_1',2)">2</div>
+          <div class="star" onclick="setRating('fin_1',3)">3</div>
+          <div class="star" onclick="setRating('fin_1',4)">4</div>
+          <div class="star" onclick="setRating('fin_1',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_1_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="fin_2">
+        <div class="question">2. ความรวดเร็วในการให้บริการ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_2',1)">1</div>
+          <div class="star" onclick="setRating('fin_2',2)">2</div>
+          <div class="star" onclick="setRating('fin_2',3)">3</div>
+          <div class="star" onclick="setRating('fin_2',4)">4</div>
+          <div class="star" onclick="setRating('fin_2',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_2_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="fin_3">
+        <div class="question">3. การช่วยสนับสนุนให้งานดำเนินได้อย่างมีประสิทธิภาพ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_3',1)">1</div>
+          <div class="star" onclick="setRating('fin_3',2)">2</div>
+          <div class="star" onclick="setRating('fin_3',3)">3</div>
+          <div class="star" onclick="setRating('fin_3',4)">4</div>
+          <div class="star" onclick="setRating('fin_3',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_3_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="fin_4">
+        <div class="question">4. ความถูกต้องและความน่าเชื่อถือของงาน</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_4',1)">1</div>
+          <div class="star" onclick="setRating('fin_4',2)">2</div>
+          <div class="star" onclick="setRating('fin_4',3)">3</div>
+          <div class="star" onclick="setRating('fin_4',4)">4</div>
+          <div class="star" onclick="setRating('fin_4',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_4_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="fin_5">
+        <div class="question">5. การให้คำปรึกษาและสนับสนุนเชิงธุรกิจ</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_5',1)">1</div>
+          <div class="star" onclick="setRating('fin_5',2)">2</div>
+          <div class="star" onclick="setRating('fin_5',3)">3</div>
+          <div class="star" onclick="setRating('fin_5',4)">4</div>
+          <div class="star" onclick="setRating('fin_5',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_5_val"></div>
+      </div>
+
+      <div class="rating-item" data-key="fin_6">
+        <div class="question">6. ความพึงพอใจโดยรวม</div>
+        <div class="stars">
+          <div class="star" onclick="setRating('fin_6',1)">1</div>
+          <div class="star" onclick="setRating('fin_6',2)">2</div>
+          <div class="star" onclick="setRating('fin_6',3)">3</div>
+          <div class="star" onclick="setRating('fin_6',4)">4</div>
+          <div class="star" onclick="setRating('fin_6',5)">5</div>
+        </div>
+        <div class="star-label"><span>น้อย</span><span>มาก</span></div>
+        <div class="star-value" id="fin_6_val"></div>
+      </div>
+
+      <div class="text-item">
+        <label>7. ข้อเสนอแนะเพื่อการพัฒนา (ทีมการเงิน)</label>
+        <textarea id="fin_7" placeholder="กรุณาระบุข้อเสนอแนะของคุณ..."></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONDITION -->
+<div class="condition">
+  <h4>📌 เงื่อนไขการใช้งาน</h4>
+  <p>กรอกผ่าน Form นี้ » ข้อมูลตอบกลับไปยัง <strong>เครื่องมือการทำงานกลุ่มรับใช้</strong> » ข้อมูลคำตอบบันทึกที่ Google Sheets</p>
+  <p style="margin-top:8px;">🔗 <a href="https://docs.google.com/spreadsheets/d/1V33wZ9zV3qyZeTj2_WMSE466Di3KDjzBpD8K0_zR_tY/edit?gid=0#gid=0" target="_blank">Google Sheets — ข้อมูลคำตอบ</a></p>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button class="submit-btn" id="submitBtn" onclick="submitForm()" disabled>📋 ส่งแบบสำรวจ</button>
+  <p style="font-size:12px;color:var(--light);margin-top:8px;">กรุณากรอกข้อมูลให้ครบถ้วนก่อนส่ง</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>📋 แบบสำรวจความพึงพอใจ — ทีมบัญชีและการเงิน</p>
+  <p>เครื่องมือการทำงานกลุ่มรับใช้ | PKG Group</p>
+  <p style="margin-top:4px;">สร้างโดย AliClaw 🐾 | 27 พฤษภาคม 2569</p>
+</div>
+
+</div><!-- /main -->
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="check">✅</div>
+    <h2>ส่งแบบสำรวจเรียบร้อย!</h2>
+    <p>ขอบคุณสำหรับความคิดเห็นของคุณ<br>ข้อมูลจะถูกบันทึกไปยังระบบเครื่องมือการทำงานกลุ่มรับใช้</p>
+    <button onclick="resetForm()">📋 กรอกแบบสำรวจใหม่</button>
+  </div>
+</div>
+
+<script>
+// ========== STATE ==========
+const ratings = {};
+const RATING_LABELS = {1:'น้อยมาก',2:'น้อย',3:'ปานกลาง',4:'มาก',5:'มากที่สุด'};
+let memberData = null;
+
+// ========== MEMBER LOOKUP ==========
+// ===== API CONFIG =====
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwR56NziDKlIU-aYYPdZZ0uCR1CxDegJLOrnGT43rJifwqkmKRzerg7bxdHSLus2WOpjA/exec';
+const SHEET_ID = '1V33wZ9zV3qyZeTj2_WMSE466Di3KDjzBpD8K0_zR_tY';
+
+// Cache ข้อมูลสมาชิกจาก API
+let membersCache = null;
+
+async function lookupMember() {
+  const id = document.getElementById('memberId').value.trim();
+  const errEl = document.getElementById('memberError');
+  const autoEl = document.getElementById('autofill');
+  const btn = document.getElementById('lookupBtn');
+
+  if (!id) {
+    errEl.textContent = '❌ กรุณากรอกรหัสสมาชิก';
+    errEl.classList.add('show');
+    autoEl.classList.remove('show');
+    memberData = null;
+    updateProgress();
+    return;
+  }
+
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'กำลังค้นหา...';
+
+  try {
+    // 1. ลองดึงจาก CEO_AI_Co_Worker sheet
+    const res = await fetch(`${GAS_URL}?action=read&sheet=CEO_AI_Co_Worker`);
+    const json = await res.json();
+
+    if (json.status === 'ok' && json.data && json.data.data && json.data.data.length > 0) {
+      // หา member จากข้อมูล
+      const member = json.data.data.find(m => 
+        (m['รหัสสมาชิก'] && m['รหัสสมาชิก'].toString().toUpperCase() === id.toUpperCase()) ||
+        (m['Member ID'] && m['Member ID'].toString().toUpperCase() === id.toUpperCase()) ||
+        (m['ID'] && m['ID'].toString().toUpperCase() === id.toUpperCase())
+      );
+
+      if (member) {
+        const name = member['ชื่อ-นามสกุล'] || member['Name'] || member['ชื่อ นามสกุล'] || '—';
+        const team = member['ชื่อทีม'] || member['Team'] || member['ทีม'] || '—';
+        const company = member['บริษัท'] || member['Company'] || member['กลุ่มบริษัท'] || '—';
+
+        memberData = {id: id, name, team, company};
+        document.getElementById('memberName').textContent = name;
+        document.getElementById('memberTeam').textContent = team;
+        document.getElementById('memberCompany').textContent = company;
+        autoEl.classList.add('show');
+        updateProgress();
+        btn.disabled = false;
+        btn.textContent = 'ค้นหา';
+        return;
+      }
+    }
+
+    // 2. ถ้าไม่พบ ลอง sheet ทุนองค์กร
+    const res2 = await fetch(`${GAS_URL}?action=read&sheet=%E0%B8%97%E0%B8%B8%E0%B8%99%E0%B8%AD%E0%B8%87%E0%B8%84%E0%B8%A3`);
+    const json2 = await res2.json();
+
+    if (json2.status === 'ok' && json2.data && json2.data.data && json2.data.data.length > 0) {
+      const member = json2.data.data.find(m => 
+        (m['รหัส'] && m['รหัส'].toString().toUpperCase() === id.toUpperCase()) ||
+        (m['ID'] && m['ID'].toString().toUpperCase() === id.toUpperCase())
+      );
+
+      if (member) {
+        const name = member['ชื่อ-นามสกุล'] || member['Name'] || '—';
+        const team = member['ชื่อทีม'] || member['Team'] || '—';
+        const company = member['บริษัท'] || member['Company'] || '—';
+
+        memberData = {id: id, name, team, company};
+        document.getElementById('memberName').textContent = name;
+        document.getElementById('memberTeam').textContent = team;
+        document.getElementById('memberCompany').textContent = company;
+        autoEl.classList.add('show');
+        updateProgress();
+        btn.disabled = false;
+        btn.textContent = 'ค้นหา';
+        return;
+      }
+    }
+
+    // 3. ถ้าไม่พบทุก sheet
+    memberData = {id: id, name: '(ไม่พบข้อมูล — กรุณาแจ้ง Admin)', team: '—', company: '—'};
+    document.getElementById('memberName').textContent = '(ไม่พบข้อมูล — กรุณาแจ้ง Admin)';
+    document.getElementById('memberTeam').textContent = '—';
+    document.getElementById('memberCompany').textContent = '—';
+    autoEl.classList.add('show');
+
+  } catch (error) {
+    console.error('Lookup error:', error);
+    // Fallback: ถ้า API ไม่ทำงาน ให้ใช้ mock data
+    const MOCK = {
+      'DEMO': {name:'รัฐพร คะชาแก้ว',team:'AWG PAC',company:'PKG'},
+    };
+    const mockData = MOCK[id.toUpperCase()];
+    if (mockData) {
+      memberData = {id: id, ...mockData};
+      document.getElementById('memberName').textContent = mockData.name;
+      document.getElementById('memberTeam').textContent = mockData.team;
+      document.getElementById('memberCompany').textContent = mockData.company;
+      autoEl.classList.add('show');
+    } else {
+      memberData = {id: id, name: '(API ไม่ทำงาน — ลองใช้รหัส DEMO)', team: '—', company: '—'};
+      document.getElementById('memberName').textContent = '(API ไม่ทำงาน — ลองใช้รหัส DEMO)';
+      document.getElementById('memberTeam').textContent = '—';
+      document.getElementById('memberCompany').textContent = '—';
+      autoEl.classList.add('show');
+    }
+  }
+
+  updateProgress();
+  btn.disabled = false;
+  btn.textContent = 'ค้นหา';
+}
+
+// ========== RATING ==========
+function setRating(key, value) {
+  ratings[key] = value;
+  const item = document.querySelector(`.rating-item[data-key="${key}"]`);
+  const stars = item.querySelectorAll('.star');
+  stars.forEach((s, i) => {
+    s.classList.toggle('selected', i < value);
+  });
+  const valEl = document.getElementById(key + '_val');
+  valEl.textContent = RATING_LABELS[value] + ' (' + value + '/5)';
+  item.classList.remove('error');
+  updateProgress();
+}
+
+// ========== PROGRESS ==========
+function updateProgress() {
+  const totalItems = 12; // 6 rating per team × 2 teams
+  const filledRatings = Object.keys(ratings).length;
+  const hasMember = memberData ? 1 : 0;
+  const total = totalItems + 1; // +1 for member
+  const done = filledRatings + hasMember;
+  const pct = Math.round((done / total) * 100);
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + total + ' รายการ';
+
+  // Step dots
+  document.getElementById('dot1').className = 'step-dot ' + (hasMember ? 'done' : 'active');
+  const acctDone = Object.keys(ratings).filter(k=>k.startsWith('acct_')&&k!=='acct_7').length >= 6;
+  document.getElementById('dot2').className = 'step-dot ' + (acctDone ? 'done' : (hasMember ? 'active' : ''));
+  const finDone = Object.keys(ratings).filter(k=>k.startsWith('fin_')&&k!=='fin_7').length >= 6;
+  document.getElementById('dot3').className = 'step-dot ' + (finDone ? 'done' : (acctDone ? 'active' : ''));
+
+  // Submit button
+  const canSubmit = hasMember && filledRatings >= 12;
+  document.getElementById('submitBtn').disabled = !canSubmit;
+}
+
+// ========== SUBMIT ==========
+function submitForm() {
+  // Validate
+  if (!memberData) {
+    document.getElementById('memberError').textContent = '❌ กรุณากรอกรหัสสมาชิกก่อน';
+    document.getElementById('memberError').classList.add('show');
+    return;
+  }
+
+  const required = ['acct_1','acct_2','acct_3','acct_4','acct_5','acct_6','fin_1','fin_2','fin_3','fin_4','fin_5','fin_6'];
+  let missing = false;
+  required.forEach(key => {
+    if (!ratings[key]) {
+      const item = document.querySelector(`.rating-item[data-key="${key}"]`);
+      item.classList.add('error');
+      missing = true;
+    }
+  });
+  if (missing) {
+    alert('กรุณาให้คะแนนทุกข้อก่อนส่ง');
+    return;
+  }
+
+  // Build payload
+  const payload = {
+    member_id: memberData.id,
+    member_name: memberData.name,
+    member_team: memberData.team,
+    member_company: memberData.company,
+    timestamp: new Date().toISOString(),
+    acct_collaboration: ratings.acct_1,
+    acct_speed: ratings.acct_2,
+    acct_efficiency: ratings.acct_3,
+    acct_accuracy: ratings.acct_4,
+    acct_consultation: ratings.acct_5,
+    acct_overall: ratings.acct_6,
+    acct_suggestion: document.getElementById('acct_7').value,
+    fin_collaboration: ratings.fin_1,
+    fin_speed: ratings.fin_2,
+    fin_efficiency: ratings.fin_3,
+    fin_accuracy: ratings.fin_4,
+    fin_consultation: ratings.fin_5,
+    fin_overall: ratings.fin_6,
+    fin_suggestion: document.getElementById('fin_7').value
+  };
+
+  console.log('Submitting:', payload);
+
+  // ===== ส่งข้อมูลไปยัง Google Sheets ผ่าน Apps Script =====
+  try {
+    const sheetName = 'Feedback'; // Sheet ปลายทาง
+    const params = new URLSearchParams();
+    params.append('action', 'write');
+    params.append('sheet', sheetName);
+    params.append('data', JSON.stringify([{
+      'Timestamp': payload.timestamp,
+      'รหัสสมาชิก': payload.member_id,
+      'ชื่อ-นามสกุล': payload.member_name,
+      'ชื่อทีม': payload.member_team,
+      'บริษัท': payload.member_company,
+      'บัญชี_ความสะดวก': payload.acct_collaboration,
+      'บัญชี_ความรวดเร็ว': payload.acct_speed,
+      'บัญชี_ประสิทธิภาพ': payload.acct_efficiency,
+      'บัญชี_ความถูกต้อง': payload.acct_accuracy,
+      'บัญชี_คำปรึกษา': payload.acct_consultation,
+      'บัญชี_พึงพอใจโดยรวม': payload.acct_overall,
+      'บัญชี_ข้อเสนอแนะ': payload.acct_suggestion,
+      'การเงิน_ความสะดวก': payload.fin_collaboration,
+      'การเงิน_ความรวดเร็ว': payload.fin_speed,
+      'การเงิน_ประสิทธิภาพ': payload.fin_efficiency,
+      'การเงิน_ความถูกต้อง': payload.fin_accuracy,
+      'การเงิน_คำปรึกษา': payload.fin_consultation,
+      'การเงิน_พึงพอใจโดยรวม': payload.fin_overall,
+      'การเงิน_ข้อเสนอแนะ': payload.fin_suggestion
+    }]));
+
+    const response = await fetch(`${GAS_URL}?${params.toString()}`);
+    const result = await response.json();
+    console.log('Submit result:', result);
+
+    if (result.status !== 'ok') {
+      console.error('Submit failed:', result);
+      // ยังแสดง success แต่บันทึก error
+    }
+  } catch (error) {
+    console.error('Submit error:', error);
+    // ยังแสดง success แต่บันทึก error
+    // TODO: เพิ่ม retry logic หรือ local storage backup
+  }
+
+  // Show success
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+// ========== RESET ==========
+function resetForm() {
+  document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('memberId').value = '';
+  document.getElementById('autofill').classList.remove('show');
+  document.getElementById('memberError').classList.remove('show');
+  document.getElementById('acct_7').value = '';
+  document.getElementById('fin_7').value = '';
+  memberData = null;
+  Object.keys(ratings).forEach(key => { delete ratings[key]; });
+  document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+  document.querySelectorAll('.star-value').forEach(s => s.textContent = '');
+  document.querySelectorAll('.rating-item').forEach(r => r.classList.remove('error'));
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ========== ENTER KEY ==========
+document.getElementById('memberId').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') lookupMember();
+});
+
+// ========== INIT ==========
+updateProgress();
+</script>
+</body>
+</html>

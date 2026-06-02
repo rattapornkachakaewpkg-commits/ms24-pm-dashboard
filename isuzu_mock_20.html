@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isuzu Mock Exam 20</title>
+</head>
+<body style="margin:0;background:#f5f5f5;font-family:Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#fff;">
+<div style="background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;padding:14px;">
+<div style="font-size:15px;font-weight:bold;">🔧 Isuzu Mock Exam</div>
+<div style="font-size:11px;opacity:0.9;">การแข่งขันทักษะช่างอีซูซุ | 20 ข้อ</div>
+<div style="background:rgba(0,0,0,0.3);height:6px;border-radius:3px;margin:8px 0 4px;"><div id="pf" style="height:100%;background:#4fc3f7;border-radius:3px;width:0%;transition:width 0.3s;"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;"><span id="qn">1 / 20</span><span>✗ <span id="wc">0</span> | ✓ <span id="cc">0</span></span></div>
+</div>
+<div id="qa" style="padding:16px;">
+<span id="lb" style="display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;color:#fff;background:#4caf50;margin-bottom:8px;">ระดับพื้นฐาน</span>
+<div id="qnu" style="font-size:11px;color:#888;margin-bottom:4px;"></div>
+<div id="qt" style="font-size:15px;color:#222;line-height:1.6;margin-bottom:16px;font-weight:600;"></div>
+<div id="oc"></div>
+<div id="ex" style="display:none;margin-top:12px;padding:10px;background:#f0f4ff;border-radius:6px;border-left:3px solid #2196f3;"><b style="color:#1565c0;font-size:12px;">💡 คำอธิบาย</b><p id="et" style="color:#555;line-height:1.5;font-size:13px;margin:4px 0 0;"></p></div>
+<button id="nb" onclick="nxt()" style="display:none;width:100%;padding:12px;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:bold;margin-top:12px;cursor:pointer;">ถัดไป →</button>
+</div>
+<div id="ra" style="display:none;padding:20px;text-align:center;">
+<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#e94560,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;"><span id="fs" style="font-size:24px;font-weight:bold;">0</span><span style="font-size:10px;">/ 20</span></div>
+<h2 style="font-size:18px;color:#222;margin:0 0 4px;" id="rt">เสร็จสิ้น!</h2>
+<div style="font-size:13px;color:#666;margin-bottom:14px;" id="rg"></div>
+<div style="text-align:left;background:#f8f8f8;border-radius:6px;padding:10px;margin-bottom:12px;max-height:250px;overflow-y:auto;"><b style="font-size:12px;">📝 สรุปคำตอบ</b><div id="sl"></div></div>
+<button onclick="rst()" style="width:100%;padding:12px;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:bold;cursor:pointer;">🔄 ทำข้อสอบใหม่</button>
+</div>
+</div>
+<script>
+var Q=[
+{s:"b",sx:"ระดับพื้นฐาน",sb:"เครื่องยนต์",q:"เครื่องยนต์ Isuzu 4JJ1-TCX มีความจุเท่าใด?",o:["1,898 cc","2,499 cc","2,999 cc","3,000 cc"],a:1,e:"4JJ1-TCX มีความจุ 2,499 cc (2.5 ลิตร) เป็นเครื่องยนต์ดีเซลเทอร์โบ 4 สูบ"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"เครื่องยนต์",q:"น้ำมันเครื่อง Isuzu 4JJ1 ใช้เกรดใด?",o:["5W-30","10W-30","15W-40","20W-50"],a:2,e:"Isuzu 4JJ1 ใช้ SAE 15W-40 API CI-4 ขึ้นไป"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"ส่งกำลัง",q:"เกียร์อัตโนมัติ Isuzu รุ่นใหม่มีกี่สปีด?",o:["4","5","6","8"],a:2,e:"เกียร์อัตโนมัติ Isuzu รุ่นใหม่มี 6 สปีด"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"ไฟฟ้า",q:"แบตเตอรี่ Isuzu D-Max มีแรงดันไฟฟ้าเท่าใด?",o:["6 โวลต์","12 โวลต์","24 โวลต์","48 โวลต์"],a:1,e:"Isuzu D-Max ใช้แบตเตอรี่ 12 โวลต์"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"ช่วงล่าง",q:"ระบบกันสะเทือนหลัง Isuzu D-Max เป็นแบบใด?",o:["สปริงแผ่นเหล็ก","คอยล์สปริง","ถุงลม","ไม่มี"],a:0,e:"D-Max ใช้สปริงแผ่นเหล็ก (Leaf Spring) สำหรับรับน้ำหนักบรรทุก"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"เครื่องยนต์",q:"ระบบฉีดเชื้อเพลิง Isuzu 4JJ1 เป็นแบบใด?",o:["คาร์บูเรเตอร์","หัวฉีดธรรมดา","Common Rail","Direct Injection แบบกลไก"],a:2,e:"4JJ1 ใช้ Common Rail Direct Injection (CRDi)"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"เบรก",q:"ระบบเบรก Isuzu D-Max รุ่นใหม่เป็นแบบใด?",o:["ดรัมเบรก 4 ล้อ","ดิสก์เบรก 4 ล้อ","ดิสก์หน้า-ดรัมหลัง","ดิสก์หน้า-ดิสก์หลัง"],a:3,e:"D-Max รุ่นใหม่ใช้ดิสก์เบรกทั้ง 4 ล้อ พร้อม ABS"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"แอร์",q:"น้ำยาแอร์ที่ใช้ใน Isuzu D-Max รุ่นใหม่คือข้อใด?",o:["R-12","R-134a","R-1234yf","R-22"],a:1,e:"D-Max ใช้น้ำยาแอร์ R-134a"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"เครื่องมือ",q:"ประแจทอร์ค (Torque Wrench) ใช้สำหรับอะไร?",o:["ขันน็อตให้แน่นตามค่าที่กำหนด","วัดแรงดันยาง","วัดความหนาผ้าเบรก","วัดระดับน้ำมัน"],a:0,e:"ประแจทอร์คใช้ขันน็อตให้ได้แรงบิดตามที่กำหนด"},
+{s:"b",sx:"ระดับพื้นฐาน",sb:"ความปลอดภัย",q:"ก่อนยกตัวรถด้วยแม่แรง ต้องทำอย่างไร?",o:["สตาร์ทเครื่องยนต์","ดึงเบรกมือและใส่ล้อรอง","เปิดแอร์","เติมน้ำมัน"],a:1,e:"ต้องดึงเบรกมือ ใส่เกียร์ P และใส่ล้อรอง (Wheel Chock)"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"เทอร์โบชาร์จเจอร์ทำหน้าที่อะไร?",o:["กรองอากาศ","อัดอากาศเข้ากระบอกสูบ","ระบายความร้อน","กรองน้ำมัน"],a:1,e:"เทอร์โบชาร์จเจอร์อัดอากาศเข้ากระบอกสูบเพิ่มกำลัง โดยใช้ไอเสียหมุนกังหัน"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"EGR (Exhaust Gas Recirculation) ทำหน้าที่อะไร?",o:["เพิ่มกำลังเครื่องยนต์","ลดอุณหภูมิไอเสีย","ลด NOx โดยหมุนเวียนไอเสียกลับ","กรองไอเสีย"],a:2,e:"EGR หมุนเวียนไอเสียบางส่วนกลับเข้ากระบอกสูบ เพื่อลดอุณหภูมิและลด NOx"},
+{s:"i",sx:"ระดับกลาง",sb:"ไฟฟ้า",q:"ECU ย่อมาจากอะไร?",o:["Engine Control Unit","Electronic Control Unit","Electric Current Unit","Energy Conversion Unit"],a:1,e:"ECU = Electronic Control Unit คอมพิวเตอร์ควบคุมการทำงานของเครื่องยนต์"},
+{s:"i",sx:"ระดับกลาง",sb:"เบรก",q:"ระบบ ABS ย่อมาจากอะไร?",o:["Auto Brake System","Anti-lock Braking System","Advanced Brake Sensor","Automatic Braking Support"],a:1,e:"ABS = Anti-lock Braking System ป้องกันล้อล็อกขณะเบรก"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"Intercooler ทำหน้าที่อะไร?",o:["กรองอากาศ","ลดอุณหภูมิอากาศที่อัดโดยเทอร์โบ","กรองน้ำมัน","ระบายความร้อนเครื่องยนต์"],a:1,e:"Intercooler ลดอุณหภูมิอากาศที่อัดโดยเทอร์โบ ทำให้อากาศหนาแน่นขึ้น เพิ่มกำลัง"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"DPF (Diesel Particulate Filter) ทำหน้าที่อะไร?",o:["กรองน้ำมัน","กรองอนุภาคเขม่าจากไอเสีย","กรองอากาศ","กรองน้ำ"],a:1,e:"DPF กรองอนุภาคเขม่า (Soot) จากไอเสีย เพื่อลดมลพิษ"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"AdBlue/DEF คืออะไร?",o:["น้ำมันเครื่อง","น้ำยาเติมในระบบ SCR เพื่อลด NOx","น้ำยาแอร์","น้ำมันเบรก"],a:1,e:"AdBlue/DEF เป็นสารละลาย Urea 32.5% เติมในระบบ SCR เพื่อลดก๊าซ NOx"},
+{s:"i",sx:"ระดับกลาง",sb:"เครื่องยนต์",q:"ค่า Compression ของ Isuzu 4JJ1 ควรอยู่ที่ประมาณเท่าใด?",o:["100-150 PSI","200-250 PSI","300-350 PSI","400-450 PSI"],a:2,e:"เครื่องยนต์ดีเซล Isuzu 4JJ1 มีค่า Compression ประมาณ 300-350 PSI"},
+{s:"i",sx:"ระดับกลาง",sb:"เชื้อเพลิง",q:"แรงดันน้ำมันเชื้อเพลิงในระบบ Common Rail ของ Isuzu 4JJ1 สูงสุดเท่าใด?",o:["500 bar","1,000 bar","1,600 bar","2,000 bar"],a:2,e:"ระบบ Common Rail ของ Isuzu 4JJ1 มีแรงดันสูงสุด 1,600 bar"},
+{s:"i",sx:"ระดับกลาง",sb:"ไฟฟ้า",q:"OBD-II Scanner ใช้สำหรับอะไร?",o:["วัดแรงดันยาง","อ่านโค้ดผิดพลาด (DTC) ของ ECU","วัดระดับน้ำมัน","วัดอุณหภูมิ"],a:1,e:"OBD-II Scanner อ่าน Diagnostic Trouble Code (DTC) จาก ECU เพื่อวินิจฉัยปัญหา"}
+];
+var cq=0,co=0,wr=0,ans=false,ua=[];
+function ld(){ans=false;var q=Q[cq];var b=document.getElementById("lb");b.textContent=q.sx;b.style.background=(q.s=="b"?"#4caf50":q.s=="i"?"#ff9800":"#f44336");document.getElementById("qnu").textContent="ข้อที่ "+(cq+1)+"/20 ["+q.sb+"]";document.getElementById("qt").textContent=q.q;document.getElementById("qn").textContent=(cq+1)+" / 20";document.getElementById("pf").style.width=(cq/20*100)+"%";var c=document.getElementById("oc");c.innerHTML="";var lb=["ก","ข","ค","ง"];for(var i=0;i<q.o.length;i++){var bt=document.createElement("div");bt.style.cssText="display:flex;align-items:center;gap:10px;padding:12px;background:#fafafa;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:14px;color:#333;margin-bottom:8px;transition:all 0.2s;";bt.innerHTML='<span style="width:26px;height:26px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:12px;flex-shrink:0;">'+lb[i]+'</span><span>'+q.o[i]+'</span>';bt.onclick=(function(x){return function(){sa(x);}})(i);c.appendChild(bt);}document.getElementById("ex").style.display="none";document.getElementById("nb").style.display="none";}
+function sa(idx){if(ans)return;ans=true;var q=Q[cq];var bs=document.getElementById("oc").children;for(var i=0;i<bs.length;i++){bs[i].style.cursor="default";bs[i].style.opacity="0.6";if(i===q.a){bs[i].style.background="#e8f5e9";bs[i].style.borderColor="#4caf50";bs[i].style.color="#2e7d32";bs[i].style.opacity="1";}else if(i===idx&&i!==q.a){bs[i].style.background="#ffebee";bs[i].style.borderColor="#f44336";bs[i].style.color="#c62828";bs[i].style.opacity="1";}}if(idx===q.a){co++;document.getElementById("cc").textContent=co;}else{wr++;document.getElementById("wc").textContent=wr;}ua.push({q:q.q,u:idx,a:q.a,ok:idx===q.a,sb:q.sb});document.getElementById("et").textContent=q.e;document.getElementById("ex").style.display="block";document.getElementById("nb").style.display="block";}
+function nxt(){cq++;if(cq<20)ld();else sr();}
+function sr(){document.getElementById("qa").style.display="none";document.getElementById("ra").style.display="block";document.getElementById("fs").textContent=co;var p=co/20*100,g="";if(p>=80)g="🏆 ดีมาก! ผ่านเกณฑ์ระดับประเทศ!";else if(p>=60)g="👍 ดี! ผ่านเกณฑ์ระดับภูมิภาค";else if(p>=40)g="📚 พอใช้! ผ่านเกณฑ์ระดับภายใน";else g="💪 ต้องฝึกอีกมาก!";document.getElementById("rg").textContent=g;var lb=["ก","ข","ค","ง"],s="";for(var i=0;i<ua.length;i++){var a=ua[i];s+='<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:11px;color:#555;">'+(a.ok?"✅":"❌")+" ข้อ"+(i+1)+" ("+a.sb+"): ตอบ "+lb[a.u]+" / เฉลย "+lb[a.a]+"</div>";}document.getElementById("sl").innerHTML=s;}
+function rst(){cq=0;co=0;wr=0;ua=[];document.getElementById("cc").textContent="0";document.getElementById("wc").textContent="0";document.getElementById("qa").style.display="block";document.getElementById("ra").style.display="none";ld();}
+ld();
+</script>
+</body>
+</html>

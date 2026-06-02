@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือการทำงานแบบหลายโปรเจค — AliClaw</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f0f2f5;color:#1a1a2e;line-height:1.8;padding:20px}
+.container{max-width:720px;margin:0 auto}
+h1{font-size:1.6em;color:#7c3aed;text-align:center;margin-bottom:4px}
+.subtitle{text-align:center;color:#78909c;font-size:0.9em;margin-bottom:24px}
+.card{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.card h2{font-size:1.2em;color:#7c3aed;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #ede9fe}
+.card h3{font-size:1.05em;color:#1a237e;margin:14px 0 8px}
+.rule-box{background:linear-gradient(135deg,#7c3aed,#1a237e);color:#fff;border-radius:12px;padding:20px;margin:16px 0;text-align:center}
+.rule-box .number{font-size:2.5em;font-weight:800;display:block;margin-bottom:4px}
+.rule-box .text{font-size:1.1em;font-weight:600}
+.tag-list{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tag-item{background:#f5f3ff;border:2px solid #7c3aed;border-radius:100px;padding:8px 16px;font-size:0.9em;font-weight:600;color:#7c3aed}
+.tag-item .tag-name{font-weight:800}
+.tag-item .tag-desc{font-weight:400;color:#546e7a;font-size:0.85em}
+.example{background:#f5f3ff;border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:12px 16px;margin:8px 0;font-family:monospace;font-size:0.9em}
+.example.good{border-color:#16a34a;background:#f0fdf4}
+.example.bad{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.step{display:flex;gap:16px;margin:16px 0;align-items:flex-start}
+.step-num{background:#7c3aed;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1em;flex-shrink:0}
+.step-content{flex:1}
+.step-content h4{font-size:1em;color:#1a237e;margin-bottom:4px}
+.step-content p{font-size:0.9em;color:#546e7a}
+.link-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.85em}
+.link-table th{background:#7c3aed;color:#fff;padding:10px;text-align:left;font-size:0.85em}
+.link-table td{padding:10px;border-bottom:1px solid #e0e6ed}
+.link-table tr:hover td{background:#f5f3ff}
+.new-project{background:#fffbeb;border:2px dashed #f59e0b;border-radius:12px;padding:20px;margin:16px 0}
+.new-project h3{color:#92400e;margin-bottom:8px}
+.footer{text-align:center;color:#78909c;font-size:0.85em;margin-top:32px;padding-top:16px;border-top:1px solid #e0e6ed}
+@media(max-width:480px){.tag-list{flex-direction:column}.tag-item{display:block}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🔄 คู่มือการทำงานแบบหลายโปรเจค</h1>
+<p class="subtitle">ให้ AliClaw รับคำสั่งชัดเจน + บันทึกข้อมูลถูกแหล่ง + ถูก Link</p>
+
+<!-- กฎเดียว -->
+<div class="rule-box">
+<span class="number">1</span>
+<span class="text">ขึ้นต้นทุกคำสั่งด้วย <strong>#ชื่อโปรเจค</strong></span>
+</div>
+
+<div class="card">
+<h2>📌 โปรเจคที่มีตอนนี้</h2>
+<div class="tag-list">
+<div class="tag-item">
+<span class="tag-name">#feedback-form</span><br>
+<span class="tag-desc">แบบฟอร์ม Feedback ทีมบัญชี/การเงิน</span>
+</div>
+<div class="tag-item">
+<span class="tag-name">#ceo-dashboard</span><br>
+<span class="tag-desc">CEO Dashboard องค์กร PKG</span>
+</div>
+<div class="tag-item">
+<span class="tag-name">#ai-school</span><br>
+<span class="tag-desc">โรงเรียนฝึกผู้ใช้ AI</span>
+</div>
+<div class="tag-item">
+<span class="tag-name">#pkg-dashboard</span><br>
+<span class="tag-desc">Dashboard องค์กร PKG</span>
+</div>
+</div>
+</div>
+
+<!-- ตัวอย่าง -->
+<div class="card">
+<h2>✅ สั่งงานที่ถูกต้อง</h2>
+<div class="example good">✅ #feedback-form เปลี่ยนสเกลเป็น 1-10</div>
+<div class="example good">✅ #ceo-dashboard เพิ่มฟิลด์ Email ใน Sheet</div>
+<div class="example good">✅ #ai-school สร้างหลักสูตร Prompt Engineering</div>
+
+<h2>❌ สั่งงานที่ไม่ชัดเจน</h2>
+<div class="example bad">❌ แก้ฟอร์มให้หน่อย — ฟอร์มไหน?</div>
+<div class="example bad">❌ เพิ่มข้อมูลใน Sheet — Sheet ไหน?</div>
+<div class="example bad">❌ แก้สี — โปรเจคไหน?</div>
+</div>
+
+<!-- วงจร -->
+<div class="card">
+<h2>🔄 วงจรการทำงานต่อ 1 โปรเจค</h2>
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-content">
+<h4>สั่งงาน (พร้อม Tag)</h4>
+<p>#ceo-dashboard สร้างฟอร์ม CEO Contract ตาม PDF</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-content">
+<h4>AI วิเคราะห์ + ทำงาน</h4>
+<p>อ่าน Tag → รู้โปรเจค → เช็ค Sheet ID, GAS URL จากความจำ → ทำงานในแหล่งที่ถูกต้อง</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-content">
+<h4>ตรวจสอบ + แจ้ง Bug</h4>
+<p>#ceo-dashboard กรอก ID แล้วชื่อไม่ขึ้น<br>
+#feedback-form เปลี่ยนสเกลเป็น 0-5</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-content">
+<h4>Deploy + ทดสอบ</h4>
+<p>#ceo-dashboard Deploy ใหม่แล้ว ทดสอบหน่อย</p>
+</div>
+</div>
+</div>
+
+<!-- สร้างโปรเจคใหม่ -->
+<div class="new-project">
+<h3>🆕 สร้างโปรเจคใหม่</h3>
+<p>บอก AI ครั้งเดียว:</p>
+<div class="example good">จดไว้ #hr-dashboard → Dashboard ฝ่าย HR | Sheet: 1Xxx...xxx</div>
+<p>AI จะจดในความจำทันที และจะจำ Tag นี้ไปใช้ในการสั่งงานครั้งต่อไป</p>
+</div>
+
+<!-- การเชื่อมโยง -->
+<div class="card">
+<h2>🔗 ข้อมูลถูกเชื่อมโยงอัตโนมัติ</h2>
+<p style="font-size:0.9em;color:#546e7a;margin-bottom:12px">เมื่อสั่งงานด้วย Tag AI จะรู้ทันทีว่า:</p>
+<table class="link-table">
+<tr><th>ข้อมูล</th><th>เก็บที่</th><th>ตัวอย่าง</th></tr>
+<tr><td>Google Sheet ID</td><td>ความจำ (MEMORY.md)</td><td>1E9wn_4vgWTp...</td></tr>
+<tr><td>GAS URL</td><td>ความจำ (MEMORY.md)</td><td>AKfycbzREQ7...</td></tr>
+<tr><td>ไฟล์โค้ด .gs</td><td>workspace/</td><td>PKG_Data_Hub_v3.2_Complete.gs</td></tr>
+<tr><td>ไฟล์ HTML</td><td>workspace/</td><td>CEO_Contract_Form.html</td></tr>
+<tr><td>บทเรียน/ข้อผิดพลาด</td><td>memory/YYYY-MM-DD.md</td><td>บันทึกประจำวัน</td></tr>
+</table>
+</div>
+
+<!-- สรุป -->
+<div class="card">
+<h2>📝 สรุป 3 กฎ</h2>
+<div class="rule-box">
+<span class="number">1</span>
+<span class="text">สั่งงาน = ระบุ Tag<br>#feedback-form, #ceo-dashboard, #ai-school</span>
+</div>
+<div class="rule-box">
+<span class="number">2</span>
+<span class="text">สร้างโปรเจคใหม่ = บอก AI จด<br>จดไว้ #ชื่อ → คำอธิบาย | Sheet: ID</span>
+</div>
+<div class="rule-box">
+<span class="number">3</span>
+<span class="text">ทุกอย่างถูก Link<br>Ai รู้ว่าโปรเจคไหนใช้ Sheet ไหน, ไฟล์ไหน</span>
+</div>
+</div>
+
+<div class="footer">
+<p>สร้างโดย AliClaw — AI Co-Worker @ PKG | 28 พฤษภาคม 2569</p>
+</div>
+
+</div>
+</body>
+</html>

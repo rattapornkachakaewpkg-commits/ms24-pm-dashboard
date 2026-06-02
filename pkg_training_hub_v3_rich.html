@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKG Learning Hub | Premium Member Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1e3a8a; --secondary: #3b82f6; --accent: #8b5cf6; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --gray: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        
+        /* Animations */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Navbar */
+        .navbar { position: fixed; top: 0; width: 100%; z-index: 100; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
+        .nav-logo { font-size: 1.5em; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-btn { padding: 10px 20px; border-radius: 50px; background: var(--primary); color: white; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-btn:hover { background: var(--accent); }
+
+        /* Hero Section */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 80px 20px; overflow: hidden; background: radial-gradient(circle at 10% 20%, #e0e7ff 0%, transparent 40%), radial-gradient(circle at 90% 80%, #fae8ff 0%, transparent 40%); }
+        .hero-bg-shape { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(80px); z-index: 1; }
+        .shape-1 { width: 400px; height: 400px; background: var(--secondary); top: -100px; left: -100px; animation: float 10s infinite alternate; }
+        .shape-2 { width: 300px; height: 300px; background: var(--accent); bottom: 50px; right: -50px; animation: float 8s infinite alternate-reverse; }
+        
+        .hero-content { z-index: 10; max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .badge-pill { background: rgba(59, 130, 246, 0.1); color: var(--secondary); padding: 8px 16px; border-radius: 50px; font-size: 0.9em; font-weight: 600; margin-bottom: 20px; display: inline-block; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .hero h1 { font-size: 4em; font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: var(--primary); }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.3em; color: var(--gray); margin-bottom: 40px; max-width: 700px; }
+
+        /* Search Box */
+        .search-wrapper { position: relative; width: 100%; max-width: 650px; }
+        .search-box { background: var(--card); padding: 10px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); display: flex; align-items: center; border: 2px solid transparent; transition: 0.3s; }
+        .search-box:focus-within { border-color: var(--secondary); transform: scale(1.02); box-shadow: 0 25px 60px rgba(59, 130, 246, 0.2); }
+        .search-box input { flex: 1; border: none; padding: 15px 25px; font-size: 1.2em; outline: none; background: transparent; color: var(--text); }
+        .search-box button { background: linear-gradient(135deg, var(--secondary), var(--accent)); color: white; border: none; padding: 15px 35px; border-radius: 15px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .search-box button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .search-hint { margin-top: 15px; font-size: 0.9em; color: var(--gray); }
+        .search-hint code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+
+        .error-msg { color: var(--danger); margin-top: 15px; font-weight: 600; display: none; animation: slideIn 0.3s ease; background: #fee2e2; padding: 10px 20px; border-radius: 10px; }
+
+        /* Dashboard (Hidden) */
+        .dashboard-view { display: none; padding: 100px 20px 50px; min-height: 100vh; background: #f1f5f9; }
+        .dash-container { max-width: 1200px; margin: 0 auto; animation: slideIn 0.5s ease; }
+
+        /* Profile Header */
+        .profile-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 30px; border-radius: 24px; color: white; display: flex; align-items: center; gap: 25px; margin-bottom: 30px; box-shadow: 0 15px 30px rgba(30, 58, 138, 0.2); position: relative; overflow: hidden; }
+        .profile-header::after { content: ''; position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -50px; right: -50px; }
+        .avatar-circle { width: 90px; height: 90px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5em; font-weight: bold; border: 4px solid rgba(255,255,255,0.3); }
+        .profile-info h2 { font-size: 2em; margin-bottom: 5px; }
+        .profile-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .tag { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.85em; backdrop-filter: blur(5px); }
+
+        /* Grid Layout */
+        .grid-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; }
+        @media(max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+
+        /* Cards */
+        .card { background: var(--card); border-radius: 20px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card h3 { font-size: 1.2em; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+
+        /* Progress Circle */
+        .progress-container { text-align: center; padding: 20px 0; }
+        .circle-bg { fill: none; stroke: #e2e8f0; stroke-width: 8; }
+        .circle-bar { fill: none; stroke: var(--success); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: 1.5s ease-out; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .stat-big { font-size: 2.5em; font-weight: 800; color: var(--text); }
+        .stat-label { font-size: 0.9em; color: var(--gray); }
+
+        /* List Items */
+        .course-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid #f1f5f9; transition: 0.2s; border-radius: 10px; }
+        .course-item:hover { background: #f8fafc; }
+        .c-icon { width: 45px; height: 45px; background: #e0e7ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; margin-right: 15px; flex-shrink: 0; }
+        .c-info h4 { font-size: 1em; margin-bottom: 3px; }
+        .c-meta { font-size: 0.8em; color: var(--gray); }
+        .c-score { text-align: right; }
+        .score-val { font-size: 1.2em; font-weight: bold; }
+        .status-badge { font-size: 0.7em; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
+        .status-pass { background: #dcfce7; color: #166534; }
+        .status-fail { background: #fee2e2; color: #991b1b; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+        .t-item { position: relative; margin-bottom: 25px; }
+        .t-dot { position: absolute; left: -26px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--secondary); border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .t-date { font-size: 0.8em; color: var(--gray); margin-bottom: 5px; }
+        .t-content { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        
+        /* Action Bar */
+        .action-bar { background: var(--primary); padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; color: white; margin-top: 30px; }
+        .btn-white { background: white; color: var(--primary); padding: 10px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-white:hover { background: #e0e7ff; }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <div class="navbar">
+        <div class="nav-logo">🎓 PKG Hub</div>
+        <a href="#" class="nav-btn" onclick="showHero()">หน้าแรก</a>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero" id="heroSection">
+        <div class="hero-bg-shape shape-1"></div>
+        <div class="hero-bg-shape shape-2"></div>
+        
+        <div class="hero-content">
+            <div class="badge-pill">✨ ระบบตรวจสอบผลการเรียนออนไลน์</div>
+            <h1>ยกระดับทักษะ<br><span>สมาชิก</span>สู่อนาคต</h1>
+            <p>ระบบติดตามผลการอบรมแบบ Real-time ออกแบบมาเพื่อองค์กรแห่งการเรียนรู้ ครบทุกมิติข้อมูล เข้าถึงได้ทุกที่ ทุกเวลา</p>
+            
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="พิมพ์รหัสสมาชิก (เช่น 123456)">
+                    <button onclick="searchMember()">🔍 ค้นหา</button>
+                </div>
+                <div class="search-hint">ตัวอย่างไอดี: <code>123456</code> หรือ <code>789000</code></div>
+                <div class="error-msg" id="errorMsg">⚠️ ไม่พบข้อมูลรหัสสมาชิกนี้ในระบบ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard-view" id="dashboardSection">
+        <div class="dash-container">
+            
+            <!-- Profile -->
+            <div class="profile-header">
+                <div class="avatar-circle" id="avatarChar">M</div>
+                <div class="profile-info">
+                    <h2 id="userName">-</h2>
+                    <div class="profile-tags">
+                        <span class="tag">🆔 ID: <span id="userId">-</span></span>
+                        <span class="tag">🏢 <span id="userBU">-</span></span>
+                        <span class="tag">👥 <span id="userTeam">-</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-layout">
+                <!-- Left Column -->
+                <div class="left-col">
+                    <!-- Score Circle -->
+                    <div class="card" style="text-align: center;">
+                        <h3>🏆 ผลการเรียนโดยรวม</h3>
+                        <div class="progress-container">
+                            <svg width="120" height="120" viewBox="0 0 100 100">
+                                <circle class="circle-bg" cx="50" cy="50" r="45"></circle>
+                                <circle class="circle-bar" id="circleProgress" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <div style="margin-top: -50px; margin-bottom: 20px;">
+                                <div class="stat-big" id="avgScore">0</div>
+                                <div class="stat-label">คะแนนเฉลี่ย</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 20px;">
+                            <div><div style="font-size: 1.5em; font-weight: 800; color: var(--success);" id="statPass">0</div><div class="stat-label">ผ่าน</div></div>
+                            <div><div style="font-size: 1.5em; font-weight: 800; color: var(--warning);" id="statFail">0</div><div class="stat-label">ไม่ผ่าน</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="card">
+                        <h3>🎖️ ความสำเร็จ</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <div style="background: #e0e7ff; padding: 10px; border-radius: 12px; text-align: center; flex: 1; min-width: 80px;">
+                                <div style="font-size: 1.5em;">📚</div>
+                                <div style="font-size: 0.8em; font-weight: 600; margin-top: 5px;" id="statCredits">0</div>
+                                <div style="font-size: 0.7em; color: var(--gray);">หน่วยกิต</div>
+                            </div>
+                            <div style="background: #dcfce7; padding: 10px; border-radius: 12px; text-align: center; flex: 1; min-width: 80px;">
+                                <div style="font-size: 1.5em;">🏅</div>
+                                <div style="font-size: 0.8em; font-weight: 600; margin-top: 5px;" id="statCourses">0</div>
+                                <div style="font-size: 0.7em; color: var(--gray);">หลักสูตร</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-col">
+                    <!-- Timeline -->
+                    <div class="card">
+                        <h3>📅 ประวัติการอบรมล่าสุด</h3>
+                        <div class="timeline" id="timelineList">
+                            <!-- Items injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Detailed List -->
+                    <div class="card">
+                        <h3>📝 รายวิชาทั้งหมด</h3>
+                        <div id="courseList">
+                            <!-- Items injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div>
+                    <h3>📤 ต้องการส่งรายงานให้หัวหน้างาน?</h3>
+                    <p style="opacity: 0.8; font-size: 0.9em;">สรุปผลการเรียนทั้งหมดเป็นไฟล์ PDF หรือส่งลิงก์ด่วน</p>
+                </div>
+                <button class="btn-white">ส่งรายงานทันที</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const db = {
+            "123456": { id: "123456", name: "นาย โกมล ไชยประสูตร", bu: "PMSG", team: "ทีมตรวจสอบธุรกิจ", courses: [
+                { date: "24 มี.ค. 69", name: "การบริหารองค์กร ด้วย BP LL", score: 100, passed: true, credits: 4, icon: "🏛️" },
+                { date: "7 ม.ค. 69", name: "ความรู้เทคโนโลยี AI บทความ ม.ค.", score: 85, passed: true, credits: 2, icon: "💻" },
+                { date: "15 ธ.ค. 68", name: "ความปลอดภัยในการทำงาน จป.", score: 95, passed: true, credits: 6, icon: "⛑️" },
+                { date: "10 พ.ย. 68", name: "มาตรฐาน 5ส เพื่อสิ่งแวดล้อม", score: 45, passed: false, credits: 0, icon: "🍃" },
+            ]},
+            "789000": { id: "789000", name: "นางสาว สมหญิง รักงาน", bu: "AAMG", team: "ทีมบริการลูกค้า", courses: [
+                { date: "20 พ.ค. 69", name: "การบริการลูกค้าแบบเหนือชั้น", score: 98, passed: true, credits: 3, icon: "💖" },
+                { date: "18 พ.ค. 69", name: "การใช้ AI เพื่อการทำงาน", score: 100, passed: true, credits: 4, icon: "🤖" },
+            ]}
+        };
+
+        function searchMember() {
+            const input = document.getElementById('searchInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const hero = document.getElementById('heroSection');
+            const dash = document.getElementById('dashboardSection');
+            
+            if (db[input]) {
+                errorMsg.style.display = 'none';
+                hero.style.display = 'none';
+                dash.style.display = 'block';
+                window.scrollTo(0, 0);
+                renderDashboard(db[input]);
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function renderDashboard(data) {
+            document.getElementById('userName').innerText = data.name;
+            document.getElementById('userId').innerText = data.id;
+            document.getElementById('userBU').innerText = data.bu;
+            document.getElementById('userTeam').innerText = data.team;
+            document.getElementById('avatarChar').innerText = data.name.charAt(0);
+
+            // Stats
+            const passed = data.courses.filter(c => c.passed).length;
+            const failed = data.courses.length - passed;
+            const avg = Math.round(data.courses.reduce((s,c) => s+c.score, 0) / data.courses.length);
+            const credits = data.courses.filter(c => c.passed).reduce((s,c) => s+c.credits, 0);
+
+            document.getElementById('statPass').innerText = passed;
+            document.getElementById('statFail').innerText = failed;
+            document.getElementById('avgScore').innerText = avg;
+            document.getElementById('statCredits').innerText = credits;
+            document.getElementById('statCourses').innerText = data.courses.length;
+
+            // Progress Circle (283 is circumference of r=45)
+            const offset = 283 - (283 * (avg / 100));
+            document.getElementById('circleProgress').style.strokeDashoffset = offset;
+
+            // Timeline
+            const tl = document.getElementById('timelineList');
+            tl.innerHTML = '';
+            data.courses.slice(0,3).forEach(c => {
+                tl.innerHTML += `
+                    <div class="t-item">
+                        <div class="t-dot" style="background: ${c.passed ? 'var(--success)' : 'var(--danger)'}"></div>
+                        <div class="t-date">${c.date}</div>
+                        <div class="t-content">
+                            <strong>${c.icon} ${c.name}</strong>
+                            <div style="font-size: 0.85em; margin-top: 5px; color: var(--gray);">
+                                คะแนน: ${c.score} | สถานะ: <span style="color: ${c.passed ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">${c.passed ? 'ผ่าน' : 'ไม่ผ่าน'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Course List
+            const list = document.getElementById('courseList');
+            list.innerHTML = '';
+            data.courses.forEach(c => {
+                const badge = c.passed ? '<span class="status-badge status-pass">✅ ผ่าน</span>' : '<span class="status-badge status-fail">❌ ไม่ผ่าน</span>';
+                list.innerHTML += `
+                    <div class="course-item">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div class="c-icon">${c.icon}</div>
+                            <div class="c-info">
+                                <h4>${c.name}</h4>
+                                <div class="c-meta">📅 ${c.date} • 📚 ${c.credits} หน่วยกิต</div>
+                            </div>
+                        </div>
+                        <div class="c-score">
+                            <div class="score-val">${c.score}</div>
+                            ${badge}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function showHero() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('heroSection').style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

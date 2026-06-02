@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Contract of Extreme Ownership</title>
+<base target="_top">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.6}
+.container{max-width:800px;margin:0 auto;padding:16px}
+
+/* Header */
+.header{text-align:center;padding:24px 20px;background:linear-gradient(135deg,#1a237e,#283593,#7c3aed);color:#fff;border-radius:14px;margin-bottom:16px;position:relative}
+.header h1{font-size:1.3em;letter-spacing:0.5px;margin-bottom:2px}
+.header .sub{font-size:0.82em;opacity:0.9}
+.header .badge{display:inline-block;background:rgba(255,255,255,0.2);border-radius:100px;padding:2px 12px;font-size:0.72em;margin-bottom:8px}
+
+/* Card */
+.card{background:#fff;border:1px solid #e0e6ed;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.card h2{font-size:1em;color:#1a237e;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #7c3aed;display:flex;align-items:center;gap:6px}
+.card h3{font-size:0.92em;color:#5c6bc0;margin:10px 0 6px}
+
+/* Form elements */
+.form-group{margin-bottom:10px}
+.form-group label{display:block;font-size:0.82em;color:#546e7a;font-weight:600;margin-bottom:2px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border:1px solid #cfd8dc;border-radius:6px;font-size:0.92em;font-family:inherit;color:#1a1a2e;background:#fff;transition:border-color 0.2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 2px rgba(124,58,237,0.1)}
+.form-group input:read-only{background:#f5f3ff;color:#7c3aed;font-weight:600;cursor:default}
+
+/* Autocomplete */
+.id-wrapper{position:relative}
+.ac-list{position:absolute;width:100%;max-height:180px;overflow-y:auto;background:#fff;border:1px solid #cfd8dc;border-radius:0 0 6px 6px;z-index:100;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.ac-list.show{display:block}
+.ac-item{padding:8px 10px;cursor:pointer;border-bottom:1px solid #eceff1;font-size:0.84em}
+.ac-item:hover,.ac-item.active{background:#f5f3ff}
+.ac-item .id{color:#7c3aed;font-weight:700}
+.ac-item .nm{color:#1a1a2e}
+.ac-item .dt{color:#78909c;font-size:0.78em}
+
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px}
+.info-item{background:#f5f3ff;padding:4px 8px;border-radius:4px;font-size:0.82em}
+.info-item span{color:#546e7a}
+.info-item strong{color:#7c3aed}
+
+/* Section layout matching PDF */
+.section-header{background:linear-gradient(135deg,#1a237e,#7c3aed);color:#fff;padding:10px 14px;border-radius:8px;margin:12px 0 10px;font-size:1em;font-weight:700;text-align:center;letter-spacing:0.5px}
+
+/* Accountability tags */
+.acc-grid{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.acc-item{background:#f5f3ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;font-size:0.82em;cursor:pointer;transition:all 0.15s;user-select:none}
+.acc-item.selected{background:#ede9fe;border-color:#7c3aed;color:#4a1d96;font-weight:600}
+.acc-item:hover{border-color:#7c3aed}
+
+/* Purpose/Vision boxes */
+.pv-box{background:#fafafa;border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px}
+.pv-box h4{font-size:0.88em;color:#1a237e;margin-bottom:6px}
+.pv-box textarea{width:100%;border:1px solid #ddd;border-radius:6px;padding:8px;font-size:0.88em;font-family:inherit;min-height:50px;resize:vertical}
+
+/* Scale */
+.scale-bar{display:flex;justify-content:space-between;margin:8px 0;padding:0 4px}
+.scale-num{width:30px;height:30px;border-radius:50%;border:1px solid #cfd8dc;display:flex;align-items:center;justify-content:center;font-size:0.78em;cursor:pointer;transition:all 0.15s;background:#fff;color:#546e7a}
+.scale-num:hover,.scale-num.selected{background:#7c3aed;color:#fff;border-color:#7c3aed}
+
+/* OKR box */
+.okr-box{background:#f5f3ff;border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px}
+.okr-box h4{font-size:0.88em;color:#7c3aed;margin-bottom:4px}
+.okr-box .desc{font-size:0.76em;color:#78909c;margin-bottom:8px}
+.okr-box table{width:100%;border-collapse:collapse;margin-top:6px}
+.okr-box th{background:#7c3aed;color:#fff;padding:5px 6px;font-size:0.72em;text-align:left}
+.okr-box td{padding:5px 6px;border-bottom:1px solid #e0e0e0;font-size:0.82em}
+.okr-box input[type=text],.okr-box select{width:100%;padding:4px 6px;border:1px solid #cfd8dc;border-radius:4px;font-size:0.86em}
+
+/* Reflective quote */
+.quote-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:14px 16px;margin:12px 0;font-style:italic;font-size:0.92em;color:#4a1d96;text-align:center;line-height:1.7}
+
+/* Approval section */
+.approval{background:#f5f3ff;border:1px solid #7c3aed;border-radius:8px;padding:14px;margin-top:10px}
+.approval .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e0e0e0}
+.approval .row:last-child{border:none}
+.approval .role{font-weight:600;color:#7c3aed;min-width:140px;font-size:0.88em}
+.approval .line{flex:1;border-bottom:1px dotted #78909c}
+
+/* Submit */
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:0.92em;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-success{background:#16a34a;color:#fff;width:100%;font-size:1em;padding:14px}
+.btn-success:hover{background:#15803d}
+.btn-success:disabled{opacity:0.5;cursor:not-allowed}
+
+/* Responsive */
+@media(max-width:480px){.info-grid{grid-template-columns:1fr}.okr-box th,.okr-box td{padding:3px;font-size:0.72em}.scale-num{width:26px;height:26px;font-size:0.7em}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+<h1>Contract of Extreme Ownership</h1>
+<p class="sub">สัญญาแห่งความเป็นเจ้าของ — CEO</p>
+</div>
+
+<!-- SECTION 1+1.5: ข้อมูลสมาชิก + ผู้รับใช้ทีม/พี่เลี้ยง (2 คอลัมน์) -->
+<div class="card">
+<h2>👤 ข้อมูลสมาชิก & 👥 ผู้รับใช้ทีม / พี่เลี้ยง</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+<!-- คอลัมน์ซ้าย: ข้อมูลสมาชิก -->
+<div>
+<h3 style="font-size:0.92em;color:#1a237e;margin-bottom:8px;border-bottom:1px solid #e0e0e0;padding-bottom:4px">👤 ข้อมูลสมาชิก</h3>
+<div class="form-group">
+<label>รหัสสมาชิก (ID)</label>
+<div class="id-wrapper">
+<input type="text" id="memberInput" placeholder="พิมพ์รหัสสมาชิก เช่น 6407049..." autocomplete="off">
+<div class="ac-list" id="acList"></div>
+</div>
+</div>
+<div id="memberDebug" style="background:#fff3cd;padding:8px 12px;border-radius:6px;margin:8px 0;font-size:0.82em;color:#856404;display:none">⏳ กำลังโหลดข้อมูลสมาชิก...</div>
+<div id="memberInfo" style="display:none">
+<div class="form-group"><label>ชื่อ-นามสกุล</label><input type="text" id="fName" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>ชื่อบทบาท</label><input type="text" id="fRole" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>ชื่อทีม</label><input type="text" id="fTeam" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>BU</label><input type="text" id="fBU" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+</div>
+</div>
+
+<!-- คอลัมน์ขวา: ผู้รับใช้ทีม / พี่เลี้ยง -->
+<div>
+<h3 style="font-size:0.92em;color:#1a237e;margin-bottom:8px;border-bottom:1px solid #e0e0e0;padding-bottom:4px">👥 ผู้รับใช้ทีม / พี่เลี้ยง</h3>
+<div class="form-group">
+<label>ผู้รับใช้ทีม (Service Leader)</label>
+<div class="id-wrapper">
+<input type="text" id="serviceLeaderInput" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off">
+<div class="ac-list" id="serviceLeaderList"></div>
+</div>
+</div>
+<div class="form-group">
+<label>พี่เลี้ยง (Mentor) 1</label>
+<div class="id-wrapper">
+<input type="text" id="mentor1Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off">
+<div class="ac-list" id="mentor1List"></div>
+</div>
+</div>
+<div class="form-group">
+<label>พี่เลี้ยง (Mentor) 2</label>
+<div class="id-wrapper">
+<input type="text" id="mentor2Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off">
+<div class="ac-list" id="mentor2List"></div>
+</div>
+</div>
+<div class="form-group">
+<label>พี่เลี้ยง (Mentor) 3</label>
+<div class="id-wrapper">
+<input type="text" id="mentor3Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off">
+<div class="ac-list" id="mentor3List"></div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 2: Accountability (5 ข้อ + ปุ่มเพิ่ม) -->
+<div class="card">
+<h2>📋 หน้าที่ความรับผิดชอบหลัก (Accountability)</h2>
+<div id="accContainer">
+<div class="form-group">
+<label>1.</label>
+<input type="text" id="acc1" placeholder="หน้าที่ความรับผิดชอบข้อ 1">
+</div>
+<div class="form-group">
+<label>2.</label>
+<input type="text" id="acc2" placeholder="หน้าที่ความรับผิดชอบข้อ 2">
+</div>
+<div class="form-group">
+<label>3.</label>
+<input type="text" id="acc3" placeholder="หน้าที่ความรับผิดชอบข้อ 3">
+</div>
+<div class="form-group">
+<label>4.</label>
+<input type="text" id="acc4" placeholder="หน้าที่ความรับผิดชอบข้อ 4">
+</div>
+<div class="form-group">
+<label>5.</label>
+<input type="text" id="acc5" placeholder="หน้าที่ความรับผิดชอบข้อ 5">
+</div>
+</div>
+<button class="btn" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;cursor:pointer;font-family:inherit;margin-top:4px" id="addAccBtn">➕ เพิ่มแถว</button>
+</div>
+
+<!-- SECTION 3: Purpose & Vision -->
+<div class="card">
+<h2>🎯 จุดมุ่งหมาย & ภาพความสำเร็จ</h2>
+<div id="purposeDisplay">
+<div class="pv-box">
+<h4>จุดมุ่งหมาย (Purpose)</h4>
+<div id="purposeText_display" style="min-height:24px;color:#546e7a;font-size:0.88em">กำลังโหลด...</div>
+</div>
+<div class="pv-box">
+<h4>ภาพความสำเร็จที่อยากเห็น (Vision)</h4>
+<div id="visionText_display" style="min-height:24px;color:#546e7a;font-size:0.88em">กำลังโหลด...</div>
+</div>
+<div class="updated-time" id="purposeTime"></div>
+</div>
+
+<div id="purposeEdit" style="display:none">
+<div class="pv-box">
+<h4>จุดมุ่งหมาย (Purpose)</h4>
+<textarea id="purposeText" rows="3" placeholder="เขียนจุดมุ่งหมายของทีม..."></textarea>
+</div>
+<div class="pv-box">
+<h4>ภาพความสำเร็จที่อยากเห็น (Vision)</h4>
+<textarea id="visionText" rows="3" placeholder="เขียนภาพความสำเร็จที่อยากเห็น..."></textarea>
+</div>
+<button class="btn" style="background:#16a34a;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:0.82em;cursor:pointer;font-family:inherit;margin-top:4px" id="savePurpose">💾 บันทึก</button>
+<button class="btn" style="background:#78909c;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:0.82em;cursor:pointer;font-family:inherit;margin-top:4px;margin-left:6px" id="cancelPurpose">ยกเลิก</button>
+</div>
+
+
+</div>
+
+<!-- SECTION HEADER: Accountability & Ownership -->
+<div class="section-header">ACCOUNTABILITY & OWNERSHIP</div>
+
+<!-- SECTION 4: Business Growth OKR (3 คอลัมน์ + เพิ่มได้) -->
+<div class="card">
+<h2>🚀 OKR Business Growth — ระดับ BU</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดการเปลี่ยนแปลง (ระดับ BU) | มาจาก: แผนธุรกิจ / Target Sum</p>
+<div id="buOkrContainer" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+
+<!-- Objective 1 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 1</h4>
+<input type="text" id="buObj1" placeholder="วัตถุประสงค์ 1">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>1.1</label><input type="text" id="buKr1_1" placeholder="Key Result 1.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.2</label><input type="text" id="buKr1_2" placeholder="Key Result 1.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.3</label><input type="text" id="buKr1_3" placeholder="Key Result 1.3"></div>
+</div>
+
+<!-- Objective 2 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 2</h4>
+<input type="text" id="buObj2" placeholder="วัตถุประสงค์ 2">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>2.1</label><input type="text" id="buKr2_1" placeholder="Key Result 2.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.2</label><input type="text" id="buKr2_2" placeholder="Key Result 2.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.3</label><input type="text" id="buKr2_3" placeholder="Key Result 2.3"></div>
+</div>
+
+<!-- Objective 3 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 3</h4>
+<input type="text" id="buObj3" placeholder="วัตถุประสงค์ 3">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>3.1</label><input type="text" id="buKr3_1" placeholder="Key Result 3.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.2</label><input type="text" id="buKr3_2" placeholder="Key Result 3.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.3</label><input type="text" id="buKr3_3" placeholder="Key Result 3.3"></div>
+</div>
+
+</div>
+<button class="btn" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;cursor:pointer;font-family:inherit;margin-top:8px" id="addBuObjBtn">➕ เพิ่มวัตถุประสงค์ (Objective)</button>
+</div>
+
+<!-- SECTION 5: Team Growth OKR (3 คอลัมน์ + เพิ่มได้) -->
+<div class="card">
+<h2>🚀 OKR Team Growth — ระดับทีม</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดการเปลี่ยนแปลง (ระดับทีม) | "เราจะเก่งขึ้นเรื่องอะไร และพิสูจน์ยังไงว่าเก่งขึ้นจริง"</p>
+<div id="teamOkrContainer" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+
+<!-- Objective 1 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 1</h4>
+<input type="text" id="teamObj1" placeholder="วัตถุประสงค์ 1">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>1.1</label><input type="text" id="teamKr1_1" placeholder="Key Result 1.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.2</label><input type="text" id="teamKr1_2" placeholder="Key Result 1.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.3</label><input type="text" id="teamKr1_3" placeholder="Key Result 1.3"></div>
+</div>
+
+<!-- Objective 2 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 2</h4>
+<input type="text" id="teamObj2" placeholder="วัตถุประสงค์ 2">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>2.1</label><input type="text" id="teamKr2_1" placeholder="Key Result 2.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.2</label><input type="text" id="teamKr2_2" placeholder="Key Result 2.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.3</label><input type="text" id="teamKr2_3" placeholder="Key Result 2.3"></div>
+</div>
+
+<!-- Objective 3 -->
+<div class="okr-box">
+<h4>วัตถุประสงค์ (Objective) 3</h4>
+<input type="text" id="teamObj3" placeholder="วัตถุประสงค์ 3">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>3.1</label><input type="text" id="teamKr3_1" placeholder="Key Result 3.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.2</label><input type="text" id="teamKr3_2" placeholder="Key Result 3.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.3</label><input type="text" id="teamKr3_3" placeholder="Key Result 3.3"></div>
+</div>
+
+</div>
+<button class="btn" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;cursor:pointer;font-family:inherit;margin-top:8px" id="addTeamObjBtn">➕ เพิ่มวัตถุประสงค์ (Objective)</button>
+</div>
+
+<!-- Reflective Quote -->
+<div class="quote-box">
+💬 "เราจะเก่งขึ้นเรื่องอะไร และพิสูจน์ยังไงว่าเก่งขึ้นจริง"
+</div>
+
+<!-- SECTION 6: Personal Growth -->
+<div class="card">
+<h2>🌱 Personal Growth</h2>
+<div class="form-group">
+<label>ประเภทการเติบโต</label>
+<select id="personalType">
+<option value="">-- เลือก --</option>
+<option value="Skill">Skill (ทักษะ)</option>
+<option value="Knowledge">Knowledge (ความรู้)</option>
+<option value="Attitude">Attitude (เจตคติ)</option>
+<option value="Leadership">Leadership (ภาวะผู้นำ)</option>
+<option value="Wellness">Wellness (สุขภาพ)</option>
+</select>
+</div>
+<div class="form-group">
+<label>เป้าหมาย</label>
+<input type="text" id="personalTarget" placeholder="เช่น เรียนรู้ Data Analysis ภายใน 6 เดือน">
+</div>
+<div class="form-group">
+<label>แผนดำเนินการ</label>
+<textarea id="personalDesc" rows="2" placeholder="จะทำอย่างไรเพื่อถึงเป้าหมาย..."></textarea>
+</div>
+<div class="form-group">
+<label>ความก้าวหน้า (%)</label>
+<select id="personalProgress">
+<option value="0%">0% - ยังไม่เริ่ม</option>
+<option value="25%">25% - เริ่มต้น</option>
+<option value="50%">50% - กำลังดำเนินการ</option>
+<option value="75%">75% - เกือบเสร็จ</option>
+<option value="100%">100% - เสร็จสมบูรณ์</option>
+</select>
+</div>
+</div>
+
+<!-- SECTION 7: KPI Operational Excellence -->
+<div class="card">
+<h2>📊 KPI (Operational Excellence — WI)</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดเพื่อรักษามาตรฐานงาน | มาจาก: PM/WI (Process Manual / Work Instruction)</p>
+<div class="okr-box">
+<h4>ตัวชี้วัดหลัก</h4>
+<table><tr><th style="width:40px">KPI#</th><th>ชื่อตัวชี้วัด</th><th style="width:70px">เป้า</th><th style="width:70px">ความถี่</th></tr>
+<tr><td>KPI1</td><td><input type="text" id="kpi1n" placeholder="เช่น ยอดขาย, CSAT"></td><td><input type="text" id="kpi1t" placeholder="เป้า"></td><td><select id="kpi1f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select></td></tr>
+<tr><td>KPI2</td><td><input type="text" id="kpi2n" placeholder="เช่น Quality Metrics"></td><td><input type="text" id="kpi2t" placeholder="เป้า"></td><td><select id="kpi2f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select></td></tr>
+<tr><td>KPI3</td><td><input type="text" id="kpi3n" placeholder="เช่น Compliance"></td><td><input type="text" id="kpi3t" placeholder="เป้า"></td><td><select id="kpi3f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select></td></tr>
+</table>
+</div>
+</div>
+
+<!-- SECTION 8: Approval -->
+<div class="card">
+<h2>✅ ลำดับการอนุมัติ</h2>
+<div class="approval">
+<div class="row"><span class="role">Member (ผู้กรอก)</span><span class="line"></span><span style="font-size:0.82em;color:#16a34a">✅ ส่งแล้ว</span></div>
+<div class="row"><span class="role">Mentor</span><span class="line"></span><span style="font-size:0.82em;color:#78909c">⏳ รออนุมัติ</span></div>
+<div class="row"><span class="role">Service Leader</span><span class="line"></span><span style="font-size:0.82em;color:#78909c">⏳ รออนุมัติ</span></div>
+</div>
+</div>
+
+<!-- EDIT / SAVE BAR (ด้านล่าง) -->
+<div style="margin:12px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<button class="btn" style="background:#16a34a;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:0.95em;cursor:pointer;font-family:inherit;width:100%" id="saveAllBtn">💾 บันทึกข้อมูล</button>
+<span id="allTimestamp" style="font-size:0.78em;color:#546e7a;margin-left:8px"></span>
+</div>
+
+<!-- SUBMIT -->
+<div style="margin:16px 0">
+<button class="btn btn-success" id="submitBtn">ส่งสัญญา ✉️</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="successPage" style="display:none;text-align:center;padding:36px 16px">
+<div style="font-size:2.5em;color:#16a34a">✅</div>
+<h2 style="color:#16a34a;margin:10px 0">ส่งสัญญาสำเร็จ!</h2>
+<p style="color:#546e7a;font-size:0.9em">CEO Contract ของคุณถูกบันทึกแล้ว<br>รอการอนุมัติจาก Mentor และ Service Leader</p>
+<p style="color:#78909c;font-size:0.82em;margin-top:14px">Timestamp: <span id="submitTime"></span></p>
+</div>
+
+</div>
+
+<script>
+var MEMBERS = <!-- MEMBERS_DATA_PLACEHOLDER -->;
+var selectedMember = null;
+var accCount = 5; // เริ่มต้น 5 ข้อ Accountability
+
+// ===== DEBUG (แสดงสถานะบนหน้าเว็บ) =====
+var debugEl = document.getElementById('memberDebug');
+try {
+  console.log('CEO Contract JS loaded. MEMBERS count: ' + (MEMBERS ? MEMBERS.length : 'NULL/UNDEFINED'));
+  // FALLBACK: ถ้า MEMBERS ว่าง ให้โหลดจาก memberData endpoint
+  if (!MEMBERS || MEMBERS.length === 0 || (MEMBERS.length === 1 && !MEMBERS[0].id)) {
+    if(debugEl){debugEl.style.display='block';debugEl.innerHTML='⚠️ MEMBERS ว่าง — กำลังโหลดจาก server...';}
+    console.log('MEMBERS empty, loading from memberData endpoint...');
+    var script = document.createElement('script');
+    script.src = window.location.href.split('?')[0] + '?action=memberData';
+    script.onload = function() {
+      console.log('MEMBERS loaded from endpoint. Count: ' + (MEMBERS ? MEMBERS.length : 'FAIL'));
+      if (MEMBERS && MEMBERS.length > 0) {
+        if(debugEl){debugEl.style.display='block';debugEl.innerHTML='✅ โหลดสมาชิกสำเร็จ: ' + MEMBERS.length + ' คน — พิมพ์ ID เพื่อค้นหา';debugEl.style.background='#d4edda';debugEl.style.color='#155724';setTimeout(function(){debugEl.style.display='none';},5000);}
+        initAC(); initExtraAC();
+      } else {
+        if(debugEl){debugEl.innerHTML='❌ ไม่สามารถโหลดข้อมูลสมาชิก — กรุณาติดต่อผู้ดูแลระบบ';debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';}
+      }
+    };
+    script.onerror = function() {
+      if(debugEl){debugEl.innerHTML='❌ โหลดข้อมูลสมาชิกล้มเหลว — ตรวจสอบการ Deploy ไฟล์ .gs';debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';}
+    };
+    document.head.appendChild(script);
+  } else {
+    if(debugEl){debugEl.style.display='block';debugEl.innerHTML='✅ โหลดสมาชิกสำเร็จ: ' + MEMBERS.length + ' คน — พิมพ์ ID เพื่อค้นหา';debugEl.style.background='#d4edda';debugEl.style.color='#155724';setTimeout(function(){debugEl.style.display='none';},5000);}
+  }
+} catch(e) { console.log('JS Error: ' + e.message); if(debugEl){debugEl.innerHTML='❌ JS Error: ' + e.message;debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';} }
+
+// ===== HELPER: GET VALUE SAFELY =====
+function gv(id) {
+  var el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+// ===== AUTOCOMPLETE (สมาชิก) =====
+function initAC(){
+  var inp = document.getElementById('memberInput');
+  var list = document.getElementById('acList');
+  if(!inp||!list){console.error('initAC: memberInput or acList not found');return;}
+  inp.addEventListener('input',function(){
+    var q = this.value.toLowerCase().trim();
+    if(q.length<1){list.classList.remove('show');return;}
+    var m = MEMBERS.filter(function(x){
+      return (x.id||'').toLowerCase().indexOf(q)>=0 || (x.name||'').toLowerCase().indexOf(q)>=0;
+    }).slice(0,20);
+    if(!m.length){list.classList.remove('show');return;}
+    list.innerHTML='';
+    m.forEach(function(x){
+      var d = document.createElement('div');
+      d.className='ac-item';
+      d.innerHTML='<span class="id">'+(x.id||'')+'</span> <span class="nm">'+(x.name||'')+'</span> <span class="dt">| '+(x.role||'')+' | '+(x.team||'')+'</span>';
+      d.addEventListener('click',function(){pickMember(x);});
+      list.appendChild(d);
+    });
+    list.classList.add('show');
+  });
+  // Enter/Tab หรือ Blur → auto-fill อัตโนมัติ
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key==='Tab'){
+      var q=this.value.toLowerCase().trim();
+      if(!q)return;
+      var m=MEMBERS.filter(function(x){return(x.id||'').toLowerCase()===q||(x.id||'').toLowerCase().indexOf(q)===0||(x.name||'').toLowerCase().indexOf(q)>=0;});
+      if(m.length===1){pickMember(m[0]);}
+      else if(m.length>0){
+        var exact=m.filter(function(x){return(x.id||'').toLowerCase()===q;});
+        if(exact.length===1){pickMember(exact[0]);}
+        else{pickMember(m[0]);}
+      }
+      e.preventDefault();
+    }
+  });
+  inp.addEventListener('blur',function(){
+    if(selectedMember)return;
+    var q=this.value.toLowerCase().trim();
+    if(!q)return;
+    var m=MEMBERS.filter(function(x){return(x.id||'').toLowerCase()===q||(x.id||'').toLowerCase().indexOf(q)===0||(x.name||'').toLowerCase().indexOf(q)>=0;});
+    if(m.length>0){pickMember(m[0]);}
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest||!e.target.closest('.id-wrapper')){list.classList.remove('show');}
+  });
+}
+
+function pickMember(m){
+  console.log('pickMember called:', JSON.stringify(m));
+  selectedMember = m;
+  document.getElementById('memberInput').value = m.name || '';
+  document.getElementById('fName').value = m.name || '-';
+  document.getElementById('fRole').value = m.role || '-';
+  document.getElementById('fTeam').value = m.team || '-';
+  document.getElementById('fBU').value = m.bu || '-';
+  document.getElementById('memberInfo').style.display = 'block';
+  document.getElementById('acList').classList.remove('show');
+  console.log('memberInfo shown. fName=' + document.getElementById('fName').value + ', fRole=' + document.getElementById('fRole').value);
+  // โหลดข้อมูลจาก Sheets
+  loadPurposeVision();
+  loadAccountability();
+}
+
+// ===== EXTRA AUTOCOMPLETE (Service Leader & Mentors) =====
+function initExtraAC(){
+  setupAC('serviceLeaderInput','serviceLeaderList');
+  setupAC('mentor1Input','mentor1List');
+  setupAC('mentor2Input','mentor2List');
+  setupAC('mentor3Input','mentor3List');
+}
+
+function setupAC(inputId, listId){
+  var inp = document.getElementById(inputId);
+  var list = document.getElementById(listId);
+  if(!inp||!list) return;
+  inp.addEventListener('input',function(){
+    var q = this.value.toLowerCase().trim();
+    if(q.length<1){list.classList.remove('show');return;}
+    var m = MEMBERS.filter(function(x){
+      return (x.id||'').toLowerCase().indexOf(q)>=0 || (x.name||'').toLowerCase().indexOf(q)>=0;
+    }).slice(0,20);
+    if(!m.length){list.classList.remove('show');return;}
+    list.innerHTML='';
+    m.forEach(function(x){
+      var d = document.createElement('div');
+      d.className='ac-item';
+      d.innerHTML='<span class="id">'+(x.id||'')+'</span> <span class="nm">'+(x.name||'')+'</span> <span class="dt">| '+(x.role||'')+' | '+(x.team||'')+'</span>';
+      d.addEventListener('click',function(){inp.value=(x.name||'')+' ('+(x.id||'')+')';list.classList.remove('show');});
+      list.appendChild(d);
+    });
+    list.classList.add('show');
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest||!e.target.closest('.id-wrapper')){list.classList.remove('show');}
+  });
+}
+
+// ===== ADD ACC ROW (เพิ่มแถว Accountability) =====
+document.getElementById('addAccBtn').addEventListener('click',function(){
+  accCount++;
+  var container = document.getElementById('accContainer');
+  var div = document.createElement('div');
+  div.className = 'form-group';
+  div.innerHTML = '<label>'+accCount+'.</label><input type="text" id="acc'+accCount+'" placeholder="หน้าที่ความรับผิดชอบข้อ '+accCount+'">';
+  container.appendChild(div);
+});
+
+// ===== ADD BU OBJECTIVE (เพิ่มวัตถุประสงค์ BU) =====
+var buObjCount = 3;
+document.getElementById('addBuObjBtn').addEventListener('click',function(){
+  buObjCount++;
+  var n = buObjCount;
+  var container = document.getElementById('buOkrContainer');
+  var div = document.createElement('div');
+  div.className = 'okr-box';
+  div.innerHTML = '<h4>วัตถุประสงค์ (Objective) '+n+'</h4>' +
+    '<input type="text" id="buObj'+n+'" placeholder="วัตถุประสงค์ '+n+'">' +
+    '<h4 style="margin-top:6px">Key Results</h4>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.1</label><input type="text" id="buKr'+n+'_1" placeholder="Key Result '+n+'.1"></div>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.2</label><input type="text" id="buKr'+n+'_2" placeholder="Key Result '+n+'.2"></div>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.3</label><input type="text" id="buKr'+n+'_3" placeholder="Key Result '+n+'.3"></div>';
+  container.appendChild(div);
+});
+
+// ===== ADD TEAM OBJECTIVE (เพิ่มวัตถุประสงค์ทีม) =====
+var teamObjCount = 3;
+document.getElementById('addTeamObjBtn').addEventListener('click',function(){
+  teamObjCount++;
+  var n = teamObjCount;
+  var container = document.getElementById('teamOkrContainer');
+  var div = document.createElement('div');
+  div.className = 'okr-box';
+  div.innerHTML = '<h4>วัตถุประสงค์ (Objective) '+n+'</h4>' +
+    '<input type="text" id="teamObj'+n+'" placeholder="วัตถุประสงค์ '+n+'">' +
+    '<h4 style="margin-top:6px">Key Results</h4>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.1</label><input type="text" id="teamKr'+n+'_1" placeholder="Key Result '+n+'.1"></div>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.2</label><input type="text" id="teamKr'+n+'_2" placeholder="Key Result '+n+'.2"></div>' +
+    '<div class="form-group" style="margin-bottom:4px"><label>'+n+'.3</label><input type="text" id="teamKr'+n+'_3" placeholder="Key Result '+n+'.3"></div>';
+  container.appendChild(div);
+});
+
+// ===== LOAD DATA FROM SHEETS =====
+
+function loadPurposeVision(){
+  if(!selectedMember) return;
+  var bu = selectedMember.bu||'';
+  document.getElementById('purposeText_display').innerHTML = 'กำลังโหลด Purpose/Vision สำหรับ BU: '+bu+'...';
+  document.getElementById('visionText_display').innerHTML = '';
+  google.script.run.withSuccessHandler(function(data){
+    if(data && data.length>0){
+      var p = data[0];
+      document.getElementById('purposeText_display').innerHTML = p['Purpose']||p['Purpose_Vision']||'-';
+      document.getElementById('visionText_display').innerHTML = p['Vision']||p['Purpose_Vision']||'-';
+      document.getElementById('purposeTime').textContent = 'อัปเดตล่าสุด: '+(p['Updated_Date']?new Date(p['Updated_Date']).toLocaleString('th-TH'):'-');
+      document.getElementById('purposeText').value = p['Purpose']||p['Purpose_Vision']||'';
+      document.getElementById('visionText').value = p['Vision']||p['Purpose_Vision']||'';
+    } else {
+      document.getElementById('purposeText_display').innerHTML = 'ยังไม่มีข้อมูล — กรอกได้เลย';
+      document.getElementById('visionText_display').innerHTML = 'ยังไม่มีข้อมูล — กรอกได้เลย';
+    }
+  }).withFailureHandler(function(e){
+    document.getElementById('purposeText_display').innerHTML = 'ยังไม่มีข้อมูล';
+    document.getElementById('visionText_display').innerHTML = 'ยังไม่มีข้อมูล';
+  }).readSheetData('Purpose', bu);
+}
+
+function loadAccountability(){
+  if(!selectedMember) return;
+  var bu = selectedMember.bu||'';
+  google.script.run.withSuccessHandler(function(data){
+    if(data && data.length>0){
+      var items = (data[0]['Accountability_Items']||'').split(',');
+      for(var i=0; i<items.length && i<5; i++){
+        var el = document.getElementById('acc'+(i+1));
+        if(el) el.value = items[i].trim();
+      }
+    }
+  }).withFailureHandler(function(e){
+    // ไม่ทำอะไร — ให้ฟิลด์ว่าง
+  }).readSheetData('Accountability', bu);
+}
+
+// ===== SAVE ALL (💾 บันทึกข้อมูล) =====
+document.getElementById('saveAllBtn').addEventListener('click',function(){
+  if(!selectedMember){alert('กรุณาเลือกสมาชิกก่อน');return;}
+  
+  // เก็บ Accountability ทั้งหมด
+  var accItems = [];
+  for(var i=1; i<=accCount; i++){
+    var v = gv('acc'+i);
+    if(v) accItems.push(v);
+  }
+  
+  // เก็บ BU Objectives
+  var buObjs = [];
+  for(var b=1; b<=buObjCount; b++){
+    var obj = gv('buObj'+b);
+    if(obj || gv('buKr'+b+'_1') || gv('buKr'+b+'_2') || gv('buKr'+b+'_3')) {
+      buObjs.push({objective:obj, kr1:gv('buKr'+b+'_1'), kr2:gv('buKr'+b+'_2'), kr3:gv('buKr'+b+'_3')});
+    }
+  }
+  
+  // เก็บ Team Objectives
+  var teamObjs = [];
+  for(var t=1; t<=teamObjCount; t++){
+    var obj = gv('teamObj'+t);
+    if(obj || gv('teamKr'+t+'_1') || gv('teamKr'+t+'_2') || gv('teamKr'+t+'_3')) {
+      teamObjs.push({objective:obj, kr1:gv('teamKr'+t+'_1'), kr2:gv('teamKr'+t+'_2'), kr3:gv('teamKr'+t+'_3')});
+    }
+  }
+  
+  // เก็บ KPIs
+  var kpis = [];
+  for(var k=1; k<=3; k++){
+    var kn = gv('kpi'+k+'n');
+    if(kn) kpis.push({name:kn, target:gv('kpi'+k+'t'), freq:gv('kpi'+k+'f')});
+  }
+  
+  var formData = {
+    member_id: selectedMember.id||'',
+    name: selectedMember.name||'',
+    bu: selectedMember.bu||'',
+    team: selectedMember.team||'',
+    role: selectedMember.role||'',
+    service_leader: gv('serviceLeaderInput'),
+    mentor1: gv('mentor1Input'),
+    mentor2: gv('mentor2Input'),
+    mentor3: gv('mentor3Input'),
+    accountability: accItems.join(', '),
+    purpose: gv('purposeText'),
+    vision: gv('visionText'),
+    personal_type: gv('personalType'),
+    personal_target: gv('personalTarget'),
+    personal_desc: gv('personalDesc'),
+    personal_progress: gv('personalProgress'),
+    bu_objectives: buObjs,
+    team_objectives: teamObjs,
+    kpis: kpis
+  };
+  
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'กำลังบันทึก...';
+  
+  google.script.run.withSuccessHandler(function(r){
+    btn.disabled = false;
+    btn.textContent = '💾 บันทึกข้อมูล';
+    if(r && r.status === 'ok'){
+      document.getElementById('allTimestamp').textContent = 'บันทึกล่าสุด: ' + (r.timestamp || new Date().toLocaleString('th-TH'));
+      alert('บันทึกข้อมูลสำเร็จ!');
+    } else {
+      alert('เกิดข้อผิดพลาด: ' + (r ? r.message : 'Unknown error'));
+    }
+  }).withFailureHandler(function(e){
+    btn.disabled = false;
+    btn.textContent = '💾 บันทึกข้อมูล';
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+  }).saveAllData(formData);
+});
+
+// ===== SUBMIT (ส่งสัญญา ✉️) =====
+document.getElementById('submitBtn').addEventListener('click',function(){
+  if(!selectedMember){alert('กรุณาเลือกสมาชิกก่อน');return;}
+  
+  // เก็บ Accountability ทั้งหมด
+  var accItems = [];
+  for(var i=1; i<=accCount; i++){
+    var v = gv('acc'+i);
+    if(v) accItems.push(v);
+  }
+  
+  // เก็บ BU Objectives
+  var buObjs = [];
+  for(var b=1; b<=buObjCount; b++){
+    var obj = gv('buObj'+b);
+    if(obj || gv('buKr'+b+'_1') || gv('buKr'+b+'_2') || gv('buKr'+b+'_3')) {
+      buObjs.push({objective:obj, kr1:gv('buKr'+b+'_1'), kr2:gv('buKr'+b+'_2'), kr3:gv('buKr'+b+'_3')});
+    }
+  }
+  
+  // เก็บ Team Objectives
+  var teamObjs = [];
+  for(var t=1; t<=teamObjCount; t++){
+    var obj = gv('teamObj'+t);
+    if(obj || gv('teamKr'+t+'_1') || gv('teamKr'+t+'_2') || gv('teamKr'+t+'_3')) {
+      teamObjs.push({objective:obj, kr1:gv('teamKr'+t+'_1'), kr2:gv('teamKr'+t+'_2'), kr3:gv('teamKr'+t+'_3')});
+    }
+  }
+  
+  // เก็บ KPIs
+  var kpis = [];
+  for(var k=1; k<=3; k++){
+    var kn = gv('kpi'+k+'n');
+    if(kn) kpis.push({name:kn, target:gv('kpi'+k+'t'), freq:gv('kpi'+k+'f')});
+  }
+  
+  var formData = {
+    member_id: selectedMember.id||'',
+    name: selectedMember.name||'',
+    bu: selectedMember.bu||'',
+    team: selectedMember.team||'',
+    role: selectedMember.role||'',
+    service_leader: gv('serviceLeaderInput'),
+    mentor1: gv('mentor1Input'),
+    mentor2: gv('mentor2Input'),
+    mentor3: gv('mentor3Input'),
+    accountability: accItems.join(', '),
+    purpose: gv('purposeText'),
+    vision: gv('visionText'),
+    personal_type: gv('personalType'),
+    personal_target: gv('personalTarget'),
+    personal_desc: gv('personalDesc'),
+    personal_progress: gv('personalProgress'),
+    bu_objectives: buObjs,
+    team_objectives: teamObjs,
+    kpis: kpis
+  };
+  
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'กำลังส่ง...';
+  
+  google.script.run.withSuccessHandler(function(r){
+    document.getElementById('submitTime').textContent = new Date().toLocaleString('th-TH');
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById('successPage').style.display = 'block';
+  }).withFailureHandler(function(e){
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'ส่งสัญญา ✉️';
+  }).submitCEOContract(formData);
+});
+
+// ===== INIT =====
+initAC();
+initExtraAC();
+</script>
+</body>
+</html>

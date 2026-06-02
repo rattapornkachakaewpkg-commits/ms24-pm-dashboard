@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่มือสร้าง App ด้วย AI 100% — จากศูนย์สู่ Prototype พร้อม Deploy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f172a; --blue: #3b82f6; --blue-dark: #2563eb;
+            --green: #16a34a; --green-bg: #f0fdf4;
+            --gold: #f59e0b; --gold-bg: #fffbeb;
+            --purple: #7c3aed; --purple-bg: #f5f3ff;
+            --red: #dc2626; --red-bg: #fef2f2;
+            --cyan: #06b6d4; --cyan-bg: #ecfeff;
+            --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+            --text: #0f172a; --text-muted: #64748b; --text-light: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.7; font-size: 15px; padding: 0;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
+            color: white; padding: 16px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topbar .brand { font-size: 16px; font-weight: 800; }
+        .topbar .brand span { color: var(--gold); }
+        .topbar .actions { display: flex; gap: 8px; }
+        .topbar .btn-sm {
+            padding: 6px 14px; border: none; border-radius: 6px;
+            font-family: inherit; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .btn-print { background: rgba(255,255,255,0.15); color: white; }
+        .btn-print:hover { background: rgba(255,255,255,0.25); }
+
+        /* MAIN */
+        .main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 60px; }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue-dark) 100%);
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px;
+        }
+        .hero h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; margin-bottom: 8px; }
+        .hero .sub { opacity: 0.9; font-size: 15px; max-width: 700px; margin: 0 auto; }
+        .hero .pipeline {
+            display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;
+            margin-top: 20px; font-size: 13px;
+        }
+        .hero .step {
+            background: rgba(255,255,255,0.15); border-radius: 8px;
+            padding: 6px 14px; font-weight: 600;
+        }
+        .hero .arrow { color: var(--gold); font-weight: 800; }
+
+        /* OVERVIEW */
+        .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .overview-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+        }
+        .overview-card .icon { font-size: 28px; margin-bottom: 6px; }
+        .overview-card .title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+        .overview-card .desc { font-size: 12px; color: var(--text-muted); }
+
+        /* PHASE SECTION */
+        .phase-section { margin-bottom: 32px; }
+        .phase-header {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .phase-num {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800; color: white; flex-shrink: 0;
+        }
+        .phase-info h2 { font-size: 1.2rem; font-weight: 800; color: var(--navy); }
+        .phase-info p { font-size: 14px; color: var(--text-muted); }
+
+        /* STEP CARD */
+        .step-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .step-header {
+            padding: 16px 20px; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.15s;
+        }
+        .step-header:hover { background: #f8fafc; }
+        .step-header .left { display: flex; align-items: center; gap: 12px; }
+        .step-header .num {
+            width: 28px; height: 28px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 800; color: white; flex-shrink: 0;
+        }
+        .step-header h3 { font-size: 15px; font-weight: 700; color: var(--navy); }
+        .step-header .tool { font-size: 12px; color: var(--blue-dark); font-weight: 600; }
+        .step-header .arrow { font-size: 16px; color: var(--text-light); transition: transform 0.2s; }
+        .step-card.active .arrow { transform: rotate(180deg); }
+        .step-body {
+            padding: 0 20px 20px; display: none;
+            border-top: 1px solid var(--border);
+        }
+        .step-card.active .step-body { display: block; }
+
+        /* CONTENT */
+        .content-block { margin-top: 16px; }
+        .content-block h4 {
+            font-size: 14px; font-weight: 800; margin-bottom: 8px;
+            padding-bottom: 4px; border-bottom: 2px solid var(--gold); display: inline-block;
+        }
+        .content-block ul, .content-block ol { margin-left: 20px; }
+        .content-block li { margin-bottom: 4px; font-size: 14px; }
+
+        .prompt-box {
+            background: var(--navy); color: #e2e8f0; border-radius: 10px;
+            padding: 16px 20px; margin: 12px 0; font-family: 'Sarabun', monospace;
+            font-size: 13px; line-height: 1.6; position: relative;
+        }
+        .prompt-box::before {
+            content: '📝 Prompt สำหรับ AI'; position: absolute; top: -10px; left: 16px;
+            background: var(--gold); color: var(--navy); padding: 2px 10px;
+            border-radius: 4px; font-size: 11px; font-weight: 800;
+        }
+        .prompt-box code {
+            background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;
+            color: #93c5fd;
+        }
+
+        .tip {
+            background: var(--gold-bg); border-left: 4px solid var(--gold);
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+            font-size: 13px;
+        }
+        .tip strong { color: var(--navy); }
+        .warning {
+            background: var(--red-bg); border-left: 4px solid var(--red);
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+            font-size: 13px;
+        }
+        .warning strong { color: var(--navy); }
+
+        /* TABLE */
+        .tbl-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f1f5f9; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 700; color: var(--navy); }
+        td { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 13px; }
+        tr:hover td { background: #f8fafc; }
+
+        /* CHECKLIST */
+        .checklist { list-style: none; margin: 12px 0; }
+        .checklist li {
+            padding: 8px 0; border-bottom: 1px solid var(--border);
+            display: flex; align-items: flex-start; gap: 10px; font-size: 14px;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist .check {
+            width: 20px; height: 20px; border: 2px solid var(--border);
+            border-radius: 4px; flex-shrink: 0; cursor: pointer; margin-top: 2px;
+        }
+        .checklist .checked .check {
+            background: var(--green); border-color: var(--green);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .checklist .checked .check::after { content: '✓'; color: white; font-size: 12px; }
+        .checklist .checked span { text-decoration: line-through; color: var(--text-light); }
+
+        /* TOOL BADGE */
+        .tool-badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+        .tool-badge {
+            background: var(--cyan-bg); border: 1px solid rgba(6,182,212,0.3);
+            border-radius: 6px; padding: 4px 10px; font-size: 12px;
+            color: var(--cyan); font-weight: 600;
+        }
+
+        /* FLOW */
+        .flow {
+            display: flex; align-items: center; justify-content: center;
+            flex-wrap: wrap; gap: 0; margin: 16px 0;
+        }
+        .flow-box {
+            background: var(--surface); border: 2px solid var(--border);
+            border-radius: 10px; padding: 12px 16px; text-align: center;
+            font-weight: 700; font-size: 13px; min-width: 120px;
+        }
+        .flow-arrow { color: var(--text-light); padding: 0 8px; font-size: 18px; }
+
+        /* PROGRESS */
+        .progress-container { margin: 16px 0; }
+        .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 4px; transition: width 0.3s; }
+        .progress-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; text-align: right; }
+
+        /* BOTTOM */
+        .bottom {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-top: 32px; text-align: center;
+        }
+        .bottom h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .bottom p { font-size: 14px; color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+            .flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+        @media (max-width: 480px) {
+            .overview-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="brand">⬡ AI App Builder <span>Handbook</span></div>
+    <div class="actions">
+        <button class="btn-sm btn-print" onclick="window.print()">🖨️ พิมพ์ PDF</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HERO -->
+<div class="hero">
+    <h1>📘 คู่มือสร้าง App ด้วย AI 100%</h1>
+    <p class="sub">จากศูนย์ → Prototype พร้อมส่ง Developer Deploy Production<br>ไม่ต้องเขียนโค้ดเป็น ไม่ต้องอ่านโค้ดเป็น — ใช้ AI ทุกขั้นตอน</p>
+    <div class="pipeline">
+        <div class="step">📝 วางแผน</div>
+        <div class="arrow">→</div>
+        <div class="step">🎨 ออกแบบ</div>
+        <div class="arrow">→</div>
+        <div class="step">🔨 สร้าง Prototype</div>
+        <div class="arrow">→</div>
+        <div class="step">🧪 ทดสอบ</div>
+        <div class="arrow">→</div>
+        <div class="step">📦 ส่ง Deploy</div>
+    </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="overview-grid">
+    <div class="overview-card">
+        <div class="icon">⏱️</div>
+        <div class="title">ระยะเวลา</div>
+        <div class="desc">4-8 สัปดาห์ (แล้วแต่ความซับซ้อน)</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">🤖</div>
+        <div class="title">AI ที่ใช้</div>
+        <div class="desc">ChatGPT, Claude, v0.dev, Lovable, Bolt</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">💰</div>
+        <div class="title">ค่าใช้จ่าย</div>
+        <div class="desc">ฟรี - $20/เดือน (เครื่องมือส่วนใหญ่มีฟรี)</div>
+    </div>
+    <div class="overview-card">
+        <div class="icon">👨‍💻</div>
+        <div class="title">Developer</div>
+        <div class="desc">ต้องการ 1 คน เฉพาะตอน Deploy Production</div>
+    </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:14px;font-weight:700;color:var(--navy);">📊 ความคืบหน้า</span>
+        <span style="font-size:13px;color:var(--text-muted);" id="progressPercent">0 / 30 รายการ</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text" id="progressText">เริ่มเมื่อพร้อม!</div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 1: วางแผน -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--blue);">1</div>
+        <div class="phase-info">
+            <h2>📝 Phase 1: วางแผน — รู้ว่าอยากได้อะไร</h2>
+            <p>สัปดาห์ที่ 1-2 · ใช้ AI ช่วยคิดทุกอย่าง</p>
+        </div>
+    </div>
+
+    <!-- Step 1.1 -->
+    <div class="step-card" id="s1_1">
+        <div class="step-header" onclick="toggleStep('s1_1')">
+            <div class="left">
+                <div class="num" style="background:var(--blue);">1</div>
+                <div>
+                    <h3>เขียน Requirement Document</h3>
+                    <div class="tool">ใช้: ChatGPT / Claude</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">บอก AI ว่าอยากได้อะไร AI จะเขียน Requirement Document ให้</p>
+                <div class="prompt-box">
+ฉันเป็น Product Manager ของ Application ชื่อ "[ชื่อ App]"
+อยากสร้าง App ที่ [อธิบายสิ่งที่อยากได้]
+กลุ่มผู้ใช้: [ใครใช้บ้าง]
+ฟีเจอร์หลักที่ต้องการ:
+1. [ฟีเจอร์ 1]
+2. [ฟีเจอร์ 2]
+3. [ฟีเจอร์ 3]
+
+ช่วยเขียน Requirement Document ให้ครบถ้วน โดยรวมถึง:
+- Executive Summary
+- User Persona
+- User Flow
+- Functional Requirements
+- Non-Functional Requirements
+- Tech Stack ที่แนะนำ
+- ประมาณเวลาในการพัฒนา
+                </div>
+                <div class="tip">
+                    <strong>💡 Tips:</strong> ยิ่งบรรยายละเอียด AI จะเขียนได้越好 ส่งข้อมูลจริงมากที่สุด
+                </div>
+                <div class="tool-badges">
+                    <span class="tool-badge">ChatGPT</span>
+                    <span class="tool-badge">Claude</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ส่ง Prompt ให้ AI + รอผลลัพธ์</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตรวจทาน Requirement Document แก้ไขส่วนที่ยังไม่ชัดเจน</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>บันทึกเป็นไฟล์ Google Docs / Notion</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 1.2 -->
+    <div class="step-card" id="s1_2">
+        <div class="step-header" onclick="toggleStep('s1_2')">
+            <div class="left">
+                <div class="num" style="background:var(--blue);">2</div>
+                <div>
+                    <h3>ออกแบบ User Flow</h3>
+                    <div class="tool">ใช้: ChatGPT / Claude + Whimsical / FigJam</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">ให้ AI เขียน User Flow ให้ แล้ววาด Diagram</p>
+                <div class="prompt-box">
+จาก Requirement Document ด้านบน ช่วยเขียน User Flow ให้ครบทุกเส้นทาง โดยรวมถึง:
+- User Journey ตั้งแต่เปิด App จนใช้งานเสร็จ
+- ทุกหน้าจอที่ต้องมี
+- การเชื่อมต่อกันระหว่างหน้าจอ
+- กรณี Error / Edge Cases
+
+แสดงเป็น Text-based Flow Chart ที่เข้าใจง่าย
+                </div>
+                <div class="tip">
+                    <strong>💡 Tips:</strong> ใช้ผลลัพธ์จาก AI วาด Diagram ใน <a href="https://whimsical.com/" target="_blank">Whimsical</a> (ฟรี) หรือ <a href="https://www.figma.com/figjam/" target="_blank">FigJam</a> (ฟรี) — ลาก-วางได้เลย
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ส่ง Prompt ให้ AI</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>วาด User Flow Diagram ใน Whimsical/FigJam</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 1.3 -->
+    <div class="step-card" id="s1_3">
+        <div class="step-header" onclick="toggleStep('s1_3')">
+            <div class="left">
+                <div class="num" style="background:var(--blue);">3</div>
+                <div>
+                    <h3>ออกแบบ Database Schema</h3>
+                    <div class="tool">ใช้: ChatGPT / Claude</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">ให้ AI ออกแบบโครงสร้าง Database ให้ — ไม่ต้องรู้ SQL ก็ได้</p>
+                <div class="prompt-box">
+จาก Requirement Document และ User Flow ด้านบน
+ช่วยออกแบบ Database Schema ให้ โดยรวมถึง:
+- ตาราง (Tables) ทั้งหมดที่ต้องมี
+- คอลัมน์ (Columns) ในแต่ละตาราง
+- ความสัมพันธ์ระหว่างตาราง (Relationships)
+- ข้อมูลตัวอย่างในแต่ละตาราง
+
+แสดงเป็น ER Diagram (Text-based) และ SQL CREATE Statements
+                </div>
+                <div class="tip">
+                    <strong>💡 Tips:</strong> เก็บผลลัพธ์ไว้ — จะใช้ตอนสร้าง Database จริงใน Supabase/Airtable
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ส่ง Prompt ให้ AI</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตรวจดูว่ามีตารางครบตามฟีเจอร์</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>บันทึก Database Schema ไว้</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 1.4 -->
+    <div class="step-card" id="s1_4">
+        <div class="step-header" onclick="toggleStep('s1_4')">
+            <div class="left">
+                <div class="num" style="background:var(--blue);">4</div>
+                <div>
+                    <h3>เลือก Tech Stack</h3>
+                    <div class="tool">ใช้: ChatGPT / Claude</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">ให้ AI แนะนำ Tech Stack ที่เหมาะกับ App ของคุณ</p>
+                <div class="prompt-box">
+จาก Requirement Document ของ App "[ชื่อ App]"
+ช่วยแนะนำ Tech Stack ที่เหมาะสม โดยพิจารณาจาก:
+- ความซับซ้อนของ App
+- ระยะเวลาที่ต้องการ
+- งบประมาณ
+- Scalability ในอนาคต
+
+แนะนำ 2 แบบ:
+1. No-Code/Low-Code (สร้างเองได้ ไม่ต้องเขียนโค้ด)
+2. Full Code (ให้ Developer เขียน)
+
+พร้อมข้อดี-ข้อเสีย ของแต่ละแบบ
+                </div>
+                <div class="tip">
+                    <strong>💡 แนะนำสำหรับคุณแนน:</strong><br>
+                    <strong>Frontend:</strong> v0.dev / Lovable.dev / Bolt.new (AI สร้างให้)<br>
+                    <strong>Backend:</strong> Supabase (Database + Auth ฟรี)<br>
+                    <strong>Database:</strong> PostgreSQL (ผ่าน Supabase)<br>
+                    <strong>Deploy:</strong> Vercel / Netlify (ฟรี)
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ส่ง Prompt ให้ AI</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตัดสินใจเลือก Tech Stack</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สมัครบัญชีเครื่องมือที่เลือก</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 2: ออกแบบ -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--purple);">2</div>
+        <div class="phase-info">
+            <h2>🎨 Phase 2: ออกแบบ — เห็นหน้าตาก่อนสร้าง</h2>
+            <p>สัปดาห์ที่ 2-3 · ใช้ AI สร้าง UI Design</p>
+        </div>
+    </div>
+
+    <!-- Step 2.1 -->
+    <div class="step-card" id="s2_1">
+        <div class="step-header" onclick="toggleStep('s2_1')">
+            <div class="left">
+                <div class="num" style="background:var(--purple);">1</div>
+                <div>
+                    <h3>สร้าง Wireframe / Mockup</h3>
+                    <div class="tool">ใช้: v0.dev / Lovable.dev / Uizard</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">พิมพ์บรรยายหน้าจอที่ต้องการ → AI สร้าง UI ให้ทันที</p>
+
+                <h4 style="margin-top:16px;">วิธีใช้ v0.dev (แนะนำ):</h4>
+                <ol>
+                    <li>เปิด <a href="https://v0.dev" target="_blank">v0.dev</a> (สมัครด้วย GitHub)</li>
+                    <li>พิมพ์บรรยายหน้าจอที่ต้องการ</li>
+                    <li>AI จะสร้าง UI ให้ → ดูผลลัพธ์ → แก้ไขด้วยคำพูด</li>
+                    <li>ทำทุกหน้าจอ</li>
+                </ol>
+
+                <div class="prompt-box">
+สร้างหน้า Login สำหรับ Application ชื่อ "[ชื่อ App]"
+มี:
+- Logo ด้านบน
+- ช่องกรอก Username
+- ช่องกรอก Password
+- ปุ่ม "เข้าสู่ระบบ" สีน้ำเงิน
+- ลิงก์ "ลืมรหัสผ่าน?"
+- ลิงก์ "สมัครสมาชิก"
+ออกแบบให้สวยงาม Modern Minimal
+                </div>
+                <div class="tool-badges">
+                    <span class="tool-badge">v0.dev</span>
+                    <span class="tool-badge">Lovable.dev</span>
+                    <span class="tool-badge">Bolt.new</span>
+                    <span class="tool-badge">Uizard</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้างหน้า Login</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้างหน้า Dashboard / หน้าหลัก</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้างหน้าจออื่นๆ ทุกหน้าตาม User Flow</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>บันทึก/Export ทุกหน้าจอไว้</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 2.2 -->
+    <div class="step-card" id="s2_2">
+        <div class="step-header" onclick="toggleStep('s2_2')">
+            <div class="left">
+                <div class="num" style="background:var(--purple);">2</div>
+                <div>
+                    <h3>ออกแบบ UI/UX ใน Figma (ถ้าต้องการ)</h3>
+                    <div class="tool">ใช้: Figma + AI Plugin (Galileo AI, Musho)</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">ถ้าต้องการ Design ที่ละเอียดขึ้น ใช้ Figma + AI Plugin</p>
+                <div class="tip">
+                    <strong>💡 แนะนำ:</strong> ถ้าใช้ v0.dev/Lovable แล้วพอใจ — ข้ามขั้นตอนนี้ได้เลย ไปสร้าง Prototype ต่อ
+                </div>
+                <div class="tool-badges">
+                    <span class="tool-badge">Figma (ฟรี)</span>
+                    <span class="tool-badge">Galileo AI</span>
+                    <span class="tool-badge">Musho AI</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สมัคร Figma (ฟรี)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ติดตั้ง AI Plugin</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้าง Design ทุกหน้าจอ</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 3: สร้าง Prototype -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--green);">3</div>
+        <div class="phase-info">
+            <h2>🔨 Phase 3: สร้าง Prototype — จากดีไซน์สู่ App จริง</h2>
+            <p>สัปดาห์ที่ 3-6 · ใช้ AI สร้าง App ทีละหน้าจอ</p>
+        </div>
+    </div>
+
+    <!-- Step 3.1 -->
+    <div class="step-card" id="s3_1">
+        <div class="step-header" onclick="toggleStep('s3_1')">
+            <div class="left">
+                <div class="num" style="background:var(--green);">1</div>
+                <div>
+                    <h3>สร้าง Database (Supabase)</h3>
+                    <div class="tool">ใช้: Supabase (ฟรี)</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol>
+                    <li>เปิด <a href="https://supabase.com" target="_blank">supabase.com</a> → สมัคร (ฟรี)</li>
+                    <li>Create New Project</li>
+                    <li>เปิด SQL Editor → วาง SQL CREATE Statements ที่ AI สร้างให้ (จาก Step 1.3)</li>
+                    <li>Run → ตารางจะถูกสร้างอัตโนมัติ</li>
+                    <li>ใส่ข้อมูลตัวอย่าง (ใช้ AI ช่วยเขียน INSERT Statements)</li>
+                </ol>
+                <div class="prompt-box">
+จาก Database Schema ด้านบน ช่วยเขียน SQL INSERT Statements
+สำหรับใส่ข้อมูลตัวอย่าง อย่างน้อยตารางละ 3-5 แถว
+                </div>
+                <div class="tool-badges">
+                    <span class="tool-badge">Supabase</span>
+                    <span class="tool-badge">ChatGPT / Claude</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้าง Supabase Project</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>Run SQL CREATE Statements</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ใส่ข้อมูลตัวอย่าง</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ตรวจสอบว่าข้อมูลเข้าถูกต้อง</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 3.2 -->
+    <div class="step-card" id="s3_2">
+        <div class="step-header" onclick="toggleStep('s3_2')">
+            <div class="left">
+                <div class="num" style="background:var(--green);">2</div>
+                <div>
+                    <h3>สร้าง Frontend หน้าแรก</h3>
+                    <div class="tool">ใช้: Lovable.dev / Bolt.new</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol>
+                    <li>เปิด <a href="https://lovable.dev" target="_blank">lovable.dev</a> หรือ <a href="https://bolt.new" target="_blank">bolt.new</a></li>
+                    <li>พิมพ์บรรยายหน้าจอแรกที่ต้องการ</li>
+                    <li>AI จะสร้างโค้ด + แสดงผลลัพธ์ทันที</li>
+                    <li>แก้ไขด้วยคำพูด เช่น "เปลี่ยนปุ่มเป็นสีเขียว", "เพิ่มโลโก้"</li>
+                    <li>จนกว่าจะพอใจ → Export โค้ด</li>
+                </ol>
+                <div class="prompt-box">
+สร้าง Web Application ชื่อ "[ชื่อ App]"
+หน้าแรกเป็น Dashboard มี:
+- Sidebar เมนูด้านซ้าย (Dashboard, [เมนูอื่นๆ])
+- Header ด้านบน (ชื่อ App, รูปโปรไฟล์)
+- เนื้อหาตรงกลางแสดง [ข้อมูลที่ต้องการ]
+ใช้สี [สีที่ต้องการ] ออกแบบให้ Modern Clean
+                </div>
+                <div class="warning">
+                    <strong>⚠️ สำคัญ:</strong> บอก AI ทุกครั้งว่าใช้ <strong>Supabase</strong> เป็น Backend — AI จะตั้งค่า Connection ให้
+                </div>
+                <div class="tool-badges">
+                    <span class="tool-badge">Lovable.dev</span>
+                    <span class="tool-badge">Bolt.new</span>
+                    <span class="tool-badge">v0.dev</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สร้างหน้าแรกสำเร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เชื่อมต่อกับ Supabase</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบแสดงผลข้อมูลจาก Database</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 3.3 -->
+    <div class="step-card" id="s3_3">
+        <div class="step-header" onclick="toggleStep('s3_3')">
+            <div class="left">
+                <div class="num" style="background:var(--green);">3</div>
+                <div>
+                    <h3>สร้างหน้าจออื่นๆ ทีละหน้า</h3>
+                    <div class="tool">ใช้: Lovable.dev / Bolt.new</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <p style="font-size:14px;margin-bottom:8px;">ทำซ้ำ Step 3.2 สำหรับทุกหน้าจอ — หน้าละ 1-2 ชั่วโมง</p>
+                <div class="tip">
+                    <strong>💡 ลำดับที่แนะนำ:</strong><br>
+                    1. หน้า Login/Register → 2. หน้า Dashboard → 3. หน้า CRUD (เพิ่ม/แก้ไข/ลบ) → 4. หน้ารายงาน → 5. หน้า Settings
+                </div>
+                <div class="prompt-box">
+เพิ่มหน้า [ชื่อหน้า] เข้าไปใน App
+หน้านี้ต้องมี:
+- [รายละเอียดที่ 1]
+- [รายละเอียดที่ 2]
+- เชื่อมต่อกับ Supabase ตาราง [ชื่อตาราง]
+- ปุ่ม [ปุ่มที่ต้องการ] กดแล้ว [ทำอะไร]
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หน้า Login/Register เสร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หน้า Dashboard เสร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หน้า CRUD (เพิ่ม/แก้ไข/ลบ) เสร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หน้ารายงาน/Analytics เสร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หน้า Settings/Profile เสร็จ</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 3.4 -->
+    <div class="step-card" id="s3_4">
+        <div class="step-header" onclick="toggleStep('s3_4')">
+            <div class="left">
+                <div class="num" style="background:var(--green);">4</div>
+                <div>
+                    <h3>เชื่อมทุกหน้าจอเข้าด้วยกัน</h3>
+                    <div class="tool">ใช้: AI ช่วยเขียน Routing</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <div class="prompt-box">
+ช่วยเพิ่ม Routing ให้กับ App ของฉัน
+โดยให้:
+- หน้า Login → กดเข้าสู่ระบบ → ไปหน้า Dashboard
+- Sidebar → คลิกเมนู → ไปหน้าตามที่เลือก
+- ปุ่มย้อนกลับ → กลับหน้าก่อนหน้า
+ใช้ React Router (หรือ Framework ที่ใช้)
+                </div>
+                <div class="tip">
+                    <strong>💡 Tips:</strong> ส่งโค้ดทั้งหมดให้ AI + บอกว่า "ช่วยเชื่อมทุกหน้าจอเข้าด้วยกัน"
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบ Navigation ทุกเส้นทาง</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>แก้ไขจุดที่ยังเชื่อมไม่ได้</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 3.5 -->
+    <div class="step-card" id="s3_5">
+        <div class="step-header" onclick="toggleStep('s3_5')">
+            <div class="left">
+                <div class="num" style="background:var(--green);">5</div>
+                <div>
+                    <h3>เพิ่ม Authentication (Login/Register)</h3>
+                    <div class="tool">ใช้: Supabase Auth + AI</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol>
+                    <li>ใน Supabase → เปิด Authentication → Email/Password</li>
+                    <li>บอก AI: "ช่วยเพิ่ม Supabase Auth ให้ App ของฉัน"</li>
+                    <li>AI จะเขียนโค้ด Login/Register ให้</li>
+                    <li>ทดสอบ: สมัครสมาชิก → Login → เข้า Dashboard</li>
+                </ol>
+                <div class="tool-badges">
+                    <span class="tool-badge">Supabase Auth</span>
+                    <span class="tool-badge">AI ช่วยเขียนโค้ด</span>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>เปิด Supabase Auth</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>สมัครสมาชิกสำเร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>Login สำเร็จ → ไป Dashboard</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>Logout สำเร็จ</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 4: ทดสอบ -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--gold);color:var(--navy);">4</div>
+        <div class="phase-info">
+            <h2>🧪 Phase 4: ทดสอบ — ทำให้แน่ใจว่าใช้งานได้</h2>
+            <p>สัปดาห์ที่ 6-7 · ทดสอบทุกฟีเจอร์ แก้ Bug</p>
+        </div>
+    </div>
+
+    <!-- Step 4.1 -->
+    <div class="step-card" id="s4_1">
+        <div class="step-header" onclick="toggleStep('s4_1')">
+            <div class="left">
+                <div class="num" style="background:var(--gold);color:var(--navy);">1</div>
+                <div>
+                    <h3>เขียน Test Cases</h3>
+                    <div class="tool">ใช้: AI ช่วยเขียน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <div class="prompt-box">
+จาก Requirement Document และ User Flow ของ App "[ชื่อ App]"
+ช่วยเขียน Test Cases ให้ครบทุกฟีเจอร์ โดยรวมถึง:
+- Happy Path (ใช้งานปกติ)
+- Edge Cases (กรณีพิเศษ)
+- Error Cases (กรณี error)
+
+แสดงเป็นตาราง: Test Case | ขั้นตอน | ผลลัพธ์ที่คาดหวัง
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ได้ Test Cases ทุกฟีเจอร์</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 4.2 -->
+    <div class="step-card" id="s4_2">
+        <div class="step-header" onclick="toggleStep('s4_2')">
+            <div class="left">
+                <div class="num" style="background:var(--gold);color:var(--navy);">2</div>
+                <div>
+                    <h3>ทดสอบทุกฟีเจอร์ + แก้ Bug</h3>
+                    <div class="tool">ใช้: Manual Testing + AI ช่วยแก้</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 วิธีแก้ Bug ด้วย AI:</h4>
+                <ol>
+                    <li>เจอ Error → Copy Error Message</li>
+                    <li>ส่งให้ AI + บอกว่า "เกิด Error นี้ ต้องแก้ยังไง"</li>
+                    <li>AI จะบอกวิธีแก้ → ทำตาม</li>
+                    <li>ทดสอบซ้ำ → ถ้ายังพัง → ส่ง Error ใหม่ให้ AI</li>
+                </ol>
+                <div class="prompt-box">
+เกิด Error นี้ใน App ของฉัน:
+[วาง Error Message ที่นี่]
+
+โค้ดส่วนที่เกี่ยวข้อง:
+[วางโค้ดที่เกี่ยวข้อง]
+
+ช่วยบอกว่าเกิดจากอะไร และต้องแก้ยังไง
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบทุก Test Case</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>แก้ Bug ทุกจุด</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบ Cross-browser (Chrome, Safari, Mobile)</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบ Responsive (Desktop, Tablet, Mobile)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 4.3 -->
+    <div class="step-card" id="s4_3">
+        <div class="step-header" onclick="toggleStep('s4_3')">
+            <div class="left">
+                <div class="num" style="background:var(--gold);color:var(--navy);">3</div>
+                <div>
+                    <h3>User Testing</h3>
+                    <div class="tool">ใช้: ให้คนจริงมาทดสอบ</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องทำ</h4>
+                <ol>
+                    <li>เลือกคน 3-5 คน (ที่ไม่เคยเห็น App นี้)</li>
+                    <li>ให้ใช้งานโดย "ไม่บอกอะไร" — ดูว่าใช้ได้เลยไหม</li>
+                    <li>สังเกต: ติดตรงไหน, เข้าใจผิดตรงไหน</li>
+                    <li>ถามความรู้สึกหลังใช้งาน</li>
+                    <li>แก้ไขจุดที่คนใช้ติด</li>
+                </ol>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>หาคนทดสอบ 3-5 คน</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ทดสอบ + จดบันทึกปัญหา</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>แก้ไขจุดที่คนใช้ติด</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 5: ส่ง Deploy -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--red);">5</div>
+        <div class="phase-info">
+            <h2>📦 Phase 5: ส่ง Developer Deploy Production</h2>
+            <p>สัปดาห์ที่ 7-8 · เตรียมทุกอย่างให้ Developer</p>
+        </div>
+    </div>
+
+    <!-- Step 5.1 -->
+    <div class="step-card" id="s5_1">
+        <div class="step-header" onclick="toggleStep('s5_1')">
+            <div class="left">
+                <div class="num" style="background:var(--red);">1</div>
+                <div>
+                    <h3>เตรียม Documentation</h3>
+                    <div class="tool">ใช้: AI ช่วยเขียน</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <div class="prompt-box">
+ช่วยเขียน Documentation สำหรับ App "[ชื่อ App]" เพื่อส่งให้ Developer Deploy Production โดยรวมถึง:
+1. Project Overview — App นี้ทำอะไร
+2. Tech Stack — ใช้อะไรบ้าง
+3. Architecture — โครงสร้างระบบ
+4. Database Schema — ตารางทั้งหมด
+5. API Documentation — ทุก Endpoint
+6. Environment Variables — ค่าที่ต้องตั้งค่า
+7. Deployment Guide — ขั้นตอน Deploy
+8. Known Issues — ปัญหาที่ยังแก้ไม่ได้
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ได้ Documentation ครบ 8 หัวข้อ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>Export โค้ดทั้งหมด (ZIP / GitHub)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 5.2 -->
+    <div class="step-card" id="s5_2">
+        <div class="step-header" onclick="toggleStep('s5_2')">
+            <div class="left">
+                <div class="num" style="background:var(--red);">2</div>
+                <div>
+                    <h3>เตรียมสิ่งที่ต้องส่งให้ Developer</h3>
+                    <div class="tool">ใช้: Checklist ด้านล่าง</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📦 แพ็กเกจที่ต้องส่ง:</h4>
+                <div class="tbl-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>สิ่งที่ต้องส่ง</th><th>รูปแบบ</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>โค้ดทั้งหมด (Frontend + Backend)</td><td>GitHub Repository / ZIP</td></tr>
+                            <tr><td>2</td><td>Database Schema + ข้อมูลตัวอย่าง</td><td>SQL File</td></tr>
+                            <tr><td>3</td><td>Documentation</td><td>Google Docs / Notion</td></tr>
+                            <tr><td>4</td><td>Requirement Document</td><td>Google Docs</td></tr>
+                            <tr><td>5</td><td>User Flow Diagram</td><td>Whimsical / FigJam Link</td></tr>
+                            <tr><td>6</td><td>UI Design (ถ้ามี)</td><td>Figma Link</td></tr>
+                            <tr><td>7</td><td>Test Cases + ผลทดสอบ</td><td>Google Sheets</td></tr>
+                            <tr><td>8</td><td>รายการ Bug ที่ยังค้าง</td><td>Google Sheets</td></tr>
+                            <tr><td>9</td><td>Environment Variables</td><td>.env.example</td></tr>
+                            <tr><td>10</td><td>วิดีโอสาธิตการใช้งาน</td><td>Loom / Screen Recording</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>รวบรวมทุกรายการครบ 10 อย่าง</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>บันทึกทั้งหมดใน Google Drive Folder เดียว</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>แชร์ Folder ให้ Developer</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 5.3 -->
+    <div class="step-card" id="s5_3">
+        <div class="step-header" onclick="toggleStep('s5_3')">
+            <div class="left">
+                <div class="num" style="background:var(--red);">3</div>
+                <div>
+                    <h3>ประชุม Kick-off กับ Developer</h3>
+                    <div class="tool">ใช้: สิ่งที่เตรียมไว้ทั้งหมด</div>
+                </div>
+            </div>
+            <div class="arrow">▼</div>
+        </div>
+        <div class="step-body">
+            <div class="content-block">
+                <h4>📖 สิ่งที่ต้องคุยกับ Developer:</h4>
+                <ol>
+                    <li><strong>อธิบาย App</strong> — App นี้ทำอะไร, ใครใช้, ฟีเจอร์หลัก</li>
+                    <li><strong>แสดง Prototype</strong> — ให้ Developer ลองใช้งาน</li>
+                    <li><strong>อธิบาย Architecture</strong> — ระบบมีกี่ส่วน, เชื่อมต่อกันยังไง</li>
+                    <li><strong>บอกสิ่งที่ต้องการ</strong> — Deploy ที่ไหน, Domain อะไร, SSL, etc.</li>
+                    <li><strong>Timeline</strong> — ต้องเสร็จเมื่อไหร่</li>
+                    <li><strong>Budget</strong> — งบเท่าไหร่</li>
+                </ol>
+                <div class="tip">
+                    <strong>💡 Developer จะทำ:</strong><br>
+                    1. ตรวจโค้ดทั้งหมด<br>
+                    2. แก้จุดที่ยังไม่สมบูรณ์<br>
+                    3. ตั้งค่า Server, SSL, Domain<br>
+                    4. Deploy Production<br>
+                    5. ทดสอบบน Production<br>
+                    6. ส่งมอบ + สอนใช้งาน
+                </div>
+            </div>
+            <ul class="checklist">
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ประชุม Kick-off สำเร็จ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>Developer เริ่มงาน</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>ติดตามความคืบหน้าเป็นประจำ</span></li>
+                <li onclick="toggleCheck(this)"><div class="check"></div><span>🎉 App ขึ้น Production!</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- TOOL SUMMARY -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--cyan);color:var(--navy);">🛠️</div>
+        <div class="phase-info">
+            <h2>สรุปเครื่องมือทั้งหมดที่ใช้</h2>
+            <p>ทุกขั้นตอน — เลือกใช้ตามความสะดวก</p>
+        </div>
+    </div>
+
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr><th>ขั้นตอน</th><th>เครื่องมือแนะนำ</th><th>ทางเลือก</th><th>ราคา</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>เขียน Spec/Requirement</strong></td><td>ChatGPT / Claude</td><td>Google Gemini</td><td>ฟรี</td></tr>
+                <tr><td><strong>User Flow Diagram</strong></td><td>Whimsical</td><td>FigJam, Miro</td><td>ฟรี</td></tr>
+                <tr><td><strong>UI Design</strong></td><td>v0.dev</td><td>Lovable, Uizard, Figma</td><td>ฟรี-$20/เดือน</td></tr>
+                <tr><td><strong>สร้าง Frontend</strong></td><td>Lovable.dev</td><td>Bolt.new, Cursor</td><td>ฟรี-$25/เดือน</td></tr>
+                <tr><td><strong>Database + Auth</strong></td><td>Supabase</td><td>Firebase, Airtable</td><td>ฟรี</td></tr>
+                <tr><td><strong>Backend API</strong></td><td>Supabase (Auto API)</td><td>Xano, Node.js</td><td>ฟรี</td></tr>
+                <tr><td><strong>Deploy Frontend</strong></td><td>Vercel</td><td>Netlify, Cloudflare</td><td>ฟรี</td></tr>
+                <tr><td><strong>Deploy Backend</strong></td><td>Supabase (รวมแล้ว)</td><td>Railway, Render</td><td>ฟรี-$5/เดือน</td></tr>
+                <tr><td><strong>Domain</strong></td><td>Namecheap</td><td>Cloudflare, GoDaddy</td><td>$10/ปี</td></tr>
+                <tr><td><strong>Documentation</strong></td><td>Notion</td><td>Google Docs</td><td>ฟรี</td></tr>
+                <tr><td><strong>บันทึกหน้าจอ</strong></td><td>Loom</td><td>ScreenPal, OBS</td><td>ฟรี</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- FLOW DIAGRAM -->
+<!-- ============================== -->
+<div class="phase-section">
+    <div class="phase-header">
+        <div class="phase-num" style="background:var(--navy);">🔄</div>
+        <div class="phase-info">
+            <h2>ภาพรวม Data Flow ทั้งหมด</h2>
+            <p>ตั้งแต่ต้นจนจบ — เห็นภาพชัด</p>
+        </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;overflow-x:auto;">
+        <div class="flow">
+            <div class="flow-box" style="border-color:var(--blue);color:var(--blue);background:var(--cyan-bg);">
+                📝 คุณแนน<br><span style="font-size:11px;font-weight:400;">บอกสิ่งที่อยากได้</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="border-color:var(--purple);color:var(--purple);background:var(--purple-bg);">
+                🤖 AI<br><span style="font-size:11px;font-weight:400;">เขียน Spec + ออกแบบ</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="border-color:var(--green);color:var(--green);background:var(--green-bg);">
+                🔨 สร้าง Prototype<br><span style="font-size:11px;font-weight:400;">AI สร้างโค้ดให้</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="border-color:var(--gold);color:#92400e;background:var(--gold-bg);">
+                🧪 ทดสอบ<br><span style="font-size:11px;font-weight:400;">คุณแนนทดสอบเอง</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="border-color:var(--red);color:var(--red);background:var(--red-bg);">
+                📦 ส่ง Developer<br><span style="font-size:11px;font-weight:400;">Deploy Production</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BOTTOM -->
+<div class="bottom">
+    <h3>🐾 ผมอยู่ตรงนี้ครับคุณแนน</h3>
+    <p>ทุกขั้นตอน — ส่ง Prompt มาให้ผมตรวจ, ติดตรงไหนถามได้เลย<br>
+    ผมจะช่วยคุณแนนจน App ขึ้น Production ครับ!</p>
+    <p style="margin-top:12px;font-size:13px;color:var(--text-light);">AI App Builder Handbook · LIA 2.0 · สร้างโดย AliClaw · 26 พฤษภาคม 2569</p>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function toggleStep(id) {
+    document.getElementById(id).classList.toggle('active');
+}
+
+function toggleCheck(li) {
+    li.classList.toggle('checked');
+    updateProgress();
+}
+
+function updateProgress() {
+    const items = document.querySelectorAll('.checklist li');
+    const checked = document.querySelectorAll('.checklist li.checked');
+    const pct = Math.round((checked.length / items.length) * 100);
+
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPercent').textContent = checked.length + ' / ' + items.length + ' รายการ';
+
+    if (pct === 0) {
+        document.getElementById('progressText').textContent = 'เริ่มเมื่อพร้อม!';
+    } else if (pct < 25) {
+        document.getElementById('progressText').textContent = '📝 Phase 1: วางแผน — กำลังเริ่มต้น!';
+    } else if (pct < 50) {
+        document.getElementById('progressText').textContent = '🎨 Phase 2: ออกแบบ — กำลังออกแบบ!';
+    } else if (pct < 75) {
+        document.getElementById('progressText').textContent = '🔨 Phase 3: สร้าง Prototype — กำลังสร้าง!';
+    } else if (pct < 90) {
+        document.getElementById('progressText').textContent = '🧪 Phase 4: ทดสอบ — ใกล้เสร็จแล้ว!';
+    } else if (pct < 100) {
+        document.getElementById('progressText').textContent = '📦 Phase 5: ส่ง Deploy — เกือบเสร็จแล้ว!';
+    } else {
+        document.getElementById('progressText').textContent = '🎉 เสร็จทุกข้อ! App พร้อม Deploy!';
+    }
+}
+
+// Auto-open first step
+document.getElementById('s1_1').classList.add('active');
+</script>
+</body>
+</html>

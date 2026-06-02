@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎓 PP5 Wireframe — PKG AI Learning Hub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f1f5f9;min-height:100vh}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:linear-gradient(180deg,#1e3a8a 0%,#3b82f6 100%);color:white;padding:0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:50}
+.sidebar-header{padding:20px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.sidebar-header h2{font-size:1.2em;font-weight:800;margin-bottom:3px}
+.sidebar-header p{font-size:0.75em;opacity:0.8}
+.nav-section{padding:15px 0}
+.nav-section-title{padding:5px 20px;font-size:0.7em;text-transform:uppercase;letter-spacing:1px;opacity:0.5;font-weight:700}
+.nav-item{padding:10px 20px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:0.2s;font-size:0.9em}
+.nav-item:hover{background:rgba(255,255,255,0.1)}
+.nav-item.active{background:rgba(255,255,255,0.2);border-left:3px solid #f59e0b}
+.nav-item .icon{font-size:1.2em;width:24px;text-align:center}
+.nav-item .badge-count{margin-left:auto;background:#f59e0b;color:#1e3a8a;padding:2px 8px;border-radius:10px;font-size:0.7em;font-weight:700}
+.nav-item.sub{padding-left:45px;font-size:0.85em;opacity:0.8}
+
+.main{flex:1;margin-left:260px}
+.topbar{background:white;padding:15px 25px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:40}
+.topbar h1{font-size:1.1em;color:#1e3a8a}
+.topbar-right{display:flex;align-items:center;gap:15px}
+.view-toggle{display:flex;background:#f1f5f9;border-radius:10px;padding:3px}
+.view-btn{padding:6px 14px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:0.8em;font-weight:600;color:#64748b;transition:0.2s}
+.view-btn.active{background:white;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.user-pill{display:flex;align-items:center;gap:8px;background:#f8fafc;padding:6px 12px;border-radius:20px;font-size:0.85em;font-weight:600;color:#1e3a8a}
+
+.content{padding:25px}
+.page{display:none}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:white;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;border:1px solid #e2e8f0}
+.card h3{color:#1e3a8a;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1em}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+.stat-card{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:1px solid #e2e8f0;text-align:center}
+.stat-card .icon{font-size:1.5em;margin-bottom:5px}
+.stat-card .value{font-size:1.5em;font-weight:800;color:#1e3a8a}
+.stat-card .label{font-size:0.75em;color:#64748b;margin-top:3px}
+
+/* LEARNING CYCLE */
+.cycle-container{position:relative;padding:20px 0}
+.cycle-phase{display:flex;gap:20px;margin-bottom:30px;align-items:flex-start}
+.phase-marker{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5em;font-weight:800;color:white;flex-shrink:0;position:relative;z-index:2}
+.phase-marker.org{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.phase-marker.human{background:linear-gradient(135deg,#92400e,#f59e0b)}
+.phase-marker.it{background:linear-gradient(135deg,#065f46,#10b981)}
+.phase-line{position:absolute;left:29px;top:60px;bottom:-30px;width:2px;background:#e2e8f0;z-index:1}
+.phase-content{flex:1;background:white;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:1px solid #e2e8f0}
+.phase-content h4{font-size:0.95em;color:#1e3a8a;margin-bottom:8px}
+.phase-content ul{margin-left:18px;font-size:0.85em;color:#475569}
+.phase-content li{margin:4px 0}
+.phase-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.phase-tag{padding:3px 8px;border-radius:6px;font-size:0.7em;font-weight:600}
+.phase-tag.org{background:#dbeafe;color:#1e40af}
+.phase-tag.human{background:#fef3c7;color:#92400e}
+.phase-tag.it{background:#d1fae5;color:#065f46}
+
+/* ROLE PLAY AI */
+.rp-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin:20px 0}
+.rp-step{text-align:center;padding:15px;background:#f8fafc;border-radius:12px;border:2px solid #e2e8f0;transition:0.3s}
+.rp-step:hover{border-color:#3b82f6;transform:translateY(-2px)}
+.rp-step .num{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;font-size:0.85em}
+.rp-step .title{font-size:0.85em;font-weight:700;color:#1e3a8a}
+.rp-step .desc{font-size:0.75em;color:#64748b;margin-top:4px}
+
+/* ADMIN TABLE */
+.admin-table{width:100%;border-collapse:collapse;font-size:0.85em}
+.admin-table th{background:#f1f5f9;padding:10px;text-align:left;font-weight:600;color:#1e3a8a;border-bottom:2px solid #e2e8f0}
+.admin-table td{padding:10px;border-bottom:1px solid #f1f5f9}
+.admin-table tr:hover{background:#f8fafc}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-dot.green{background:#10b981}
+.status-dot.yellow{background:#f59e0b}
+.status-dot.red{background:#ef4444}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:0.85em;font-weight:600;transition:0.2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(102,126,234,0.4)}
+.btn-outline{background:transparent;border:2px solid #e2e8f0;color:#64748b}
+.btn-outline:hover{border-color:#667eea;color:#667eea}
+.btn-sm{padding:5px 10px;font-size:0.75em}
+
+/* WIREFRAME NOTE */
+.wireframe-note{background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 15px;border-radius:0 8px 8px 0;margin-bottom:15px;font-size:0.85em;color:#92400e}
+.wireframe-note strong{display:block;margin-bottom:3px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.sidebar{width:100%;position:relative;height:auto}
+.main{margin-left:0}
+.app{flex-direction:column}
+.cycle-phase{flex-direction:column}
+.phase-line{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+<!-- SIDEBAR (PP7 Web Menu) -->
+<div class="sidebar">
+<div class="sidebar-header">
+<h2>🎓 PKG AI School</h2>
+<p>ระบบพัฒนาทุนองค์กร</p>
+</div>
+
+<div class="nav-section">
+<div class="nav-section-title">เมนูหลัก</div>
+<div class="nav-item" onclick="showPage('home')"><span class="icon">🏠</span> หน้าแรก</div>
+<div class="nav-item active" onclick="showPage('pp5')"><span class="icon">📚</span> PP5: เรียนรู้และพัฒนา<span class="badge-count">ใหม่</span></div>
+<div class="nav-item"><span class="icon">📊</span> PP6: วัดผลประเมิน</div>
+<div class="nav-item"><span class="icon">🏆</span> PP7: เกียรติบัตร</div>
+</div>
+
+<div class="nav-section">
+<div class="nav-section-title">PP5: เรียนรู้และพัฒนา</div>
+<div class="nav-item sub" onclick="showPage('pp5')">📋 วงจรการเรียนรู้</div>
+<div class="nav-item sub" onclick="showPage('pp5')">🎯 หลักสูตรของฉัน</div>
+<div class="nav-item sub" onclick="showPage('pp5')">🤖 AI ตรวจ Role Play</div>
+<div class="nav-item sub" onclick="showPage('pp5')">📈 Progress Tracking</div>
+</div>
+
+<div class="nav-section">
+<div class="nav-section-title">จัดการระบบ (ADMIN)</div>
+<div class="nav-item" onclick="showPage('admin')"><span class="icon">👥</span> จัดการสมาชิก</div>
+<div class="nav-item" onclick="showPage('admin')"><span class="icon">📚</span> จัดการหลักสูตร</div>
+<div class="nav-item" onclick="showPage('admin')"><span class="icon">📊</span> รายงานภาพรวม</div>
+<div class="nav-item" onclick="showPage('admin')"><span class="icon">⚙️</span> ตั้งค่าระบบ</div>
+</div>
+
+<div class="nav-section">
+<div class="nav-section-title">ช่วยเหลือ</div>
+<div class="nav-item"><span class="icon">❓</span> คู่มือการใช้งาน</div>
+<div class="nav-item"><span class="icon">💬</span> ถาม AI Chatbot</div>
+</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+<div class="topbar">
+<h1 id="pageTitle">📚 PP5: วงจรการเรียนรู้และพัฒนา</h1>
+<div class="topbar-right">
+<div class="view-toggle">
+<button class="view-btn active" onclick="switchView('user')">👤 มุมมองผู้ใช้</button>
+<button class="view-btn" onclick="switchView('admin')">🔧 ADMIN PAD</button>
+</div>
+<div class="user-pill"><div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700">N</div> คุณแนน</div>
+</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div class="page" id="pageHome">
+<div class="wireframe-note"><strong>📌 Wireframe Note</strong>นี่คือหน้าแรก (Home) ของ Web PP7 — แสดงเมนูหลักและสถิติภาพรวม</div>
+<div class="card-grid">
+<div class="stat-card"><div class="icon">👥</div><div class="value">492</div><div class="label">สมาชิกทั้งหมด</div></div>
+<div class="stat-card"><div class="icon">📚</div><div class="value">105</div><div class="label">หลักสูตร</div></div>
+<div class="stat-card"><div class="icon">🏆</div><div class="value">78.3%</div><div class="label">ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="icon">⏱️</div><div class="value">8,023</div><div class="label">ชม.อบรมรวม</div></div>
+</div>
+<div class="card"><h3>🚀 เลือกเมนูด้านซ้ายเพื่อเริ่มต้น</h3><p style="color:#64748b;font-size:0.9em">PP5: วงจรการเรียนรู้และพัฒนา | PP6: วัดผลประเมิน | PP7: เกียรติบัตร</p></div>
+</div>
+
+<!-- ==================== PAGE: PP5 (USER VIEW) ==================== -->
+<div class="page active" id="pagePP5">
+
+<!-- Learning Cycle -->
+<div class="wireframe-note"><strong>📌 PP5: วงจรการเรียนรู้สมาชิก 1 คน</strong>แสดงเส้นทางการพัฒนา 3 ทุน ตั้งแต่ก้าวเข้ามา → พัฒนาต่อเนื่อง</div>
+
+<div class="card">
+<h3>🔄 วงจรการเรียนรู้ของสมาชิก 1 คน</h3>
+<p style="color:#64748b;font-size:0.85em;margin-bottom:15px">แสดงเส้นทางการพัฒนา 3 ทุน: 🏢 ทุนองค์กร | 👤 ทุนมนุษย์ | 💻 ทุนสารสนเทศ</p>
+
+<div class="cycle-container">
+<!-- Phase 1 -->
+<div class="cycle-phase">
+<div style="position:relative">
+<div class="phase-marker org">1</div>
+<div class="phase-line"></div>
+</div>
+<div class="phase-content">
+<h4>📍 ก้าวที่ 1: ปฐมนิเทศ (วันแรก)</h4>
+<ul>
+<li><strong>🏢 ทุนองค์กร:</strong> เรียนรู้วัฒนธรรม (PKG 6 รับ, 9 มาตรฐาน, 20 วัฒนธรรม), เข้าอบรม LIA + Cost Down</li>
+<li><strong>👤 ทุนมนุษย์:</strong> ประเมินทักษะเริ่มต้น (Baseline), กำหนด IDP, อบรมความปลอดภัย</li>
+<li><strong>💻 ทุนสารสนเทศ:</strong> เปิด Account, เรียนรู้เครื่องมือพื้นฐาน, อบรมการใช้ AI</li>
+</ul>
+<div class="phase-tags">
+<span class="phase-tag org">🏢 ทุนองค์กร</span>
+<span class="phase-tag human">👤 ทุนมนุษย์</span>
+<span class="phase-tag it">💻 ทุนสารสนเทศ</span>
+</div>
+</div>
+</div>
+
+<!-- Phase 2 -->
+<div class="cycle-phase">
+<div style="position:relative">
+<div class="phase-marker human">2</div>
+<div class="phase-line"></div>
+</div>
+<div class="phase-content">
+<h4>📍 ก้าวที่ 2: ประถม (พื้นฐาน)</h4>
+<ul>
+<li><strong>🏢 ทุนองค์กร:</strong> เรียนรู้กระบวนการทำงาน, กฎระเบียบ, โครงสร้าง BU</li>
+<li><strong>👤 ทุนมนุษย์:</strong> พัฒนาทักษะการสื่อสาร, การทำงานเป็นทีม, การแก้ปัญหาพื้นฐาน</li>
+<li><strong>💻 ทุนสารสนเทศ:</strong> ใช้เครื่องมือดิจิทัลพื้นฐาน (Google Workspace, Excel)</li>
+</ul>
+<div class="phase-tags">
+<span class="phase-tag org">🏢 กระบวนการทำงาน</span>
+<span class="phase-tag human">👤 การสื่อสาร</span>
+<span class="phase-tag it">💻 เครื่องมือพื้นฐาน</span>
+</div>
+</div>
+</div>
+
+<!-- Phase 3 -->
+<div class="cycle-phase">
+<div style="position:relative">
+<div class="phase-marker it">3</div>
+<div class="phase-line"></div>
+</div>
+<div class="phase-content">
+<h4>📍 ก้าวที่ 3: ทุติย (ก้าวหน้า)</h4>
+<ul>
+<li><strong>🏢 ทุนองค์กร:</strong> เข้าใจกลยุทธ์องค์กร, การบริหารแผนงาน, Alignment</li>
+<li><strong>👤 ทุนมนุษย์:</strong> ภาวะผู้นำ, การตัดสินใจ, การแก้ปัญหาขั้นสูง</li>
+<li><strong>💻 ทุนสารสนเทศ:</strong> AI ขั้นสูง, Automation, Data Analysis, Prompt Engineering</li>
+</ul>
+<div class="phase-tags">
+<span class="phase-tag org">🏢 กลยุทธ์</span>
+<span class="phase-tag human">👤 ภาวะผู้นำ</span>
+<span class="phase-tag it">💻 AI ขั้นสูง</span>
+</div>
+</div>
+</div>
+
+<!-- Phase 4 -->
+<div class="cycle-phase">
+<div style="position:relative">
+<div class="phase-marker org">4</div>
+<div class="phase-line"></div>
+</div>
+<div class="phase-content">
+<h4>📍 ก้าวที่ 4: ตติย (เชี่ยวชาญ)</h4>
+<ul>
+<li><strong>🏢 ทุนองค์กร:</strong> เป็นวิทยากรภายใน, ที่ปรึกษา, สร้างกระบวนการใหม่</li>
+<li><strong>👤 ทุนมนุษย์:</strong> Coaching, Mentoring, พัฒนาผู้อื่น</li>
+<li><strong>💻 ทุนสารสนเทศ:</strong> พัฒนาเครื่องมือ AI ใหม่, สร้าง Template, Automation</li>
+</ul>
+<div class="phase-tags">
+<span class="phase-tag org">🏢 วิทยากร</span>
+<span class="phase-tag human">👤 Coaching</span>
+<span class="phase-tag it">💻 พัฒนาเครื่องมือ</span>
+</div>
+</div>
+</div>
+
+<!-- Phase 5 -->
+<div class="cycle-phase">
+<div style="position:relative">
+<div class="phase-marker human">5</div>
+</div>
+<div class="phase-content">
+<h4>📍 ก้าวที่ 5: จตุตถ (ผู้นำ)</h4>
+<ul>
+<li><strong>🏢 ทุนองค์กร:</strong> กำหนดนโยบาย, วางกลยุทธ์, นำการเปลี่ยนแปลง</li>
+<li><strong>👤 ทุนมนุษย์:</strong> ผู้นำองค์กร, สร้างวัฒนธรรม, Servant Leadership</li>
+<li><strong>💻 ทุนสารสนเทศ:</strong> Digital Transformation Leader, AI Strategy</li>
+</ul>
+<div class="phase-tags">
+<span class="phase-tag org">🏢 นโยบาย</span>
+<span class="phase-tag human">👤 ผู้นำ</span>
+<span class="phase-tag it">💻 Digital Transformation</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- My Courses -->
+<div class="card">
+<h3>🎯 หลักสูตรของฉัน</h3>
+<table class="admin-table">
+<thead><tr><th>หลักสูตร</th><th>ทุน</th><th>สถานะ</th><th>วันที่</th><th>ผล</th></tr></thead>
+<tbody>
+<tr><td>การบริหารองค์กร ด้วย BP LL</td><td><span class="phase-tag org">🏢 องค์กร</span></td><td><span class="status-dot green"></span>ผ่านแล้ว</td><td>15 ม.ค. 69</td><td><strong>95</strong> | A</td></tr>
+<tr><td>ความปลอดภัยในการทำงาน จป.</td><td><span class="phase-tag human">👤 มนุษย์</span></td><td><span class="status-dot green"></span>ผ่านแล้ว</td><td>10 มี.ค. 69</td><td><strong>88</strong> | B</td></tr>
+<tr><td>ภาวะผู้นำยุคใหม่</td><td><span class="phase-tag human">👤 มนุษย์</span></td><td><span class="status-dot yellow"></span>รออบรม</td><td>20 มิ.ย. 69</td><td>-</td></tr>
+<tr><td>การเงินสำหรับหัวหน้างาน</td><td><span class="phase-tag org">🏢 องค์กร</span></td><td><span class="status-dot yellow"></span>รออบรม</td><td>15 ส.ค. 69</td><td>-</td></tr>
+<tr><td>การใช้ AI เพื่อการตัดสินใจ</td><td><span class="phase-tag it">💻 สารสนเทศ</span></td><td><span class="status-dot yellow"></span>รออบรม</td><td>5 ต.ค. 69</td><td>-</td></tr>
+</tbody></table>
+</div>
+
+<!-- AI Role Play -->
+<div class="card">
+<h3>🤖 AI ช่วยครูฝึก: ตรวจ Role Play + ให้คำแนะนำ</h3>
+<div class="wireframe-note"><strong>💡 แนวคิดนี้ยังอยู่!</strong>ใช้ AI วิเคราะห์ Role Play Video/Text → ให้คะแนนตาม Rubric → สร้าง Feedback อัตโนมัติ</div>
+
+<div class="rp-steps">
+<div class="rp-step"><div class="num">1</div><div class="title">📹 อัด Video</div><div class="desc">ครูฝึก/สมาชิกอัด Role Play</div></div>
+<div class="rp-step"><div class="num">2</div><div class="title">📤 อัปโหลด</div><div class="desc">อัปโหลดเข้าระบบ PP5</div></div>
+<div class="rp-step"><div class="num">3</div><div class="title">🤖 AI วิเคราะห์</div><div class="desc">ตรวจตาม Rubric (Communication, Content, Body Language)</div></div>
+<div class="rp-step"><div class="num">4</div><div class="title">📝 Feedback</div><div class="desc">AI สร้างคำแนะนำ + จุดแข็ง/จุดที่ควรปรับปรุง</div></div>
+<div class="rp-step"><div class="num">5</div><div class="title">✅ ครูทวนสอบ</div><div class="desc">ครูฝึกตรวจสอบ → ยืนยัน/แก้ไข → ส่งให้สมาชิก</div></div>
+</div>
+
+<div style="margin-top:15px;padding:15px;background:#f0f9ff;border-radius:10px;border:1px solid #bae6fd">
+<strong style="color:#0369a1">⚠️ ปัญหาที่อาจเจอ + ทางแก้:</strong>
+<ul style="margin-left:18px;margin-top:5px;font-size:0.85em;color:#0369a1">
+<li>🎥 Video Processing → ใช้ AI วิเคราะห์จาก Text Transcript แทน (ประหยัดทรัพยากร)</li>
+<li>📝 เกณฑ์ไม่ชัดเจน → กำหนด Rubric ล่วงหน้า (Communication 30%, Content 40%, Body Language 30%)</li>
+<li>💬 Feedback ไม่เฉพาะเจาะจง → AI ให้ตัวอย่างการปรับปรุง + คะแนนรายหัวข้อ</li>
+<li>🔒 Privacy → เก็บข้อมูลในระบบภายใน ไม่ส่งออกภายนอก</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: ADMIN ==================== -->
+<div class="page" id="pageAdmin">
+<div class="wireframe-note"><strong>🔧 ADMIN PAD View</strong>หน้าจัดการระบบ — สำหรับ ADMIN PAD ใช้จัดการสมาชิก, หลักสูตร, ดูรายงาน</div>
+
+<div class="card-grid">
+<div class="stat-card"><div class="icon">👥</div><div class="value">492</div><div class="label">สมาชิกทั้งหมด</div></div>
+<div class="stat-card"><div class="icon">✅</div><div class="value">385</div><div class="label">ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="icon">⏳</div><div class="value">107</div><div class="label">รออบรม</div></div>
+<div class="stat-card"><div class="icon">📚</div><div class="value">105</div><div class="label">หลักสูตร</div></div>
+</div>
+
+<div class="card">
+<h3>👥 จัดการสมาชิก</h3>
+<div style="display:flex;gap:10px;margin-bottom:15px">
+<button class="btn btn-primary">➕ เพิ่มสมาชิก</button>
+<button class="btn btn-outline">📥 Import Excel</button>
+<button class="btn btn-outline">📤 Export PDF</button>
+</div>
+<table class="admin-table">
+<thead><tr><th>ID</th><th>ชื่อ-สกุล</th><th>BU</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+<tbody>
+<tr><td>123456</td><td>นาย โกมล ไชยประสูตร</td><td>PMSG</td><td>28/44</td><td>3.80</td><td><span class="status-dot yellow"></span>ยังไม่ผ่าน</td><td><button class="btn btn-sm btn-outline">แก้ไข</button></td></tr>
+<tr><td>5604030</td><td>คณิศร ฉัยยา</td><td>CPDG</td><td>22/44</td><td>3.92</td><td><span class="status-dot yellow"></span>ยังไม่ผ่าน</td><td><button class="btn btn-sm btn-outline">แก้ไข</button></td></tr>
+<tr><td>6006083</td><td>ณัฐฑริณี คำนึง</td><td>CPDG</td><td>20/44</td><td>3.60</td><td><span class="status-dot yellow"></span>ยังไม่ผ่าน</td><td><button class="btn btn-sm btn-outline">แก้ไข</button></td></tr>
+<tr><td>9601009</td><td>โกมล ไชยประสูตร</td><td>PMSG</td><td>44/44</td><td>3.80</td><td><span class="status-dot green"></span>ผ่านแล้ว</td><td><button class="btn btn-sm btn-outline">แก้ไข</button></td></tr>
+</tbody></table>
+</div>
+
+<div class="card">
+<h3>📚 จัดการหลักสูตร</h3>
+<table class="admin-table">
+<thead><tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th>ทุน</th><th>วิทยากร</th><th>วันที่</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td>20010001</td><td>หลักสูตร LIA สมาชิก PKG</td><td><span class="phase-tag org">🏢 องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="status-dot green"></span>เสร็จสิ้น</td></tr>
+<tr><td>23010710</td><td>cost down pkg</td><td><span class="phase-tag org">🏢 องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="status-dot green"></span>เสร็จสิ้น</td></tr>
+<tr><td>NEW-AI-01</td><td>การใช้ AI เพื่อการตัดสินใจ</td><td><span class="phase-tag it">💻 สารสนเทศ</span></td><td>AI Expert</td><td>ต.ค. 69</td><td><span class="status-dot yellow"></span>รอดำเนินการ</td></tr>
+</tbody></table>
+</div>
+
+<div class="card">
+<h3>📊 รายงานภาพรวม</h3>
+<div class="card-grid">
+<div class="stat-card"><div class="icon">🏢</div><div class="value">89.0%</div><div class="label">ทุนองค์กร ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="icon">👤</div><div class="value">76.5%</div><div class="label">ทุนมนุษย์ ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="icon">💻</div><div class="value">82.1%</div><div class="label">ทุนสารสนเทศ ผ่านเกณฑ์</div></div>
+<div class="stat-card"><div class="icon">📈</div><div class="value">82.9%</div><div class="label">ค่าเฉลี่ยรวม</div></div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function showPage(page){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+if(page==='home')document.getElementById('pageHome').classList.add('active');
+else if(page==='pp5')document.getElementById('pagePP5').classList.add('active');
+else if(page==='admin')document.getElementById('pageAdmin').classList.add('active');
+}
+
+function switchView(view){
+document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+if(view==='admin'){
+showPage('admin');
+document.getElementById('pageTitle').innerHTML='🔧 ADMIN PAD: จัดการระบบ';
+}else{
+showPage('pp5');
+document.getElementById('pageTitle').innerHTML='📚 PP5: วงจรการเรียนรู้และพัฒนา';
+}
+}
+</script>
+</body>
+</html>

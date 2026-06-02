@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Exam - จป. ระดับบริหาร</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Sarabun','Segoe UI',Tahoma,sans-serif;background:#f5f5f5;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:10px;}
+        .quiz-container{max-width:650px;width:100%;background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden;}
+        .header{background:linear-gradient(135deg,#2e7d32 0%,#1b5e20 100%);color:white;padding:16px;}
+        .header h1{font-size:16px;margin-bottom:4px;}
+        .header .subtitle{font-size:12px;opacity:0.9;}
+        .progress-bar{background:#e8e8e8;height:8px;border-radius:4px;margin:12px 0 6px;overflow:hidden;}
+        .progress-fill{height:100%;background:#66bb6a;border-radius:4px;transition:width 0.3s;}
+        .progress-info{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.9);}
+        .score-display{display:flex;gap:10px;}
+        .score-item{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:10px;font-size:11px;}
+        .score-correct,.score-wrong{background:rgba(255,255,255,0.2);color:#fff;}
+        .question-area{padding:20px 16px;}
+        .category-tag{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px;margin-bottom:10px;}
+        .question-number{font-size:13px;color:#666;margin-bottom:6px;}
+        .question-text{font-size:17px;color:#333;line-height:1.6;margin-bottom:20px;font-weight:500;}
+        .options{display:flex;flex-direction:column;gap:10px;}
+        .option-btn{display:flex;align-items:center;gap:10px;padding:14px;background:#f8f9fa;border:2px solid #e8e8e8;border-radius:10px;cursor:pointer;transition:all 0.2s;width:100%;font-size:15px;text-align:left;}
+        .option-btn:hover:not(.disabled){background:#e8f5e9;border-color:#2e7d32;}
+        .option-btn.correct{background:#e8f5e9;border-color:#4caf50;}
+        .option-btn.wrong{background:#ffebee;border-color:#f44336;}
+        .option-btn.disabled{cursor:default;opacity:0.7;}
+        .option-label{width:28px;height:28px;border-radius:50%;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;}
+        .option-btn.correct .option-label{background:#4caf50;color:white;}
+        .option-btn.wrong .option-label{background:#f44336;color:white;}
+        .explanation{display:none;margin-top:16px;padding:14px;background:#f8f9fa;border-radius:10px;border-left:4px solid #2e7d32;}
+        .explanation.show{display:block;}
+        .explanation h4{color:#2e7d32;margin-bottom:6px;font-size:13px;}
+        .explanation p{color:#555;line-height:1.6;font-size:13px;}
+        .next-btn{display:none;width:100%;padding:14px;background:linear-gradient(135deg,#2e7d32 0%,#1b5e20 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;}
+        .next-btn.show{display:block;}
+        .results{display:none;padding:24px 16px;text-align:center;}
+        .results.show{display:block;}
+        .results .score-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#2e7d32 0%,#1b5e20 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:white;}
+        .results .score-circle .score-num{font-size:30px;font-weight:700;}
+        .results .score-circle .score-total{font-size:12px;opacity:0.9;}
+        .results h2{font-size:20px;color:#333;margin-bottom:6px;}
+        .results .grade{font-size:14px;color:#666;margin-bottom:20px;}
+        .results .summary{text-align:left;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:16px;max-height:400px;overflow-y:auto;}
+        .results .summary h3{font-size:13px;color:#333;margin-bottom:10px;}
+        .result-item{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;color:#555;}
+        .restart-btn{width:100%;padding:14px;background:linear-gradient(135deg,#2e7d32 0%,#1b5e20 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;}
+        @media(max-width:480px){.question-text{font-size:15px;}.option-btn{padding:10px;font-size:14px;}}
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>👔 Mock Exam - จป. ระดับบริหาร</h1>
+            <div class="subtitle">ตามคู่มือการปฏิบัติงานเจ้าหน้าที่ความปลอดภัยในการทำงาน ระดับบริหาร</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            <div class="progress-info">
+                <span id="qNum">1 / 30</span>
+                <div class="score-display">
+                    <span class="score-item score-wrong">✗ <span id="wrongCount">0</span></span>
+                    <span class="score-item score-correct">✓ <span id="correctCount">0</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="question-area" id="questionArea">
+            <span class="category-tag" id="categoryTag"></span>
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="explanation" id="explanation"><h4>💡 คำอธิบาย</h4><p id="explanationText"></p></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">ถัดไป →</button>
+        </div>
+        <div class="results" id="resultsArea">
+            <div class="score-circle"><span class="score-num" id="finalScore">0</span><span class="score-total">/ 30</span></div>
+            <h2 id="resultTitle">เสร็จสิ้น!</h2>
+            <div class="grade" id="resultGrade"></div>
+            <div class="summary"><h3>📝 สรุปคำตอบ</h3><div id="summaryList"></div></div>
+            <button class="restart-btn" onclick="restartQuiz()">🔄 ทำข้อสอบใหม่</button>
+        </div>
+    </div>
+    <script>
+const questions = [
+{category:"นโยบายความปลอดภัย",question:"จป.ระดับบริหาร มีหน้าที่หลักในการดำเนินการด้านใด?",options:["ตรวจสอบเครื่องจักร","กำหนดนโยบายและแผนงานความปลอดภัย","ซ่อมบำรุงอุปกรณ์","ควบคุมการทำงานหน้างาน"],answer:1,explain:"จป.ระดับบริหาร มีหน้าที่กำหนดนโยบาย แผนงาน และมาตรการความปลอดภัยในภาพรวมขององค์กร"},
+{category:"นโยบายความปลอดภัย",question:"ใครเป็นผู้รับผิดชอบหลักในการกำหนดนโยบายความปลอดภัย?",options:["จป.ระดับเทคนิค","นายจ้างหรือผู้บริหารระดับสูง","ลูกจ้างทุกคน","หน่วยงานราชการ"],answer:1,explain:"นายจ้างหรือผู้บริหารระดับสูงเป็นผู้กำหนดนโยบาย โดย จป.ระดับบริหาร协助ให้คำแนะนำ"},
+{category:"นโยบายความปลอดภัย",question:"นโยบายความปลอดภัยที่ดีควรมีลักษณะอย่างไร?",options:["เขียนไว้เฉยๆ ไม่ต้องปฏิบัติ","เป็นลายลักษณ์อักษร สื่อสารให้ทุกคนเข้าใจและนำไปปฏิบัติ","เก็บไว้ในลิ้นชักสำนักงาน"," копиจากบริษัทอื่นมาเลย"],answer:1,explain:"นโยบายความปลอดภัยต้องเป็นลายลักษณ์อักษร สื่อสารให้พนักงานทุกระดับเข้าใจและนำไปปฏิบัติได้จริง"},
+{category:"นโยบายความปลอดภัย",question:"จป.ระดับบริหาร ต้องทบทวนนโยบายความปลอดภัยอย่างน้อยความถี่เท่าใด?",options:["ทุกเดือน","ทุกปี","ทุก 5 ปี","ไม่ต้องทบทวน"],answer:1,explain:"จป.ระดับบริหารต้องทบทวนนโยบายความปลอดภัยอย่างน้อยปีละ 1 ครั้ง เพื่อให้ทันสมัยกับสถานการณ์"},
+{category:"การบริหารความเสี่ยง",question:"การจัดลำดับความสำคัญของความเสี่ยง (Risk Ranking) ใช้เกณฑ์อะไร?",options:["ขนาดของเครื่องจักร","ระดับความรุนแรง x โอกาสเกิด","จำนวนพนักงาน","งบประมาณ"},answer:1,explain:"การจัดลำดับความเสี่ยงใช้ระดับความรุนแรง (Severity) คูณ โอกาสเกิด (Likelihood)"},
+{category:"การบริหารความเสี่ยง",question:"เมื่อกำหนดมาตรการควบคุมแล้ว ขั้นตอนต่อไปคืออะไร?",options:["ลืมไปได้เลย","ติดตามประเมินผลและทบทวน","รอลูกจ้างร้องเรียน","แจ้งสื่อมวลชน"],answer:1,explain:"หลังจากกำหนดมาตรการควบคุมแล้ว ต้องติดตามประเมินผลและทบทวนเพื่อให้มั่นใจว่ามาตรการมีประสิทธิภาพ"},
+{category:"การบริหารความเสี่ยง",question:"จป.ระดับบริหาร มีบทบาทสำคัญในการบริหารความเสี่ยงอย่างไร?",options:["ลงไปซ่อมเครื่องจักรเอง","วิเคราะห์และประเมินความเสี่ยงในภาพรวม จัดทำแผนการจัดการ","แค่รายงานให้นายจ้างฟัง","จัดซื้ออุปกรณ์ PPE"],answer:1,explain:"จป.ระดับบริหาร วิเคราะห์และประเมินความเสี่ยงในภาพรวม จัดทำแผนการจัดการความเสี่ยงเสนอผู้บริหาร"},
+{category:"การสอบสวนอุบัติเหตุ",question:"เมื่อเกิดอุบัติเหตุร้ายแรง จป.ระดับบริหาร ต้องทำอะไร?",options:["ปกปิดข้อมูล","สอบสวนหาสาเหตุรากฐาน และจัดทำรายงานพร้อมข้อเสนอแนะ","โทษลูกจ้างทันที","รอให้ตำรวจมา調查"],answer:1,explain:"จป.ระดับบริหาร ต้องสอบสวนหาสาเหตุรากฐาน (Root Cause Analysis) และจัดทำรายงานพร้อมข้อเสนอแนะป้องกัน"},
+{category:"การสอบสวนอุบัติเหตุ",question:"เครื่องมือใดเหมาะสำหรับการสอบสวนอุบัติเหตุ?",options:["SWOT Analysis","5 Whys หรือ Fishbone Diagram","Balance Scorecard","Gantt Chart"],answer:1,explain:"5 Whys และ Fishbone Diagram เหมาะสำหรับการวิเคราะห์สาเหตุรากฐานของอุบัติเหตุ"},
+{category:"การสอบสวนอุบัติเหตุ",question:"Near Miss สำคัญอย่างไรที่ จป.ระดับบริหาร ต้องให้ความสำคัญ?",options:["ไม่สำคัญ ไม่มีคนเจ็บ","เป็นสัญญาณเตือนล่วงหน้า ช่วยป้องกันอุบัติเหตุจริง","ทำให้เสียเวลา","เป็นเรื่องตลก"],answer:1,explain:"Near Miss เป็นสัญญาณเตือนล่วงหน้า การวิเคราะห์ Near Miss ช่วยป้องกันอุบัติเหตุจริงที่จะเกิดขึ้น"},
+{category:"กฎหมายและความรับผิดชอบ",question:"จป.ระดับบริหาร ต้องรู้กฎหมายใดบ้าง?",options:["เฉพาะกฎหมายจราจร","พ.ร.บ.ความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พ.ศ. 2554 และกฎกระทรวงที่เกี่ยวข้อง","กฎหมายภาษี","กฎหมายลิขสิทธิ์"],answer:1,explain:"จป.ระดับบริหาร ต้องรู้ พ.ร.บ.ความปลอดภัยฯ พ.ศ. 2554 และกฎกระทรวงที่เกี่ยวข้อง เพื่อบริหารจัดการได้ถูกต้อง"},
+{category:"กฎหมายและความรับผิดชอบ",question:"นายจ้างฝ่าฝืนไม่จัดให้มี จป. ตามกฎหมาย มีโทษสูงสุดเท่าใด?",options:["ตักเตือน","ปรับไม่เกิน 200,000 บาท หรือจำคุกไม่เกิน 1 ปี หรือทั้งจำทั้งปรับ","ห้ามเปิดกิจการถาวร","ไม่มีโทษ"],answer:1,explain:"นายจ้างฝ่าฝืนมีโทษปรับไม่เกิน 200,000 บาท หรือจำคุกไม่เกิน 1 ปี หรือทั้งจำทั้งปรับ ตาม พ.ร.บ.ความปลอดภัยฯ"},
+{category:"กฎหมายและความรับผิดชอบ",question:"จป.ระดับบริหาร ต้องจัดทำเอกสารใดเพื่อแสดงต่อพนักงานตรวจความปลอดภัย?",options:["ใบเสร็จรับเงิน","รายงานผลการปฏิบัติงานความปลอดภัย, นโยบาย, ผลการประเมินความเสี่ยง","บัญชีเงินเดือน","รายการสินค้า"],answer:1,explain:"จป.ระดับบริหาร ต้องเตรียมรายงานผลการปฏิบัติงานความปลอดภัย, นโยบาย, ผลการประเมินความเสี่ยง เพื่อแสดงต่อพนักงานตรวจความปลอดภัย"},
+{category:"การฝึกอบรม",question:"จป.ระดับบริหาร มีหน้าที่วางแผนฝึกอบรมความปลอดภัยอย่างไร?",options:["ไม่ต้องจัดอบรม","วิเคราะห์ความต้องการ จัดทำแผน และติดตามผลการฝึกอบรม","จัดอบรมเฉพาะหัวหน้างาน"," outsourced ทุกอย่าง"],answer:1,explain:"จป.ระดับบริหาร วิเคราะห์ความต้องการ จัดทำแผนฝึกอบรม และติดตามผลการฝึกอบรมเพื่อให้ครอบคลุมทุกระดับ"},
+{category:"การฝึกอบรม",question:"ลูกจ้างใหม่ต้องเข้ารับการฝึกอบรมความปลอดภัยเมื่อใด?",options:["หลังทำงานไปแล้ว 1 ปี","ก่อนเริ่มปฏิบัติงาน","เมื่อถูกไล่ออก","เมื่อลาป่วย"],answer:1,explain:"ลูกจ้างใหม่ต้องเข้ารับการฝึกอบรมความปลอดภัยก่อนเริ่มปฏิบัติงาน เพื่อสร้างความตระหนักและทักษะที่จำเป็น"},
+{category:"การฝึกอบรม",question:"จป.ระดับบริหาร ควรประเมินผลการฝึกอบรมด้วยวิธีใด?",options:["ถามความรู้สึกคนเดียว","ทดสอบความรู้ ประเมินพฤติกรรม และวัดผลลัพธ์ในที่ทำงาน","ไม่ต้องประเมิน","ดูจากจำนวนผู้เข้าร่วมอย่างเดียว"],answer:1,explain:"การประเมินผลการฝึกอบรมควรทดสอบความรู้ ประเมินพฤติกรรม และวัดผลลัพธ์ในที่ทำงานว่าได้นำความรู้ไปใช้จริงหรือไม่"},
+{category:"การตรวจความปลอดภัย",question:"จป.ระดับบริหาร ต้องวางแผนตรวจความปลอดภัยอย่างไร?",options:["สุ่มตรวจเมื่อว่าง","จัดทำแผนตรวจประจำปี กำหนดพื้นที่ ความถี่ และผู้รับผิดชอบ","ตรวจเฉพาะเมื่อเกิดอุบัติเหตุ","มอบหมายให้คนอื่นทำทั้งหมด"],answer:1,explain:"จป.ระดับบริหาร ต้องจัดทำแผนตรวจความปลอดภัยประจำปี กำหนดพื้นที่ ความถี่ ผู้รับผิดชอบ และติดตามผล"},
+{category:"การตรวจความปลอดภัย",question:"สิ่งที่ต้องตรวจสอบในการตรวจความปลอดภัย ได้แก่ข้อใด?",options:["เฉพาะเครื่องจักร","สภาพแวดล้อมการทำงาน พฤติกรรมunsafe act เอกสาร และอุปกรณ์ป้องกัน","เฉพาะห้องน้ำ","เฉพาะห้องพัก"},answer:1,explain:"การตรวจความปลอดภัยต้องครอบคลุม สภาพแวดล้อมการทำงาน พฤติกรรม unsafe act เอกสาร และอุปกรณ์ป้องกันอันตราย"},
+{category:"การตรวจความปลอดภัย",question:"หลังการตรวจความปลอดภัย จป.ระดับบริหาร ต้องทำอะไร?",options:["ไม่ต้องทำอะไร","สรุปผล แจ้งผู้รับผิดชอบ และติดตามการแก้ไข","แจ้งสื่อมวลชน","ลงโทษพนักงานทันที"],answer:1,explain:"หลังตรวจต้องสรุปผล แจ้งผู้รับผิดชอบที่มีข้อบกพร่อง และติดตามการแก้ไขให้แล้วเสร็จภายในเวลาที่กำหนด"},
+{category:"คณะกรรมการ คปอ.",question:"จป.ระดับบริหาร มีบทบาทใน คปอ. อย่างไร?",options:["เป็นประธาน","เป็นเลขาฯ หรือฝ่ายวิชาการ เสนอข้อมูลและข้อเสนอแนะ","ไม่เกี่ยวข้อง","เป็นกรรมการเท่านั้น"],answer:1,explain:"จป.ระดับบริหาร มักทำหน้าที่เป็นเลขาฯ หรือฝ่ายวิชาการใน คปอ. เสนอข้อมูลและข้อเสนอแนะด้านความปลอดภัย"},
+{category:"คณะกรรมการ คปอ.",question:"คปอ. ต้องประชุมอย่างน้อยกี่ครั้งต่อปี?",options:["1 ครั้ง","4 ครั้ง (ทุก 3 เดือน)","12 ครั้ง","24 ครั้ง"],answer:1,explain:"คปอ. ต้องประชุมอย่างน้อยทุก 3 เดือน (ปีละ 4 ครั้ง) เพื่อทบทวนและติดตามเรื่องความปลอดภัย"},
+{category:"คณะกรรมการ คปอ.",question:"วาระการประชุม คป. ควรมีอะไรบ้าง?",options:["เรื่องการเมือง","สถิติอุบัติเหตุ ผลการตรวจความปลอดภัย ข้อเสนอแนะ ปัญหาและอุปสรรค","เรื่องกีฬา","เรื่องบันเทิง"],answer:1,explain:"วาระ คปอ. ควรมี สถิติอุบัติเหตุ ผลการตรวจความปลอดภัย ข้อเสนอแนะ ปัญหาและอุปสรรค และแนวทางการแก้ไข"},
+{category:"การสื่อสารความปลอดภัย",question:"จป.ระดับบริหาร ต้องสื่อสารความปลอดภัยด้วยวิธีใด?",options:["ส่ง SMS เฉพาะบางคน","หลายช่องทาง เช่น ป้ายประกาศ การประชุม อีเมล Line กลุ่ม","แค่บอกปากเปล่า","ไม่จำเป็นต้องสื่อสาร"],answer:1,explain:"จป.ระดับบริหาร ต้องสื่อสารหลายช่องทาง เพื่อให้ข้อมูลเข้าถึงพนักงานทุกระดับอย่างทั่วถึง"},
+{category:"การสื่อสารความปลอดภัย",question:"Toolbox Talk คืออะไร?",options:["การประชุมเครื่องมือช่าง","การพูดคุยเรื่องความปลอดภัยสั้นๆ ก่อนเริ่มงานประจำวัน","การซ่อมกล่องเครื่องมือ","การขายเครื่องมือ"],answer:1,explain:"Toolbox Talk คือการพูดคุยเรื่องความปลอดภัยสั้นๆ (5-15 นาที) ก่อนเริ่มงานประจำวัน เพื่อสร้างความตระหนัก"},
+{category:"การสื่อสารความปลอดภัย",question:"Safety Campaign คืออะไร?",options:["การแข่งกีฬา","กิจกรรมรณรงค์ความปลอดภัยในช่วงเวลาที่กำหนด","การลดราคา","การรับสมัครงาน"],answer:1,explain:"Safety Campaign คือกิจกรรมรณรงค์ความปลอดภัยในช่วงเวลาที่กำหนด เพื่อสร้างจิตสำนึกและกระตุ้นให้พนักงานใส่ใจความปลอดภัย"},
+{category:"การจัดการภาวะฉุกเฉิน",question:"จป.ระดับบริหาร มีหน้าที่จัดการภาวะฉุกเฉินอย่างไร?",options:["ไม่ต้องสนใจ","จัดทำแผนฉุกเฉิน ฝึกซ้อม และประเมินผล","รอให้เหตุเกิดแล้วค่อยคิด"," outsourced ทั้งหมด"],answer:1,explain:"จป.ระดับบริหาร ต้องจัดทำแผนฉุกเฉิน ฝึกซ้อมแผน และประเมินผลหลังการฝึกซ้อมเพื่อปรับปรุงแผนให้ดีขึ้น"},
+{category:"การจัดการภาวะฉุกเฉิน",question:"แผนฉุกเฉินควรครอบคลุมสถานการณ์ใดบ้าง?",options:["เฉพาะไฟไหม้","อัคคีภัย สารเคมีรั่วไหล อุบัติเหตุร้ายแรง ภัยธรรมชาติ และสถานการณ์อื่นๆ ที่อาจเกิด","เฉพาะน้ำท่วม","เฉพาะแผ่นดินไหว"],answer:1,explain:"แผนฉุกเฉินต้องครอบคลุม อัคคีภัย สารเคมีรั่วไหล อุบัติเหตุร้ายแรง ภัยธรรมชาติ และสถานการณ์อื่นๆ ที่อาจเกิดขึ้น"},
+{category:"การจัดการภาวะฉุกเฉิน",question:"จป.ระดับบริหาร ควรฝึกซ้อมแผนฉุกเฉินอย่างน้อยกี่ครั้งต่อปี?",options:["ไม่เคยฝึก","อย่างน้อย 1 ครั้ง","10 ครั้ง","100 ครั้ง"],answer:1,explain:"จป.ระดับบริหาร ควรจัดฝึกซ้อมแผนฉุกเฉินอย่างน้อยปีละ 1 ครั้ง เพื่อให้พนักงานมีความพร้อม"},
+{category:"ตัวชี้วัดความปลอดภัย",question:"Leading Indicator ด้านความปลอดภัย คืออะไร?",options:["จำนวนผู้เสียชีวิต","จำนวนครั้งของการตรวจความปลอดภัย จำนวน Near Miss ที่รายงาน","ค่าเสียหายจากอุบัติเหตุ","จำนวนวันสูญเสีย"],answer:1,explain:"Leading Indicator คือ ตัวชี้วัดเชิงนำ เช่น จำนวนครั้งของการตรวจ จำนวน Near Miss ที่รายงาน แสดงถึงความ proactive"},
+{category:"ตัวชี้วัดความปลอดภัย",question:"Lagging Indicator ด้านความปลอดภัย คืออะไร?",options:["จำนวน Near Miss","จำนวนอุบัติเหตุที่เกิดขึ้น จำนวนวันสูญเสีย ค่าเสียหาย","จำนวนการฝึกอบรม","จำนวนการตรวจความปลอดภัย"],answer:1,explain:"Lagging Indicator คือ ตัวชี้วัดเชิงผล เช่น จำนวนอุบัติเหตุ จำนวนวันสูญเสีย ค่าเสียหาย บอกผลลัพธ์ที่เกิดขึ้นแล้ว"}
+];
+let currentQ = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let userAnswers = [];
+
+function loadQuestion() {
+    answered = false;
+    const q = questions[currentQ];
+    document.getElementById('categoryTag').textContent = q.category;
+    document.getElementById('questionNumber').textContent = `ข้อที่ ${currentQ + 1}/30`;
+    document.getElementById('questionText').textContent = q.question;
+    document.getElementById('qNum').textContent = `${currentQ + 1} / 30`;
+    document.getElementById('progressFill').style.width = `${(currentQ / 30) * 100}%`;
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => selectAnswer(i);
+        container.appendChild(btn);
+    });
+    document.getElementById('explanation').classList.remove('show');
+    document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectAnswer(index) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach((btn, i) => {
+        btn.classList.add('disabled');
+        if (i === q.answer) btn.classList.add('correct');
+        else if (i === index && i !== q.answer) btn.classList.add('wrong');
+    });
+    if (index === q.answer) { correct++; document.getElementById('correctCount').textContent = correct; }
+    else { wrong++; document.getElementById('wrongCount').textContent = wrong; }
+    userAnswers.push({question: q.question, user: index, correct: q.answer, isCorrect: index === q.answer, category: q.category});
+    document.getElementById('explanationText').textContent = q.explain;
+    document.getElementById('explanation').classList.add('show');
+    document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) loadQuestion();
+    else showResults();
+}
+
+function showResults() {
+    document.getElementById('questionArea').style.display = 'none';
+    document.getElementById('resultsArea').classList.add('show');
+    document.getElementById('finalScore').textContent = correct;
+    const percent = (correct / 30) * 100;
+    let grade = '';
+    if (percent >= 80) grade = '🌟 ดีมาก! ผ่านเกณฑ์พร้อมปฏิบัติงาน!';
+    else if (percent >= 60) grade = '👍 ดี! แต่ควรทบทวนเพิ่มเติม';
+    else if (percent >= 40) grade = '📚 พอใช้! ต้องทบทวนอย่างจริงจัง';
+    else grade = '💪 ต้องศึกษาเพิ่ม! สู้ๆ!';
+    document.getElementById('resultGrade').textContent = `${percent.toFixed(0)}% — ${grade}`;
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    let summary = '';
+    userAnswers.forEach((a, i) => {
+        const icon = a.isCorrect ? '✅' : '❌';
+        summary += `<div class="result-item"><span class="icon">${icon}</span> ข้อ ${i+1} (${a.category}): ตอบ ${labels[a.user]} / เฉลย ${labels[a.correct]}</div>`;
+    });
+    document.getElementById('summaryList').innerHTML = summary;
+}
+
+function restartQuiz() {
+    currentQ = 0; correct = 0; wrong = 0; userAnswers = [];
+    document.getElementById('correctCount').textContent = '0';
+    document.getElementById('wrongCount').textContent = '0';
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultsArea').classList.remove('show');
+    loadQuestion();
+}
+
+loadQuestion();
+    </script>
+</body>
+</html>

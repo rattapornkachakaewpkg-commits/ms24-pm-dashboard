@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKG Training Hub | Corporate Learning Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #2563eb; --secondary: #4f46e5; --dark: #0f172a; --light: #f8fafc; --white: #ffffff; --gray: #64748b; --success: #10b981; --warning: #f59e0b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
+        body { background: var(--light); color: var(--dark); overflow-x: hidden; }
+        
+        /* Navbar */
+        .navbar { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 100; transition: 0.3s; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .logo { font-size: 1.5em; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--dark); }
+        .nav-btn { background: var(--primary); color: var(--white); padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-btn:hover { background: var(--secondary); }
+
+        /* Hero Section */
+        .hero { min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 100px 20px 50px; background: radial-gradient(circle at top right, #e0e7ff, transparent 40%), radial-gradient(circle at bottom left, #fae8ff, transparent 40%); position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: rgba(37, 99, 235, 0.05); border-radius: 50%; top: -100px; right: -100px; filter: blur(50px); }
+        .hero-content { max-width: 800px; z-index: 2; }
+        .hero h1 { font-size: 3.5em; font-weight: 800; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2em; color: var(--gray); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* Search Box in Hero */
+        .hero-search { background: var(--white); padding: 10px; border-radius: 60px; box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15); display: flex; gap: 10px; max-width: 600px; margin: 0 auto; border: 2px solid transparent; transition: 0.3s; }
+        .hero-search:focus-within { border-color: var(--primary); transform: translateY(-5px); }
+        .hero-search input { flex: 1; border: none; padding: 15px 20px; font-size: 1.1em; outline: none; border-radius: 40px; }
+        .hero-search button { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); border: none; padding: 15px 30px; border-radius: 40px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3); }
+        .hero-search button:hover { transform: scale(1.05); }
+
+        /* Features Section */
+        .features { padding: 80px 5%; background: var(--white); }
+        .section-title { text-align: center; font-size: 2.5em; font-weight: 700; margin-bottom: 50px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .feature-card { background: var(--light); padding: 30px; border-radius: 20px; transition: 0.3s; border: 1px solid #e2e8f0; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); border-color: var(--primary); }
+        .feature-icon { width: 60px; height: 60px; background: #e0e7ff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8em; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.4em; margin-bottom: 10px; }
+        .feature-card p { color: var(--gray); line-height: 1.6; }
+
+        /* Dashboard Result (Initially Hidden) */
+        .dashboard-container { display: none; padding: 100px 5% 50px; min-height: 100vh; background: #f1f5f9; }
+        .result-card { background: var(--white); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); max-width: 1000px; margin: 0 auto; overflow: hidden; animation: slideUp 0.6s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .result-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 30px; color: var(--white); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .user-meta h2 { font-size: 2em; margin-bottom: 5px; }
+        .user-meta p { opacity: 0.9; }
+        .stat-badges { display: flex; gap: 15px; }
+        .badge-pill { background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; backdrop-filter: blur(5px); font-weight: 600; }
+
+        .result-body { padding: 30px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
+        .tab { padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 500; color: var(--gray); transition: 0.3s; }
+        .tab.active { background: var(--primary); color: var(--white); }
+        .tab:hover:not(.active) { background: #e2e8f0; }
+
+        .course-list { display: grid; gap: 15px; }
+        .course-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; transition: 0.3s; background: var(--white); }
+        .course-row:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: var(--primary); }
+        .c-info h4 { font-size: 1.1em; margin-bottom: 5px; }
+        .c-info span { font-size: 0.85em; color: var(--gray); background: #f1f5f9; padding: 3px 8px; border-radius: 5px; }
+        .c-status { text-align: right; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .status-dot.pass { background: var(--success); }
+        .status-dot.fail { background: var(--error); }
+        .score-box { font-size: 1.5em; font-weight: 800; color: var(--dark); }
+        .score-box span { font-size: 0.6em; color: var(--gray); font-weight: 400; }
+
+        /* Error */
+        .error-msg { text-align: center; margin-top: 20px; color: var(--error); font-weight: 500; display: none; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .hero-search { flex-direction: column; padding: 15px; border-radius: 20px; }
+            .hero-search button { width: 100%; }
+            .result-header { flex-direction: column; text-align: center; }
+            .stat-badges { justify-content: center; }
+            .course-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .c-status { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">🎓 <span>PKG Hub</span></div>
+        <a href="#" class="nav-btn" onclick="showHero()">หน้าแรก</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero" id="heroSection">
+        <div class="hero-content">
+            <h1>ปลดล็อกศักยภาพ<br>สมาชิกด้วยข้อมูล</h1>
+            <p>ระบบตรวจสอบผลการอบรมแบบ Real-time ครบทุกมิติ เข้าถึงได้ทุกที่ ทุกเวลา เพื่อองค์กรแห่งการเรียนรู้</p>
+            
+            <div class="hero-search">
+                <input type="text" id="searchInput" placeholder="พิมพ์ไอดีสมาชิก (เช่น 123456)">
+                <button onclick="searchMember()">ค้นหาเลย</button>
+            </div>
+            <div class="error-msg" id="errorMsg">ไม่พบข้อมูลไอดีสมาชิกนี้ในระบบ</div>
+        </div>
+    </div>
+
+    <!-- Features (Visible only on Hero) -->
+    <div class="features" id="featuresSection">
+        <h2 class="section-title">ทำไมต้องใช้ Training Hub?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>ค้นหาด้วยไอดี</h3>
+                <p>ไม่ต้องเปิดไฟล์ Excel ให้ยุ่งยาก แค่พิมพ์รหัสสมาชิก ข้อมูลผลการเรียนทั้งหมดจะปรากฏขึ้นทันที</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>ข้อมูลอัปเดต Real-time</h3>
+                <p>ข้อมูลเชื่อมต่อกับฐานข้อมูลกลาง ผลสอบออกเมื่อไหร่ ระบบจะอัปเดตทันที ไม่ต้องรอรายงาน</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>เข้าถึงได้ทุกที่</h3>
+                <p>ใช้งานได้ทั้งบนมือถือ แท็บเล็ต และคอมพิวเตอร์ ตอบโจทย์การทำงานยุคใหม่</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Result -->
+    <div class="dashboard-container" id="dashboardSection">
+        <div class="result-card">
+            <div class="result-header">
+                <div class="user-meta">
+                    <h2 id="userName">-</h2>
+                    <p id="userDetails">-</p>
+                </div>
+                <div class="stat-badges">
+                    <div class="badge-pill" id="statPassed">✅ ผ่าน 0</div>
+                    <div class="badge-pill" id="statCredits">📚 0 หน่วยกิต</div>
+                </div>
+            </div>
+            
+            <div class="result-body">
+                <div class="tabs">
+                    <div class="tab active" onclick="filterData('all', this)">ทั้งหมด</div>
+                    <div class="tab" onclick="filterData('pass', this)">ผ่านแล้ว</div>
+                    <div class="tab" onclick="filterData('pending', this)">ยังไม่ผ่าน</div>
+                </div>
+
+                <div class="course-list" id="courseList">
+                    <!-- Items injected by JS -->
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="nav-btn" style="background: var(--dark); font-size: 1.1em; padding: 15px 40px;" onclick="showHero()">🔙 ค้นหาคนถัดไป</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const db = {
+            "123456": { id: "123456", name: "นาย โกมล ไชยประสูตร", details: "PMSG - ทีมตรวจสอบธุรกิจ", courses: [
+                { date: "24 มี.ค. 69", name: "การบริหารองค์กร ด้วย BP LL", score: 100, passed: true, credits: 4 },
+                { date: "7 ม.ค. 69", name: "ความรู้เทคโนโลยีจากบทความ กลุ่ม2 ม.ค. 69", score: 80, passed: true, credits: 2 },
+                { date: "15 ธ.ค. 68", name: "ความปลอดภัยในการทำงาน จป. หัวหน้างาน", score: 95, passed: true, credits: 6 },
+                { date: "10 พ.ย. 68", name: "มาตรฐาน 5ส เพื่อสิ่งแวดล้อมที่ดี", score: 45, passed: false, credits: 0 },
+            ]},
+            "789000": { id: "789000", name: "นางสาว สมหญิง รักงาน", details: "AAMG - ทีมบริการลูกค้า", courses: [
+                { date: "20 พ.ค. 69", name: "การบริการลูกค้าแบบเหนือชั้น", score: 90, passed: true, credits: 3 },
+                { date: "18 พ.ค. 69", name: "การใช้ AI เพื่อการทำงานยุคใหม่", score: 100, passed: true, credits: 4 },
+            ]}
+        };
+
+        let allCourses = [];
+
+        function searchMember() {
+            const input = document.getElementById('searchInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (db[input]) {
+                errorMsg.style.display = 'none';
+                renderDashboard(db[input]);
+            } else {
+                errorMsg.style.display = 'block';
+                setTimeout(() => errorMsg.style.display = 'none', 3000);
+            }
+        }
+
+        function renderDashboard(data) {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('featuresSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('userName').innerText = data.name;
+            document.getElementById('userDetails').innerText = `ID: ${data.id} | ${data.details}`;
+            
+            const passed = data.courses.filter(c => c.passed).length;
+            const credits = data.courses.filter(c => c.passed).reduce((s, c) => s + c.credits, 0);
+            document.getElementById('statPassed').innerText = `✅ ผ่าน ${passed}`;
+            document.getElementById('statCredits').innerText = `📚 ${credits} หน่วยกิต`;
+
+            allCourses = data.courses;
+            renderList(allCourses);
+        }
+
+        function renderList(courses) {
+            const list = document.getElementById('courseList');
+            list.innerHTML = '';
+            courses.forEach(c => {
+                const statusClass = c.passed ? 'pass' : 'fail';
+                const statusText = c.passed ? 'ผ่าน' : 'ไม่ผ่าน';
+                const html = `
+                    <div class="course-row">
+                        <div class="c-info">
+                            <h4>${c.name}</h4>
+                            <span>📅 ${c.date} | 📚 ${c.credits} หน่วยกิต</span>
+                        </div>
+                        <div class="c-status">
+                            <div class="score-box">${c.score} <span>คะแนน</span></div>
+                            <div style="color: ${c.passed ? 'var(--success)' : 'var(--error)'}; font-weight: 600;">
+                                <span class="status-dot ${statusClass}"></span> ${statusText}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += html;
+            });
+        }
+
+        function filterData(type, btn) {
+            document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            let filtered = [...allCourses];
+            if (type === 'pass') filtered = filtered.filter(c => c.passed);
+            if (type === 'pending') filtered = filtered.filter(c => !c.passed);
+            renderList(filtered);
+        }
+
+        function showHero() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('heroSection').style.display = 'flex';
+            document.getElementById('featuresSection').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

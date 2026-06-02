@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 PKG AI School — เปรียบเทียบผลลัพธ์ Before/After</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f6fa; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #2d3436, #636e72); color: white; padding: 25px; text-align: center; }
+        .header h1 { font-size: 1.5em; font-weight: 800; }
+        .header .sub { opacity: 0.9; margin-top: 5px; }
+        .content { padding: 25px; }
+        
+        /* Table Styles */
+        .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: 20px; }
+        .comparison-table th { padding: 15px; color: white; font-size: 1.1em; text-align: center; }
+        .comparison-table th:nth-child(1) { border-radius: 10px 10px 0 0; background: #d63031; }
+        .comparison-table th:nth-child(2) { border-radius: 10px 10px 0 0; background: #00b894; }
+        .comparison-table th:nth-child(3) { border-radius: 10px 10px 0 0; background: #0984e3; }
+        
+        .comparison-table td { padding: 15px; vertical-align: top; border-bottom: 2px solid #eee; background: #fff; }
+        .comparison-table tr:last-child td { border-bottom: none; }
+        .comparison-table tr td:nth-child(1) { background: #ffeaa7; border-left: 4px solid #d63031; border-radius: 0 0 0 10px; }
+        .comparison-table tr td:nth-child(2) { background: #55efc4; border-left: 4px solid #00b894; }
+        .comparison-table tr td:nth-child(3) { background: #74b9ff; border-left: 4px solid #0984e3; border-radius: 0 0 10px 0; }
+
+        .label { font-weight: 800; font-size: 0.9em; margin-bottom: 5px; display: block; text-transform: uppercase; }
+        .red-text { color: #d63031; }
+        .green-text { color: #00b894; }
+        .blue-text { color: #0984e3; }
+        
+        .item { background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px; margin-bottom: 5px; font-size: 0.9em; }
+        .item:last-child { margin-bottom: 0; }
+        
+        .arrow-icon { display: none; }
+        
+        @media (max-width: 700px) {
+            .comparison-table, .comparison-table tbody, .comparison-table tr, .comparison-table td { display: block; width: 100%; }
+            .comparison-table tr { margin-bottom: 20px; border: 2px solid #ddd; border-radius: 10px; overflow: hidden; }
+            .comparison-table td { border-left: none !important; border-radius: 0 !important; }
+            .comparison-table td:nth-child(1) { background: #ffeaa7; }
+            .comparison-table td:nth-child(2) { background: #55efc4; }
+            .comparison-table td:nth-child(3) { background: #74b9ff; }
+            .comparison-table th { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎓 ผลลัพธ์การใช้งาน AI แต่ละระดับ</h1>
+        <div class="sub">Before vs Level 1 vs Level 2</div>
+    </div>
+
+    <div class="content">
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>❌ ก่อนใช้ AI</th>
+                    <th>✅ หลังใช้ Level 1</th>
+                    <th>🚀 หลังใช้ Level 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1: Documents -->
+                <tr>
+                    <td>
+                        <span class="label red-text">📄 งานเอกสาร</span>
+                        <div class="item">อ่าน/เขียนด้วยมือทั้งหมด</div>
+                        <div class="item">ใช้เวลาอ่านสรุปนาน</div>
+                        <div class="item">ร่างอีเมลช้า</div>
+                    </td>
+                    <td>
+                        <span class="label green-text">📄 งานเอกสาร</span>
+                        <div class="item">AI ช่วยสรุปเอกสารยาวเป็นหน้าเดียว</div>
+                        <div class="item">AI ร่างอีเมลให้ใน 1 นาที</div>
+                        <div class="item">ลดเวลา 50%</div>
+                    </td>
+                    <td>
+                        <span class="label blue-text">📄 งานเอกสาร</span>
+                        <div class="item">AI วิเคราะห์และเขียนรายงานอัตโนมัติ</div>
+                        <div class="item">สร้าง Proposal จากข้อมูลดิบ</div>
+                        <div class="item">ลดเวลา 90%</div>
+                    </td>
+                </tr>
+                <!-- Row 2: Data -->
+                <tr>
+                    <td>
+                        <span class="label red-text">📊 ข้อมูลและการวิเคราะห์</span>
+                        <div class="item">ทำ Excel เองทีละเซลล์</div>
+                        <div class="item">สร้างกราฟด้วยมือ</div>
+                        <div class="item">หา Insight ไม่เจอ</div>
+                    </td>
+                    <td>
+                        <span class="label green-text">📊 ข้อมูลและการวิเคราะห์</span>
+                        <div class="item">AI ช่วยคำนวณสูตร Excel ยากๆ</div>
+                        <div class="item">AI แนะนำรูปแบบกราฟ</div>
+                        <div class="item">ถามข้อมูลจากตารางได้</div>
+                    </td>
+                    <td>
+                        <span class="label blue-text">📊 ข้อมูลและการวิเคราะห์</span>
+                        <div class="item">Dashboard อัปเดตอัตโนมัติ Real-time</div>
+                        <div class="item">AI ทำนายแนวโน้ม (Forecast)</div>
+                        <div class="item">พบ Insight ที่มนุษย์มองข้าม</div>
+                    </td>
+                </tr>
+                <!-- Row 3: Productivity -->
+                <tr>
+                    <td>
+                        <span class="label red-text">⏱️ ประสิทธิภาพเวลา</span>
+                        <div class="item">ติดขัดงาน Routine ทั้งวัน</div>
+                        <div class="item">งานซ้ำซากจำเจ</div>
+                        <div class="item">ไม่มีเวลาคิดกลยุทธ์</div>
+                    </td>
+                    <td>
+                        <span class="label green-text">⏱️ ประสิทธิภาพเวลา</span>
+                        <div class="item">AI ช่วยจัดการตารางนัดหมาย</div>
+                        <div class="item">แปลภาษา/ตรวจสอบคำผิดอัตโนมัติ</div>
+                        <div class="item">มีเวลาโฟกัสงานสำคัญมากขึ้น</div>
+                    </td>
+                    <td>
+                        <span class="label blue-text">⏱️ ประสิทธิภาพเวลา</span>
+                        <div class="item">Workflow อัตโนมัติ 100%</div>
+                        <div class="item">ระบบทำงานแทนคน 24/7</div>
+                        <div class="item">โฟกัส 100% กับ Innovation</div>
+                    </td>
+                </tr>
+                <!-- Row 4: Decision -->
+                <tr>
+                    <td>
+                        <span class="label red-text">🧠 การตัดสินใจ</span>
+                        <div class="item">ใช้ความรู้สึก和经验</div>
+                        <div class="item">ข้อมูลไม่ครบถ้วน</div>
+                        <div class="item">เสี่ยงผิดพลาดสูง</div>
+                    </td>
+                    <td>
+                        <span class="label green-text">🧠 การตัดสินใจ</span>
+                        <div class="item">มีข้อมูลประกอบการตัดสินใจมากขึ้น</div>
+                        <div class="item">AI ช่วยเช็คความถูกต้อง</div>
+                        <div class="item">ลดความผิดพลาดเบื้องต้น</div>
+                    </td>
+                    <td>
+                        <span class="label blue-text">🧠 การตัดสินใจ</span>
+                        <div class="item">Data-Driven 100%</div>
+                        <div class="item">AI เสนอทางเลือกและประเมินความเสี่ยง</div>
+                        <div class="item">ตัดสินใจแม่นยำและรวดเร็ว</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

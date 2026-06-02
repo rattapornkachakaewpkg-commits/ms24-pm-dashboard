@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 PKG AI School — ผลลัพธ์หลังใช้ AI แต่ละ Level</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 15px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px 20px; text-align: center; }
+        .header h1 { font-size: 1.5em; }
+        .header .sub { opacity: 0.9; margin-top: 5px; font-size: 0.9em; }
+        .content { padding: 20px; }
+        .section { margin-bottom: 25px; }
+        .section h2 { color: #667eea; font-size: 1.2em; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #e8eaed; padding-bottom: 8px; }
+        
+        /* Before/After Cards */
+        .level-section { background: #f8f9fa; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-left: 5px solid; }
+        .level-section.green { border-left-color: #00b894; }
+        .level-section.yellow { border-left-color: #fdcb6e; }
+        .level-section.blue { border-left-color: #0984e3; }
+        .level-section h3 { font-size: 1.1em; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .level-section.green h3 { color: #00b894; }
+        .level-section.yellow h3 { color: #d68910; }
+        .level-section.blue h3 { color: #0984e3; }
+        
+        .comparison-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: stretch; }
+        @media (max-width: 700px) { .comparison-row { grid-template-columns: 1fr; } .arrow-col { display: none; } }
+        
+        .before-card { background: #ffeaa7; border-radius: 12px; padding: 15px; }
+        .after-card { background: #55efc4; border-radius: 12px; padding: 15px; }
+        .before-card h4 { color: #d63031; font-size: 0.9em; margin-bottom: 8px; }
+        .after-card h4 { color: #00b894; font-size: 0.9em; margin-bottom: 8px; }
+        .before-card .item, .after-card .item { background: white; padding: 8px; border-radius: 8px; margin: 5px 0; font-size: 0.85em; }
+        .before-card .item { border-left: 3px solid #d63031; }
+        .after-card .item { border-left: 3px solid #00b894; }
+        
+        .arrow-col { display: flex; align-items: center; justify-content: center; font-size: 2em; color: #667eea; }
+        
+        /* Stats Row */
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        @media (max-width: 700px) { .stats-row { grid-template-columns: 1fr; } }
+        .stat-box { background: white; border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .stat-box .emoji { font-size: 1.5em; }
+        .stat-box .value { font-size: 1.3em; font-weight: 800; color: #2d3436; }
+        .stat-box .label { font-size: 0.75em; color: #636e72; }
+        
+        /* Scenario */
+        .scenario { background: white; border-radius: 10px; padding: 12px; margin: 10px 0; border: 2px dashed #dfe6e9; }
+        .scenario h5 { font-size: 0.9em; color: #667eea; margin-bottom: 6px; }
+        .scenario .task { font-size: 0.85em; color: #636e72; }
+        
+        /* Timeline */
+        .timeline-visual { display: flex; border-radius: 10px; overflow: hidden; margin: 10px 0; height: 35px; }
+        .tl-seg { display: flex; align-items: center; justify-content: center; color: white; font-size: 0.6em; font-weight: 600; text-align: center; padding: 3px; }
+        .tl-seg.green { background: #00b894; }
+        .tl-seg.yellow { background: #fdcb6e; color: #333; }
+        .tl-seg.blue { background: #0984e3; }
+        
+        /* Summary */
+        .summary-box { background: linear-gradient(135deg, #2d3436, #636e72); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px; }
+        .summary-box h3 { font-size: 1.2em; margin-bottom: 15px; }
+        .summary-stats { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+        .summary-stat { text-align: center; }
+        .summary-stat .num { font-size: 2em; font-weight: 800; }
+        .summary-stat .lbl { font-size: 0.85em; opacity: 0.85; }
+        
+        .footer { background: #2d3436; color: white; padding: 15px; text-align: center; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎓 PKG AI School 2026 — ผลลัพธ์หลังใช้ AI</h1>
+        <div class="sub">Before & After: ใช้ AI แล้วชีวิตการทำงานเปลี่ยนไปอย่างไร?</div>
+    </div>
+
+    <div class="content">
+
+        <!-- ==================== Level 1 ==================== -->
+        <div class="section">
+            <h2>🟢 Level 1: เลขาส่วนตัว — ผลลัพธ์หลังใช้ AI</h2>
+            
+            <div class="level-section green">
+                <h3> พนักงานทั่วไป → Power User</h3>
+                
+                <div class="stats-row">
+                    <div class="stat-box"><div class="emoji">⏱️</div><div class="value">-50%</div><div class="label">เวลาทำงานเอกสาร</div></div>
+                    <div class="stat-box"><div class="emoji">📧</div><div class="value">-40%</div><div class="label">เวลาเขียนอีเมล</div></div>
+                    <div class="stat-box"><div class="emoji">✅</div><div class="value">90%</div><div class="label">งานเสร็จตรงเวลา</div></div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="before-card">
+                        <h4>❌ ก่อนใช้ AI</h4>
+                        <div class="item">📝 อ่านเอกสาร 50 หน้า ใช้เวลา 2 ชั่วโมง</div>
+                        <div class="item">✉️ ร่างอีเมลทางการ ใช้เวลา 30 นาที</div>
+                        <div class="item">🌐 แปลเอกสารไทย↔อังกฤษ ใช้เวลา 1 ชั่วโมง</div>
+                        <div class="item">📅 จัดตารางงานด้วยมือ ลืมบ่อย</div>
+                        <div class="item">😰 เครียดกับงานซ้ำซาก</div>
+                    </div>
+                    <div class="arrow-col">➜</div>
+                    <div class="after-card">
+                        <h4>✅ หลังใช้ AI (Level 1)</h4>
+                        <div class="item">📝 AI สรุปเอกสาร 50 หน้า → 1 หน้า ใน 2 นาที</div>
+                        <div class="item">✉️ AI ร่างอีเมล → แก้ไขเล็กน้อยใน 5 นาที</div>
+                        <div class="item">🌐 AI แปลเอกสาร → ตรวจไวยากรณ์ใน 10 นาที</div>
+                        <div class="item">📅 AI จัดตาราง + ตั้ง Reminder → ไม่ลืมอีกเลย</div>
+                        <div class="item">😊 มีเวลาโฟกัสงานสำคัญมากขึ้น</div>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h5>📋 ตัวอย่างงานจริง:</h5>
+                    <div class="task">
+                        <strong>ก่อน:</strong> ต้องอ่านรายงานการประชุม 30 หน้า แล้วสรุปเอง → ใช้เวลา 1.5 ชม.<br>
+                        <strong>หลัง:</strong> ให้ AI สรุป → ได้ Bullet Points 1 หน้า ใน 3 นาที → ตรวจสอบ → เสร็จ!<br>
+                        <strong>เวลาที่ประหยัดได้:</strong> 1.5 ชม. → 5 นาที = <strong>ประหยัด 97%</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== Level 2 ==================== -->
+        <div class="section">
+            <h2>🟡 Level 2: Co-Worker — ผลลัพธ์หลังใช้ AI</h2>
+            
+            <div class="level-section yellow">
+                <h3>👔 Manager → AI Strategic Partner</h3>
+                
+                <div class="stats-row">
+                    <div class="stat-box"><div class="emoji">📊</div><div class="value">-70%</div><div class="label">เวลาทำ Report</div></div>
+                    <div class="stat-box"><div class="emoji">📈</div><div class="value">100%</div><div class="label">Manager ใช้ AI ตัดสินใจ</div></div>
+                    <div class="stat-box"><div class="emoji">⏱️</div><div class="value">-40%</div><div class="label">เวลาประชุม</div></div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="before-card">
+                        <h4>❌ ก่อนใช้ AI</h4>
+                        <div class="item">📊 ทำ Dashboard ด้วยมือ ใช้เวลา 4 ชั่วโมง</div>
+                        <div class="item">📈 วิเคราะห์ข้อมูล Excel ด้วยตัวเอง ใช้เวลา 2 ชม.</div>
+                        <div class="item">📝 เขียนรายงานสรุปประชุม ใช้เวลา 1 ชม.</div>
+                        <div class="item">🤔 ตัดสินใจจากความรู้สึก ไม่มี Data</div>
+                        <div class="item">😫 ทำงานซ้ำๆ ทุกสัปดาห์</div>
+                    </div>
+                    <div class="arrow-col">➜</div>
+                    <div class="after-card">
+                        <h4>✅ หลังใช้ AI (Level 2)</h4>
+                        <div class="item">📊 สั่ง AI สร้าง Dashboard อัตโนมัติ → เสร็จใน 15 นาที</div>
+                        <div class="item">📈 AI วิเคราะห์ข้อมูล หา Trend, Forecast → Insight ใน 10 นาที</div>
+                        <div class="item">📝 AI สรุปการประชุม + ทำ Action Items → 5 นาที</div>
+                        <div class="item">🎯 ตัดสินใจจาก Data + AI Recommendation</div>
+                        <div class="item">🚀 โฟกัสกลยุทธ์ แทนงาน Routine</div>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h5>📋 ตัวอย่างงานจริง:</h5>
+                    <div class="task">
+                        <strong>ก่อน:</strong> ทุกสิ้นเดือนต้องทำ Report ยอดขาย → ดึงข้อมูล Excel → ทำกราฟ → เขียนสรุป → ใช้เวลา 4 ชม.<br>
+                        <strong>หลัง:</strong> สั่ง AI "สร้าง Dashboard ยอดขายเดือนนี้" → AI สร้าง Google Sheets + กราฟ + สรุป → ใช้เวลา 15 นาที<br>
+                        <strong>เวลาที่ประหยัดได้:</strong> 4 ชม. → 15 นาที = <strong>ประหยัด 94%</strong> | ทำได้เดือนละ 4 ครั้ง = <strong>ประหยัด 15 ชม./เดือน</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== Level 3 ==================== -->
+        <div class="section">
+            <h2>🔵 Level 3: เชี่ยวชาญ — ผลลัพธ์หลังใช้ AI</h2>
+            
+            <div class="level-section blue">
+                <h3>💻 IT/Dev → AI System Architect</h3>
+                
+                <div class="stats-row">
+                    <div class="stat-box"><div class="emoji">🤖</div><div class="value">5+</div><div class="label">AI System ใหม่</div></div>
+                    <div class="stat-box"><div class="emoji">🔗</div><div class="value">3+</div><div class="label">ระบบที่เชื่อมต่อ</div></div>
+                    <div class="stat-box"><div class="emoji">⚡</div><div class="value">-90%</div><div class="label">Human Error</div></div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="before-card">
+                        <h4>❌ ก่อนใช้ AI</h4>
+                        <div class="item">🔧 พัฒนาระบบด้วยมือ ใช้เวลา 2-4 สัปดาห์</div>
+                        <div class="item">🔗 เชื่อมต่อระบบด้วย Code เอง ยากและช้า</div>
+                        <div class="item">🐛 Human Error บ่อย ต้องแก้ Bug ตลอด</div>
+                        <div class="item">📋 สร้าง Workflow ด้วยมือ ซ้ำซ้อน</div>
+                        <div class="item">👨‍🏫 ถ่ายทอดความรู้ให้คนอื่น ใช้เวลานาน</div>
+                    </div>
+                    <div class="arrow-col">➜</div>
+                    <div class="after-card">
+                        <h4>✅ หลังใช้ AI (Level 3)</h4>
+                        <div class="item">🔧 AI ช่วยเขียน Code + Test → Deploy ใน ≤ 2 สัปดาห์</div>
+                        <div class="item">🔗 AI เชื่อมต่อ API อัตโนมัติ → ERP, CRM, HR</div>
+                        <div class="item">✅ AI ตรวจสอบ Code + ลด Human Error 90%</div>
+                        <div class="item">⚡ สร้าง Workflow อัตโนมัติ: รับข้อมูล → ประมวลผล → ส่งผล</div>
+                        <div class="item">🎓 เป็น AI Champion → สอนคนอื่น 20+ คน/ปี</div>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h5>📋 ตัวอย่างงานจริง:</h5>
+                    <div class="task">
+                        <strong>ก่อน:</strong> สร้างระบบแจ้งเตือนพนักงาน → เขียน Code เอง → Test → Deploy → ใช้เวลา 3 สัปดาห์<br>
+                        <strong>หลัง:</strong> บอก AI "สร้างระบบแจ้งเตือนพนักงานผ่าน LINE + Email" → AI เขียน Code + Test + Deploy → ใช้เวลา 5 วัน<br>
+                        <strong>เวลาที่ประหยัดได้:</strong> 3 สัปดาห์ → 5 วัน = <strong>ประหยัด 71%</strong> | Human Error ลดลง 90%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== Summary ==================== -->
+        <div class="section">
+            <h2>📊 สรุปภาพรวม: ใช้ AI แล้วได้อะไร?</h2>
+            
+            <div class="summary-box">
+                <h3>🎯 ผลลัพธ์รวมของ PKG AI School 2026</h3>
+                <div class="summary-stats">
+                    <div class="summary-stat"><div class="num">50%</div><div class="lbl">ลดเวลาทำงาน</div></div>
+                    <div class="summary-stat"><div class="num">90%</div><div class="lbl">ลด Human Error</div></div>
+                    <div class="summary-stat"><div class="num">5+</div><div class="lbl">AI System ใหม่</div></div>
+                    <div class="summary-stat"><div class="num">500 ชม.</div><div class="lbl">ประหยัดได้/เดือน</div></div>
+                    <div class="summary-stat"><div class="num">0</div><div class="lbl">AI Error Policy</div></div>
+                </div>
+            </div>
+
+            <div class="timeline-visual">
+                <div class="tl-seg green" style="flex:1;">🟢 Level 1<br>เลขาส่วนตัว<br>-50% เวลา</div>
+                <div class="tl-seg yellow" style="flex:1;">🟡 Level 2<br>Co-Worker<br>-70% Report</div>
+                <div class="tl-seg blue" style="flex:1;">🔵 Level 3<br>เชี่ยวชาญ<br>5+ AI System</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>PKG AI School 2026 — ผลลัพธ์หลังใช้ AI</strong> | สร้างโดย: AI Co-Worker (ตี๋ตี๋) | Product Manager: ลูกหมี
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 PKG AI School — Detailed Plan</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; padding: 15px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #203a43, #2c5364); color: white; padding: 25px 20px; text-align: center; }
+        .header h1 { font-size: 1.5em; }
+        .header .sub { opacity: 0.9; margin-top: 5px; font-size: 0.9em; }
+        .header .type-badge { background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 14px; border-radius: 15px; margin-top: 8px; font-size: 0.8em; }
+        .content { padding: 20px; }
+        .section { margin-bottom: 25px; }
+        .section h2 { color: #203a43; font-size: 1.15em; margin-bottom: 10px; border-bottom: 2px solid #203a43; padding-bottom: 5px; }
+        .section h2 .icon { margin-right: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11px; }
+        table th { background: linear-gradient(135deg, #203a43, #2c5364); color: white; padding: 8px 6px; text-align: left; }
+        table td { padding: 6px; border-bottom: 1px solid #e0e0e0; }
+        table tr:hover { background: #f8f9fa; }
+        table tr:nth-child(even) { background: #fafafa; }
+        .status-badge { display: inline-block; padding: 1px 6px; border-radius: 6px; font-size: 0.75em; font-weight: 600; }
+        .status-done { background: #28a745; color: white; }
+        .status-current { background: #ffc107; color: #333; }
+        .status-upcoming { background: #667eea; color: white; }
+        .team-badge { display: inline-block; padding: 1px 5px; border-radius: 5px; font-size: 0.75em; font-weight: 600; }
+        .team-ci { background: #e3f2fd; color: #1565c0; }
+        .team-ai { background: #f3e5f5; color: #7b1fa2; }
+        .team-ost { background: #e8f5e9; color: #2e7d32; }
+        .level-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid; }
+        .level-card.green { border-left-color: #28a745; }
+        .level-card.yellow { border-left-color: #ffc107; }
+        .level-card.blue { border-left-color: #2196f3; }
+        .level-card h3 { font-size: 1.05em; margin-bottom: 6px; }
+        .level-card.green h3 { color: #28a745; }
+        .level-card.yellow h3 { color: #f57f17; }
+        .level-card.blue h3 { color: #2196f3; }
+        .level-card .subtitle { color: #666; font-size: 0.85em; margin-bottom: 8px; }
+        .cap-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10px; }
+        .cap-table th { background: linear-gradient(135deg, #203a43, #2c5364); color: white; padding: 6px 4px; text-align: left; }
+        .cap-table td { padding: 5px 4px; border-bottom: 1px solid #e0e0e0; }
+        .cap-table tr:hover { background: #f8f9fa; }
+        .obj-card { background: #f8f9fa; border-radius: 8px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #203a43; }
+        .obj-card h4 { font-size: 0.95em; color: #333; margin-bottom: 5px; }
+        .obj-card ul { margin-left: 16px; font-size: 0.85em; color: #555; }
+        .obj-card li { margin: 2px 0; }
+        .highlight-box { background: #fff3e0; padding: 10px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #ff9800; }
+        .highlight-box h4 { color: #f57f17; margin-bottom: 5px; font-size: 0.95em; }
+        .highlight-box ul { margin-left: 14px; font-size: 0.85em; color: #555; }
+        .footer { background: #203a43; color: white; padding: 15px; text-align: center; font-size: 0.8em; }
+        @media (max-width: 700px) { table { font-size: 9px; } .cap-table { font-size: 8px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎓 PKG AI School 2026 — แผนงานฉบับรายละเอียด</h1>
+        <div class="sub">Detailed Implementation Plan</div>
+        <div class="type-badge">แบบ B: Detailed Plan</div>
+    </div>
+
+    <div class="content">
+
+        <!-- 1. OKR/KPI -->
+        <div class="section">
+            <h2><span class="icon">🎯</span> 1. วัตถุประสงค์ (OKR/KPI)</h2>
+            <div class="obj-card">
+                <h4>🟢 Objective 1: สร้างวัฒนธรรม AI-First</h4>
+                <ul>
+                    <li><strong>KR1:</strong> พนักงาน 80% ใช้ AI ช่วยทำงานอย่างน้อย 1 ครั้ง/สัปดาห์ ภายใน Q3 2026</li>
+                    <li><strong>KR2:</strong> ลดเวลาทำงานเอกสาร/รายงานลง 50% สำหรับงาน Routine</li>
+                    <li><strong>KR3:</strong> พนักงานทุกคนผ่านการอบรม Level 1 พื้นฐาน</li>
+                </ul>
+                <p style="font-size:0.8em; color:#666; margin-top:5px;"><strong>KPI:</strong> ≥ 400 คน/สัปดาห์ใช้งาน AI | ≥ 1,000 Task/เดือน | ความพึงพอใจ ≥ 4.0/5.0</p>
+            </div>
+            <div class="obj-card">
+                <h4>🟡 Objective 2: ยกระดับความสามารถองค์กรด้วย AI</h4>
+                <ul>
+                    <li><strong>KR1:</strong> Manager 100% ใช้ AI ในการวิเคราะห์ข้อมูลและตัดสินใจ</li>
+                    <li><strong>KR2:</strong> ลดเวลาการประชุม/รายงานสรุปลง 40% ด้วย AI</li>
+                    <li><strong>KR3:</strong> สร้าง Dashboard อัตโนมัติ 100% ของทีมที่ต้องการ</li>
+                </ul>
+                <p style="font-size:0.8em; color:#666; margin-top:5px;"><strong>KPI:</strong> ≥ 20 Dashboard | ≥ 50 Report/เดือน | ≥ 500 ชม./เดือนที่ประหยัดได้</p>
+            </div>
+            <div class="obj-card">
+                <h4>🔵 Objective 3: พัฒนา AI Automation ระดับองค์กร</h4>
+                <ul>
+                    <li><strong>KR1:</strong> สร้าง AI Automation อย่างน้อย 5 ระบบภายใน Q4 2026</li>
+                    <li><strong>KR2:</strong> ลด Human Error ลง 90% ในกระบวนการที่ใช้ AI</li>
+                    <li><strong>KR3:</strong> ทีม IT/Dev สามารถ Deploy AI Tool ใหม่ได้ภายใน 2 สัปดาห์</li>
+                </ul>
+                <p style="font-size:0.8em; color:#666; margin-top:5px;"><strong>KPI:</strong> ≥ 5 ระบบ | ลด Error ≥ 90% | Deploy ≤ 2 สัปดาห์</p>
+            </div>
+        </div>
+
+        <!-- 2. RMM -->
+        <div class="section">
+            <h2><span class="icon">📋</span> 2. RMM — Resource Management Matrix</h2>
+            <table>
+                <thead><tr><th style="width:30px">#</th><th>Phase</th><th>กิจกรรม</th><th>ทีม</th><th>กำหนดการ</th><th>สถานะ</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td><strong>Phase 1</strong></td><td>เตรียมระบบ AI + Bot</td><td><span class="team-badge team-ci">CI/AI</span></td><td>ภายใน 30/05</td><td><span class="status-badge status-done">✅ เสร็จ</span></td></tr>
+                    <tr><td>2</td><td><strong>Phase 2</strong></td><td>AI เป็นทีม Support</td><td><span class="team-badge team-ai">AI</span></td><td>พ.ค.-มิ.ย.</td><td><span class="status-badge status-done">✅ เสร็จ</span></td></tr>
+                    <tr style="background:#fff9e6;"><td>3</td><td><strong>Phase 3</strong></td><td>Train AI + Admin + Implement</td><td><span class="team-badge team-ost">OST</span></td><td>15-30 มิ.ย.</td><td><span class="status-badge status-current">🔄 กำลังทำ</span></td></tr>
+                    <tr style="background:#fff9e6;"><td>4</td><td><strong>Phase 4</strong></td><td>ทำคู่มือเพื่อสอน</td><td><span class="team-badge team-ost">OST</span></td><td>มิ.ย.</td><td><span class="status-badge status-current">🔄 กำลังทำ</span></td></tr>
+                    <tr><td>5</td><td><strong>Phase 5</strong></td><td>เปิดอบรมจริง (Rollout)</td><td><span class="team-badge team-ost">OST</span></td><td>มิ.ย.-ธ.ค.</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. Capabilities -->
+        <div class="section">
+            <h2><span class="icon">📚</span> 3. ความสามารถแต่ละระดับ + วัตถุประสงค์</h2>
+
+            <div class="level-card green">
+                <h3>🟢 Level 1: เลขาส่วนตัว (Personal Assistant)</h3>
+                <div class="subtitle">7 ชั่วโมง | 7 Modules | ผู้ใช้ทั่วไป (70%)</div>
+                <p style="font-size:0.85em; color:#666; margin-bottom:8px;"><strong>วัตถุประสงค์:</strong> ทำให้พนักงานทุกคนสามารถใช้ AI เป็นผู้ช่วยทำงานประจำวันได้ ลดเวลาทำงานเอกสาร 30-50%</p>
+                <table class="cap-table">
+                    <thead><tr><th>#</th><th>ความสามารถ</th><th>รายละเอียด</th><th>ตัวชี้วัด</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>กำหนด CEO Contract</td><td>ตั้งบทบาท AI, ระบุหน้าที่, OKR, KPI</td><td>ส่ง CEO Contract ถูกต้อง 100%</td></tr>
+                        <tr><td>2</td><td>สั่งงาน AI ด้วย 5W2H</td><td>ใช้ What-How Much สั่งงานชัดเจน</td><td>AI ทำงานตรงตามสั่ง ≥ 90%</td></tr>
+                        <tr><td>3</td><td>ใช้ AI สรุปเอกสาร</td><td>สรุปใจความสำคัญ, Bullet Points</td><td>ลดเวลาอ่าน 50%</td></tr>
+                        <tr><td>4</td><td>ใช้ AI ร่างอีเมล/ข้อความ</td><td>ร่างอีเมลทางการ, LINE, รายงาน</td><td>ลดเวลาเขียน 40%</td></tr>
+                        <tr><td>5</td><td>ใช้ AI แปลภาษา</td><td>ไทย↔อังกฤษ, ตรวจสอบไวยากรณ์</td><td>ความถูกต้อง ≥ 95%</td></tr>
+                        <tr><td>6</td><td>ใช้ AI จัดตารางงาน</td><td>วางแผน, Priorities, Reminder</td><td>งานเสร็จตรงเวลา ≥ 90%</td></tr>
+                        <tr><td>7</td><td>ตรวจสอบงาน AI</td><td>ทวนคำสั่ง, ตรวจสอบ, Feedback</td><td>Zero Error งานสำคัญ</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="level-card yellow">
+                <h3>🟡 Level 2: Co-Worker (ผู้ร่วมงาน)</h3>
+                <div class="subtitle">20 ชั่วโมง | 7 Modules | Management (25%)</div>
+                <p style="font-size:0.85em; color:#666; margin-bottom:8px;"><strong>วัตถุประสงค์:</strong> ทำให้ Manager ใช้ AI เป็น Co-Worker เชิงกลยุทธ์ วิเคราะห์ข้อมูล สร้าง Dashboard อัตโนมัติ</p>
+                <table class="cap-table">
+                    <thead><tr><th>#</th><th>ความสามารถ</th><th>รายละเอียด</th><th>ตัวชี้วัด</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>CEO Contract ขั้นสูง</td><td>ตั้ง AI สำหรับทีม, OKR/KPI ซับซ้อน</td><td>ทีมใช้ AI ≥ 80%</td></tr>
+                        <tr><td>2</td><td>วิเคราะห์ข้อมูลด้วย AI</td><td>วิเคราะห์, หา Trend, Forecast, Insight</td><td>สร้าง Report ≤ 10 นาที</td></tr>
+                        <tr><td>3</td><td>สร้าง Dashboard อัตโนมัติ</td><td>Google Sheets Dashboard, กราฟ, Pivot</td><td>สร้าง ≤ 30 นาที</td></tr>
+                        <tr><td>4</td><td>AI + Google Sheets</td><td>สร้าง Sheet, กรอกข้อมูล, ดึงข้อมูล</td><td>ลดเวลา Report 70%</td></tr>
+                        <tr><td>5</td><td>Systems Thinking</td><td>วิเคราะห์ระบบ, หา Bottleneck, ออกแบบ Process</td><td>ลดขั้นตอน ≥ 30%</td></tr>
+                        <tr><td>6</td><td>Design Thinking</td><td>ออกแบบโซลูชัน, Prototype, Test</td><td>สร้าง Prototype ≤ 1 วัน</td></tr>
+                        <tr><td>7</td><td>Capstone Project</td><td>ใช้ AI แก้ปัญหาจริง, นำเสนอผลลัพธ์</td><td>1 Project/คน, วัดผล KPI</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="level-card blue">
+                <h3>🔵 Level 3: เชี่ยวชาญ (Expert)</h3>
+                <div class="subtitle">28 ชั่วโมง | 5 Modules | AI Dev & IT (5%)</div>
+                <p style="font-size:0.85em; color:#666; margin-bottom:8px;"><strong>วัตถุประสงค์:</strong> ทำให้ทีม IT/Dev พัฒนา AI Automation สำหรับองค์กร สร้าง Tool ใหม่, เชื่อมต่อ API, Deploy ระบบ</p>
+                <table class="cap-table">
+                    <thead><tr><th>#</th><th>ความสามารถ</th><th>รายละเอียด</th><th>ตัวชี้วัด</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>CEO Contract ระดับองค์กร</td><td>ตั้ง AI System ทั้งองค์กร, OKR Enterprise</td><td>ระบบ AI ทำงาน 24/7</td></tr>
+                        <tr><td>2</td><td>AI System Architecture</td><td>ออกแบบสถาปัตยกรรม, เลือก Model</td><td>Deploy ≤ 2 สัปดาห์</td></tr>
+                        <tr><td>3</td><td>AI Integration</td><td>เชื่อมต่อ ERP, CRM, HR System, API</td><td>เชื่อมต่อ ≥ 3 ระบบ</td></tr>
+                        <tr><td>4</td><td>AI Automation</td><td>Workflow อัตโนมัติ: รับข้อมูล → ประมวลผล → ส่งผล</td><td>ลด Human Error ≥ 90%</td></tr>
+                        <tr><td>5</td><td>AI Champion</td><td>สอนคนอื่น, สร้าง Template, ออกแบบ Training</td><td>ถ่ายทอด ≥ 20 คน/ปี</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. Registration Plan -->
+        <div class="section">
+            <h2><span class="icon">📝</span> 4. แผนลงทะเบียน</h2>
+            <table>
+                <thead><tr><th>ช่วงเวลา</th><th>กิจกรรม</th><th>กลุ่มเป้าหมาย</th><th>ช่องทาง</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>มิ.ย.</strong></td><td>Level 1 กลุ่ม CPDG (ทดลอง)</td><td>CPDG</td><td>สอน + ใช้งานจริง</td></tr>
+                    <tr><td><strong>ก.ค.</strong></td><td>Level 1 กลุ่ม AAMG</td><td>AAMG</td><td>ออนไลน์ + On-site</td></tr>
+                    <tr><td><strong>ก.ค.</strong></td><td>Level 2 ทีมรับใช้ PKG (ทดลอง)</td><td>PKG</td><td>Workshop + Project</td></tr>
+                    <tr><td><strong>ส.ค.</strong></td><td>Level 1 กลุ่ม PMSG</td><td>PMSG</td><td>ออนไลน์ + On-site</td></tr>
+                    <tr><td><strong>ส.ค.</strong></td><td>Level 2 Backoffice</td><td>Backoffice</td><td>วิเคราะห์ + อบรม</td></tr>
+                    <tr><td><strong>ส.ค.-ธ.ค.</strong></td><td>Level 3 (IT/Dev)</td><td>IT/Dev</td><td>Module 1-5 + Capstone</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 5. Full Timeline -->
+        <div class="section">
+            <h2><span class="icon">📊</span> 5. สรุป Timeline ทั้งหมด</h2>
+            <table>
+                <thead><tr><th style="width:60px">เดือน</th><th>กิจกรรม</th><th>ทีม</th><th>กลุ่มเป้าหมาย</th><th>สถานะ</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>พ.ค.</strong></td><td>เตรียมระบบ AI + Bot</td><td><span class="team-badge team-ci">CI/AI</span></td><td>-</td><td><span class="status-badge status-done">✅ เสร็จ</span></td></tr>
+                    <tr><td><strong>พ.ค.-มิ.ย.</strong></td><td>AI เป็นทีม Support</td><td><span class="team-badge team-ai">AI</span></td><td>-</td><td><span class="status-badge status-done">✅ เสร็จ</span></td></tr>
+                    <tr style="background:#fff9e6;"><td><strong>15 มิ.ย.</strong></td><td>Train AI (โรงเรียนฝึก)</td><td><span class="team-badge team-ost">OST</span></td><td>AI Co-Worker</td><td><span class="status-badge status-current">🔄 กำลังทำ</span></td></tr>
+                    <tr style="background:#fff9e6;"><td><strong>17-30 มิ.ย.</strong></td><td>Admin + Implement + ทำคู่มือ</td><td><span class="team-badge team-ost">OST</span></td><td>ทุกกลุ่ม</td><td><span class="status-badge status-current">🔄 กำลังทำ</span></td></tr>
+                    <tr><td><strong>17 มิ.ย.</strong></td><td>Level 1 CPDG (ทดลอง)</td><td><span class="team-badge team-ost">OST</span></td><td>CPDG</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                    <tr><td><strong>ก.ค.</strong></td><td>Level 1 AAMG</td><td><span class="team-badge team-ost">OST</span></td><td>AAMG</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                    <tr><td><strong>ก.ค.</strong></td><td>Level 2 PKG (ทดลอง)</td><td><span class="team-badge team-ost">OST</span></td><td>PKG</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                    <tr><td><strong>ส.ค.</strong></td><td>Level 1 PMSG</td><td><span class="team-badge team-ost">OST</span></td><td>PMSG</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                    <tr><td><strong>ส.ค.</strong></td><td>Level 2 Backoffice</td><td><span class="team-badge team-ost">OST</span></td><td>Backoffice</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                    <tr><td><strong>ส.ค.-ธ.ค.</strong></td><td>Level 3 (IT/Dev)</td><td><span class="team-badge team-ost">OST</span> + <span class="team-badge team-ci">CI/AI</span></td><td>IT/Dev</td><td><span class="status-badge status-upcoming">📋 จะเริ่ม</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Points -->
+        <div class="section">
+            <h2><span class="icon">⚡</span> 6. จุดสำคัญ</h2>
+            <div class="highlight-box">
+                <h4>🎯 Train AI (Policy ที่สำคัญมากๆ)</h4>
+                <ul>
+                    <li><strong>วันที่:</strong> 15 มิถุนายน 2026 | <strong>ทีม:</strong> <span class="team-badge team-ost">OST</span></li>
+                    <li>โรงเรียนฝึก AI — สอน AI ให้เข้าใจ Policy, CEO Contract, OKR/KPI</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h4>📅 ติดตั้งลงกลุ่มรับใช้</h4>
+                <ul>
+                    <li><strong>วันที่:</strong> 17-30 มิถุนายน 2026 | <strong>ทีม:</strong> <span class="team-badge team-ost">OST</span></li>
+                    <li>Admin + Implement + ทำคู่มือเพื่อสอน</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>PKG AI School 2026 — Detailed Plan</strong> | สร้างโดย: AI Co-Worker (ตี๋ตี๋) | Product Manager: ลูกหมี
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือสร้างฟอร์ม Feedback ด้วย AI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', 'Noto Sans Thai', sans-serif; background: #f5f7fa; color: #1a2742; line-height: 1.8; }
+  .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+  h1 { color: #0288d1; font-size: 1.8em; margin-bottom: 8px; border-bottom: 3px solid #0288d1; padding-bottom: 10px; }
+  h2 { color: #0288d1; font-size: 1.3em; margin-top: 30px; margin-bottom: 12px; }
+  h3 { color: #01579b; font-size: 1.1em; margin-top: 20px; margin-bottom: 8px; }
+  p { margin-bottom: 12px; }
+  .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e0e6ed; }
+  .card-accent { background: #e3f2fd; border-left: 4px solid #0288d1; }
+  .card-warn { background: #fff3e0; border-left: 4px solid #f57c00; }
+  .card-success { background: #e8f5e9; border-left: 4px solid #43a047; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  th { background: #0288d1; color: white; padding: 10px 14px; text-align: left; font-size: 0.9em; }
+  td { padding: 10px 14px; border-bottom: 1px solid #e0e6ed; font-size: 0.9em; }
+  tr:nth-child(even) { background: #f5f7fa; }
+  code { background: #e8eaf6; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #283593; }
+  pre { background: #263238; color: #aed581; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.85em; line-height: 1.6; margin-bottom: 16px; }
+  .step-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #0288d1; color: white; border-radius: 50%; font-weight: bold; font-size: 1em; margin-right: 8px; }
+  .highlight { background: #fff9c4; padding: 2px 6px; border-radius: 3px; }
+  ul, ol { margin-bottom: 12px; padding-left: 24px; }
+  li { margin-bottom: 6px; }
+  .emoji-title { font-size: 1.2em; }
+  .bad { color: #d32f2f; }
+  .good { color: #2e7d32; }
+  .divider { border: none; border-top: 2px dashed #cfd8dc; margin: 30px 0; }
+  .footer { text-align: center; color: #78909c; font-size: 0.85em; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e6ed; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📝 คู่มือสร้างฟอร์ม Feedback ด้วย AI</h1>
+<p style="color:#546e7a;font-size:0.95em;margin-bottom:24px">สำหรับผู้ที่ไม่มีความรู้ด้าน Dev — เอาไปประยุกต์ใช้กับงานของคุณได้ทันที</p>
+
+<div class="card card-accent">
+<p><strong>💡 กุญแจสู่ความสำเร็จ:</strong> Requirement ชัด + Prompt ละเอียด + ทดสอบทันที</p>
+</div>
+
+<!-- ============ STEP 1 ============ -->
+<h2><span class="step-number">1</span> กำหนดความต้องการให้ชัด</h2>
+
+<p>ก่อนจะคุยกับ AI ต้องรู้ให้ชัดเจน 5 สิ่งนี้:</p>
+
+<table>
+<tr><th>ลำดับ</th><th>สิ่งที่ต้องกำหนด</th><th>ตัวอย่างจากงานนี้</th></tr>
+<tr><td>1</td><td><strong>วัตถุประสงค์</strong></td><td>รวบรวม Feedback จากกลุ่มลูกค้าของทีมบัญชีและการเงิน</td></tr>
+<tr><td>2</td><td><strong>กลุ่มเป้าหมาย</strong></td><td>ทีมรับใช้ PKG, ผู้รับใช้ทีมสาขา, สมาชิกทีมการเงินหน้างาน</td></tr>
+<tr><td>3</td><td><strong>ข้อมูลที่ต้องเก็บ</strong></td><td>รหัสสมาชิก, ชื่อ, ทีม, BU, คะแนน 0-5, ข้อเสนอแนะ</td></tr>
+<tr><td>4</td><td><strong>ช่องทางแจ้งเตือน</strong></td><td>Telegram (ส่งทันทีเมื่อมีคนส่งฟอร์ม)</td></tr>
+<tr><td>5</td><td><strong>แหล่งข้อมูลอ้างอิง</strong></td><td>Google Sheet Members (รหัส, ชื่อ, ทีม, BU)</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ============ STEP 2 ============ -->
+<h2><span class="step-number">2</span> เขียน Prompt ที่ได้ผล</h2>
+
+<h3>❌ Prompt ที่ไม่ดี:</h3>
+<div class="card card-warn">
+<p><code>ช่วยทำฟอร์มสำรวจหน่อย</code></p>
+<p class="bad">→ AI ไม่รู้ว่าต้องการอะไร ผลลัพธ์ไม่ตรงใจ</p>
+</div>
+
+<h3>✅ Prompt ที่ดี (แบบที่ใช้ในงานนี้):</h3>
+<pre>สร้างแบบฟอร์มรวบรวม Feedback จากกลุ่มลูกค้า
+ของทีมบัญชีและทีมการเงิน PKG
+
+รายละเอียด:
+1. ฟอร์มออนไลน์บน Google Apps Script Web App
+2. หน้า 1: เลือกสมาชิกจากรายชื่อ (autocomplete)
+3. หน้า 2: ให้คะแนนทีมบัญชี 6 ข้อ (0-5)
+4. หน้า 3: ให้คะแนนทีมการเงิน 6 ข้อ (0-5)
+5. ข้อมูลสมาชิกดึงจาก Sheet "Members"
+6. ข้อมูลที่ส่งบันทึกลง Sheet "Form_Responses"
+7. ส่งแจ้งเตือน Telegram เมื่อมีคนส่ง
+8. Theme: Light (พื้นขาว ตัวหนังสือสีเข้ม)
+
+วัตถุประสงค์:
+1. เพื่อนำ Feedback ไปพัฒนาเครื่องมือการทำงาน
+2. เพื่อออกแบบระบบ "3 ผ่าน" รูปแบบใหม่
+3. เพื่อรวบรวม BP/LL จากผลการดำเนินงาน
+
+กลุ่มผู้ให้ Feedback:
+1. ทีมรับใช้ PKG (ADM)
+2. ผู้รับใช้ทีมสาขาทุกสาขาในทุกประเทศ
+3. สมาชิกทีมการเงินหน้างานทุก BU
+
+Google Sheet ID: [ใส่ Sheet ID จริง]
+Telegram Bot Token: [ใส่ Token จริง]
+Telegram Chat ID: [ใส่ Chat ID จริง]</pre>
+
+<div class="card card-success">
+<p class="good"><strong>หลักการสำคัญ:</strong> ระบุทุกอย่างที่ AI ต้องรู้ ไม่ต้องเดา</p>
+</div>
+
+<h3>🔑 หลักการเขียน Prompt ที่ได้ผล</h3>
+
+<table>
+<tr><th>หลักการ</th><th>คำอธิบาย</th><th>ตัวอย่าง</th></tr>
+<tr><td><strong>ระบุ Output ชัดเจน</strong></td><td>บอกว่าต้องการอะไรเป็นรูปธรรม</td><td>"ฟอร์มออนไลน์ 3 หน้า" ไม่ใช่ "ฟอร์ม"</td></tr>
+<tr><td><strong>ระบุแหล่งข้อมูล</strong></td><td>บอกว่าข้อมูลมาจากไหน</td><td>"ดึงจาก Sheet Members คอลัมน์ รหัส, ชื่อ, ทีม, BU"</td></tr>
+<tr><td><strong>ระบุ Scale</strong></td><td>บอกระดับคะแนนชัดเจน</td><td>"0-5 (0=น้อยสุด, 5=มากที่สุด)"</td></tr>
+<tr><td><strong>ระบุช่องทางแจ้งเตือน</strong></td><td>บอกว่าแจ้งเตือนไปที่ไหน</td><td>"Telegram ส่งถึง Chat ID xxx"</td></tr>
+<tr><td><strong>ระบุ Theme</strong></td><td>บอกสไตล์ที่ต้องการ</td><td>"Light Theme พื้นขาว"</td></tr>
+<tr><td><strong>ใส่ค่าจริง</strong></td><td>ใส่ Sheet ID, Token, Chat ID จริง</td><td>ไม่ใช่ "[ใส่ชื่อ Sheet]"</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ============ STEP 3 ============ -->
+<h2><span class="step-number">3</span> ทดสอบและแจ้ง Bug (Interactive Loop)</h2>
+
+<p>หลังจาก AI สร้างฟอร์มแล้ว ให้ <span class="highlight">ทดสอบทันที</span> แล้วแจ้ง Bug ให้ชัด:</p>
+
+<table>
+<tr><th>สิ่งที่เจอ</th><th>แจ้ง AI ว่า</th></tr>
+<tr><td>กดปุ่มไม่ได้</td><td>"กดถัดไปไม่ได้ ช่องกรอกข้อมูลไม่ขึ้น"</td></tr>
+<tr><td>ข้อมูลไม่แสดง</td><td>"กรอก ID แล้วชื่อไม่ขึ้น"</td></tr>
+<tr><td>สเกลผิด</td><td>"เปลี่ยนคะแนนเป็น 0-5 (0=น้อยสุด 5=มากที่สุด)"</td></tr>
+<tr><td>สีไม่ชอบ</td><td>"เปลี่ยนเป็น Light Theme พื้นขาว"</td></tr>
+<tr><td>แจ้งเตือนไม่มา</td><td>"ส่งแล้ว Telegram ไม่แจ้งเตือน"</td></tr>
+<tr><td>หัวข้อผิด</td><td>"เปลี่ยนชื่อเป็น แบบฟอร์มรวบรวม Feedback"</td></tr>
+<tr><td>ข้อมูลไปผิด Sheet</td><td>"เปลี่ยน Spreadsheet ID เป็น [ใส่ ID ใหม่]"</td></tr>
+</table>
+
+<div class="card card-accent">
+<p><strong>💡 ทิปส์:</strong> ยิ่งแจ้ง Bug ชัดเจน เท่าไหร่ AI แก้ไขได้เร็วเท่านั้น</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============ STEP 4 ============ -->
+<h2><span class="step-number">4</span> Deploy ขึ้นใช้งาน</h2>
+
+<div class="card">
+<ol>
+<li>เปิด <strong>Google Apps Script</strong> (script.google.com)</li>
+<li><strong>Ctrl+A</strong> → ลบทั้งหมด → <strong>วางโค้ดใหม่</strong> → <strong>Ctrl+S</strong></li>
+<li>เมนู <strong>Deploy</strong> → <strong>New deployment</strong></li>
+<li>เลือก <strong>Web app</strong> → Execute as: <strong>Me</strong> → Who has access: <strong>Anyone</strong></li>
+<li>กด <strong>Deploy</strong> → อนุญาตสิทธิ์ → <strong>คัดลอก URL</strong></li>
+</ol>
+</div>
+
+<hr class="divider">
+
+<!-- ============ STEP 5 ============ -->
+<h2><span class="step-number">5</span> ประยุกต์ใช้กับงานอื่น</h2>
+
+<p>เปลี่ยนแค่ Prompt ให้ตรงกับงานใหม่:</p>
+
+<table>
+<tr><th>งาน</th><th>ตัวอย่าง Prompt</th></tr>
+<tr><td><strong>สำรวจความพึงพอใจพนักงาน</strong></td><td>"สร้างฟอร์มสำรวจความพึงพอใจพนักงาน 5 มิติ สเกล 1-5 ดึงรายชื่อจาก Sheet HR"</td></tr>
+<tr><td><strong>ประเมินหลักสูตรอบรม</strong></td><td>"สร้างฟอร์มประเมินหลักสูตร NPS 0-10 แยกตามหลักสูตร ดึงข้อมูลจาก Sheet Courses"</td></tr>
+<tr><td><strong>ลงทะเบียนกิจกรรม</strong></td><td>"สร้างฟอร์มลงทะเบียนกิจกรรม ดึงรายชื่อพนักงานจาก Sheet Members เลือกกิจกรรมจาก Sheet Events"</td></tr>
+<tr><td><strong>ขออนุมัติ/ลาพักร้อน</strong></td><td>"สร้างฟอร์มขอลา ดึงวันลาคงเหลือจาก Sheet Leave แจ้งเตือนผู้อนุมัติผ่าน Telegram"</td></tr>
+<tr><td><strong>ประเมินผล KPI</strong></td><td>"สร้างฟอร์มประเมินผล KPI รายบุคคล สเกล 1-5 ดึงเป้าหมายจาก Sheet OKRs"</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ============ BONUS ============ -->
+<h2>🏆 สิ่งที่ได้เรียนรู้จากงานนี้ (On-the-Job Training)</h2>
+
+<div class="card">
+<h3>เทคนิคที่ใช้</h3>
+<ul>
+<li><strong>Full-Stack บน Google Apps Script</strong> — ทั้ง Frontend + Backend ในที่เดียว</li>
+<li><strong>HtmlService Sandbox</strong> — ต้องใช้ addEventListener แทน onclick</li>
+<li><strong>ฝังข้อมูลใน HTML</strong> — แทนการโหลดจากภายนอก (เพราะ CORS บล็อก)</li>
+<li><strong>google.script.run</strong> — เชื่อม Frontend ↔ Backend ไม่มีปัญหา CORS</li>
+<li><strong>Data Mapping อัตโนมัติ</strong> — รองรับทั้งชื่อเก่าและใหม่ของคอลัมน์</li>
+<li><strong>Telegram Notification</strong> — ส่งแจ้งเตือนทันทีพร้อมคะแนนเฉลี่ย</li>
+</ul>
+</div>
+
+<div class="card card-accent">
+<h3>💡 บทเรียนสำคัญ</h3>
+<ul>
+<li>ไม่ต้องรู้โค้ดเพื่อ <span class="highlight">สั่งงาน AI</span> — แค่รู้ว่าต้องการอะไร</li>
+<li>ทดสอบทันที → แจ้ง Bug ชัดเจน → AI แก้ไขเร็ว</li>
+<li>Requirement ที่ชัดเจน = Prompt ที่ดี = ผลลัพธ์ที่ตรงใจ</li>
+<li>ผู้ที่เข้าใจธุรกิจ + มี AI = <strong>เหนือกว่า Dev Junior ที่เขียนโค้ดเก่งแต่ไม่เข้าใจธุรกิจ</strong></li>
+</ul>
+</div>
+
+<div class="footer">
+<p>📚 สร้างโดย AliClaw — AI Co-Worker @ PKG | 28 พฤษภาคม 2569</p>
+<p>จากงานจริง: แบบฟอร์มรวบรวม Feedback ทีมบัญชีและทีมการเงิน PKG</p>
+</div>
+
+</div>
+</body>
+</html>

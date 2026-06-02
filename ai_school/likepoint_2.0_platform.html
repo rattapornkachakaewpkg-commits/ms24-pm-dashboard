@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIKEpoint 2.0 Platform - Product Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --surface: #ffffff;
+            --surface2: #eef0f7;
+            --border: #d4d8ea;
+            --accent: #6366f1;
+            --accent2: #e8315a;
+            --accent3: #10b981;
+            --accent4: #f59e0b;
+            --accent5: #3b82f6;
+            --text: #1a1a2e;
+            --text-muted: #626680;
+            --code-bg: #f0f2f8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(245,246,250,0.95); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border); padding: 10px 24px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .nav-logo {
+            font-family: 'Sarabun', sans-serif; font-size: 14px;
+            color: var(--accent); font-weight: 800; white-space: nowrap;
+        }
+        .nav-links { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 12px;
+            padding: 4px 8px; border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-links a:hover { background: var(--surface2); color: var(--text); }
+
+        .page-content { padding-top: 55px; }
+
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 60px 24px; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(232,49,90,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800;
+            line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-sub { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.35);
+            border-radius: 100px; padding: 6px 16px; font-size: 13px;
+            font-family: 'Sarabun', sans-serif; color: var(--accent); margin-bottom: 28px;
+        }
+        .hero-badge::before { content: '◆'; }
+
+        .hero-app {
+            width: 200px; height: 200px; border-radius: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(99,102,241,0.3);
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 80px 0; border-top: 1px solid var(--border); }
+        .section-header {
+            display: flex; align-items: flex-start; gap: 20px; margin-bottom: 48px;
+        }
+        .section-num {
+            font-family: 'Sarabun', sans-serif; font-size: 11px;
+            color: var(--accent); background: rgba(99,102,241,0.09);
+            border: 1px solid rgba(99,102,241,0.25); border-radius: 8px;
+            padding: 4px 10px; margin-top: 6px; flex-shrink: 0;
+        }
+        .section h2 {
+            font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; line-height: 1.2;
+        }
+        .section h2 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section-desc { color: var(--text-muted); font-size: 1rem; margin-top: 8px; }
+
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 28px 32px; margin-bottom: 20px;
+        }
+        .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+        }
+        .icon-purple { background: rgba(99,102,241,0.12); }
+        .icon-pink { background: rgba(232,49,90,0.07); }
+        .icon-green { background: rgba(16,185,129,0.12); }
+        .icon-yellow { background: rgba(245,158,11,0.15); }
+        .icon-blue { background: rgba(59,130,246,0.12); }
+
+        .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: var(--surface2); padding: 14px 18px; text-align: left;
+            font-size: 13px; font-family: 'Sarabun', sans-serif; color: var(--accent);
+            letter-spacing: 0.05em; white-space: nowrap;
+        }
+        td {
+            padding: 14px 18px; border-top: 1px solid var(--border);
+            font-size: 14px; vertical-align: top; line-height: 1.6;
+        }
+        tr:hover td { background: rgba(99,102,241,0.04); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        @media (max-width: 700px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+
+        .okr-card {
+            background: var(--surface); border-radius: 16px; overflow: hidden;
+            border: 1px solid var(--border); margin-bottom: 20px;
+        }
+        .okr-header {
+            padding: 16px 24px; font-weight: 700; font-size: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .okr-header.orange { background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05)); color: #b45309; }
+        .okr-header.red { background: linear-gradient(135deg, rgba(232,49,90,0.08), rgba(232,49,90,0.04)); color: var(--accent2); }
+        .okr-body { padding: 20px 24px; }
+        .okr-item { margin-bottom: 14px; }
+        .okr-item:last-child { margin-bottom: 0; }
+        .okr-label { font-weight: 700; font-size: 14px; color: var(--text); }
+        .okr-desc { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+        .tag-pill {
+            display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 100px; padding: 4px 12px; font-size: 12px; color: var(--text-muted); margin: 2px;
+        }
+        .tag-pill.accent { border-color: rgba(99,102,241,0.4); color: var(--accent); background: rgba(99,102,241,0.08); }
+        .tag-pill.green { border-color: rgba(16,185,129,0.45); color: var(--accent3); background: rgba(16,185,129,0.08); }
+        .tag-pill.pink { border-color: rgba(232,49,90,0.4); color: var(--accent2); background: rgba(232,49,90,0.08); }
+        .tag-pill.yellow { border-color: rgba(245,158,11,0.45); color: var(--accent4); background: rgba(245,158,11,0.08); }
+        .tag-pill.blue { border-color: rgba(59,130,246,0.4); color: var(--accent5); background: rgba(59,130,246,0.08); }
+
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px;
+            border-radius: 100px; font-size: 12px; font-weight: 600;
+        }
+        .status-completed { background: #dcfce7; color: #166534; }
+        .status-progress { background: #fef3c7; color: #92400e; }
+        .status-review { background: #dbeafe; color: #1e40af; }
+        .status-notstarted { background: #f3f4f6; color: #6b7280; }
+
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .feature-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; transition: all 0.2s;
+        }
+        .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.1); }
+        .feature-icon { font-size: 32px; margin-bottom: 12px; }
+        .feature-name { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+        .feature-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        .analysis-section { margin-bottom: 24px; }
+        .analysis-card {
+            border-radius: 16px; padding: 24px; margin-bottom: 16px;
+            border: 1px solid;
+        }
+        .analysis-card.al { background: rgba(99,102,241,0.05); border-color: rgba(99,102,241,0.25); }
+        .analysis-card.bp { background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.25); }
+        .analysis-card.ll { background: rgba(232,49,90,0.05); border-color: rgba(232,49,90,0.25); }
+        .analysis-card.ii { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.25); }
+        .analysis-title { font-weight: 800; font-size: 16px; margin-bottom: 12px; }
+        .analysis-title.al { color: var(--accent); }
+        .analysis-title.bp { color: var(--accent3); }
+        .analysis-title.ll { color: var(--accent2); }
+        .analysis-title.ii { color: var(--accent4); }
+        .analysis-card ul { margin-left: 20px; }
+        .analysis-card li { margin-bottom: 6px; font-size: 14px; color: var(--text-muted); }
+
+        .roadmap-container { position: relative; padding-left: 40px; }
+        .roadmap-container::before {
+            content: ''; position: absolute; left: 16px; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg, var(--accent), var(--accent3));
+            border-radius: 2px;
+        }
+        .roadmap-item { position: relative; margin-bottom: 32px; }
+        .roadmap-item::before {
+            content: ''; position: absolute; left: -32px; top: 8px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--accent); border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .roadmap-quarter {
+            font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 800;
+            color: var(--accent); margin-bottom: 8px;
+        }
+        .roadmap-content {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px;
+        }
+        .roadmap-content h4 { font-size: 15px; margin-bottom: 12px; }
+        .roadmap-content ul { margin-left: 20px; }
+        .roadmap-content li { font-size: 14px; color: var(--text-muted); margin-bottom: 4px; }
+
+        .infra-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 28px; text-align: center;
+        }
+        .infra-icon { font-size: 40px; margin-bottom: 16px; }
+        .infra-name { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+        .infra-tech { font-size: 13px; color: var(--text-muted); }
+
+        .summary-box {
+            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(240,147,251,0.08));
+            border: 1px solid rgba(99,102,241,0.25); border-radius: 16px; padding: 28px;
+        }
+        .summary-box h4 {
+            font-family: 'Sarabun', sans-serif; font-size: 14px;
+            color: var(--accent); margin-bottom: 16px; letter-spacing: 0.1em;
+        }
+
+        footer {
+            border-top: 1px solid var(--border); padding: 48px 24px;
+            text-align: center; color: var(--text-muted); font-size: 14px;
+        }
+
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px; max-width: 900px; width: 100%;
+        }
+        .toc-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 18px; text-decoration: none;
+            color: var(--text-muted); font-size: 14px; transition: all 0.25s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toc-card:hover {
+            border-color: var(--accent); color: var(--text);
+            transform: translateY(-3px); box-shadow: 0 8px 24px rgba(99,102,241,0.10);
+        }
+        .toc-card .num {
+            font-family: 'Sarabun', sans-serif; font-size: 11px;
+            color: var(--accent); background: rgba(99,102,241,0.09);
+            border-radius: 6px; padding: 2px 8px; flex-shrink: 0;
+        }
+
+        .kr-highlight {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white; border-radius: 16px; padding: 32px; margin-bottom: 24px;
+        }
+        .kr-highlight h3 { font-size: 18px; margin-bottom: 16px; }
+        .kr-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .kr-item:last-child { margin-bottom: 0; }
+        .kr-num {
+            background: rgba(255,255,255,0.2); width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;
+        }
+        .kr-text { font-size: 15px; }
+
+        .callout {
+            border-radius: 12px; padding: 18px 22px; margin: 20px 0;
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .callout-tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+        .callout-warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); }
+        .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .callout-body { font-size: 14px; line-height: 1.7; }
+        .callout-body strong { display: block; margin-bottom: 4px; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">⬡ LIKEpoint 2.0</div>
+    <div class="nav-links">
+        <a href="#okr">OKR</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#features">Features</a>
+        <a href="#analysis">AL,BP,LL,II</a>
+        <a href="#requirements">ความต้องการ</a>
+        <a href="#tracker">Task Tracker</a>
+        <a href="#infra">Infrastructure</a>
+    </div>
+</nav>
+
+<div class="page-content">
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">Product Management Document — มกราคม 2026</div>
+    <div class="hero-app"></div>
+    <h1>LIKEpoint <span class="highlight">2.0</span><br>Platform</h1>
+    <p class="hero-sub">แพลตฟอร์ม Loyalty & Gamification สำหรับธุรกิจ PKG และ Partner — สร้างความผูกพัน เพิ่ม Engagement ผ่านเกม รางวัล และระบบ Point</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;">
+        <span class="tag-pill accent">Loyalty Program</span>
+        <span class="tag-pill green">Gamification</span>
+        <span class="tag-pill pink">Spin Wheel</span>
+        <span class="tag-pill yellow">Lock Plan</span>
+        <span class="tag-pill blue">Crypto Integration</span>
+        <span class="tag-pill accent">TAP2EARN</span>
+    </div>
+    <div class="toc-grid">
+        <a href="#okr" class="toc-card"><span class="num">01</span>OKR & Goals</a>
+        <a href="#roadmap" class="toc-card"><span class="num">02</span>Roadmap</a>
+        <a href="#features" class="toc-card"><span class="num">03</span>Key Features</a>
+        <a href="#analysis" class="toc-card"><span class="num">04</span>AL, BP, LL, II</a>
+        <a href="#requirements" class="toc-card"><span class="num">05</span>สรุปความต้องการ</a>
+        <a href="#tracker" class="toc-card"><span class="num">06</span>Task Tracker</a>
+        <a href="#infra" class="toc-card"><span class="num">07</span>Infrastructure</a>
+    </div>
+</section>
+
+<!-- SECTION 1: OKR -->
+<section class="section" id="okr">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">01</span>
+            <div>
+                <h2>OKR — <span>Objective Key Results</span></h2>
+                <p class="section-desc">เป้าหมายและผลลัพธ์หลักของ Likepoint 2.0 Platform</p>
+            </div>
+        </div>
+
+        <div class="kr-highlight">
+            <h3>🎯 KR ของ PM Likepoint 2.0 (LDC-PAD-รัฐพร)</h3>
+            <div class="kr-item">
+                <div class="kr-num">1</div>
+                <div class="kr-text">Active merchant/client usage <strong>≥ 80%</strong></div>
+            </div>
+            <div class="kr-item">
+                <div class="kr-num">2</div>
+                <div class="kr-text">เพิ่ม loyalty redemption / engagement <strong>≥ 20%</strong></div>
+            </div>
+        </div>
+
+        <!-- O2 -->
+        <div class="okr-card">
+            <div class="okr-header orange">📢 Objective 2: ส่งเสริมการทำตลาดให้กับธุรกิจ</div>
+            <div class="okr-body">
+                <div class="okr-item">
+                    <div class="okr-label">O2-KR1</div>
+                    <div class="okr-desc">ภายในปี 2026 จำนวนลูกค้า PKG ที่ใช้งาน BUpoint มากกว่า <strong>150,000 ราย</strong></div>
+                </div>
+                <div class="okr-item">
+                    <div class="okr-label">O2-KR2</div>
+                    <div class="okr-desc">ภายในปี 2026 Business ใช้ Likepoint2.0 แลก POI ได้มากกว่า <strong>500 กิจกรรม</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- O3 -->
+        <div class="okr-card">
+            <div class="okr-header red">💰 Objective 3: สร้างรายได้ให้กับกลุ่ม PKG, Partner</div>
+            <div class="okr-body">
+                <div class="okr-item">
+                    <div class="okr-label">O3-KR1</div>
+                    <div class="okr-desc">Likepoint2.0 Platform นำเงินไปลงทุนสร้างรายได้ผลตอบแทนมากกว่า <strong>8% ต่อปี</strong></div>
+                </div>
+                <div class="okr-item">
+                    <div class="okr-label">O3-KR2</div>
+                    <div class="okr-desc">AUM > <strong>10 ล้านบาท</strong></div>
+                </div>
+                <div class="okr-item">
+                    <div class="okr-label">O3-KR3</div>
+                    <div class="okr-desc">21CT มีรายได้จากส่วนแบ่งรายได้ได้การลงทุน <strong>15%</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 2: ROADMAP -->
+<section class="section" id="roadmap">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">02</span>
+            <div>
+                <h2>Roadmap — <span>Q4 2025 → Q2 2026</span></h2>
+                <p class="section-desc">แผนดำเนินงาน Phase 3: Launch Likepoint for Business</p>
+            </div>
+        </div>
+
+        <div class="roadmap-container">
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">📌 Q4 2025 — Implement BUpoint</div>
+                <div class="roadmap-content">
+                    <h4>ติดตั้ง & พัฒนา Core Features</h4>
+                    <ul>
+                        <li>ติดตั้ง Like2Token</li>
+                        <li>พัฒนา & ติดตั้ง Lock Plan</li>
+                        <li>พัฒนา & ติดตั้ง Bupoint Loan</li>
+                        <li>Spin Game V2</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">🚀 Q1 2026 — Integrate & Expand</div>
+                <div class="roadmap-content">
+                    <h4>เชื่อมต่อ & ขยายฟีเจอร์</h4>
+                    <ul>
+                        <li>Integrate Native</li>
+                        <li>พัฒนาและติดตั้ง New Lottery</li>
+                        <li>วางแผน Bupoint สำหรับภายนอก</li>
+                        <li>วางแผน Onchain - Likepoint</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">🎯 Q2 2026 — Launch for Business</div>
+                <div class="roadmap-content">
+                    <h4>เปิดให้บริการเต็มรูปแบบ</h4>
+                    <ul>
+                        <li>Launch Likepoint for Business</li>
+                        <li>Implement Business</li>
+                        <li>ขยายสู่ Partner ภายนอก</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3: FEATURES -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">03</span>
+            <div>
+                <h2>Key <span>Features</span></h2>
+                <p class="section-desc">ฟีเจอร์หลัก 10 อย่าง + Merchant Admin 8 อย่าง</p>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💸</div>
+                <div class="feature-name">1. โอน (Transfer)</div>
+                <div class="feature-desc">โอน Point ระหว่างผู้ใช้ได้ง่าย สะดวก รวดเร็ว</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎪</div>
+                <div class="feature-name">2. สร้างกิจกรรม</div>
+                <div class="feature-desc">สร้างกิจกรรม Reward และ Promotion ได้ตามต้องการ</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <div class="feature-name">3. แลกกิจกรรม</div>
+                <div class="feature-desc">ผู้ใช้สามารถแลก Point เป็นรางวัลต่างๆ ได้</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-name">4. อันดับ (Ranking)</div>
+                <div class="feature-desc">จัดอันดับผู้ใช้ สร้างการแข่งขันและ Engagement</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-name">5. POI Lock</div>
+                <div class="feature-desc">ล็อค Point ไว้รับรางวัลพิเศษเมื่อครบเงื่อนไข</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💵</div>
+                <div class="feature-name">6. Cash-out</div>
+                <div class="feature-desc">ถอน Point เป็นเงินสดหรือโอนเข้าบัญชีธนาคาร</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎰</div>
+                <div class="feature-name">7. Lotto (สลาก)</div>
+                <div class="feature-desc">ระบบสลากลุ้นรางวัล สร้างความตื่นเต้นให้ผู้ใช้</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎡</div>
+                <div class="feature-name">8. Spin Wheel V2</div>
+                <div class="feature-desc">วงล้อหมุนรางวัล เวอร์ชัน 2 ควบคุมงบประมาณได้</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <div class="feature-name">9. Asset Claim</div>
+                <div class="feature-desc">ระบบเคลม Asset และรางวัลอัตโนมัติ</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-name">10. Lock Plan (กำลังมา)</div>
+                <div class="feature-desc">แผนล็อค Point ระยะยาว รับสิทธิพิเศษเพิ่ม</div>
+            </div>
+        </div>
+
+        <div class="callout callout-tip" style="margin-top:24px;">
+            <span class="callout-icon">🚀</span>
+            <div class="callout-body"><strong>Upcoming Feature: TAP2EARN</strong>ฟีเจอร์ใหม่ที่กำลังจะมา — แตะหน้าจอเพื่อรับ Point สร้าง Engagement แบบ Tap-to-Earn</div>
+        </div>
+
+        <h3 style="margin-top:40px;margin-bottom:16px;">️ Merchant Admin Dashboard Features</h3>
+        <div class="grid-2">
+            <div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>1. Dashboard</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">ภาพรวมกิจกรรม POI, จำนวนผู้เข้าร่วม, ยอด Point</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>2. POI Reports</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">รายงานกิจกรรม POI ทั้งหมด</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>3. Pocket Reports</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">รายงานกระเป๋า Point แต่ละคน</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                    <strong>4. Bookbank History</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">ประวัติการทำรายการทั้งหมด</div>
+                </div>
+            </div>
+            <div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>5. Features Config</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">ตั้งค่าฟีเจอร์ต่างๆ ของ Platform</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>6. Create POI / LOCK</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">สร้างกิจกรรม POI และ Lock Plan ใหม่</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <strong>7. Create Game **</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">สร้างเกม Spin Wheel, Lottery</div>
+                </div>
+                <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                    <strong>8. Create Plan **</strong>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">สร้าง Lock Plan และ Reward Plan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4: ANALYSIS -->
+<section class="section" id="analysis">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">04</span>
+            <div>
+                <h2>วิเคราะห์ <span>AL, BP, LL, II</span></h2>
+                <p class="section-desc">สิ่งที่ควรปรับปรุง, สิ่งที่ทำได้ดี, สิ่งที่ล้มเหลว, และไอเดียเพื่อปรับปรุง</p>
+            </div>
+        </div>
+
+        <!-- AL -->
+        <div class="analysis-card al">
+            <div class="analysis-title al">📊 AL — วิเคราะห์ปรับเปลี่ยนแปลง</div>
+            <ul>
+                <li>ปรับปรุง <strong>SPIN GAME</strong> เวอร์ชันใหม่ ให้สามารถควบคุมงบประมาณ และสามารถ Customize ได้มากขึ้น</li>
+                <li>เพิ่มระบบ <strong>Authen</strong> ของ platform</li>
+                <li>ออกแบบเกม / รูปแบบการแจก point เป็นตัวเลือกให้ Partner มากขึ้น</li>
+            </ul>
+        </div>
+
+        <!-- BP -->
+        <div class="analysis-card bp">
+            <div class="analysis-title bp">✅ BP — สิ่งที่ทำได้ดีและต้องทำต่อ</div>
+            <div style="margin-bottom:16px;">
+                <strong style="color:var(--accent3);">1. การเพิ่ม Feature Toggle</strong>
+                <ul>
+                    <li>BU สามารถเปิดปิดส่วนที่มีปัญหาได้ทันที</li>
+                    <li>BU สามารถสื่อสารกับลูกค้าได้ ก่อนตัดสินใจเปิด Features</li>
+                    <li>สามารถ Cut off และเปิดงานพัฒนา โดยไม่ Conflict กับ PM BU</li>
+                </ul>
+            </div>
+            <div>
+                <strong style="color:var(--accent3);">2. การสื่อสารการนำ Feature / API ไปใช้งานบนแอป BU มากขึ้น</strong>
+                <ul>
+                    <li>เข้าถึง Features ได้สะดวกมากขึ้น</li>
+                    <li>แก้ปัญหา UX เรื่องการกดหลายระดับชั้นเพื่อเข้าถึง Features ใน Minilike</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- LL -->
+        <div class="analysis-card ll">
+            <div class="analysis-title ll">⚠️ LL — สิ่งที่ล้มเหลว</div>
+            <ul>
+                <li>การสื่อสาร Auth จาก BuApp อย่างเดียวไม่พอ ต้องพัฒนา Auth ของ Bupoint เอง</li>
+                <li>Cash-out จ่ายเกินไปในเชิงเทคนิค เป็นช่องทำให้เกิดผลเสียหาย</li>
+            </ul>
+        </div>
+
+        <!-- II -->
+        <div class="analysis-card ii">
+            <div class="analysis-title ii">💡 II — ไอเดียเพื่อปรับปรุง</div>
+            <ul>
+                <li>Re-design เพื่อเพิ่ม UX ที่ดีขึ้น <span class="tag-pill blue">ปรับ Design ช่วง Q1/2026</span></li>
+                <li>ออกแบบ Game เพื่อเป็นตัวเลือกให้กับ BU เลือกเปิดใช้งาน</li>
+                <li>เพิ่มระบบ Authen ของ Bupoint</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 5: REQUIREMENTS -->
+<section class="section" id="requirements">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">05</span>
+            <div>
+                <h2>สรุป<span>ความต้องการ</span></h2>
+                <p class="section-desc">NEW!! SPIN WHEEL & coming Features</p>
+            </div>
+        </div>
+
+        <div class="summary-box" style="margin-bottom:20px;">
+            <h4>🎡 1. ALgorithm — SPIN WHEEL</h4>
+            <div class="grid-2">
+                <div>
+                    <ul style="margin-left:20px;">
+                        <li style="margin-bottom:8px;font-size:14px;">ควบคุมงบประมาณ % rate + Gachapon Pool กรอกลงงบประมาณและจำนวนรางวัลที่เพิ่มเข้ามา</li>
+                        <li style="margin-bottom:8px;font-size:14px;">ควบคุมงบประมาณได้</li>
+                        <li style="margin-bottom:8px;font-size:14px;">ทุก users ที่เข้ามาหมุนมีรางวัลแน่นอน</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul style="margin-left:20px;">
+                        <li style="margin-bottom:8px;font-size:14px;">การเพิ่มรางวัลที่นอกเหนือจาก Point, คูปอง, เสื้อ หมวก รับ</li>
+                        <li style="margin-bottom:8px;font-size:14px;">Custom Spin ได้มากขึ้น (พื้นหลัง, point, icon)</li>
+                        <li style="margin-bottom:8px;font-size:14px;">from PVP NB (ให้ดูสนุกสนานขึ้นเล่นกัน Animation)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-box" style="margin-bottom:20px;">
+            <h4>🔐 2. Lock Plan</h4>
+            <ul style="margin-left:20px;">
+                <li style="margin-bottom:8px;font-size:14px;">Setup Config ให้ ยืดหยุ่น</li>
+                <li style="margin-bottom:8px;font-size:14px;">BU สามารถกำหนดว่าให้ Point เพิ่มกำหนดจำนวนวัน</li>
+                <li style="margin-bottom:8px;font-size:14px;">BU สามารถกำหนด Privilege เช่น Lotto Ticket +2, Spin round +2</li>
+            </ul>
+        </div>
+
+        <div class="summary-box">
+            <h4>💰 3. Bupoint Loan</h4>
+            <ul style="margin-left:20px;">
+                <li style="margin-bottom:8px;font-size:14px;">ใช้ระบบเบื้องหลัง CU, Features จะอยู่บน Likepoint Platform แต่เปิดใช้งานผ่าน MS24</li>
+                <li style="margin-bottom:8px;font-size:14px;">แปลงจากระบบ Lockpoint ให้ Admin CU เป็นผู้ดูแล Pocket ส่วน หลักประกัน</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 6: TASK TRACKER -->
+<section class="section" id="tracker">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">06</span>
+            <div>
+                <h2>Task <span>Tracker</span></h2>
+                <p class="section-desc">27 tasks — Completed 17 | In Progress 3 | Under Review 3 | Not Started 4</p>
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <h3 style="margin-bottom:16px;"><span class="status-badge status-completed">✅ Completed</span> — 17 Tasks</h3>
+        <div class="table-wrap" style="margin-bottom:32px;">
+            <table>
+                <thead><tr><th>#</th><th>Task</th><th>Assignee</th><th>Due Date</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>ปรับปรุง Loading Time ของ Likepoint2.0</td><td>WAHWAH, โอม</td><td>12 Sep 2025</td></tr>
+                    <tr><td>2</td><td>ปรับปรุง Report Merchant ให้ตรงกับงานจริง</td><td>WAHWAH</td><td>16 Sep 2025</td></tr>
+                    <tr><td>3</td><td>ออกแบบการเปลี่ยนแปลงระบบการเพิ่มเข้าไป Lock</td><td>โอม</td><td>18 Sep 2025</td></tr>
+                    <tr><td>4</td><td>สร้าง API กรองหน้า PKG Member ID</td><td>WAHWAH</td><td>25 Sep 2025</td></tr>
+                    <tr><td>5</td><td>พัฒนาเมนู Lock System บน Likepoint 2.0 Backend</td><td>โอม</td><td>01 Oct 2025</td></tr>
+                    <tr><td>6</td><td>พัฒนา UI Lock System บน Likepoint2.0 Frontend</td><td>ระบุ</td><td>03 Oct 2025</td></tr>
+                    <tr><td>7</td><td>พัฒนาเมนู Like2Crypto ในส่วน Backend Typescript</td><td>ระบุ, WAHWAH</td><td>07 Oct 2025</td></tr>
+                    <tr><td>8</td><td>พัฒนาเมนู Like2Crypto UI บน Front-end Flutter</td><td>ระบุ</td><td>07 Oct 2025</td></tr>
+                    <tr><td>9</td><td>พัฒนา API Report Asset ทั้งหมด</td><td>WAHWAH</td><td>13 Oct 2025</td></tr>
+                    <tr><td>10</td><td>เพิ่ม UI Report Asset ลงใน MerchantAdmin ตาม CMN Audit</td><td>ระบุ</td><td>13 Oct 2025</td></tr>
+                    <tr><td>11</td><td>ออกแบบ Spin Game เวอร์ชัน 2.0</td><td>ระบุ</td><td>Nov 3, 2025</td></tr>
+                    <tr><td>12</td><td>ออกแบบ API Saving Lock Plan บน Likepoint2.0</td><td>โอม</td><td>Nov 12, 2025</td></tr>
+                    <tr><td>13</td><td>ออกแบบ API BUpoint Loan บน Likepoint2.0 ตาม Flow ของ CU</td><td>โอม</td><td>Nov 12, 2025</td></tr>
+                    <tr><td>15</td><td>พัฒนา API Saving Lockplan บน Likepoint2.0</td><td>โอม</td><td>Nov 21, 2025</td></tr>
+                    <tr><td>17</td><td>พัฒนา UI Saving Lockplan บน Likepoint2.0 FRONTEND</td><td>ระบุ</td><td>Nov 30, 2025</td></tr>
+                    <tr><td>18</td><td>พัฒนา API Spin Game เวอร์ชัน 2.0 ตาม Algorithm</td><td>ระบุ</td><td>Nov 30, 2025</td></tr>
+                    <tr><td>19</td><td>พัฒนา Merchant Admin ให้รองรับเมนู Algorithm</td><td>wahwah</td><td>Nov 30, 2025</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- In Progress -->
+        <h3 style="margin-bottom:16px;"><span class="status-badge status-progress">🔄 In Progress</span> — 3 Tasks</h3>
+        <div class="table-wrap" style="margin-bottom:32px;">
+            <table>
+                <thead><tr><th>#</th><th>Task</th><th>Assignee</th><th>Due Date</th></tr></thead>
+                <tbody>
+                    <tr><td>14</td><td>พัฒนา UI BuPoint Loan ให้สอดคล้อง Design ของ nativ ส่วน Crypto Loan</td><td>ระบุ</td><td>Nov 12, 2025</td></tr>
+                    <tr><td>16</td><td>พัฒนา API BUpoint Loan บน Likepoint2.0 ตาม Flow ของ CU</td><td>โอม</td><td>Nov 28, 2025</td></tr>
+                    <tr><td>24</td><td>เพิ่ม Algorithm เช็ค Transaction ที่ผิดปกติและระบุการ Cash-out</td><td>WahWah</td><td>Jan 27, 2026</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Under Review -->
+        <h3 style="margin-bottom:16px;"><span class="status-badge status-review">👁️ Under Review</span> — 3 Tasks</h3>
+        <div class="table-wrap" style="margin-bottom:32px;">
+            <table>
+                <thead><tr><th>#</th><th>Task</th><th>Assignee</th><th>Due Date</th></tr></thead>
+                <tbody>
+                    <tr><td>20</td><td>RAFF Auto KYC bookbank</td><td>ระบุ</td><td>Jan 15, 2026</td></tr>
+                    <tr><td>21</td><td>RAFF Cash-out BCT, n8n</td><td>แรบบี้</td><td>Jan 15, 2026</td></tr>
+                    <tr><td>22</td><td>RAFF point Cash-out, merchant</td><td>WahWah</td><td>Jan 27, 2026</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Not Started -->
+        <h3 style="margin-bottom:16px;"><span class="status-badge status-notstarted">⏳ Not Started</span> — 4 Tasks</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Task</th><th>Assignee</th><th>Due Date</th></tr></thead>
+                <tbody>
+                    <tr><td>25</td><td>Design Bupoint Authen</td><td>โอม</td><td>Feb 3, 2026</td></tr>
+                    <tr><td>26</td><td>loyalty program สำหรับ Money Buddy</td><td>WahWah</td><td>Feb 12, 2026</td></tr>
+                    <tr><td>27</td><td>Tap2Earn Design System</td><td>โอม</td><td>Feb 3, 2026</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 7: INFRASTRUCTURE -->
+<section class="section" id="infra">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-num">07</span>
+            <div>
+                <h2><span>Infrastructure</span></h2>
+                <p class="section-desc">สถาปัตยกรรมระบบ Likepoint 2.0 บน Google Cloud</p>
+            </div>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:32px;">
+            <div class="infra-card">
+                <div class="infra-icon">📱</div>
+                <div class="infra-name">Mobile/Web App</div>
+                <div class="infra-tech"><span class="tag-pill accent">Flutter</span></div>
+            </div>
+            <div class="infra-card">
+                <div class="infra-icon">🖥️</div>
+                <div class="infra-name">Admin/Merchant Console</div>
+                <div class="infra-tech"><span class="tag-pill blue">React</span> <span class="tag-pill accent">Vite</span> <span class="tag-pill accent">TypeScript</span></div>
+            </div>
+            <div class="infra-card">
+                <div class="infra-icon">☁️</div>
+                <div class="infra-name">API Micro Service</div>
+                <div class="infra-tech"><span class="tag-pill green">Google Cloud</span></div>
+            </div>
+            <div class="infra-card">
+                <div class="infra-icon">🔗</div>
+                <div class="infra-name">3rd-Party SaaS</div>
+                <div class="infra-tech"><span class="tag-pill yellow">Consensus</span> <span class="tag-pill yellow">KYCBookbank</span></div>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <h3><span class="icon icon-blue">01</span>Cloud Run Container</h3>
+                <div style="font-size:14px;color:var(--text-muted);margin-top:12px;">
+                    <div style="margin-bottom:8px;"><strong>CPU:</strong> 2 Core</div>
+                    <div style="margin-bottom:8px;"><strong>RAM:</strong> 4 GB</div>
+                    <div style="margin-bottom:8px;"><strong>Storage:</strong> 100GB</div>
+                    <div style="margin-bottom:8px;"><strong>Stand by:</strong> 2 Container</div>
+                    <div><strong>Scalability:</strong> Auto Scale</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3><span class="icon icon-purple">02</span>Database Container</h3>
+                <div style="font-size:14px;color:var(--text-muted);margin-top:12px;">
+                    <div style="margin-bottom:8px;"><strong>CPU:</strong> 1 Core</div>
+                    <div style="margin-bottom:8px;"><strong>RAM:</strong> 4 GB</div>
+                    <div style="margin-bottom:8px;"><strong>Storage:</strong> SSD 100GB</div>
+                    <div style="margin-bottom:8px;"><strong>Network:</strong> 250/250 MB/s</div>
+                    <div><strong>IOPS:</strong> Read 9,000/12,000 | Write 9,000/10,000</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3><span class="icon icon-green">03</span>Efficiency</h3>
+                <div style="font-size:14px;color:var(--text-muted);margin-top:12px;">
+                    <div style="margin-bottom:8px;">🟢 <strong>Lightweight:</strong> ~3,200 rps</div>
+                    <div style="margin-bottom:8px;">🟡 <strong>Typical:</strong> ~1,600 rps</div>
+                    <div style="margin-bottom:8px;">🔴 <strong>Heavy:</strong> ~534 rps</div>
+                    <div style="font-size:12px;margin-top:8px;">
+                        Lightweight = อ่าน cache, ข้อมูลเล็กๆ<br>
+                        Typical = ต่อฐานข้อมูล 1-2 ครั้ง<br>
+                        Heavy = query ซับซ้อน, join หลายตาราง
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p style="margin-bottom:8px;">📖 LIKEpoint 2.0 Platform — Product Management Document</p>
+        <p style="font-size:13px;">PM: LDC-PAD-รัฐพร(แนน) | AGS Corporation | มกราคม 2026</p>
+        <p style="font-size:12px;margin-top:16px;color:#9ca3af;">Website: https://mini-likepoint.web.app | บันทึกโดย AliClaw</p>
+    </div>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKG Training Hub - Prototype</title>
+    <style>
+        :root { --primary: #0d47a1; --accent: #2196f3; --bg: #f4f6f8; --white: #ffffff; --text: #333333; --gray: #666666; --success: #4caf50; --warning: #ff9800; --error: #f44336; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        
+        /* Header */
+        .header { background: var(--primary); color: var(--white); padding: 20px; text-align: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .header h1 { font-size: 1.4em; margin-bottom: 5px; }
+        .header p { font-size: 0.85em; opacity: 0.8; }
+
+        /* Search Box */
+        .search-container { max-width: 600px; margin: -20px auto 20px; padding: 0 15px; }
+        .search-box { background: var(--white); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; gap: 10px; }
+        .search-box input { flex: 1; border: 2px solid #e0e0e0; padding: 10px 15px; border-radius: 10px; font-size: 1em; outline: none; transition: 0.3s; }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box button { background: var(--accent); color: var(--white); border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .search-box button:hover { background: var(--primary); }
+
+        /* Content Area */
+        .content { max-width: 800px; margin: 0 auto; padding: 0 15px; display: none; /* Hidden initially */ }
+        .content.active { display: block; animation: fadeIn 0.5s; }
+
+        /* User Profile */
+        .profile-card { background: var(--white); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .avatar { width: 50px; height: 50px; background: #e3f2fd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: var(--primary); font-weight: bold; }
+        .profile-info h3 { font-size: 1.1em; margin-bottom: 3px; }
+        .profile-info span { font-size: 0.85em; color: var(--gray); display: block; }
+
+        /* Filters */
+        .filters { display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .filter-btn { background: var(--white); border: 1px solid #e0e0e0; padding: 8px 15px; border-radius: 20px; font-size: 0.85em; cursor: pointer; white-space: nowrap; color: var(--gray); transition: 0.3s; }
+        .filter-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+        /* Stats Cards */
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .stat-card { background: var(--white); padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .num { font-size: 1.5em; font-weight: 800; color: var(--primary); }
+        .stat-card .label { font-size: 0.75em; color: var(--gray); margin-top: 5px; }
+        .stat-card.success .num { color: var(--success); }
+
+        /* Table */
+        .table-container { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .table-header { padding: 15px; background: #f8f9fa; font-weight: bold; border-bottom: 1px solid #eee; font-size: 0.9em; }
+        .course-list { max-height: 400px; overflow-y: auto; }
+        .course-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .course-item:last-child { border-bottom: none; }
+        .course-info h4 { font-size: 0.95em; margin-bottom: 3px; }
+        .course-info span { font-size: 0.8em; color: var(--gray); }
+        .course-status { text-align: right; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 0.75em; font-weight: bold; }
+        .badge.pass { background: #e8f5e9; color: var(--success); }
+        .badge.fail { background: #ffebee; color: var(--error); }
+        .score { font-size: 0.8em; font-weight: bold; margin-right: 5px; }
+
+        /* Action Button */
+        .action-btn { width: 100%; background: #25d366; color: var(--white); border: none; padding: 15px; border-radius: 15px; font-size: 1.1em; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 10px rgba(37,211,102,0.3); }
+
+        /* Loading / Error */
+        .error-msg { text-align: center; color: var(--error); margin: 20px 0; font-size: 0.9em; display: none; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🎓 PKG Training Hub</h1>
+        <p>ระบบค้นหาและรายงานผลการอบรมสมาชิก</p>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="พิมพ์ไอดีสมาชิก (เช่น 123456)">
+            <button onclick="searchMember()">ค้นหา</button>
+        </div>
+        <div class="error-msg" id="errorMsg">ไม่พบข้อมูลไอดีสมาชิกนี้ในระบบ</div>
+    </div>
+
+    <div class="content" id="resultContent">
+        <!-- Profile -->
+        <div class="profile-card">
+            <div class="avatar" id="avatarChar">M</div>
+            <div class="profile-info">
+                <h3 id="userName">-</h3>
+                <span>ID: <span id="userId">-</span> | <span id="userTeam">-</span></span>
+                <span>BU: <span id="userBU">-</span></span>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterData('all', this)">ทั้งหมด</button>
+            <button class="filter-btn" onclick="filterData('month', this)">เดือนนี้</button>
+            <button class="filter-btn" onclick="filterData('year', this)">ปีนี้</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card success">
+                <div class="num" id="statPassed">0</div>
+                <div class="label">วิชาที่ผ่าน</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statCredits">0</div>
+                <div class="label">หน่วยกิต</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statAvg">0</div>
+                <div class="label">คะแนนเฉลี่ย</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">รายละเอียดหลักสูตร</div>
+            <div class="course-list" id="courseList">
+                <!-- Items injected by JS -->
+            </div>
+        </div>
+
+        <!-- Action -->
+        <button class="action-btn">
+            <span>📤</span> ส่งรายงานให้หัวหน้างาน
+        </button>
+    </div>
+
+    <script>
+        // --- Mock Data (จำลองข้อมูล) ---
+        const db = {
+            "123456": {
+                id: "123456", name: "นาย โกมล ไชยประสูตร", bu: "PMSG", team: "ทีมตรวจสอบธุรกิจ",
+                courses: [
+                    { date: "2026-03-24", name: "การบริหารองค์กร ด้วย BP LL", score: 100, passed: true, credits: 4, month: 3, year: 2026 },
+                    { date: "2026-01-07", name: "ความรู้เทคโนโลยีจากบทความ กลุ่ม2 มกราคม 26", score: 80, passed: true, credits: 2, month: 1, year: 2026 },
+                    { date: "2025-12-15", name: "ความปลอดภัยในการทำงาน จป.", score: 95, passed: true, credits: 6, month: 12, year: 2025 },
+                ]
+            },
+            "789000": {
+                id: "789000", name: "นางสาว สมหญิง รักงาน", bu: "AAMG", team: "ทีมบริการลูกค้า",
+                courses: [
+                    { date: "2026-05-20", name: "การบริการลูกค้าแบบเหนือชั้น", score: 90, passed: true, credits: 3, month: 5, year: 2026 },
+                    { date: "2026-05-18", name: "การใช้ AI เพื่อการทำงาน", score: 100, passed: true, credits: 4, month: 5, year: 2026 },
+                    { date: "2026-04-10", name: "มารยาทในที่ทำงาน", score: 40, passed: false, credits: 0, month: 4, year: 2026 },
+                ]
+            }
+        };
+
+        let currentData = [];
+
+        function searchMember() {
+            const input = document.getElementById('searchInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const content = document.getElementById('resultContent');
+
+            if (db[input]) {
+                errorMsg.style.display = 'none';
+                content.classList.add('active');
+                renderProfile(db[input]);
+                currentData = db[input].courses;
+                updateStats();
+                renderTable(currentData);
+            } else {
+                content.classList.remove('active');
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function renderProfile(data) {
+            document.getElementById('userName').innerText = data.name;
+            document.getElementById('userId').innerText = data.id;
+            document.getElementById('userTeam').innerText = data.team;
+            document.getElementById('userBU').innerText = data.bu;
+            document.getElementById('avatarChar').innerText = data.name.charAt(0);
+        }
+
+        function updateStats() {
+            const passed = currentData.filter(c => c.passed).length;
+            const credits = currentData.filter(c => c.passed).reduce((sum, c) => sum + c.credits, 0);
+            const avg = currentData.length > 0 ? Math.round(currentData.reduce((sum, c) => sum + c.score, 0) / currentData.length) : 0;
+
+            document.getElementById('statPassed').innerText = passed;
+            document.getElementById('statCredits').innerText = credits;
+            document.getElementById('statAvg').innerText = avg;
+        }
+
+        function renderTable(data) {
+            const list = document.getElementById('courseList');
+            list.innerHTML = '';
+            if(data.length === 0) {
+                list.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">ไม่มีข้อมูลในช่วงเวลานี้</div>';
+                return;
+            }
+            data.forEach(c => {
+                const statusBadge = c.passed ? '<span class="badge pass">ผ่าน</span>' : '<span class="badge fail">ไม่ผ่าน</span>';
+                const html = `
+                    <div class="course-item">
+                        <div class="course-info">
+                            <h4>${c.name}</h4>
+                            <span>📅 ${formatDate(c.date)} | 📚 ${c.credits} หน่วยกิต</span>
+                        </div>
+                        <div class="course-status">
+                            <span class="score">${c.score} คะแนน</span>
+                            ${statusBadge}
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += html;
+            });
+        }
+
+        function filterData(period, btn) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            let filtered = [...db[document.getElementById('userId').innerText].courses];
+            const now = new Date();
+            
+            if (period === 'month') {
+                filtered = filtered.filter(c => c.month === (now.getMonth() + 1) && c.year === now.getFullYear());
+            } else if (period === 'year') {
+                filtered = filtered.filter(c => c.year === now.getFullYear());
+            }
+            
+            // Sort by date desc
+            filtered.sort((a,b) => b.date.localeCompare(a.date));
+            
+            currentData = filtered;
+            updateStats();
+            renderTable(currentData);
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+    </script>
+</body>
+</html>

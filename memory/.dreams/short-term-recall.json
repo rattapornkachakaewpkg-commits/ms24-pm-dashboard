@@ -1,0 +1,1841 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-02T02:09:31.761Z",
+  "entries": {
+    "memory:memory/2026-05-15.md:37:80": {
+      "key": "memory:memory/2026-05-15.md:37:80",
+      "path": "memory/2026-05-15.md",
+      "startLine": 37,
+      "endLine": 80,
+      "source": "memory",
+      "snippet": "- KPIs: AI Workflow Success ≥85%, Automation Coverage ≥50%, AI Integration Success ≥80%, AI Adoption ≥90%, Organization Productivity Gain ≥40% ### ผลลัพธ์สุดท้าย - เปลี่ยนจาก Human Working Alone → Human + AI Collaborative Organization - เส้นทาง: \"ผู้ใช้ AI\" → \"ผู้ทำงานร่วมกับ AI\" → \"ผู้ออกแบบองค์กร AI\" ## CEO AI Co-Worker Setup **User:** Rattaporn Kachaglaew (Nan) - rattapornkac (ID: 5050203997) **AI:** AliClaw ## Apps Script - PKG Data Hub **Working URL:** ``` https://script.google.com/macros/s/AKfycbwR56NziDKlIU-aYYPdZZ0uCR1CxDegJLOrnGT43rJifwqkmKRzerg7bxdHSLus2WOpjA/exec ``` - Status: GET works, POST blocked by CORS - 15 Sheets created (see below) **Broken URLs:** - `AKfycbyPH5x-XJN",
+      "recallCount": 23,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 22.619611922237745,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-06-02T01:46:29.647Z",
+      "queryHashes": [
+        "c684112f0427",
+        "533fc63a2629",
+        "44bb22baba1e",
+        "b54f2e20f732",
+        "1efe9a48cfab",
+        "a25610ef8cf1",
+        "0bd9e6dd2101",
+        "c72974d528c2",
+        "cb106b12e39e",
+        "df106cc3317d",
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "55c388a91c6d",
+        "e75dea794990",
+        "7f92b15e647c",
+        "8539dea8d0b3",
+        "f65d3dd6004f",
+        "3358c76beb55",
+        "cd3c22abc5bc",
+        "f29f60d4f2b8",
+        "00afb8064d17",
+        "d68f763c9795"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-30",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "co-worker",
+        "akfycbyph5x-xjn",
+        "kpis",
+        "workflow",
+        "success",
+        "automation",
+        "coverage",
+        "integration"
+      ]
+    },
+    "memory:memory/2026-05-15.md:1:28": {
+      "key": "memory:memory/2026-05-15.md:1:28",
+      "path": "memory/2026-05-15.md",
+      "startLine": 1,
+      "endLine": 28,
+      "source": "memory",
+      "snippet": "# 2026-05-15 Memory Log ## AI School - AI Upskill Roadmap (Full Plan) ### แนวคิดหลัก - เป้าหมาย: ไม่ใช่แค่ใช้งาน AI เป็น แต่สั่งงาน AI อย่างเป็นระบบ, ทำงานร่วมกับ AI, วิเคราะห์แก้ปัญหาด้วย AI, สร้าง Human+AI Workflow, ออกแบบ AI Organization - ผู้เข้าร่วม: สมาชิก 400 คน ทุกระดับ - โครงสร้าง: พื้นฐานร่วม → Level 1 → Level 2 → Level 3 ### พื้นฐานร่วมกัน (ก่อนเข้าทุกระดับ) 1. CEO Contract - สัญญาการทำงานคนกับ AI (กำหนดหน้าที่, รายละเอียดงาน, OKR/KPI, Supervisor) 2. 4 ระบบคิดหลัก: - Systems Thinking - มองทั้งระบบ, Root Cause, ผลกระทบเชื่อมโยง - Design Thinking - ออกแบบจาก Pain Point จริง, User Experience - 5W2H - Who/What/When/Where/Why/How/How Much - Data-Only Rule - ใช้ข้อมูลจริง",
+      "recallCount": 10,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 10,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-05-30T07:57:59.367Z",
+      "queryHashes": [
+        "c684112f0427",
+        "533fc63a2629",
+        "a25610ef8cf1",
+        "0bd9e6dd2101",
+        "c72974d528c2",
+        "df106cc3317d",
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "55c388a91c6d",
+        "2af9b78e615b"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "okr/kpi",
+        "who/what/when/where/why/how/how",
+        "data-only",
+        "log",
+        "school",
+        "upskill",
+        "roadmap",
+        "full"
+      ]
+    },
+    "memory:memory/2026-05-15.md:70:109": {
+      "key": "memory:memory/2026-05-15.md:70:109",
+      "path": "memory/2026-05-15.md",
+      "startLine": 70,
+      "endLine": 109,
+      "source": "memory",
+      "snippet": "8. PP6_Philosophy - 10 principles 9. PP5_Workflow - 15 Steps (Phase 1-5) 10. MS24_Bugs - Headers only (no data yet) 11. Feedback - Headers only 12. OKRs_KPIs - 8 OKRs/KPIs 13. BU_Structure - 9 BUs 14. Training_Records - Headers only (needs 9,083 rows from CSV) 15. Courses - 89 courses (deduplicated) ## CEO Contract Rules 1. รับคำสั่งงานและส่งมอบงาน (Systems Thinking, Design Thinking, 5W2H, Data-Only) 2. บันทึกข้อมูลคำสั่งใน Sheet Task 3. บันทึกข้อมูลใหม่ที่ใช้ Train ใน Sheet Train AI 4. ทวนคำสั่งทุกครั้งก่อนตอบ (Parrot Command) 5. ใช้มาตรฐาน 9 6. ไม่ใช้ภาษาอื่นปน (ไทย/English) 7. ส่งไฟล์กลับมาทุกครั้งที่ส่งมอบงาน 8. สรุปงานที่สั่งทุกวัน ## Memory Wipe - Old memory files deleted (2026-05-",
+      "recallCount": 21,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 20.619880687120748,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-05-31T04:53:45.593Z",
+      "queryHashes": [
+        "c684112f0427",
+        "533fc63a2629",
+        "44bb22baba1e",
+        "b54f2e20f732",
+        "1efe9a48cfab",
+        "a25610ef8cf1",
+        "0bd9e6dd2101",
+        "c72974d528c2",
+        "cb106b12e39e",
+        "d52650fc41c7",
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "e75dea794990",
+        "7f92b15e647c",
+        "f65d3dd6004f",
+        "3358c76beb55",
+        "f8a98c205778",
+        "829e6a6f954d",
+        "81e6c68779fb",
+        "76f1cc9e25c3"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "pp6-philosophy",
+        "pp5-workflow",
+        "1-5",
+        "ms24-bugs",
+        "okrs-kpis",
+        "okrs/kpis",
+        "bu-structure",
+        "training-records"
+      ]
+    },
+    "memory:memory/2026-05-15.md:23:44": {
+      "key": "memory:memory/2026-05-15.md:23:44",
+      "path": "memory/2026-05-15.md",
+      "startLine": 23,
+      "endLine": 44,
+      "source": "memory",
+      "snippet": "- KPIs: การใช้งาน ≥3ครั้ง/สัปดาห์, Prompt ครบถ้วน ≥80%, คุณภาพงาน ≥80%, เวลาลดลง ≥20%, ความพึงพอใจ ≥85% ### Level 2: AI Co-Worker (เพื่อนร่วมงาน) - ระยะเวลา: 20 ชม. | 7 Modules | Target: Management (25%) - Objective: ใช้ AI เป็น Co-Worker เพื่อวิเคราะห์และพัฒนางาน - ทำได้หลังเรียน: วิเคราะห์ข้อมูลเชิงลึก, Systems Thinking ระดับสูง, ออกแบบ Solution, ใช้ AI ช่วยตัดสินใจ, ทำ Project ร่วมกับ AI - KRs: 80% วิเคราะห์ข้อมูลด้วย AI ได้, 70% ทำ Project สำเร็จ, 70% ใช้ Systems Thinking วิเคราะห์ปัญหา, 60% ออกแบบ Solution ร่วมกับ AI, Productivity ทีมเพิ่ม ≥30% - KPIs: AI Project Completion ≥70%, Data Analysis Accuracy ≥85%, Productivity Improvement ≥30%, AI Collaboration Score ≥80%, Root Cause Accurac",
+      "recallCount": 14,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 13.917707805319365,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-06-02T01:46:29.647Z",
+      "queryHashes": [
+        "c684112f0427",
+        "533fc63a2629",
+        "a25610ef8cf1",
+        "0bd9e6dd2101",
+        "c72974d528c2",
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "e75dea794990",
+        "7f92b15e647c",
+        "2af9b78e615b",
+        "81e6c68779fb",
+        "76f1cc9e25c3",
+        "d68f763c9795"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-26",
+        "2026-05-30",
+        "2026-05-31",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "ง/ส",
+        "co-worker",
+        "kpis",
+        "การ",
+        "งาน",
+        "3ครั้ง",
+        "สัปดาห",
+        "prompt"
+      ]
+    },
+    "memory:memory/2026-05-16.md:1:26": {
+      "key": "memory:memory/2026-05-16.md:1:26",
+      "path": "memory/2026-05-16.md",
+      "startLine": 1,
+      "endLine": 26,
+      "source": "memory",
+      "snippet": "# 2026-05-16 Memory Log ## MS24 Web App - Test Checklist (Full Details) ### App Info - **ชื่อ:** MS24 - **ประเภท:** Web Application (ภายในองค์กรเท่านั้น) - **ผู้ใช้:** สมาชิก/พนักงานภายในองค์กร - **จำนวนผู้ใช้สูงสุด:** 600 คน - **ประเทศ:** ไทย 🇹🇭 / ลาว 🇱🇦 / กัมพูชา 🇰🇭 (3 ประเทศ, เมนูเหมือนกันทั้งหมด) ### Google Sheets (4 Sheets) - **Checklist MS24App Test:** 134 Test Cases (สรุป) - Columns: TC ID, Module, Feature, Test Case, Expected Result, TH, LA, KH, Status, Bug ID, Notes - **MS24_Detailed_Test:** 134 Test Cases (ละเอียด) - Columns: TC ID, Module, Feature, Test Scenario, Test Steps, Pass Criteria, Standard, TH, LA, KH, Status, Bug ID, Notes - **MS24 Bug Tracker:** 12 Pre-filled b",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4.26503573326851,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-05-26T14:28:05.722Z",
+      "queryHashes": [
+        "c684112f0427",
+        "1efe9a48cfab",
+        "cb106b12e39e",
+        "b0e7a390e5a5",
+        "8539dea8d0b3"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26"
+      ],
+      "conceptTags": [
+        "ก/พน",
+        "ms24-detailed-test",
+        "pre-filled",
+        "log",
+        "ms24",
+        "web",
+        "app",
+        "test"
+      ]
+    },
+    "memory:memory/2026-05-15.md:104:133": {
+      "key": "memory:memory/2026-05-15.md:104:133",
+      "path": "memory/2026-05-15.md",
+      "startLine": 104,
+      "endLine": 133,
+      "source": "memory",
+      "snippet": "- ข้อมูล: 9,023 รายการ (ตัด #N/A ออก 58 แถว), 492 สมาชิก, 105 หลักสูตร, 7 BU - อัตราเข้าอบรม: 89.0%, คะแนนเฉลี่ย: 99.1, 95.0% ได้ 100 คะแนน - ลูกหมีเลือกแบบ C (HR & Development View) เป็นแบบหลัก - ไฟล์: `training_dashboard.html`, `dashboard_option1_executive.html`, `dashboard_option2_operations.html`, `dashboard_option3_hr.html` ## Google Sheets Report Project (เริ่ม) - สร้างหน้า Report ใน Sheet gid=467958242 จากข้อมูล Sheet หลัก - รูปแบบตามตัวอย่าง: รหัสสมาชิก, ชื่อ, นามสกุล, บทบาท, ชื่อทีม, BU, กลุ่มบริษัท, GPA/ปี, หน่วยกิต, GPA/รวมเดือน, หน่วยกิตที่ได้ - ข้อมูลพร้อมแล้ว 492 คน เรียงตาม BU + ชื่อ - ยังไม่ตัดสินใจว่าจะทำเป็น HTML Report หรือ CSV ให้ copy ไป paste ## Notes - องค์กรใช้คำว่า",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5.26426177992488,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:23:44.903Z",
+      "lastRecalledAt": "2026-05-27T10:00:48.899Z",
+      "queryHashes": [
+        "c684112f0427",
+        "1efe9a48cfab",
+        "cb106b12e39e",
+        "b0e7a390e5a5",
+        "8539dea8d0b3",
+        "f65d3dd6004f"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "n/a",
+        "89.0",
+        "99.1",
+        "95.0",
+        "training-dashboard.html",
+        "dashboard-option1-executive.html",
+        "dashboard-option3-hr.html",
+        "gpa/ป"
+      ]
+    },
+    "memory:memory/2026-05-15.md:131:150": {
+      "key": "memory:memory/2026-05-15.md:131:150",
+      "path": "memory/2026-05-15.md",
+      "startLine": 131,
+      "endLine": 150,
+      "source": "memory",
+      "snippet": "- Columns: TC ID, Module, Feature, Test Case, Expected Result, TH, LA, KH, Status, Bug ID, Notes - **MS24 Bug Tracker:** 12 Pre-filled bugs - Columns: Bug ID, Linked TC ID, Module, Feature, Bug Title, Severity, Priority, Status, Assignee, Found Date, Fixed Date, Country, Description, Expected, Actual, Steps to Reproduce, Notes - **MS24 Test Dashboard:** 69 rows (metrics, summary, module coverage) ### Test Cases by Module (134 total) - Authentication: 16 (Sign Up, Log in, QR Code) - ใบลา: 7 | Drawer Menu: 7 | Like Credit: 6 | Profile: 6 | สุขภาพ: 6 - Cross-Country: 5 | Notification: 4 | เคลมรางวัล: 4 | ลงเวลา: 4 | สวัสดิการ: 4 - อนุมัติเอกสาร: 4 | ประเด็นงาน: 4 | CEW: 4 | ความมั่งคั่ง: 4",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.6325336861890083,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T03:00:24.576Z",
+      "lastRecalledAt": "2026-05-24T11:10:43.488Z",
+      "queryHashes": [
+        "1efe9a48cfab",
+        "b0e7a390e5a5"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-24"
+      ],
+      "conceptTags": [
+        "pre-filled",
+        "cross-country",
+        "columns",
+        "module",
+        "feature",
+        "test",
+        "case",
+        "expected"
+      ]
+    },
+    "memory:memory/2026-05-16.md:91:119": {
+      "key": "memory:memory/2026-05-16.md:91:119",
+      "path": "memory/2026-05-16.md",
+      "startLine": 91,
+      "endLine": 119,
+      "source": "memory",
+      "snippet": "- 🛠️ ขั้นตอนการใช้งาน: Prompt ที่ใช้ได้เลย + ตัวอย่างจริง + เวลาประหยัด - 📰 ข่าว AI ล่าสุด: จาก openai.com, nvlabs.github.io, news.ycombinator.com - 🎯 Challenge: วัดผลประหยัดเวลาเป็น % - **Rotate 7 Days:** จันทร์(แบบทดสอบ), อังคาร(วิเคราะห์ผลสอบ), พุธ(วิดีโอ), พฤหัส(สรุปเอกสาร), ศุกร์(Slide), เสาร์(แผนการสอน), อาทิตย์(รวม) - **Sources:** openai.com, nvlabs.github.io, claude.ai, gamma.app, canva.com, unesco.org - **Send to:** Telegram chat 5050203997 ทุกวัน 6 โมงเช้า ### Finance Briefing (l&g) - **Format:** ราคาจริงจาก Coinbase API + ทริคการออม/ลงทุน + เทคนิคเกษียณ - **Content:** - 📊 ราคาตลาด: ทองคำ (XAU), Bitcoin (BTC), Ethereum (ETH), Solana (SOL) - 💡 ทริคการออม: หมุนเวียน 7",
+      "recallCount": 9,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 8.632442949998113,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T03:00:24.576Z",
+      "lastRecalledAt": "2026-06-02T01:46:29.647Z",
+      "queryHashes": [
+        "1efe9a48cfab",
+        "0bd9e6dd2101",
+        "d52650fc41c7",
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "55c388a91c6d",
+        "8539dea8d0b3",
+        "2af9b78e615b",
+        "d68f763c9795"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-26",
+        "2026-05-30",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "openai",
+        "openai.com",
+        "nvlabs.github.io",
+        "news.ycombinator.com",
+        "claude.ai",
+        "gamma.app",
+        "canva.com",
+        "unesco.org"
+      ]
+    },
+    "memory:memory/2026-05-16.md:64:94": {
+      "key": "memory:memory/2026-05-16.md:64:94",
+      "path": "memory/2026-05-16.md",
+      "startLine": 64,
+      "endLine": 94,
+      "source": "memory",
+      "snippet": "- Response Time: หน้าทั่วไป < 2 วินาที, หนัก < 3 วินาที - ข้อมูลถูกต้อง: ยอด/ข้อมูลตรงกับฐานข้อมูล 100% - แจ้งเตือน: แจ้งเตือนชัดเจน เข้าใจง่าย ทันที - ป้องกัน Error: Validation ทำงานก่อนส่งข้อมูล - Security: Session 30 นาที, ป้องกันเข้าถึงข้อมูลคนอื่น, PDPA Consent - Mobile: รองรับ ≥ 320px, ปุ่ม ≥ 44x44px, ตัวอักษร ≥ 16px - Performance: 600 คนพร้อมกัน Response < 5 วินาที, ไม่ล่ม ### All Test Cases Status: 134 Pending (ยังไม่เริ่มทดสอบ) ## Daily Briefings - Working Method ### Health Briefing (Longevity Focus) - **Format:** Longevity Daily Briefing - **Content:** เน้น Longevity/อายุยืนจากแหล่งข้อมูลจริง: - 🔬 Longevity Science (WHO, Blue Zones, Harvard Study) - 💪 กายภาพเพื่ออายุยืน (B",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T03:13:48.754Z",
+      "lastRecalledAt": "2026-05-27T00:04:36.714Z",
+      "queryHashes": [
+        "c72974d528c2",
+        "d52650fc41c7",
+        "941d52e17c38"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "ยอด/ข",
+        "longevity/อาย",
+        "response",
+        "time",
+        "หน้า",
+        "ทั่วไป",
+        "วินาท",
+        "หนัก"
+      ]
+    },
+    "memory:memory/2026-05-19.md:14:32": {
+      "key": "memory:memory/2026-05-19.md:14:32",
+      "path": "memory/2026-05-19.md",
+      "startLine": 14,
+      "endLine": 32,
+      "source": "memory",
+      "snippet": "- **Google:** Psychological Safety (Project Aristotle), Googlegeist Survey, Project Oxygen (manager behaviors), Blameless Post-Mortem, Culture Add > Culture Fit ### Systems Deep Dive: - Netflix Detection: 360-degree informal review, Manager daily observation, Radical Candor & Sunshining - Netflix Management: Keeper Test, No PIP for cultural misfit, Generous severance, Context not Control - Google Detection: Googlegeist Survey, Team Health Check, Project Oxygen metrics - Google Management: Manager Coaching, Re:Work Training, Team Norms Workshop, Targeted Interventions ### Structured Interview Form: - Designed 4-dimension evaluation: (1) Cognitive/Judgment, (2) Role Expertise, (3) Collaborat",
+      "recallCount": 11,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 11,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T04:18:15.674Z",
+      "lastRecalledAt": "2026-05-31T04:53:45.593Z",
+      "queryHashes": [
+        "cb106b12e39e",
+        "d52650fc41c7",
+        "f65d3dd6004f",
+        "3358c76beb55",
+        "f8a98c205778",
+        "829e6a6f954d",
+        "cd3c22abc5bc",
+        "f29f60d4f2b8",
+        "bc5b203d6ee5",
+        "81e6c68779fb",
+        "76f1cc9e25c3"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "post-mortem",
+        "360-degree",
+        "4-dimension",
+        "cognitive/judgment",
+        "google",
+        "psychological",
+        "safety",
+        "project"
+      ]
+    },
+    "memory:memory/2026-05-19.md:1:18": {
+      "key": "memory:memory/2026-05-19.md:1:18",
+      "path": "memory/2026-05-19.md",
+      "startLine": 1,
+      "endLine": 18,
+      "source": "memory",
+      "snippet": "# Daily Memory - 2026-05-19 (Tuesday) ## 🌅 Morning Briefings Delivered - **AI Briefing for Teacher ฝก** (06:55) - Delivered but user noted it was poor quality (static data, not real AI news). Fixed with V2.0 system pulling live news from Hacker News, The Verge, TechCrunch. - **Mock Exam - โรงเรียนชั้นนำ** (06:56) - 20 questions Smart Randomization System with Anti-Repeat History Log. Updated from static to dynamic Python script. - **Science Daily Exam** (06:59) - Tuesday Science 30 questions Interactive HTML generated via `generate_daily_exam.py` with `exam_history.json` tracking. - **Longevity Daily Briefing** (07:02) - Delivered in English (❌ user complained). User demanded Thai language",
+      "recallCount": 8,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 8,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T04:18:15.674Z",
+      "lastRecalledAt": "2026-05-31T04:53:45.593Z",
+      "queryHashes": [
+        "cb106b12e39e",
+        "e75dea794990",
+        "7f92b15e647c",
+        "f65d3dd6004f",
+        "3358c76beb55",
+        "81e6c68779fb",
+        "76f1cc9e25c3"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "v2.0",
+        "anti-repeat",
+        "generate-daily-exam.py",
+        "exam-history.json",
+        "tuesday",
+        "morning",
+        "briefings",
+        "delivered"
+      ]
+    },
+    "memory:memory/2026-05-19.md:30:57": {
+      "key": "memory:memory/2026-05-19.md:30:57",
+      "path": "memory/2026-05-19.md",
+      "startLine": 30,
+      "endLine": 57,
+      "source": "memory",
+      "snippet": "- **Module 1:** เปิดใจก่อนเปิดใช้ AI (Mindset Awakening) - Fear Wall activity, Growth Mindset, 4 PKG thinking systems - **Module 2:** พูดตรง เข้าใจลึก (Radical Candor) - Feedback role play, Conflict simulation, My Biggest Mistake sharing - **Module 3:** ผู้นำสร้างพื้นที่ปลอดภัย (Leader as Safe Zone) - Project Oxygen self-assessment, Active Listening, Team norms design - **Daily Activities:** Morning Attitude Check, Idea Flash, Lunch & Learn, Feedback Coffee, Daily Wrap-Up - **Internal Communication:** Daily Pulse (LINE), Weekly Culture Pulse (Email), Monthly Townhall - **Culture Scorecard:** Psychological Safety, Feedback Frequency, Growth Mindset Index, Blameless Culture Score, AI Adoption",
+      "recallCount": 12,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 12,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T10:59:16.073Z",
+      "lastRecalledAt": "2026-05-30T14:43:00.705Z",
+      "queryHashes": [
+        "d52650fc41c7",
+        "df106cc3317d",
+        "e75dea794990",
+        "7f92b15e647c",
+        "8539dea8d0b3",
+        "f8a98c205778",
+        "829e6a6f954d",
+        "cd3c22abc5bc",
+        "f29f60d4f2b8",
+        "fb0e5ef6e4d8",
+        "bc5b203d6ee5"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "self-assessment",
+        "wrap-up",
+        "module",
+        "เปิด",
+        "ก่อน",
+        "mindset",
+        "awakening",
+        "fear"
+      ]
+    },
+    "memory:memory/2026-05-19.md:80:114": {
+      "key": "memory:memory/2026-05-19.md:80:114",
+      "path": "memory/2026-05-19.md",
+      "startLine": 80,
+      "endLine": 114,
+      "source": "memory",
+      "snippet": "### ผู้นำผู้รับใช้ (Servant Leadership): - 8 อุปนิสัย: อดกลั้น, เมตตากรุณา, ถ่อมตน, เคารพ, ไม่เห็นแก่ตัว, ให้อภัย, ซื่อสัตย์, มุ่งมั่น - 5 บทบาท: นักเดินทาง, ผู้รับใช้, ผู้สร้าง, นักพัฒนา, ผู้พิทักษ์ ### บรรยากาศ 9 (Climate 9): ความเชื่อมั่น/เคารพ/ตรงไปตรงมา/ซื่อสัตย์/เปิดเผย/มองบวก/อารมณ์ขัน/กระตือรือร้น/เดินไปข้างหน้าเป็นทีม ## 📝 User Context Notes - User is HRD Manager at PKG/Tri Petch Isuzu Sales - Working on both HRD (training/AI school) and HRM (culture/attitude management) - Prefers Thai language for all deliverables - Wants practical, actionable frameworks with real-world case studies - **IMPORTANT:** All future culture/attitude work MUST integrate actual PKG philosophy (6 รับ, มา",
+      "recallCount": 7,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 7,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T10:59:16.073Z",
+      "lastRecalledAt": "2026-05-28T08:02:26.235Z",
+      "queryHashes": [
+        "d52650fc41c7",
+        "df106cc3317d",
+        "55c388a91c6d",
+        "7f92b15e647c",
+        "f8a98c205778",
+        "829e6a6f954d"
+      ],
+      "recallDays": [
+        "2026-05-19",
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "น/เคารพ/ตรงไปตรงมา/ซ",
+        "ดเผย/มองบวก/อารมณ",
+        "น/กระต",
+        "น/เด",
+        "pkg/tri",
+        "training/ai",
+        "culture/attitude",
+        "real-world"
+      ]
+    },
+    "memory:memory/2026-05-22.md:1:22": {
+      "key": "memory:memory/2026-05-22.md:1:22",
+      "path": "memory/2026-05-22.md",
+      "startLine": 1,
+      "endLine": 22,
+      "source": "memory",
+      "snippet": "# 2026-05-22 — Memory Log ## PKG Training Hub — Merged Complete Version - **User**: ลูกหมี (LDC-PAD-ณัฐฑริณี, @nattharineekum, ID 2081375433) - **Request**: เชื่อม `dashboard_option3_hr.html` (ภาพรวมองค์กร PKG) กับ `pkg_training_hub_ultimate.html` (ค้นหา ID รายบุคคล) เป็นเว็บเดียว - **Output**: `/home/admin/.openclaw/workspace/pkg_training_complete.html` - **Features**: - **Page 1 (Home)**: ภาพรวมองค์กร PKG — KPI 6 ตัว, BU 7 ตัวพร้อม progress bar, แนวโน้มรายเดือน, การกระจายคะแนน, หลักสูตร Top 15, หลักสูตรยังไม่เริ่ม, สมาชิกค้างอบรม Top 15, สรุปเชิงวิเคราะห์ - **Page 2 (Search)**: ค้นหา ID → Dashboard รายบุคคล — Profile, เป้าหมาย GPA/หน่วยกิต, สถานะปัจจุบัน, ประวัติการอบรมล่าสุด (เฉพาะ s",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 6,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-24T10:43:34.006Z",
+      "lastRecalledAt": "2026-05-30T14:43:06.228Z",
+      "queryHashes": [
+        "df106cc3317d",
+        "8539dea8d0b3",
+        "f8a98c205778",
+        "829e6a6f954d",
+        "bc5b203d6ee5",
+        "3f6805873b88"
+      ],
+      "recallDays": [
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "ldc-pad-ณ",
+        "dashboard-option3-hr.html",
+        "pkg-training-hub-ultimate.html",
+        "home/admin",
+        "gpa/หน",
+        "log",
+        "pkg",
+        "training"
+      ]
+    },
+    "memory:memory/2026-05-16.md:39:69": {
+      "key": "memory:memory/2026-05-16.md:39:69",
+      "path": "memory/2026-05-16.md",
+      "startLine": 39,
+      "endLine": 69,
+      "source": "memory",
+      "snippet": "- วันทำงาน/ลา: 4 (มาทำงาน, ลากิจ, ลาป่วย, ลาพักร้อน) - TC-107 to TC-110 - Performance: 4 (Load Time 2, Concurrent 2) - TC-124 to TC-127 - Security: 4 (Session Timeout, Access Control, Data Protection, PDPA) - TC-128 to TC-131 - ข่าวสาร: 3 (ดู, อ่าน, ภาษา) - TC-023 to TC-025 - Like Wallet: 3 (ทั้งหมด, ล็อคอยู่, ใช้ได้) - TC-084 to TC-086 - หุ้น CU: 3 (ติดค้ำประกัน, หุ้น CU, มูลค่า) - TC-091 to TC-093 - Mobile: 3 (มือถือ, แท็บเล็ต, Desktop) - TC-132 to TC-134 - MSP: 2 (ดูยอด, MSP อัตโนมัติ) - TC-026 to TC-027 - Open Door: 2 (เปิด, ส่งข้อความ) - TC-028 to TC-029 - OKR: 2 (ดู, อัปเดต) - TC-045 to TC-046 - รูปภาพ: 2 (ดู, อัปโหลด) - TC-047 to TC-048 - ยืนยันงาน: 2 (ดู, ยืนยัน) - TC-068 to TC-069 -",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-24T11:10:43.488Z",
+      "lastRecalledAt": "2026-05-27T00:04:36.714Z",
+      "queryHashes": [
+        "b0e7a390e5a5",
+        "941d52e17c38"
+      ],
+      "recallDays": [
+        "2026-05-24",
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "นทํางาน/ลา",
+        "tc-107",
+        "tc-110",
+        "tc-124",
+        "tc-127",
+        "tc-128",
+        "tc-131",
+        "tc-023"
+      ]
+    },
+    "memory:memory/2026-05-16.md:22:43": {
+      "key": "memory:memory/2026-05-16.md:22:43",
+      "path": "memory/2026-05-16.md",
+      "startLine": 22,
+      "endLine": 43,
+      "source": "memory",
+      "snippet": "- Authentication: 16 (Sign Up 7, Log in 6, Scan QR Code 4) - TC-001 to TC-016 - ใบลา: 7 (สร้างใบลา 4, อนุมัติใบลา 3) - TC-053 to TC-059 - Drawer Menu: 7 (ข้อมูลส่วนตัว, ตั้งค่าภาษา 3, ข้อเสนอแนะ, ผู้สนับสนุน, ออกจากระบบ) - TC-112 to TC-118 - Like Credit: 6 (Like Credit 4, ลบทั้งหมด 2) - TC-017 to TC-022 - Profile: 6 (Profile 3, BUG 2, User ID 1) - TC-038 to TC-043 - สุขภาพ: 6 (น้ำหนัก/ส่วนสูง, BMI 2, กิจกรรมออกกำลังกาย 2, เข้ากลุ่มสุขภาพ) - TC-101 to TC-106 - Cross-Country: 5 (ภาษาไทย, ภาษาลาว, ภาษาเขมร, Time Zone, Currency) - TC-119 to TC-123 - Notification: 4 (กระดิ่งแจ้งเตือน 3, เคลมรางวัลจากแจ้งเตือน) - TC-030 to TC-033 - เคลมรางวัล: 4 (ดู, เคลม MSP พอ, เคลม MSP ไม่พอ, เคลมข้ามประเทศ) -",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-24T11:10:43.488Z",
+      "lastRecalledAt": "2026-05-27T00:04:36.714Z",
+      "queryHashes": [
+        "b0e7a390e5a5",
+        "941d52e17c38"
+      ],
+      "recallDays": [
+        "2026-05-24",
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "tc-001",
+        "tc-016",
+        "tc-053",
+        "tc-059",
+        "tc-112",
+        "tc-118",
+        "tc-017",
+        "tc-022"
+      ]
+    },
+    "memory:memory/2026-05-20.md:1:34": {
+      "key": "memory:memory/2026-05-20.md:1:34",
+      "path": "memory/2026-05-20.md",
+      "startLine": 1,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "# Daily Memory - 2026-05-20 (Wednesday) ## 🌅 Morning Briefings - **Longevity Daily Briefing** (05:13) - Generated and sent in Thai - **AI Briefing** - Pending 06:00 - **Daily Exam** - Pending 06:00 (Wednesday = ภาษาอังกฤษ) ## 📋 Tech/Health News Headlines (2026-05-19/20) - Karpathy joined Anthropic - Gemini 3.5 Flash released - Google Gemini Omni launched - OpenAI adopts SynthID watermark - Mistral AI acquires Emmi AI - 314 npm packages compromised - Apple new accessibility features - Harvard Health: 5 timeless habits for better health - The Guardian: Stress effects on body, exercise after 40, sleep issues ## 🤖 AI Briefing Sent (06:13) - Gemini 3.5 Flash released by Google - Karpathy jo",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-24T11:10:43.488Z",
+      "lastRecalledAt": "2026-05-31T04:53:45.593Z",
+      "queryHashes": [
+        "b0e7a390e5a5",
+        "e75dea794990",
+        "f65d3dd6004f",
+        "3358c76beb55",
+        "76f1cc9e25c3"
+      ],
+      "recallDays": [
+        "2026-05-24",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "openai",
+        "tech/health",
+        "2026-05-19/20",
+        "3.5",
+        "wednesday",
+        "morning",
+        "briefings",
+        "longevity"
+      ]
+    },
+    "memory:memory/2026-05-25.md:1:37": {
+      "key": "memory:memory/2026-05-25.md:1:37",
+      "path": "memory/2026-05-25.md",
+      "startLine": 1,
+      "endLine": 37,
+      "source": "memory",
+      "snippet": "# Daily Memory - 2026-05-25 (Monday) ## 🌅 Morning Briefings - **Longevity Daily Briefing** (05:13) - Sent in Thai ✅ - **AI Briefing** (06:13) - Sent to ครูฝึก ✅ - **Daily Exam** (คณิต) - MARKED SENT but actually **CANCELED** by คุณแนน (Mock Exam โรงเรียนชั้นนำ) ## 📋 AI News Today - DeepSeek ลดราคา 75% ถาวร + native coding agent - Constraint Decay: LLM agents ล้มเหลวใน Back-End Code - Microsoft เปิด source DOS code เก่าแก่ที่สุด - Australia Four-Day Work Week — Productivity เพิ่ม - Memory chip = 2/3 ของต้นทุน AI chip ## ⏰ Reminder ตั้งสำหรับพรุ่งนี้ (26 พ.ค.) - คุณแนนขอให้เตือนตอน 07:00 ด้วย To-Do List 6 ข้อ: 1. ประชุมกับพี่ต้น 09:00 เรื่อง Like2.0 2. สรุปงาน PM Q3 กับพี่ปอม 3. Che",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-26T03:35:40.915Z",
+      "lastRecalledAt": "2026-05-26T03:40:02.051Z",
+      "queryHashes": [
+        "ebc078fadf0e",
+        "14bf29aeece9",
+        "55c388a91c6d"
+      ],
+      "recallDays": [
+        "2026-05-26"
+      ],
+      "conceptTags": [
+        "back-end",
+        "four-day",
+        "2/3",
+        "พ.ค",
+        "to-do",
+        "like2.0",
+        "monday",
+        "morning"
+      ]
+    },
+    "memory:memory/2026-05-19.md:45:87": {
+      "key": "memory:memory/2026-05-19.md:45:87",
+      "path": "memory/2026-05-19.md",
+      "startLine": 45,
+      "endLine": 87,
+      "source": "memory",
+      "snippet": "- **Quality Policy:** ดีกว่า เร็วกว่า ประหยัดกว่า - พัฒนาคน พัฒนางาน จัดการความรู้ไม่หยุดยั้ง ### มาตรฐาน 9 (Customer Service Standards 9): 1. ระบุเวลาให้บริการ 2. แจ้งอัตราค่าบริการ 3. แจ้งเอกสาร/หลักฐานที่ต้องเตรียม 4. นัดหมายเป็นลายลักษณ์อักษรหากทำไม่เสร็จ 5. แจ้งช่องทางการร้องเรียน 6. สอบถามความพึงพอใจทุกครั้ง 7. แจ้งสิทธิการรับประกัน 8. รับฟังข้อเสนอแนะทุกเรื่อง 9. รับประกันความพึงพอใจทุกกรณี ### ค่านิยม 6 รับ (Core Values): 1. รับฟัง - เอาใจใส่โดยปราศจากอคติ 2. รับใช้ - บริการอย่างยินดีเต็มใจ 3. รับผิดชอบ - แก้ไขข้อผิดพลาดไม่สนใจรักษาหน้า 4. รับผิด - เสียสละอุทิศตนให้ผู้อื่น 5. รับความจริง - ตรงไปตรงมาโปร่งใส 6. รับความเปลี่ยนแปลง - ละทิ้งอัตตายึดติด ### วัฒนธรรมองค์กร 20 ข้อ (Key h",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-26T03:40:02.051Z",
+      "lastRecalledAt": "2026-05-26T03:40:02.051Z",
+      "queryHashes": [
+        "55c388a91c6d"
+      ],
+      "recallDays": [
+        "2026-05-26"
+      ],
+      "conceptTags": [
+        "งเอกสาร/หล",
+        "quality",
+        "policy",
+        "กว่า",
+        "เร็ว",
+        "ประหยัด",
+        "พัฒนา",
+        "งาน"
+      ]
+    },
+    "memory:memory/2026-05-26.md:54:86": {
+      "key": "memory:memory/2026-05-26.md:54:86",
+      "path": "memory/2026-05-26.md",
+      "startLine": 54,
+      "endLine": 86,
+      "source": "memory",
+      "snippet": "| 🔒 Security | 6-7 | OWASP Top 10, HTTPS, bcrypt, PDPA, RBAC, MFA | ### 🎯 หลักสูตรนี้มี: - Concept Table ทุกด้าน (คืออะไร + ทำไม PM ต้องรู้) - Prompt สำหรับ AI ทุกหัวข้อ - Checklist แบบ Interactive - ตารางสรุป — ต้องรู้ vs ไม่ต้องรู้ vs ถาม Dev ว่าอะไร --- ## CEO Contract LIA 2.0 — Template - **ไฟล์:** `/home/admin/.openclaw/workspace/ai_school/ceo_contract_lia2_v2.html` - **ชื่อ:** ADMC CEO Contract of Extreme Ownership — LIA 2.0 - **ใช้สำหรับ:** เก็บสัญญาแห่งความเป็นเจ้าของ ของสมาชิกทุกคนใน BU --- ## CEO Contract Data Flow + Workflow - **ไฟล์:** `/home/admin/.openclaw/workspace/ai_school/ceo_contract_dataflow.html` - **ชื่อ:** CEO Contract LIA 2.0 — Data Flow + Workflow Design - **ใ",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-27T00:04:36.714Z",
+      "lastRecalledAt": "2026-05-31T05:39:24.711Z",
+      "queryHashes": [
+        "941d52e17c38",
+        "2af9b78e615b",
+        "3f6805873b88",
+        "5f0ed4b9d731"
+      ],
+      "recallDays": [
+        "2026-05-27",
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "6-7",
+        "2.0",
+        "home/admin",
+        "security",
+        "owasp",
+        "top",
+        "https",
+        "bcrypt"
+      ]
+    },
+    "memory:memory/2026-05-25.md:1:39": {
+      "key": "memory:memory/2026-05-25.md:1:39",
+      "path": "memory/2026-05-25.md",
+      "startLine": 1,
+      "endLine": 39,
+      "source": "memory",
+      "snippet": "# Daily Memory - 2026-05-25 (Monday) ## 🌅 Morning Briefings - **Longevity Daily Briefing** (05:13) - Sent in Thai ✅ - **AI Briefing** (06:13) - Sent to ครูฝึก ✅ - **Daily Exam** (คณิต) - MARKED SENT but actually **CANCELED** by คุณแนน (Mock Exam โรงเรียนชั้นนำ) ## 📋 AI News Today - DeepSeek ลดราคา 75% ถาวร + native coding agent - Constraint Decay: LLM agents ล้มเหลวใน Back-End Code - Microsoft เปิด source DOS code เก่าแก่ที่สุด - Australia Four-Day Work Week — Productivity เพิ่ม - Memory chip = 2/3 ของต้นทุน AI chip ## ⏰ Reminder ตั้งสำหรับพรุ่งนี้ (26 พ.ค.) - คุณแนนขอให้เตือนตอน 07:00 ด้วย To-Do List 6 ข้อ: 1. ประชุมกับพี่ต้น 09:00 เรื่อง Like2.0 2. สรุปงาน PM Q3 กับพี่ปอม 3. Che",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-27T00:04:36.714Z",
+      "lastRecalledAt": "2026-05-30T08:21:15.405Z",
+      "queryHashes": [
+        "941d52e17c38",
+        "ee79cd3fa9f5"
+      ],
+      "recallDays": [
+        "2026-05-27",
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "back-end",
+        "four-day",
+        "2/3",
+        "พ.ค",
+        "to-do",
+        "like2.0",
+        "monday",
+        "morning"
+      ]
+    },
+    "memory:memory/2026-05-27.md:29:54": {
+      "key": "memory:memory/2026-05-27.md:29:54",
+      "path": "memory/2026-05-27.md",
+      "startLine": 29,
+      "endLine": 54,
+      "source": "memory",
+      "snippet": "- **คุณแนนบอก:** เช้านี้จะทำงานนี้ร่วมกับ Admin ระบบ ขอให้ช่วย List ว่าแผนงานนี้ยังขาดอะไรอีกบ้างเพื่อส่งเป็น Prototype ให้ Dev ทำ Production - **ระบบ CEO Tool มี 3 Workflow หลัก:** 1. 🏗️ โครงสร้างองค์กร (Structure Setup) — Google Sheets → GAS → CEO Database 2. 👥 ข้อมูลสมาชิก (LIA → CEO) — LIA V2 + PAO → CEO Database 3. 📝 ผู้รับใช้ทีมบันทึกเพิ่ม (Team Service Recording) — Web Form → CEO Database - **ฟีเจอร์ที่ต้องทำเพิ่ม (4 รายการ):** 1. KPI Role — KPI ตาม Role/ตำแหน่ง (ต้องสร้างตาราง kpi_roles) 2. Personal Growth — แผนพัฒนาตนเอง L&G 1, L&G 2 3. Operational Excellence — วัดผลตามมาตรฐาน WI 4. Report PKG — Dashboard รายงาน 4 ระดับ (Company → BU/FU → Team → Individual) - **Syst",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-27T13:19:22.771Z",
+      "lastRecalledAt": "2026-05-31T11:12:06.852Z",
+      "queryHashes": [
+        "3358c76beb55",
+        "30331738e0f8",
+        "00afb8064d17",
+        "874eb94dce9b"
+      ],
+      "recallDays": [
+        "2026-05-27",
+        "2026-05-29",
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "role/ตําแหน",
+        "kpi-roles",
+        "bu/fu",
+        "คุณ",
+        "เช้า",
+        "ทํางาน",
+        "ร่วม",
+        "กับ"
+      ]
+    },
+    "memory:memory/2026-05-28.md:67:97": {
+      "key": "memory:memory/2026-05-28.md:67:97",
+      "path": "memory/2026-05-28.md",
+      "startLine": 67,
+      "endLine": 97,
+      "source": "memory",
+      "snippet": "- ❌ Spreadsheet ID → เปลี่ยนไปยัง Sheet ใหม่ ### สิ่งที่เรียนรู้ (On-the-Job Training) 1. HtmlService sandbox มีข้อจำกัด (onclick, script src, ContentService) 2. google.script.run เป็นวิธีเชื่อม Frontend-Backend ใน GAS 3. Data Mapping ต้องรองรับคอลัมน์ทั้งเก่าและใหม่ 4. Requirement ชัด + Prompt ละเอียด = ผลลัพธ์ตรงใจ ### แผนโรงเรียนฝึกผู้ใช้ AI - สร้างคู่มือ HTML: /home/admin/.openclaw/workspace/PKG_Feedback_Form_Guide.html - เนื้อหา: 5 ขั้นตอน (กำหนดความต้องการ → เขียน Prompt → ทดสอบ → Deploy → ประยุกต์) - หลักการ Prompt: Output ชัด + แหล่งข้อมูล + Scale + ช่องทาง + Theme + ค่าจริง - ประยุกต์ใช้: สำรวจพึงพอใจ, ประเมินหลักสูตร, ลงทะเบียน, ขอลา ### GAS URLs (superseded) - Latest: https://s",
+      "recallCount": 9,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 9,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T06:49:19.889Z",
+      "lastRecalledAt": "2026-05-31T11:12:06.852Z",
+      "queryHashes": [
+        "cd3c22abc5bc",
+        "f29f60d4f2b8",
+        "00afb8064d17",
+        "fb0e5ef6e4d8",
+        "aec7103bd076",
+        "bc5b203d6ee5",
+        "ee31b76761d7",
+        "81e6c68779fb",
+        "874eb94dce9b"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "on-the-job",
+        "google.script.run",
+        "frontend-backend",
+        "home/admin",
+        "spreadsheet",
+        "เปลี่ยน",
+        "ยัง",
+        "sheet"
+      ]
+    },
+    "memory:memory/2026-05-28.md:37:74": {
+      "key": "memory:memory/2026-05-28.md:37:74",
+      "path": "memory/2026-05-28.md",
+      "startLine": 37,
+      "endLine": 74,
+      "source": "memory",
+      "snippet": "- ❌ Sheet \"การตอบแบบฟอร์ม\" ไม่เพิ่มเข้ามาใน Spreadsheet - ❌ Telegram ไม่แจ้งเตือน - 🔄 คุณแนนขอแก้: กรอกรหัสสมาชิกอย่างเดียว → ชื่อขึ้นอัตโนมัติ (autocomplete จาก Sheet Members) ### ข้อ 3: ต้องแก้ไขปัญหา Form Response + เพิ่ม autocomplete ID→ชื่อ ### แก้ไข Workflow & Data Flow: - ตัด Cobra Effect ออกทั้งหมดตามคุณแนนสั่ง - \"ดูผลสำรวจ\" → \"อ่านผลสำรวจ\" - \"ตรวจสุขภาพ\" → \"รายงานสถานะ\" ## 📝 แบบฟอร์มรวบรวม Feedback — สำเร็จ (16:00) ### ผลงาน - ✅ สร้างแบบฟอร์ม Feedback ทีมบัญชีและทีมการเงิน PKG สำเร็จ - ✅ 3 หน้า: ข้อมูลสมาชิก → คะแนนทีมบัญชี → คะแนนทีมการเงิน - ✅ Autocomplete จาก Sheet Members 999+ คน (รองรับ ชื่อ+นามสกุล และ BU) - ✅ Scale 0-5 (0=น้อยสุด 5=มากที่สุด) - ✅ Light Theme (พื้นขาว ตัว",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T06:49:19.889Z",
+      "lastRecalledAt": "2026-05-30T12:16:39.846Z",
+      "queryHashes": [
+        "cd3c22abc5bc",
+        "f29f60d4f2b8",
+        "fb0e5ef6e4d8"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "0-5",
+        "sheet",
+        "การ",
+        "ตอบ",
+        "แบบ",
+        "ฟอร์ม",
+        "เพิ่ม",
+        "เข้า"
+      ]
+    },
+    "memory:memory/2026-05-27.md:48:72": {
+      "key": "memory:memory/2026-05-27.md:48:72",
+      "path": "memory/2026-05-27.md",
+      "startLine": 48,
+      "endLine": 72,
+      "source": "memory",
+      "snippet": "- LIA V2: `https://devdev.prachakij.com/PPP7/LIA_V2/index.php` - Google Sheets ID: `1S_0IO-Hu5T0_kGaor0kmnMayH-4ek2sLYq4rwiFi5v8` ## คุณแนนถามเรื่องการคุยกับหัวหน้า DEV (06:28) - อยากเริ่มคุยกับหัวหน้า DEV เรื่องความฝันสร้าง App - ขอให้ช่วยวางกลยุทธ์การคุย — แสดงความเป็นไปได้ + ไม่เป็นภาระ - ให้ Script 6 ขั้นตอน (12 นาที) พร้อม Tips + ประโยคสำคัญที่ควรจำ - เน้น: ขอ \"พี่เลี้ยง\" (คุณบอล) เดือนละ 2-3 ครั้ง ไม่ใช่ \"คนทำแทน\" - เตรียมเอกสาร 2 ชิ้น: Technical PM Learning Path + AI App Builder Handbook ## To-Do List วันนี้ (27 พ.ค.) — ตั้งเตือน 08:00 น. 1. 📱 งาน Like Point 2.0 — https://g.co/gemini/share/856243644be9 2. 📝 งานทำแบบฟอร์ม CEO — ต้องเสร็จเสาร์ (30 พ.ค.) 3. 🤖 งานเสร็จ AI ให้ทีม",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T07:57:59.367Z",
+      "lastRecalledAt": "2026-05-30T07:57:59.367Z",
+      "queryHashes": [
+        "2af9b78e615b"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "2-3",
+        "to-do",
+        "พ.ค",
+        "2.0",
+        "g.co/gemini/share/856243644be9",
+        "lia",
+        "https",
+        "devdev.prachakij.com"
+      ]
+    },
+    "memory:memory/2026-05-30.md:63:92": {
+      "key": "memory:memory/2026-05-30.md:63:92",
+      "path": "memory/2026-05-30.md",
+      "startLine": 63,
+      "endLine": 92,
+      "source": "memory",
+      "snippet": "- `<?!= membersJson ?>` template tags don't work inside `<script>` tags (GAS ignores them) - `<?!= membersJson ?>` works inside `<textarea>` but GAS escapes quotes to `&#34;` - google.script.run is the only reliable way to load data in GAS web apps - Extra `});` causes SyntaxError that breaks entire page - Multiple .gs files in same project cause function conflicts ### Latest URL `https://script.google.com/macros/s/AKfycbx3KbVHTg0QfkZTc35-vF8-62eK93wvY-8GKqIlfW6BGx7SxU39nR8yN-bj8sznTN8S/exec` ## CEO Dashboard - Deployment v6.5 (14:24) - **New GAS URL**: `https://script.google.com/macros/s/AKfycby-On1pHpZdvtZNBcLk_dMbieR3TQ_84OEWpf0Q1KP646XK5szhu5TFl-k8t4-9jsle/exec` - User deployed new ver",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T07:57:59.367Z",
+      "lastRecalledAt": "2026-05-31T11:12:06.852Z",
+      "queryHashes": [
+        "2af9b78e615b",
+        "00afb8064d17",
+        "874eb94dce9b"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "google.script.run",
+        "v6.5",
+        "membersjson",
+        "template",
+        "tags",
+        "don't",
+        "inside",
+        "script"
+      ]
+    },
+    "memory:memory/2026-05-30.md:87:122": {
+      "key": "memory:memory/2026-05-30.md:87:122",
+      "path": "memory/2026-05-30.md",
+      "startLine": 87,
+      "endLine": 122,
+      "source": "memory",
+      "snippet": "- คุณแนนถาม: งาน #ceo-dashboard ใช้คำว่า \"เขียน Code\" ได้ไหม? เข้าใกล้ Junior Dev แล้วหรือยัง? - ตอบ: ใช่ เขียน Code จริง + เข้าใกล้ Junior Dev แล้ว - งานครอบคลุม: GAS (.gs) Backend, HTML+JS Frontend, Telegram API, Google Sheets DB, Debug/Deploy ## Feedback Form - ต้องการ API Key (14:48) - คุณแนนขอสรุปรายงานจำนวนผู้ทำแบบประเมิน #feedback-form - เข้าถึง Sheet ไม่ได้เต็มที่ — ต้องใช้ API Key จาก Sheet _Config - รอคุณแนนส่ง API Key มา ## คุณแนนสั่ง: ทุกโปรเจคต้องใส่ทักษะที่ขาด (15:54) ต้องบรรจุทักษะและกระบวนการเหล่านี้ในทุกโปรเจคต่อไป: ### 🔴 สำคัญมาก: 1. **Testing** — เขียน Unit Test / Integration Test ทุกโปรเจค 2. **Git (Version Control)** — ใช้ Git ทุกโปรเจค (commit, branch, merge, PR) 3",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T07:57:59.367Z",
+      "lastRecalledAt": "2026-05-30T07:57:59.367Z",
+      "queryHashes": [
+        "2af9b78e615b"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "ceo-dashboard",
+        "debug/deploy",
+        "feedback-form",
+        "คุณ",
+        "แนน",
+        "ถาม",
+        "งาน",
+        "ceo"
+      ]
+    },
+    "memory:memory/2026-05-26.md:26:65": {
+      "key": "memory:memory/2026-05-26.md:26:65",
+      "path": "memory/2026-05-26.md",
+      "startLine": 26,
+      "endLine": 65,
+      "source": "memory",
+      "snippet": "### 📦 แพ็กเกจที่ส่งให้ Developer (10 อย่าง): 1. โค้ดทั้งหมด (GitHub/ZIP) 2. Database Schema + ข้อมูลตัวอย่าง 3. Documentation 4. Requirement Document 5. User Flow Diagram 6. UI Design (ถ้ามี) 7. Test Cases + ผลทดสอบ 8. รายการ Bug ที่ยังค้าง 9. Environment Variables 10. วิดีโอสาธิตการใช้งาน --- ## Technical PM Learning Path — บันทึกเป็นแผนฝึกด้านเทคนิค - **ไฟล์:** `/home/admin/.openclaw/workspace/ai_school/technical_pm_learning_path.html` - **ชื่อ:** Technical PM Learning Path — รู้ครบทุกด้าน สำหรับ Product Manager - **กลุ่มเป้าหมาย:** PM ที่อยากเข้าใจทุกด้านของ App — Frontend, Backend, Database, Architecture, Design/UI/UX, Security - **ระยะเวลา:** 10 สัปดาห์ (เรียน 1-2 ชม./วัน) ### 📋 6",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T07:57:59.367Z",
+      "lastRecalledAt": "2026-05-30T14:43:06.228Z",
+      "queryHashes": [
+        "2af9b78e615b",
+        "3f6805873b88"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "github/zip",
+        "home/admin",
+        "design/ui/ux",
+        "1-2",
+        "แพ็ก",
+        "ส่ง",
+        "developer",
+        "อย่าง"
+      ]
+    },
+    "memory:memory/2026-05-27.md:1:33": {
+      "key": "memory:memory/2026-05-27.md:1:33",
+      "path": "memory/2026-05-27.md",
+      "startLine": 1,
+      "endLine": 33,
+      "source": "memory",
+      "snippet": "# 2026-05-27 (พุธ) — Daily Log ## Briefings Sent Today - ✅ 05:13 — Longevity Daily Briefing (ภาษาไทย) - ✅ 06:13 — AI Briefing สำหรับครูฝึก (วันพุธ = อังกฤษ + AI workflow) - ✅ 06:13 — Daily Exam วันพุธ (อังกฤษ) — marked sent in state ## State File Updated - longevity: 2026-05-27T05:13 - aiBriefing: 2026-05-27T06:13 - dailyExam: 2026-05-27T06:13 - dailyReport: pending (17:00) ## Key Events - 08:00 One-Time Reminder for คุณแนน scheduled in HEARTBEAT.md (5 ข้อ To-Do list) - Feishu plugin still blocked — permission `application:application:self_manage` not yet enabled - Browser tool not working — cannot fetch Feishu docs ## Ongoing Issues - Feishu permission: admin ยังไม่ได้เปิด `application:",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T08:21:15.405Z",
+      "lastRecalledAt": "2026-05-31T05:39:24.711Z",
+      "queryHashes": [
+        "ee79cd3fa9f5",
+        "00afb8064d17",
+        "3f6805873b88",
+        "f770b4844a3a",
+        "5f0ed4b9d731"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "2026-05-27t05",
+        "2026-05-27t06",
+        "one-time",
+        "heartbeat.md",
+        "to-do",
+        "self-manage",
+        "พุธ",
+        "log"
+      ]
+    },
+    "memory:memory/2026-05-29.md:1:36": {
+      "key": "memory:memory/2026-05-29.md:1:36",
+      "path": "memory/2026-05-29.md",
+      "startLine": 1,
+      "endLine": 36,
+      "source": "memory",
+      "snippet": "# 2026-05-29 Daily Notes ## CEO Dashboard - Autocomplete Bug Fix & Form Redesign - **ปัญหาเดิม:** CEO Contract Form autocomplete dropdown ไม่แสดงรายชื่อ - **สาเหตุที่ค้นพบ:** 1. `MEMBERS_DATA_PLACEHOLDER` ไม่ถูกแทนที่ 2. Key ภาษาไทยใน JavaScript object ไม่ทำงานใน GAS sandbox → เปลี่ยนเป็น key อังกฤษ 3. `var MEMBERS = var MEMBERS = [...]` double assignment bug → แก้โดยให้ .gs แทนที่ placeholder ด้วย data เท่านั้น 4. `.closest()` อาจไม่ทำงานใน GAS sandbox → เพิ่ม fallback - **การออกแบบใหม่ตาม PDF (12:04):** - หน้าเดียว แทน 7 หน้า (ตรงตาม PDF) - Accountability เป็น tag buttons (คลิกเลือก/ยกเลิก) - Purpose/Vision มี Scale 1-9 - มีส่วน \"เครื่องมือ\" ใน OKR - มีคำคม \"เราจะเก่งขึ้",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T08:21:15.405Z",
+      "lastRecalledAt": "2026-05-31T11:12:06.852Z",
+      "queryHashes": [
+        "ee79cd3fa9f5",
+        "00afb8064d17",
+        "874eb94dce9b"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "members-data-placeholder",
+        "อก/ยกเล",
+        "purpose/vision",
+        "1-9",
+        "ceo",
+        "dashboard",
+        "autocomplete",
+        "bug"
+      ]
+    },
+    "memory:memory/2026-05-30.md:1:22": {
+      "key": "memory:memory/2026-05-30.md:1:22",
+      "path": "memory/2026-05-30.md",
+      "startLine": 1,
+      "endLine": 22,
+      "source": "memory",
+      "snippet": "# 2026-05-30 Daily Notes ## CEO Dashboard - Autocomplete Bug Fix (ongoing) ### Problem History - **Original issue**: Autocomplete ไม่ทำงานใน CEO Contract Form - **Root cause 1**: GAS template `<?!= membersData ?>` escapes quotes inside `<script>` tags - **Root cause 2**: `window.location.href + ?action=memberData` doesn't work inside GAS iframe (URL points to googleusercontent.com) - **Root cause 3**: `initAC(); initExtraAC();` called at bottom of script BEFORE `google.script.run` callback returns → autocomplete initialized with empty MEMBERS - **Root cause 4**: Multiple .gs files in project (old \"Ceo code.gs\") causing `buildMembersJS` error: `TypeError: Cannot read properties of undefined",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T10:14:52.868Z",
+      "lastRecalledAt": "2026-05-31T04:53:45.593Z",
+      "queryHashes": [
+        "3419e08975a9",
+        "00afb8064d17",
+        "81e6c68779fb",
+        "76f1cc9e25c3"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "window.location.href",
+        "googleusercontent.com",
+        "google.script.run",
+        "code.gs",
+        "ceo",
+        "dashboard",
+        "autocomplete",
+        "bug"
+      ]
+    },
+    "memory:memory/2026-05-29.md:27:51": {
+      "key": "memory:memory/2026-05-29.md:27:51",
+      "path": "memory/2026-05-29.md",
+      "startLine": 27,
+      "endLine": 51,
+      "source": "memory",
+      "snippet": "2. ต้องคลิกจาก dropdown เท่านั้น ถึงจะเรียก `pickMember()` ### แก้ไข - เพิ่ม fallback: ถ้า MEMBERS ว่าง → โหลดจาก `?action=memberData` endpoint อัตโนมัติ - เพิ่ม Enter/Tab auto-fill → กรอก ID กด Enter ดึงข้อมูลอัตโนมัติ - เพิ่ม Blur auto-fill → คลิกที่อื่นหลังกรอก ID → ดึงข้อมูลอัตโนมัติ - เพิ่ม console.log debug ### ส่งไฟล์ - `CEO_Contract_Form.html` (อัปเดต) — ส่งแล้ว - `PKG_Data_Hub_v3.2_CEO_Contract.gs` (ใหม่) — ส่งแล้วก่อนหน้า ### แจ้งคุณแนน - ต้อง Deploy ทั้ง 2 ไฟล์ (HTML + GS) ไม่เช่นนั้น MEMBERS จะว่าง ## CEO Contract Form - Debug Session (17:17) - memberData endpoint ทำงานถูกต้อง ✅ (ส่งข้อมูลสมาชิกได้) - ฟอร์มหลักไม่แสดงเต็ม — แสดงแค่ title \"CEO Contract of Extreme Ownership\" -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T10:14:57.720Z",
+      "lastRecalledAt": "2026-05-30T10:14:57.720Z",
+      "queryHashes": [
+        "00afb8064d17"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "enter/tab",
+        "auto-fill",
+        "console.log",
+        "ceo-contract-form.html",
+        "ต้อง",
+        "คลิก",
+        "จาก",
+        "dropdown"
+      ]
+    },
+    "memory:memory/2026-05-30.md:19:43": {
+      "key": "memory:memory/2026-05-30.md:19:43",
+      "path": "memory/2026-05-30.md",
+      "startLine": 19,
+      "endLine": 43,
+      "source": "memory",
+      "snippet": "- **User reports**: Version 40 had working submit but no autocomplete. Current version: autocomplete gone AND other functionality broken - **Error log**: `buildMembersJS @ Ceo code.gs:50` → old .gs file still exists in project - **User hasn't deleted old .gs files yet** — this is likely causing the conflict - **Latest URL**: `https://script.google.com/macros/s/AKfycbzn96xvK7y69opY3o9r5ZSmGv_vgMf0maUdsDWeg4Sg7owLvfHMC4mc7RWP5jpD6oci/exec` - **Server-side QC**: All code checks pass (google.script.run, getMembersForClient, no buildMembersJS, no bottom initAC) - **Suspected issue**: Multiple .gs files conflicting — old file has duplicate function definitions ### Key Files - `/home/admin/.opencl",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T10:14:57.720Z",
+      "lastRecalledAt": "2026-05-30T14:43:06.228Z",
+      "queryHashes": [
+        "00afb8064d17",
+        "3f6805873b88"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "code.gs",
+        "server-side",
+        "google.script.run",
+        "home/admin",
+        "user",
+        "reports",
+        "version",
+        "had"
+      ]
+    },
+    "memory:memory/2026-05-30.md:141:156": {
+      "key": "memory:memory/2026-05-30.md:141:156",
+      "path": "memory/2026-05-30.md",
+      "startLine": 141,
+      "endLine": 156,
+      "source": "memory",
+      "snippet": "16. User Feedback Loop — ระบบรับ Feedback ในแอป 17. Accessibility (a11y) — รองรับผู้ใช้ทุกกลุ่ม ## คุณแนนสั่ง: KPI ทักษะ 25 ข้อ + Design (UX/UI) (18:07-18:12) - เพิ่มมุมมองที่ 6: **Design (UX/UI)** — ออกแบบให้ผู้ใช้เป็นศูนย์กลาง - ทักษะ 10 → 17 ข้อ (เพิ่ม: Documentation, Monitoring, Reusable Components, Design System, Backup, Feedback Loop, Accessibility) - ตั้ง KPI สำหรับทักษะทุกข้อ — ทุกโปรเจคต้องวัดผลและบันทึกใน #memory - ผลลัพธ์ที่คาด: Production Grade ทุกโปรเจค, Bug ลด 80%+, เร็วขึ้น 50%+ ## #ceo-dashboard KPI สรุปผล (18:14) - คะแนนรวม: 7/25 ผ่าน (28%) - ผ่าน: Documentation, Reusable Components, Design System, Backup, User Feedback Loop, Dev Full-Stack, Design Thinking, QC Before Depl",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T12:16:39.846Z",
+      "lastRecalledAt": "2026-05-30T12:16:39.846Z",
+      "queryHashes": [
+        "fb0e5ef6e4d8"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "backup",
+        "ux/ui",
+        "07-18",
+        "ceo-dashboard",
+        "7/25",
+        "full-stack",
+        "user",
+        "feedback"
+      ]
+    },
+    "memory:memory/2026-05-30.md:114:146": {
+      "key": "memory:memory/2026-05-30.md:114:146",
+      "path": "memory/2026-05-30.md",
+      "startLine": 114,
+      "endLine": 146,
+      "source": "memory",
+      "snippet": "10. **Performance** — Pagination/Caching สำหรับข้อมูลขนาดใหญ่ ### ลำดับความสำคัญ (เรียน): 1. 🔴 Git (1-2 วัน) 2. 🔴 Unit Test (2-3 วัน) 3. 🟡 SQL + Database (1 สัปดาห์) 4. 🟡 Authentication (2-3 วัน) 5. 🟢 TypeScript (1 สัปดาห์) ## คุณแนนสั่ง: ปิดจุดอ่อน \"คุณภาพ Code\" (17:55) ทุกโปรเจคต้องผ่าน 2 ขั้นตอนก่อนส่งมอบ: 1. **QC Checklist** — ทำทุกครั้ง (มีอยู่แล้ว) 2. **AI Self-Review** — เพิ่มทันที ตรวจ Code ตาม: Security, Error Handling, Performance, Mobile Responsive, Bug ซ่อน วิเคราะห์บทสนทนากับพี่โอม (Team Lead Dev): - พี่โอมมองว่าคุณแนนเป็น \"คนไม่มีความรู้ programming\" → ประเมินต่ำไป - ความจริง: คุณแนนเป็น Technical PM + Product Owner ที่ทำงานร่วมกับ AI ได้ดี - ผลลัพธ์ Software ไม่ต่างจาก",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T12:16:39.846Z",
+      "lastRecalledAt": "2026-05-31T17:34:23.992Z",
+      "queryHashes": [
+        "fb0e5ef6e4d8",
+        "7437fcc4e081",
+        "8836d0dba0af",
+        "107c486cd7c4",
+        "0e3be93f0607"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "pagination/caching",
+        "1-2",
+        "2-3",
+        "self-review",
+        "performance",
+        "pagination",
+        "caching",
+        "สําหรับ"
+      ]
+    },
+    "memory:memory/2026-05-22.md:17:24": {
+      "key": "memory:memory/2026-05-22.md:17:24",
+      "path": "memory/2026-05-22.md",
+      "startLine": 17,
+      "endLine": 24,
+      "source": "memory",
+      "snippet": "- Train AI เริ่ม 15/06, Admin+Implement 17-30/06, Level 1 เริ่ม 17 มิ.ย. - ทีม: `ทีม CI/AI`, `ทีม AI`, `ทีม OST` ## Previous Files (Reference) - `/home/admin/.openclaw/workspace/dashboard_option3_hr.html` — HR Dashboard ภาพรวมองค์กร - `/home/admin/.openclaw/workspace/pkg_training_hub_ultimate.html` — Individual Search Dashboard - `/home/admin/.openclaw/workspace/pkg_training_complete.html` — Merged version (latest)",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T14:43:00.705Z",
+      "lastRecalledAt": "2026-05-30T14:43:06.228Z",
+      "queryHashes": [
+        "bc5b203d6ee5",
+        "3f6805873b88"
+      ],
+      "recallDays": [
+        "2026-05-30"
+      ],
+      "conceptTags": [
+        "15/06",
+        "17-30/06",
+        "ci/ai",
+        "home/admin",
+        "train",
+        "เริ่ม",
+        "admin",
+        "implement"
+      ]
+    },
+    "memory:memory/2026-05-30.md:182:216": {
+      "key": "memory:memory/2026-05-30.md:182:216",
+      "path": "memory/2026-05-30.md",
+      "startLine": 182,
+      "endLine": 216,
+      "source": "memory",
+      "snippet": "- ⚠️ Push ไม่สำเร็จ — ต้องการ Personal Access Token จากคุณแนน - รอ: คุณแนนสร้าง GitHub PAT หรือ push เองจากเครื่อง ## ✅ Git Setup CEO Dashboard สำเร็จ (21:32) - GitHub username: rattapornkachakaewpkg-commits - Repo: https://github.com/rattapornkachakaewpkg-commits/ceo-dashboard - First commit: 75262f7 \"v6.5 - CEO Contract Dashboard: หน้าเดียว + autocomplete + auto-fill\" - Files pushed: CEO_Contract_Form.html, CEO_Contract_Backend_Safe.gs, README.md, .gitignore - PAT สร้างแล้ว (No expiration) — เก็บใน .git-credentials - Local repo: /home/admin/.openclaw/workspace/ceo-dashboard/ - ⚠️ แก้ไข: token ถูกเก็บใน .git-credentials (เพิ่มใน .gitignore แล้ว) - ต่อไป: ทุกครั้งที่แก้ code → บอกผม push ให",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T15:56:28.632Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "7437fcc4e081",
+        "8836d0dba0af",
+        "f770b4844a3a",
+        "5f0ed4b9d731",
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-30",
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "rattapornkachakaewpkg-commits",
+        "v6.5",
+        "auto-fill",
+        "ceo-contract-form.html",
+        "ceo-contract-backend-safe.gs",
+        "readme.md",
+        "git-credentials",
+        "home/admin"
+      ]
+    },
+    "memory:memory/2026-05-30.md:141:166": {
+      "key": "memory:memory/2026-05-30.md:141:166",
+      "path": "memory/2026-05-30.md",
+      "startLine": 141,
+      "endLine": 166,
+      "source": "memory",
+      "snippet": "16. User Feedback Loop — ระบบรับ Feedback ในแอป 17. Accessibility (a11y) — รองรับผู้ใช้ทุกกลุ่ม ## คุณแนนสั่ง: KPI ทักษะ 25 ข้อ + Design (UX/UI) (18:07-18:12) - เพิ่มมุมมองที่ 6: **Design (UX/UI)** — ออกแบบให้ผู้ใช้เป็นศูนย์กลาง - ทักษะ 10 → 17 ข้อ (เพิ่ม: Documentation, Monitoring, Reusable Components, Design System, Backup, Feedback Loop, Accessibility) - ตั้ง KPI สำหรับทักษะทุกข้อ — ทุกโปรเจคต้องวัดผลและบันทึกใน #memory - ผลลัพธ์ที่คาด: Production Grade ทุกโปรเจค, Bug ลด 80%+, เร็วขึ้น 50%+ ## #ceo-dashboard KPI สรุปผล (18:14) - คะแนนรวม: 7/25 ผ่าน (28%) - ผ่าน: Documentation, Reusable Components, Design System, Backup, User Feedback Loop, Dev Full-Stack, Design Thinking, QC Before Depl",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T16:35:06.130Z",
+      "lastRecalledAt": "2026-05-30T16:35:06.130Z",
+      "queryHashes": [
+        "8836d0dba0af"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "backup",
+        "ux/ui",
+        "07-18",
+        "ceo-dashboard",
+        "7/25",
+        "full-stack",
+        "user",
+        "feedback"
+      ]
+    },
+    "memory:memory/2026-05-30.md:209:247": {
+      "key": "memory:memory/2026-05-30.md:209:247",
+      "path": "memory/2026-05-30.md",
+      "startLine": 209,
+      "endLine": 247,
+      "source": "memory",
+      "snippet": "- KPI อัปเดต: 8/25 → 10/25 (Git + Testing ผ่าน) ## สรุปวันนี้ (2026-05-30) - ✅ เพิ่มมุมมองข้อ 6: Design (UX/UI) - ✅ เพิ่มทักษะ 10 → 17 ข้อ (Documentation, Monitoring, Reusable Components, Design System, Backup, Feedback Loop, Accessibility) - ✅ ตั้ง KPI ทักษะ 25 ข้อ (3 ระดับ) - ✅ สรุปผล KPI #ceo-dashboard: 7/25 (28%) - ✅ แนะนำปรับปรุง 3 สัปดาห์ - ✅ ตั้งการบ้าน KPI 25/25 เตือน 08:00 น. ทุกวัน - ✅ ตั้ง #feedback-form Dashboard 09:00 น. ทุกวัน - ✅ ตั้งสรุปโปรเจค 07:30 น. ทุกวัน - ✅ ติดตั้ง Git + สร้าง repo GitHub - ✅ Push code ขึ้น GitHub สำเร็จ - ✅ เขียน Unit Test 5 Test Cases - ✅ รัน Test ผ่านทั้งหมด - KPI: 7/25 → 10/25 (Git + Testing ผ่าน) ## Security Module v7.0 เสร็จ (22:05) - เพิ่ม CEO_",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T16:35:06.130Z",
+      "lastRecalledAt": "2026-05-30T16:35:06.130Z",
+      "queryHashes": [
+        "8836d0dba0af"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "backup",
+        "8/25",
+        "10/25",
+        "ux/ui",
+        "ceo-dashboard",
+        "7/25",
+        "25/25",
+        "feedback-form"
+      ]
+    },
+    "memory:memory/2026-05-31.md:161:184": {
+      "key": "memory:memory/2026-05-31.md:161:184",
+      "path": "memory/2026-05-31.md",
+      "startLine": 161,
+      "endLine": 184,
+      "source": "memory",
+      "snippet": "- Google Sheet: https://docs.google.com/spreadsheets/d/1nu_lnYBJD6lccjvF03aG9ftUuq1Us_7a8Wi0kdc490U/edit?gid=0#gid=0 - 4 แท็บ: 1. แผนงาน PM + ทักษะ 27 — 35 แถว (16 PM + 19 ทักษะใหม่ + 2 ปิดจุดอ่อน) 2. KPI Framework — 25 KPI 3. ทักษะ 27 Checklist — ครบทุกข้อ 4. AL,BP,LL,II — 10 ข้อวิเคราะห์ - ทักษะ 27 ข้อ + ปิดจุดอ่อน 2 ข้อ ครบแล้ว - Git push สำเร็จ ## 📌 กฎใหม่ #likepoint 2.0 (00:41) **คุณแนนสั่ง:** ทุกครั้งที่ทำงานกับ #likepoint 2.0 ต้องใช้: 1. **ทักษะ 27 ข้อ** — ทักษะที่ต้องดึงมาใช้ทุกครั้งที่ออกแบบ Software 2. **มุมมอง Product Manager Platform ระดับโลก** — มองการณ์ไกล, วิเคราะห์ตลาด, คิดเชิงกลยุทธ์ ## 📊 LikePoint 2.0 Sheet v2 รันสำเร็จ (00:53) - GAS URL: https://script.google.c",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T17:58:43.977Z",
+      "lastRecalledAt": "2026-05-30T17:58:43.977Z",
+      "queryHashes": [
+        "107c486cd7c4"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "2.0",
+        "script.google.c",
+        "google",
+        "sheet",
+        "https",
+        "docs.google.com",
+        "spreadsheets",
+        "edit"
+      ]
+    },
+    "memory:memory/2026-05-31.md:135:170": {
+      "key": "memory:memory/2026-05-31.md:135:170",
+      "path": "memory/2026-05-31.md",
+      "startLine": 135,
+      "endLine": 170,
+      "source": "memory",
+      "snippet": "- เริ่มใหม่ทั้งหมด — ไม่ใช้ไฟล์เดิม ### Google Sheets URL `https://docs.google.com/spreadsheets/d/15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0/edit` ### 5 BU ในระบบ - PMSG (Isuzu ประเทศไทย) - CPDG (Digital) - AAMG (Auto Alliance) - RPLCG (ร่วมพัฒนา ลาว) - RAFCOG (Auto Finance กัมพูชา) ### Sheet C1_ข้อมูลอบรมรายคน — คอลัมน์ ลำดับบันทึก, สถานะการเข้าอบรม (Y/N), รหัสสมาชิก, ชื่อ, นามสกุล, บทบาท, ทีม, BU, ผลการสอบ (ผ่าน/ไม่ผ่าน), BU บริหาร, รหัสหลักสูตร, ชื่อหลักสูตร, ประเภทหลักสูตร, เดือนที่เปิดอบรม, ปีอบรม, วันที่วางแผนเปิดอบรม, รหัสสมาชิกวิทยากร, ชื่อวิทยากร, นามสกุลวิทยากร, เป้าหมายประจำปี (YES), หลักสูตรประจำธุรกิจ (PKG), JOB_No, วันที่อบรมจริง, หน่วยกิจ, GPA, สถานะส่งไลน์, วันที่ต้องส่ง",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-30T17:58:43.977Z",
+      "lastRecalledAt": "2026-05-31T17:34:23.992Z",
+      "queryHashes": [
+        "107c486cd7c4",
+        "0e3be93f0607"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "c1-ข",
+        "y/n",
+        "าน/ไม",
+        "job-no",
+        "เริ่ม",
+        "ใหม",
+        "ทั้งหมด",
+        "ไฟล"
+      ]
+    },
+    "memory:memory/2026-05-30.md:160:188": {
+      "key": "memory:memory/2026-05-30.md:160:188",
+      "path": "memory/2026-05-30.md",
+      "startLine": 160,
+      "endLine": 188,
+      "source": "memory",
+      "snippet": "- ดึงข้อมูลจาก Sheet ID: 1V33wZ9zV3qyZeTj2_WMSE466Di3KDjzBpD8K0_zR_tY (sheet=Feedback) - วิเคราะห์คะแนนเฉลี่ย แยกทีมบัญชี/ทีมการเงิน นับผู้ตอบรายบริษัท สรุปข้อเสนอแนะ (ไม่ระบุชื่อ) - สร้าง Dashboard HTML ส่งให้คุณแนนทาง Telegram ## สรุปโปรเจครายวัน 07:30 น. (20:54) - คุณแนนขอ: ส่งสรุปงานโปรเจคทั้งหมดทุกวัน เวลา 07:30 น. - รูปแบบ: ลำดับ → ชื่อโปรเจค → Google Sheet link → Link อื่น - เพิ่มใน HEARTBEAT.md แล้ว - โปรเจคที่ส่ง: #ceo-dashboard, #feedback-form, #ai-school, #pkg-dashboard ## Git Setup Progress (21:15-21:19) - คุณแนนติดตั้ง Git + สมัคร GitHub เสร็จแล้ว ✅ - คุณแนนสร้าง repo ceo-dashboard บน GitHub เสร็จแล้ว ✅ - รอ: อัปโหลดไฟล์ CEO Dashboard ขึ้น GitHub (ผมจะทำให้) - รอ: username Git",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:00:07.050Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "f770b4844a3a",
+        "5f0ed4b9d731",
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "heartbeat.md",
+        "ceo-dashboard",
+        "feedback-form",
+        "ai-school",
+        "pkg-dashboard",
+        "15-21",
+        "ดึง",
+        "ข้อมูล"
+      ]
+    },
+    "memory:memory/2026-05-31.md:115:147": {
+      "key": "memory:memory/2026-05-31.md:115:147",
+      "path": "memory/2026-05-31.md",
+      "startLine": 115,
+      "endLine": 147,
+      "source": "memory",
+      "snippet": "| สมาชิก | พิมพ์รหัสสมาชิก | เฉพาะตัวเอง | กรอกข้อมูลได้ | **คำถามที่ 5: สไตล์ดีไซน์** - เลือก: **Purple-Blue Gradient** (สดใส ทันสมัย) - ไฟล์ตัวอย่างดีไซน์: p5_design_preview.html (A-D), p5_design_preview_v2.html (E-H) - ลูกหมีเลือกสี Purple-Blue จากไฟล์แรก (ตัวเลือก B Sidebar + Purple-Blue หรือ A Top Nav + Purple-Blue — ยังไม่ยืนยันเลย์เอาต์ A/B/C/D) - ลูกหมีขอดูแบบอื่นเพิ่ม จึงส่งไฟล์ v2 (E-H) ให้ แต่ยังไม่ได้เลือกเลย์เอาต์สุดท้าย **ข้อมูลจาก Sheet (3 Sheets)** 1. PKGemployee_ใช้ภายในPKG (gid=356926090) — ข้อมูลสมาชิก (รหัส, ชื่อ, BU, ทีม, ตำแหน่ง) 2. C1_ข้อมูลอบรมรายคน (gid=1160880627) — ข้อมูลอบรม (หลักสูตร, สถานะ, GPA, หน่วยกิจ, คะแนนสอบ) 3. Sheet Roleplay (gid=123339608) — ทีม, BU,",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:00:07.050Z",
+      "lastRecalledAt": "2026-05-31T05:00:07.050Z",
+      "queryHashes": [
+        "f770b4844a3a"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "purple-blue",
+        "p5-design-preview.html",
+        "a-d",
+        "p5-design-preview-v2.html",
+        "e-h",
+        "a/b/c/d",
+        "pkgemployee-ใช",
+        "c1-ข"
+      ]
+    },
+    "memory:memory/2026-05-31.md:183:208": {
+      "key": "memory:memory/2026-05-31.md:183:208",
+      "path": "memory/2026-05-31.md",
+      "startLine": 183,
+      "endLine": 208,
+      "source": "memory",
+      "snippet": "3. **🆕 ทักษะกาตลาดยุคใหม่ Martech** — เทคโนโลยีการตลาดดิจิทัล, Growth Hacking, Data-Driven Marketing, Customer Journey, Personalization, Marketing Automation ## 📋 LikePoint 2.0 — Task Plan 4 สัปดาห์ (01:05) - 🔴 สัปดาห์ 1: Security + Foundation (P0) — Auth, Fraud Detection, Error Handling - 🟠 สัปดาห์ 2: UX + Documentation (P1) — UX Re-design, API Doc, Metrics Dashboard, Backup - 🟡 สัปดาห์ 3: Architecture + Martech (P2) — CI/CD, Design System, Personalization, A/B Test, Growth Loop - 🟢 สัปดาห์ 4+: Scale + Optimize (P3) — Gamification 2.0, TypeScript, Multi-language, Accessibility, Revenue - บันทึกใน likepoint-2.0/docs/TASK_PLAN.md - Push ขึ้น GitHub สำเร็จ ## 📌 กฎเพิ่มเติม #likepoint",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:20:48.348Z",
+      "lastRecalledAt": "2026-06-02T02:09:31.761Z",
+      "queryHashes": [
+        "f574398cb0c4",
+        "ba31562fd132",
+        "d5a7bd174d42"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "backup",
+        "data-driven",
+        "2.0",
+        "re-design",
+        "ci/cd",
+        "a/b",
+        "multi-language",
+        "likepoint-2.0/docs/task-plan.md"
+      ]
+    },
+    "memory:memory/2026-05-31.md:161:187": {
+      "key": "memory:memory/2026-05-31.md:161:187",
+      "path": "memory/2026-05-31.md",
+      "startLine": 161,
+      "endLine": 187,
+      "source": "memory",
+      "snippet": "- Google Sheet: https://docs.google.com/spreadsheets/d/1nu_lnYBJD6lccjvF03aG9ftUuq1Us_7a8Wi0kdc490U/edit?gid=0#gid=0 - 4 แท็บ: 1. แผนงาน PM + ทักษะ 27 — 35 แถว (16 PM + 19 ทักษะใหม่ + 2 ปิดจุดอ่อน) 2. KPI Framework — 25 KPI 3. ทักษะ 27 Checklist — ครบทุกข้อ 4. AL,BP,LL,II — 10 ข้อวิเคราะห์ - ทักษะ 27 ข้อ + ปิดจุดอ่อน 2 ข้อ ครบแล้ว - Git push สำเร็จ ## 📌 กฎใหม่ #likepoint 2.0 (00:41) **คุณแนนสั่ง:** ทุกครั้งที่ทำงานกับ #likepoint 2.0 ต้องใช้: 1. **ทักษะ 27 ข้อ** — ทักษะที่ต้องดึงมาใช้ทุกครั้งที่ออกแบบ Software 2. **มุมมอง Product Manager Platform ระดับโลก** — มองการณ์ไกล, วิเคราะห์ตลาด, คิดเชิงกลยุทธ์ ## 📊 LikePoint 2.0 Sheet v2 รันสำเร็จ (00:53) - GAS URL: https://script.google.c",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:20:48.348Z",
+      "lastRecalledAt": "2026-06-02T02:09:31.761Z",
+      "queryHashes": [
+        "f574398cb0c4",
+        "ba31562fd132",
+        "0e3be93f0607",
+        "d5a7bd174d42"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "2.0",
+        "script.google.c",
+        "google",
+        "sheet",
+        "https",
+        "docs.google.com",
+        "spreadsheets",
+        "edit"
+      ]
+    },
+    "memory:memory/2026-05-31.md:201:233": {
+      "key": "memory:memory/2026-05-31.md:201:233",
+      "path": "memory/2026-05-31.md",
+      "startLine": 201,
+      "endLine": 233,
+      "source": "memory",
+      "snippet": "- สร้าง Sheet \"LikePoint 2.0 2027 — แผนงาน PM\" - 6 แท็บ: แผนงาน PM, KPI Dashboard, ประโยชน์ BU, 4 มุมมอง, Checklist, ROI - 24 Task (P0-P3) + 31 KPI + 22 ประโยชน์ + 110 Checklist + 8 ROI - Script: Likepoint2027_Sheet.gs - Push ขึ้น GitHub แล้ว - Dashboard จะส่งสรุปทุกวันพร้อมกับ Daily Reporter ## 🎨 Dashboard HTML สำหรับ PM (01:42) - สร้าง Dashboard HTML สำหรับ LikePoint 2.0 2027 - 6 แท็บ: แผนงาน PM, KPI Dashboard, ประโยชน์ BU, 4 มุมมอง, Checklist, ROI - Dark Mode + Responsive + สีตาม Priority + Checklist ติ๊กได้ + Print-friendly - ไฟล์: likepoint-2.0/dashboard/index.html - Push ขึ้น GitHub แล้ว ## ⚡ Auto Update Script — ทักษะใหม่ (01:57) - คุณแนนสั่ง: เพิ่มการทำงาน Auto Update Script จากที",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:20:48.348Z",
+      "lastRecalledAt": "2026-06-02T02:09:31.761Z",
+      "queryHashes": [
+        "f574398cb0c4",
+        "4109380572f9",
+        "d5a7bd174d42"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01",
+        "2026-06-02"
+      ],
+      "conceptTags": [
+        "2.0",
+        "p0-p3",
+        "likepoint2027-sheet.gs",
+        "print-friendly",
+        "สร้าง",
+        "sheet",
+        "likepoint",
+        "แผน"
+      ]
+    },
+    "memory:memory/2026-05-30.md:400:422": {
+      "key": "memory:memory/2026-05-30.md:400:422",
+      "path": "memory/2026-05-30.md",
+      "startLine": 400,
+      "endLine": 422,
+      "source": "memory",
+      "snippet": "- CEO_Contract_Config.gs - CEO_Contract_Utils.gs - CEO_Contract_ErrorHandler.gs - CEO_Contract_Analytics.gs - CEO_Contract_Components.gs - CEO_Contract_Feedback.gs - CEO_Contract_Telegram.gs - CEO_Contract_Test.gs - CEO_Contract_Form.html - DEPLOY_CHECKLIST.md - DESIGN_SYSTEM.md - STUDY_PLAN.md - README.md ### URL ล่าสุด: - GAS: https://script.google.com/macros/s/AKfycbz2JuZjNEELzxQDe_FmDSWMZy0_Zob7SbRoxVKPDmEr1WcJCbRzqSnseXLI9SkvhOC0/exec - GitHub: https://github.com/rattapornkachakaewpkg-commits/ceo-dashboard ### TODO (ทีหลัง): - แก้ไขปุ่ม \"ส่งสัญญา\" เปลี่ยนจากภาพเป็นข้อความ (ทำแล้ว ✅) - ศึกษา Firebase/Supabase (3 สัปดาห์) - ศึกษา TypeScript (3 สัปดาห์)",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:39:24.711Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "5f0ed4b9d731",
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "ceo-contract-config.gs",
+        "ceo-contract-utils.gs",
+        "ceo-contract-errorhandler.gs",
+        "ceo-contract-analytics.gs",
+        "ceo-contract-components.gs",
+        "ceo-contract-feedback.gs",
+        "ceo-contract-telegram.gs",
+        "ceo-contract-test.gs"
+      ]
+    },
+    "memory:memory/2026-05-30.md:302:339": {
+      "key": "memory:memory/2026-05-30.md:302:339",
+      "path": "memory/2026-05-30.md",
+      "startLine": 302,
+      "endLine": 339,
+      "source": "memory",
+      "snippet": "- Monitoring & Analytics - Accessibility - มุมมองบางข้อ TODO ที่คุณแนนบันทึก: - แก้ไขปุ่ม \"ส่งสัญญา\" เปลี่ยนจากภาพเป็นข้อความ (ทีหลัง) ## เช็คสถานะการทำงาน (22:39) - คุณแนนขอเช็คสถานะการทำงานทั้งหมด - สรุปให้: โปรเจคละสถานะ, KPI 18/25 (72%), ไฟล์ล่าสุด, ตารางงานอัตโนมัติ - TODO ที่ยังค้าง: แก้ปุ่ม \"ส่งสัญญา\" (เปลี่ยนจากภาพเป็นข้อความ) ## KPI 25/25 เสร็จสมบูรณ์ (22:51) - 7. Database: แผนศึกษา STUDY_PLAN.md (3 สัปดาห์) - 8. TypeScript: แผนศึกษา STUDY_PLAN.md (3 สัปดาห์) - 9. Responsive Design: @media queries + mobile layout - 10. Performance: Cache Members data + Loading Time - 11. Monitoring & Analytics: CEO_Contract_Analytics.gs - 12. Reusable Components: CEO_Contract_Components.gs - 13. D",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T05:39:24.711Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "5f0ed4b9d731",
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "18/25",
+        "25/25",
+        "study-plan.md",
+        "ceo-contract-analytics.gs",
+        "ceo-contract-components.gs",
+        "monitoring",
+        "analytics",
+        "accessibility"
+      ]
+    },
+    "memory:memory/2026-05-30.md:364:414": {
+      "key": "memory:memory/2026-05-30.md:364:414",
+      "path": "memory/2026-05-30.md",
+      "startLine": 364,
+      "endLine": 414,
+      "source": "memory",
+      "snippet": "- จบ: 23/25 (92%) + 2 แผนศึกษา - เพิ่ม: +16 ข้อ ### ผลงานวันนี้: 1. ✅ Git — ติดตั้ง + GitHub repo + commit + push 2. ✅ Testing — 5 Test Cases + รันผ่าน 3. ✅ Security — Auth + Rate Limit + API Key + Audit Log 4. ✅ Code Quality — JSDoc + แยกไฟล์ + Config + Utils 5. ✅ CI/CD — Deploy Checklist 6. ✅ Error Handling — handleError + ภาษาไทย + Fallback 7. 📋 Database — แผนศึกษา (STUDY_PLAN.md) 8. 📋 TypeScript — แผนศึกษา (STUDY_PLAN.md) 9. ✅ Responsive Design — @media queries + Mobile 10. ✅ Performance — Cache + Loading Time 11. ✅ Monitoring & Analytics — _Analytics Sheet + trackEvent 12. ✅ Reusable Components — CSS Variables + Functions 13. ✅ Design System — DESIGN_SYSTEM.md 14. ✅ User Feedback Loo",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T09:36:53.936Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "23/25",
+        "ci/cd",
+        "study-plan.md",
+        "design-system.md",
+        "แผน",
+        "ศึกษา",
+        "เพิ่ม",
+        "ข้อ"
+      ]
+    },
+    "memory:memory/2026-05-30.md:333:373": {
+      "key": "memory:memory/2026-05-30.md:333:373",
+      "path": "memory/2026-05-30.md",
+      "startLine": 333,
+      "endLine": 373,
+      "source": "memory",
+      "snippet": "- CEO_Contract_Config.gs (Constants + Sheet Names) - CEO_Contract_Utils.gs (Helper Functions) - CEO_Contract_ErrorHandler.gs (Error Handling) - CEO_Contract_Analytics.gs (Monitoring + Analytics) - CEO_Contract_Components.gs (Reusable Components + CSS) - CEO_Contract_Feedback.gs (User Feedback) - CEO_Contract_Test.gs (Unit Tests) - CEO_Contract_Form.html (Frontend + Login + Accessibility + Feedback) - DEPLOY_CHECKLIST.md - DESIGN_SYSTEM.md - STUDY_PLAN.md - README.md ## Deploy v7.2 สำเร็จ (23:07) - URL ใหม่: https://script.google.com/macros/s/AKfycbzV3hGkt89ZrzjLR8bfXgoRZUqE-Zsk81tTYhxoz2_Mxn1iKXKTr1hVdLX_ywbNJVn0/exec - เปลี่ยนปุ่มส่งสัญญา: ส่งข้อความแทนภาพ (A+B+C) - A: Telegram แจ้งเตือน (",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T09:36:53.936Z",
+      "lastRecalledAt": "2026-05-31T09:36:53.936Z",
+      "queryHashes": [
+        "36cf6d323719"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "ceo-contract-config.gs",
+        "ceo-contract-utils.gs",
+        "ceo-contract-errorhandler.gs",
+        "ceo-contract-analytics.gs",
+        "ceo-contract-components.gs",
+        "ceo-contract-feedback.gs",
+        "ceo-contract-test.gs",
+        "ceo-contract-form.html"
+      ]
+    },
+    "memory:memory/2026-05-30.md:37:69": {
+      "key": "memory:memory/2026-05-30.md:37:69",
+      "path": "memory/2026-05-30.md",
+      "startLine": 37,
+      "endLine": 69,
+      "source": "memory",
+      "snippet": "- GAS `HtmlService` always escapes HTML entities in `<script>` tags — only solution is loading data via separate endpoint - `google.script.run` requires authorization for anonymous users but should work for authorized users - Every New Deployment creates a new URL — must track latest URL ## CEO Dashboard - Submit Contract Debug (14:00) ### Current Status - ✅ Autocomplete WORKS (google.script.run.getMembersForClient) - ✅ Form renders correctly - ✅ html2canvas captures form (173-175 KB JPG) - ✅ Data saves to Google Sheet - ✅ Telegram bot can send messages - ❌ Image NOT sent to Telegram (formData undefined error) - ❌ alert() blocked by GAS sandbox (no confirmation messages shown) ### Error Fo",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-31T11:12:06.852Z",
+      "lastRecalledAt": "2026-05-31T11:12:06.852Z",
+      "queryHashes": [
+        "874eb94dce9b"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "google.script.run",
+        "173-175",
+        "gas",
+        "htmlservice",
+        "always",
+        "escapes",
+        "html",
+        "entities"
+      ]
+    }
+  }
+}

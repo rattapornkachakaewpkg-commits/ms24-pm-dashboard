@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMC CEO Contract of Extreme Ownership - LIA 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a237e; --secondary: #283593; --accent: #5c6bc0;
+            --gold: #f59e0b; --gold-light: #fef3c7;
+            --green: #16a34a; --green-bg: #f0fdf4;
+            --red: #dc2626; --red-bg: #fef2f2;
+            --bg: #f5f6fa; --surface: #ffffff; --border: #d4d8ea;
+            --text: #1a1a2e; --text-muted: #626680;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.8; font-size: 15px; padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px; position: relative; overflow: hidden;
+        }
+        .header::before {
+            content: '⬡'; position: absolute; font-size: 200px; opacity: 0.05;
+            top: -40px; right: -40px;
+        }
+        .header h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 8px; }
+        .header .subtitle { font-size: 1rem; opacity: 0.9; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.5);
+            border-radius: 100px; padding: 4px 14px; font-size: 13px;
+            color: var(--gold-light); margin-bottom: 16px;
+        }
+        .badge::before { content: '◆'; }
+
+        /* SECTION */
+        .section { margin-bottom: 24px; }
+        .section h2 {
+            font-size: 1.2rem; font-weight: 800; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 3px solid var(--accent);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-bottom: 16px;
+        }
+
+        /* FORM */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 700;
+            color: var(--text-muted); margin-bottom: 4px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px 12px; border: 2px solid var(--border);
+            border-radius: 8px; font-family: inherit; font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent);
+        }
+        .form-group textarea { min-height: 60px; resize: vertical; }
+
+        /* OKR/KPI TABLE */
+        .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 2px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th {
+            background: var(--primary); color: white; padding: 12px 10px;
+            text-align: left; font-size: 12px; font-weight: 700;
+        }
+        td { padding: 10px; border-top: 1px solid var(--border); vertical-align: top; }
+        td input, td textarea {
+            width: 100%; border: none; background: transparent;
+            font-family: inherit; font-size: 13px; padding: 4px;
+        }
+        td textarea { min-height: 40px; resize: vertical; }
+        tr:hover td { background: rgba(92,107,192,0.04); }
+
+        /* OKR BOX */
+        .okr-box {
+            border-radius: 12px; padding: 20px; margin: 16px 0;
+            border: 2px solid;
+        }
+        .okr-box.growth { background: linear-gradient(135deg, rgba(92,107,192,0.08), rgba(245,158,11,0.05)); border-color: var(--accent); }
+        .okr-box.kpi { background: linear-gradient(135deg, rgba(22,163,74,0.05), rgba(22,163,74,0.02)); border-color: var(--green); }
+        .okr-box h3 { font-size: 1.1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .okr-box .info { font-size: 13px; color: var(--text-muted); margin: 4px 0; }
+        .okr-box .info strong { color: var(--text); }
+
+        /* ACCOUNTABILITY GRID */
+        .acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+        .acc-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 10px;
+        }
+        .acc-item .num {
+            background: var(--primary); color: white; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 800; flex-shrink: 0;
+        }
+        .acc-item .text { font-size: 14px; }
+
+        /* APPROVAL */
+        .approval-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+        .approval-box {
+            background: var(--surface); border: 2px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+        }
+        .approval-box .label { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+        .approval-box .line { border-bottom: 2px solid var(--text); margin: 40px 20px 8px; }
+        .approval-box .name { font-size: 14px; font-weight: 600; margin-top: 4px; }
+        .approval-box .date { font-size: 12px; color: var(--text-muted); }
+
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+        .btn {
+            padding: 12px 24px; border: none; border-radius: 8px;
+            font-family: inherit; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--secondary); }
+        .btn-gold { background: var(--gold); color: white; }
+        .btn-gold:hover { background: #d97706; }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .approval-grid { grid-template-columns: 1fr; }
+            table { font-size: 11px; } th, td { padding: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+    <div class="badge">LIA 2.0</div>
+    <h1>ADMC CEO Contract of Extreme Ownership</h1>
+    <p class="subtitle">สัญญาแห่งความเป็นเจ้าของ — CEO 2.0</p>
+</div>
+
+<!-- SECTION 1: PERSONAL INFO -->
+<div class="section">
+    <h2>📋 ส่วนที่ 1: ข้อมูลสมาชิก</h2>
+    <div class="card">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>ID</label>
+                <input type="text" id="memberId" placeholder="ระบุ ID">
+            </div>
+            <div class="form-group">
+                <label>Name (ชื่อ-นามสกุล)</label>
+                <input type="text" id="memberName" placeholder="ระบุชื่อ-นามสกุล">
+            </div>
+            <div class="form-group">
+                <label>BU</label>
+                <input type="text" id="memberBU" value="PKG" readonly>
+            </div>
+            <div class="form-group">
+                <label>Team</label>
+                <input type="text" id="memberTeam" value="AWG PAC" readonly>
+            </div>
+            <div class="form-group">
+                <label>บทบาท (Role)</label>
+                <select id="memberRole">
+                    <option value="">-- เลือกบทบาท --</option>
+                    <option value="CEO">CEO (หัวหน้าทีม)</option>
+                    <option value="Service Leader">Service Leader</option>
+                    <option value="Member">Member (สมาชิก)</option>
+                    <option value="Mentor">Mentor (พี่เลี้ยง)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: PURPOSE & VISION -->
+<div class="section">
+    <h2>🎯 ส่วนที่ 2: จุดมุ่งหมาย & ภาพความสำเร็จ</h2>
+    <div class="card">
+        <div class="form-group">
+            <label>จุดมุ่งหมาย (Purpose) — "ทำไมเราถึงทำสิ่งนี้?"</label>
+            <textarea id="purpose" rows="3" placeholder="ระบุจุดมุ่งหมายหลักของคุณ..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>ภาพความสำเร็จที่อยากเห็น (Vision) — "เราอยากเห็นอะไรเมื่อสำเร็จ?"</label>
+            <textarea id="vision" rows="3" placeholder="อธิบายภาพความสำเร็จที่ต้องการเห็น..."></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: ACCOUNTABILITY & OWNERSHIP -->
+<div class="section">
+    <h2>🔥 ส่วนที่ 3: Accountability & Ownership</h2>
+    <div class="card">
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
+            <strong>ความรับผิดชอบหลัก (Accountability):</strong> ระบุหน้าที่และความรับผิดชอบของคุณใน 9 ด้าน
+        </p>
+        <div class="acc-grid">
+            <div class="acc-item"><div class="num">1</div><div class="text"><strong>Execution</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">2</div><div class="text"><strong>Growth Objectives</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">3</div><div class="text"><strong>Key Results</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">4</div><div class="text"><strong>Personal Growth</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">5</div><div class="text"><strong>Personal Credit in PKG Community</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">6</div><div class="text"><strong>Operational Excellence (WI)</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">7</div><div class="text"><strong>Operational Responsibilities</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">8</div><div class="text"><strong>Ownership</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+            <div class="acc-item"><div class="num">9</div><div class="text"><strong>Co-ownership</strong><br><input type="text" placeholder="ระบุรายละเอียด..." style="width:100%;border:none;font-size:13px;margin-top:4px;"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 4: OKR -->
+<div class="section">
+    <h2>🚀 ส่วนที่ 4: OKR (Growth & Change)</h2>
+    <div class="card">
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
+            "เราจะเก่งขึ้นเรื่องอะไร และพิสูจน์ยังไงว่าเก่งขึ้นจริง"
+        </p>
+
+        <!-- OKR ระดับ BU -->
+        <div class="okr-box growth">
+            <h3>📊 OKR ระดับ BU — วัดการเปลี่ยนแปลง</h3>
+            <div class="info"><strong>มาจาก:</strong> แผนธุรกิจ / Target Sum</div>
+            <div class="info"><strong>วัตถุประสงค์:</strong> ขับเคลื่อนการเติบโตและการเปลี่ยนแปลง</div>
+            <div class="info"><strong>ลักษณะ:</strong> วัดผลเป็นรอบ, มีเป้าหมายท้าทาย</div>
+            <div class="info"><strong>ตัวอย่าง:</strong> Launch Product ใหม่, เพิ่ม Market Share, Digital Transformation</div>
+            <div class="info"><strong>เครื่องมือ:</strong> เวที OMR 2 / IF / NB</div>
+            <div class="table-wrap" style="margin-top:12px;">
+                <table>
+                    <thead><tr><th style="width:50px">#</th><th>Objective</th><th>Key Results</th><th>Target</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                        <tr><td>2</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                        <tr><td>3</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- OKR ระดับทีม -->
+        <div class="okr-box growth" style="margin-top:16px;">
+            <h3>👥 OKR ระดับทีม — วัดการเปลี่ยนแปลง</h3>
+            <div class="info"><strong>มาจาก:</strong> แผนธุรกิจ / Target Sum</div>
+            <div class="info"><strong>วัตถุประสงค์:</strong> ขับเคลื่อนการเติบโตและการเปลี่ยนแปลง</div>
+            <div class="info"><strong>ลักษณะ:</strong> วัดผลเป็นรอบ, มีเป้าหมายท้าทาย</div>
+            <div class="info"><strong>ตัวอย่าง:</strong> Launch Product ใหม่, เพิ่ม Market Share, Digital Transformation</div>
+            <div class="info"><strong>เครื่องมือ:</strong> เวที OMR 2 / IF / NB</div>
+            <div class="table-wrap" style="margin-top:12px;">
+                <table>
+                    <thead><tr><th style="width:50px">#</th><th>Objective</th><th>Key Results</th><th>Target</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                        <tr><td>2</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                        <tr><td>3</td><td><textarea placeholder="ระบุ Objective..."></textarea></td><td><textarea placeholder="ระบุ Key Results..."></textarea></td><td><input type="text" placeholder="%"></td><td><input type="text" placeholder="On Track"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 5: KPI -->
+<div class="section">
+    <h2>📊 ส่วนที่ 5: KPI (Operational Excellence)</h2>
+    <div class="card">
+        <div class="okr-box kpi">
+            <h3>📊 KPI — วัดเพื่อรักษามาตรฐานงาน</h3>
+            <div class="info"><strong>มาจาก:</strong> PM/WI (Process Manual / Work Instruction)</div>
+            <div class="info"><strong>วัตถุประสงค์:</strong> รักษามาตรฐานการดำเนินงาน</div>
+            <div class="info"><strong>ลักษณะ:</strong> วัดผลประจำ, ต่อเนื่อง</div>
+            <div class="info"><strong>ตัวอย่าง:</strong> ยอดขาย, ความพึงพอใจลูกค้า, Quality Metrics</div>
+            <div class="table-wrap" style="margin-top:12px;">
+                <table>
+                    <thead><tr><th style="width:50px">#</th><th>KPI Name</th><th>Target</th><th>Actual</th><th>Frequency</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><input type="text" placeholder="ระบุ KPI..."></td><td><input type="text" placeholder="Target"></td><td><input type="text" placeholder="Actual"></td><td><input type="text" placeholder="รายเดือน"></td><td><input type="text" placeholder="✅/❌"></td></tr>
+                        <tr><td>2</td><td><input type="text" placeholder="ระบุ KPI..."></td><td><input type="text" placeholder="Target"></td><td><input type="text" placeholder="Actual"></td><td><input type="text" placeholder="รายเดือน"></td><td><input type="text" placeholder="✅/❌"></td></tr>
+                        <tr><td>3</td><td><input type="text" placeholder="ระบุ KPI..."></td><td><input type="text" placeholder="Target"></td><td><input type="text" placeholder="Actual"></td><td><input type="text" placeholder="รายเดือน"></td><td><input type="text" placeholder="✅/❌"></td></tr>
+                        <tr><td>4</td><td><input type="text" placeholder="ระบุ KPI..."></td><td><input type="text" placeholder="Target"></td><td><input type="text" placeholder="Actual"></td><td><input type="text" placeholder="รายเดือน"></td><td><input type="text" placeholder="✅/❌"></td></tr>
+                        <tr><td>5</td><td><input type="text" placeholder="ระบุ KPI..."></td><td><input type="text" placeholder="Target"></td><td><input type="text" placeholder="Actual"></td><td><input type="text" placeholder="รายเดือน"></td><td><input type="text" placeholder="✅/❌"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 6: GROWTH AREAS -->
+<div class="section">
+    <h2>🌱 ส่วนที่ 6: Business Growth & Team Growth</h2>
+    <div class="card">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>📈 Business Growth — ธุรกิจจะโตอย่างไร?</label>
+                <textarea rows="3" placeholder="ระบุแผนการเติบโตทางธุรกิจ..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>👥 Team Growth — ทีมจะพัฒนาอย่างไร?</label>
+                <textarea rows="3" placeholder="ระบุแผนการพัฒนาทีม..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 7: NCASS & GOAL -->
+<div class="section">
+    <h2>🎯 ส่วนที่ 7: NCASS & GOAL</h2>
+    <div class="card">
+        <div class="form-group">
+            <label>NCASS (ระบุเป้าหมาย)</label>
+            <textarea rows="3" placeholder="ระบุ NCASS goals..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>GOAL (ระบุเป้าหมาย)</label>
+            <textarea rows="3" placeholder="ระบุ GOAL..."></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 8: APPROVAL -->
+<div class="section">
+    <h2>✅ ส่วนที่ 8: การอนุมัติ</h2>
+    <div class="approval-grid">
+        <div class="approval-box">
+            <div class="label">Member</div>
+            <div class="line"></div>
+            <div class="name"><input type="text" placeholder="ชื่อ-นามสกุล" style="text-align:center;border:none;width:100%;"></div>
+            <div class="date"><input type="date" style="border:none;width:100%;text-align:center;"></div>
+        </div>
+        <div class="approval-box">
+            <div class="label">Approval by Mentor</div>
+            <div class="line"></div>
+            <div class="name"><input type="text" placeholder="ชื่อ-นามสกุล" style="text-align:center;border:none;width:100%;"></div>
+            <div class="date"><input type="date" style="border:none;width:100%;text-align:center;"></div>
+        </div>
+        <div class="approval-box">
+            <div class="label">Approval by Service Leader</div>
+            <div class="line"></div>
+            <div class="name"><input type="text" placeholder="ชื่อ-นามสกุล" style="text-align:center;border:none;width:100%;"></div>
+            <div class="date"><input type="date" style="border:none;width:100%;text-align:center;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- BUTTONS -->
+<div class="btn-group">
+    <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button>
+    <button class="btn btn-gold" onclick="saveData()">💾 บันทึกข้อมูล</button>
+</div>
+
+</div>
+
+<script>
+function saveData() {
+    const data = {
+        memberId: document.getElementById('memberId').value,
+        memberName: document.getElementById('memberName').value,
+        memberBU: document.getElementById('memberBU').value,
+        memberTeam: document.getElementById('memberTeam').value,
+        memberRole: document.getElementById('memberRole').value,
+        purpose: document.getElementById('purpose').value,
+        vision: document.getElementById('vision').value,
+        savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('ceoContractLIA2', JSON.stringify(data));
+    alert('✅ บันทึกข้อมูลเรียบร้อย!');
+}
+
+// Load saved data on page load
+window.addEventListener('load', function() {
+    const saved = localStorage.getItem('ceoContractLIA2');
+    if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('memberId').value = data.memberId || '';
+        document.getElementById('memberName').value = data.memberName || '';
+        document.getElementById('memberBU').value = data.memberBU || 'PKG';
+        document.getElementById('memberTeam').value = data.memberTeam || 'AWG PAC';
+        document.getElementById('memberRole').value = data.memberRole || '';
+        document.getElementById('purpose').value = data.purpose || '';
+        document.getElementById('vision').value = data.vision || '';
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Exam - จป. ระดับวิชาชีพ</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Sarabun','Segoe UI',Tahoma,sans-serif;background:#f5f5f5;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:10px;}
+        .quiz-container{max-width:650px;width:100%;background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden;}
+        .header{background:linear-gradient(135deg,#1a237e 0%,#283593 100%);color:white;padding:16px;}
+        .header h1{font-size:16px;margin-bottom:4px;}
+        .header .subtitle{font-size:12px;opacity:0.9;}
+        .progress-bar{background:#e8e8e8;height:8px;border-radius:4px;margin:12px 0 6px;overflow:hidden;}
+        .progress-fill{height:100%;background:#5c6bc0;border-radius:4px;transition:width 0.3s;}
+        .progress-info{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.9);}
+        .score-display{display:flex;gap:10px;}
+        .score-item{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:10px;font-size:11px;}
+        .score-correct{background:rgba(255,255,255,0.2);color:#fff;}
+        .score-wrong{background:rgba(255,255,255,0.2);color:#fff;}
+        .question-area{padding:20px 16px;}
+        .category-tag{display:inline-block;background:#e8eaf6;color:#1a237e;padding:2px 8px;border-radius:10px;font-size:11px;margin-bottom:10px;}
+        .question-number{font-size:13px;color:#666;margin-bottom:6px;}
+        .question-text{font-size:17px;color:#333;line-height:1.6;margin-bottom:20px;font-weight:500;}
+        .options{display:flex;flex-direction:column;gap:10px;}
+        .option-btn{display:flex;align-items:center;gap:10px;padding:14px;background:#f8f9fa;border:2px solid #e8e8e8;border-radius:10px;cursor:pointer;transition:all 0.2s;width:100%;font-size:15px;text-align:left;}
+        .option-btn:hover:not(.disabled){background:#e8eaf6;border-color:#1a237e;}
+        .option-btn.correct{background:#e8f5e9;border-color:#4caf50;}
+        .option-btn.wrong{background:#ffebee;border-color:#f44336;}
+        .option-btn.disabled{cursor:default;opacity:0.7;}
+        .option-label{width:28px;height:28px;border-radius:50%;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;}
+        .option-btn.correct .option-label{background:#4caf50;color:white;}
+        .option-btn.wrong .option-label{background:#f44336;color:white;}
+        .explanation{display:none;margin-top:16px;padding:14px;background:#f8f9fa;border-radius:10px;border-left:4px solid #1a237e;}
+        .explanation.show{display:block;}
+        .explanation h4{color:#1a237e;margin-bottom:6px;font-size:13px;}
+        .explanation p{color:#555;line-height:1.6;font-size:13px;}
+        .next-btn{display:none;width:100%;padding:14px;background:linear-gradient(135deg,#1a237e 0%,#283593 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;}
+        .next-btn.show{display:block;}
+        .results{display:none;padding:24px 16px;text-align:center;}
+        .results.show{display:block;}
+        .results .score-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#1a237e 0%,#283593 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:white;}
+        .results .score-circle .score-num{font-size:30px;font-weight:700;}
+        .results .score-circle .score-total{font-size:12px;opacity:0.9;}
+        .results h2{font-size:20px;color:#333;margin-bottom:6px;}
+        .results .grade{font-size:14px;color:#666;margin-bottom:20px;}
+        .results .summary{text-align:left;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:16px;max-height:400px;overflow-y:auto;}
+        .results .summary h3{font-size:13px;color:#333;margin-bottom:10px;}
+        .result-item{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;color:#555;}
+        .restart-btn{width:100%;padding:14px;background:linear-gradient(135deg,#1a237e 0%,#283593 100%);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;}
+        @media(max-width:480px){.question-text{font-size:15px;}.option-btn{padding:10px;font-size:14px;}}
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>🎓 Mock Exam - จป. ระดับวิชาชีพ</h1>
+            <div class="subtitle">ตามคู่มือการปฏิบัติงานเจ้าหน้าที่ความปลอดภัยในการทำงาน ระดับวิชาชีพ</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            <div class="progress-info">
+                <span id="qNum">1 / 30</span>
+                <div class="score-display">
+                    <span class="score-item score-wrong">✗ <span id="wrongCount">0</span></span>
+                    <span class="score-item score-correct">✓ <span id="correctCount">0</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="question-area" id="questionArea">
+            <span class="category-tag" id="categoryTag"></span>
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="explanation" id="explanation"><h4>💡 คำอธิบาย</h4><p id="explanationText"></p></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">ถัดไป →</button>
+        </div>
+        <div class="results" id="resultsArea">
+            <div class="score-circle"><span class="score-num" id="finalScore">0</span><span class="score-total">/ 30</span></div>
+            <h2 id="resultTitle">เสร็จสิ้น!</h2>
+            <div class="grade" id="resultGrade"></div>
+            <div class="summary"><h3>📝 สรุปคำตอบ</h3><div id="summaryList"></div></div>
+            <button class="restart-btn" onclick="restartQuiz()">🔄 ทำข้อสอบใหม่</button>
+        </div>
+    </div>
+    <script>
+const questions = [
+{category:"HIRA",question:"HIRA ย่อมาจากอะไร?",options:["Health Inspection Risk Action","Hazard Identification and Risk Assessment","High Impact Risk Analysis","Human Incident Response Action"],answer:1,explain:"HIRA = Hazard Identification and Risk Assessment การระบุอันตรายและประเมินความเสี่ยง"},
+{category:"HIRA",question:"จป.ระดับวิชาชีพ ต้องจัดทำ HIRA เสนอใคร?",options:["ลูกจ้าง","นายจ้างและจป.ระดับบริหาร","พนักงานตรวจความปลอดภัย","ลูกค้า"],answer:1,explain:"จป.ระดับวิชาชีพ ต้องจัดทำ HIRA เสนอนายจ้างและ จป.ระดับบริหาร เพื่อพิจารณาจัดทำแผนจัดการ"},
+{category:"HIRA",question:"Risk Matrix ใช้คำนวณอะไร?",options:["เงินเดือนพนักงาน","ระดับความเสี่ยง (Risk Level) จากความรุนแรง x โอกาสเกิด","ค่าไฟฟ้า","ผลผลิต"},answer:1,explain:"Risk Matrix คำนวณระดับความเสี่ยง = ความรุนแรง (Severity) x โอกาสเกิด (Likelihood)"},
+{category:"HIRA",question:"การวิเคราะห์ JSA (Job Safety Analysis) มีกี่ขั้นตอนหลัก?",options:["1 ขั้น","3 ขั้นตอน: แบ่งงานเป็นขั้นตอน-ระบุอันตราย-กำหนดมาตรการ","10 ขั้นตอน","ไม่ต้องทำ"],answer:1,explain:"JSA มี 3 ขั้นตอน: 1) แบ่งงานเป็นขั้นตอน 2) ระบุอันตรายแต่ละขั้นตอน 3) กำหนดมาตรการป้องกัน"},
+{category:"HIRA",question:"Hierarchy of Controls ข้อใดมีประสิทธิภาพสูงสุด?",options:["PPE","Administrative Control","Engineering Control","Elimination"],answer:3,explain:"Elimination (การกำจัดอันตรายที่แหล่งกำเนิด) มีประสิทธิภาพสูงสุด ตาม Hierarchy of Controls"},
+{category:"การตรวจประเมิน",question:"จป.ระดับวิชาชีพ ต้องตรวจสถานประกอบกิจการอย่างน้อยกี่ครั้ง?",options:["ไม่ตรวจ","ทุกเดือน ตามแผนตรวจที่จัดทำ","ทุก 5 ปี","ทุก 10 ปี"],answer:1,explain:"จป.ระดับวิชาชีพ ต้องตรวจสถานประกอบกิจการทุกเดือน ตามแผนตรวจที่จัดทำ"},
+{category:"การตรวจประเมิน",question:"สิ่งที่ต้องตรวจในการตรวจความปลอดภัย ได้แก่?",options:["เฉพาะเครื่องจักร","เครื่องจักร อุปกรณ์ สภาพแวดล้อม พฤติกรรม Unsafe Act/Condition","เฉพาะห้องน้ำ","เฉพาะโรงอาหาร"],answer:1,explain:"ต้องตรวจครอบคลุม เครื่องจักร อุปกรณ์ สภาพแวดล้อม Unsafe Act และ Unsafe Condition"},
+{category:"การตรวจประเมิน",question:"เมื่อพบข้อบกพร่องในการตรวจ จป.ระดับวิชาชีพ ต้องทำอะไร?",options:["ปล่อยผ่าน","รายงานและติดตามแก้ไข","ลงโทษพนักงานทันที","แจ้งสื่อ"],answer:1,explain:"ต้องรายงาน แจ้งผู้รับผิดชอบ และติดตามการแก้ไขให้แล้วเสร็จ"},
+{category:"การตรวจประเมิน",question:"Audit กับ Inspection ต่างกันอย่างไร?",options:["เหมือนกัน","Inspection ตรวจหาข้อบกพร่อง Audit ตรวจระบบการจัดการว่าทำตามมาตรฐานหรือไม่","Audit ตรวจเครื่องจักร Inspection ตรวจคน","ไม่ต่างกัน"],answer:1,explain:"Inspection = ตรวจหาข้อบกพร่องหน้างาน Audit = ตรวจระบบการจัดการว่าทำตามมาตรฐาน/กฎระเบียบหรือไม่"},
+{category:"กฎหมาย",question:"จป.ระดับวิชาชีพ ต้องมีคุณสมบัติอย่างไร?",options:["ม.6","ปริญญาตรีด้านความปลอดภัย อาชีวอนามัย หรือสาขาที่เกี่ยวข้อง","ป.ตรีสาขาใดก็ได้","ไม่ต้องจบ"],answer:1,explain:"จป.ระดับวิชาชีพ ต้องสำเร็จ ป.ตรี ด้านความปลอดภัย อาชีวอนามัย หรือสาขาที่เกี่ยวข้อง"},
+{category:"กฎหมาย",question:"สถานประกอบกิจการใดต้องมี จป.ระดับวิชาชีพ?",options:["ร้านค้า 5 คน","กิจการที่มีความเสี่ยงสูง มีลูกจ้างตั้งแต่ 50 คนขึ้นไป","สำนักงาน 10 คน","ร้านค้าปลีก"],answer:1,explain:"กิจการที่มีความเสี่ยงสูง มีลูกจ้างตั้งแต่ 50 คนขึ้นไป ต้องมี จป.ระดับวิชาชีพ"},
+{category:"กฎหมาย",question:"นายจ้างต้องแจ้งอุบัติเหตุร้ายแรงต่อพนักงานตรวจความปลอดภัยภายในกี่วัน?",options:["1 วัน","3 วัน","7 วัน","30 วัน"],answer:2,explain:"นายจ้างต้องแจ้งอุบัติเหตุร้ายแรงต่อพนักงานตรวจความปลอดภัยภายใน 7 วัน นับแต่เกิดเหตุ"},
+{category:"กฎหมาย",question:"พ.ร.บ.ฉบับใดเป็นหลักด้านความปลอดภัย?",options:["ประมวลกฎหมายแพ่ง","พ.ร.บ.ความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พ.ศ. 2554","กฎหมายจราจร","กฎหมายสิ่งแวดล้อม"],answer:1,explain:"พ.ร.บ.ความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พ.ศ. 2554 เป็นกฎหมายหลัก"},
+{category:"กฎหมาย",question:"โทษนายจ้างไม่จัดให้มี จป. ตามกฎหมาย?",options:["ตักเตือน","ปรับไม่เกิน 200,000 บาท หรือจำคุกไม่เกิน 1 ปี หรือทั้งจำทั้งปรับ","ไม่มีโทษ","แค่ให้เวลาแก้"],answer:1,explain:"โทษปรับไม่เกิน 200,000 บาท หรือจำคุกไม่เกิน 1 ปี หรือทั้งจำทั้งปรับ"},
+{category:"กฎหมาย",question:"ลูกจ้างมีสิทธิ์ปฏิเสธทำงานเมื่อใด?",options:["เมื่อไม่อยากทำ","เมื่อเห็นว่างานนั้นมีอันตรายร้ายแรงต่อชีวิตหรือร่างกาย","เมื่อเบื่อ","เมื่อฝนตก"],answer:1,explain:"ลูกจ้างมีสิทธิ์ปฏิเสธทำงานเมื่อเห็นว่างานนั้นมีอันตรายร้ายแรงต่อชีวิตหรือร่างกาย"},
+{category:"สอบสวนอุบัติเหตุ",question:"เมื่อเกิดอุบัติเหตุ จป.ระดับวิชาชีพ ต้องทำอะไรก่อน?",options:["ซ่อนหลักฐาน","รักษาผู้บาดเจ็บ กันพื้นที่ แล้วสอบสวน","โทษพนักงาน","แจ้งหนังสือพิมพ์"],answer:1,explain:"ต้องรักษาผู้บาดเจ็บ กันพื้นที่อันตราย แล้วจึงสอบสวนหาสาเหตุ"},
+{category:"สอบสวนอุบัติเหตุ",question:"Fishbone Diagram ใช้ทำอะไร?",options:["ตกปลา","วิเคราะห์สาเหตุของปัญหา แยกเป็นหมวด คน เครื่องจักร วิธีการ วัสดุ สิ่งแวดล้อม","วาดรูป","ทำอาหาร"],answer:1,explain:"Fishbone Diagram วิเคราะห์สาเหตุ แยกหมวด: Man, Machine, Method, Material, Environment"},
+{category:"สอบสวนอุบัติเหตุ",question:"Root Cause Analysis คืออะไร?",options:["หาสาเหตุที่มองเห็น","ค้นหาสาเหตุที่แท้จริงที่ทำให้เกิดปัญหา","โทษคน","ซ่อมเครื่องจักร"],answer:1,explain:"Root Cause Analysis คือการค้นหาสาเหตุที่แท้จริง (Root Cause) ที่ทำให้เกิดปัญหา"},
+{category:"สอบสวนอุบัติเหตุ",question:"5 Whys คือเทคนิคอะไร?",options:["ถามทำไม 5 ครั้งเพื่อหาสาเหตุรากฐาน","นับ 1-5","เรียน 5 วิชา","สอบ 5 ครั้ง"],answer:1,explain:"5 Whys = ถาม 'ทำไม' ซ้ำ 5 ครั้งเพื่อเจาะลึกหาสาเหตุรากฐานของปัญหา"},
+{category:"สอบสวนอุบัติเหตุ",question:"Near Miss สำคัญอย่างไร?",options:["ไม่สำคัญ","เป็นสัญญาณเตือน ช่วยป้องกันอุบัติเหตุจริง","ทำให้เสียเวลา","ไม่มีประโยชน์"],answer:1,explain:"Near Miss เป็นสัญญาณเตือน การวิเคราะห์ช่วยป้องกันอุบัติเหตุจริงที่จะเกิดขึ้น"},
+{category:"สอบสวนอุบัติเหตุ",question:"LTIFR ย่อมาจากอะไร?",options:["Lost Time Injury Frequency Rate","Long Term Investment Fund Rate","Large Technical Inspection Frequency Rate","Low Temperature Ice Freezing Rate"],answer:0,explain:"LTIFR = Lost Time Injury Frequency Rate อัตราความถี่ของการบาดเจ็บที่ทำให้หยุดงาน"},
+{category:"อาชีวอนามัย",question:"ค่ามาตรฐานเสียงเฉลี่ย 8 ชั่วโมง ต้องไม่เกินกี่ dB(A)?",options:["70 dB(A)","85 dB(A)","100 dB(A)","120 dB(A)"],answer:1,explain:"ค่ามาตรฐานการสัมผัสเสียงเฉลี่ย 8 ชั่วโมง ต้องไม่เกิน 85 dB(A)"},
+{category:"อาชีวอนามัย",question:"SDS มีกี่หมวด?",options:["8 หมวด","16 หมวด","20 หมวด","5 หมวด"],answer:1,explain:"SDS ตามระบบ GHS มี 16 หมวด"},
+{category:"อาชีวอนามัย",question:"PPE คืออะไร?",options:["Personal Protective Equipment","Public Property Equipment","Professional Practice Exam","Personal Performance Evaluation"],answer:0,explain:"PPE = Personal Protective Equipment อุปกรณ์คุ้มครองความปลอดภัยส่วนบุคคล"},
+{category:"อาชีวอนามัย",question:"PPE อยู่ลำดับใดใน Hierarchy of Controls?",options:["สูงสุด","ลำดับสุดท้าย","ลำดับแรก","ไม่เกี่ยวข้อง"],answer:1,explain:"PPE เป็นมาตรการลำดับสุดท้ายใน Hierarchy of Controls ใช้เมื่อมาตรการอื่นลดความเสี่ยงไม่เพียงพอ"},
+{category:"อาชีวอนามัย",question:"โรคจากการทำงาน (Occupational Disease) ได้แก่?",options:["โรคหวัดทั่วไป","โรคที่เกิดจากปัจจัยเสี่ยงในที่ทำงาน เช่น หูตึงจากเสียง โรคปอดจากฝุ่น","โรคทางพันธุกรรม","โรคติดต่อ"],answer:1,explain:"โรคจากการทำงาน = โรคที่เกิดจากปัจจัยเสี่ยงในที่ทำงาน เช่น หูตึงจากเสียง โรคปอดจากฝุ่น"},
+{category:"อาชีวอนามัย",question:"Heat Stroke เกิดจากอะไร?",options:["อากาศเย็น","ความร้อนจัด ร่างกายระบายความร้อนไม่ทัน","กินอาหารไม่ดี","นอนน้อย"],answer:1,explain:"Heat Stroke เกิดจากความร้อนจัด ร่างกายระบายความร้อนไม่ทัน อุณหภูมิร่างกายสูงเกิน 40°C"},
+{category:"สารเคมี",question:"ฉลากสารเคมี GHS ต้องมีอะไรบ้าง?",options:["เฉพาะชื่อ","ชื่อสาร สัญลักษณ์ GHS คำเตือน มาตรการป้องกัน","เฉพาะราคา","เฉพาะสี"],answer:1,explain:"ฉลาก GHS ต้องมี ชื่อสาร สัญลักษณ์ GHS คำเตือน และมาตรการป้องกัน"},
+{category:"สารเคมี",question:"สารไวไฟต้องเก็บอย่างไร?",options:["เก็บรวมทุกชนิด","เก็บในตู้เก็บสารไวไฟ แยกจากสารออกซิไดเซอร์และแหล่งจุดติดไฟ","เก็บกลางแดด","เก็บใกล้เตา"],answer:1,explain:"สารไวไฟต้องเก็บในตู้เก็บสารไวไฟ แยกจากสารออกซิไดเซอร์และแหล่งจุดติดไฟ"},
+{category:"อบรมและสื่อสาร",question:"จป.ระดับวิชาชีพ ต้องจัดอบรมให้ลูกจ้างเมื่อใด?",options:["เมื่อลูกจ้างขอ","ก่อนเข้าทำงาน เมื่อเปลี่ยนงาน และอบรมทบทวน","ทุก 10 ปี","ไม่ต้องจัด"],answer:1,explain:"ต้องจัดอบรมก่อนเข้าทำงาน เมื่อเปลี่ยนงาน/สถานที่ และอบรมทบทวนเป็นประจำ"}
+];
+let currentQ = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let userAnswers = [];
+
+function loadQuestion() {
+    answered = false;
+    const q = questions[currentQ];
+    document.getElementById('categoryTag').textContent = q.category;
+    document.getElementById('questionNumber').textContent = `ข้อที่ ${currentQ + 1}/30`;
+    document.getElementById('questionText').textContent = q.question;
+    document.getElementById('qNum').textContent = `${currentQ + 1} / 30`;
+    document.getElementById('progressFill').style.width = `${(currentQ / 30) * 100}%`;
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => selectAnswer(i);
+        container.appendChild(btn);
+    });
+    document.getElementById('explanation').classList.remove('show');
+    document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectAnswer(index) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach((btn, i) => {
+        btn.classList.add('disabled');
+        if (i === q.answer) btn.classList.add('correct');
+        else if (i === index && i !== q.answer) btn.classList.add('wrong');
+    });
+    if (index === q.answer) { correct++; document.getElementById('correctCount').textContent = correct; }
+    else { wrong++; document.getElementById('wrongCount').textContent = wrong; }
+    userAnswers.push({question: q.question, user: index, correct: q.answer, isCorrect: index === q.answer, category: q.category});
+    document.getElementById('explanationText').textContent = q.explain;
+    document.getElementById('explanation').classList.add('show');
+    document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) loadQuestion();
+    else showResults();
+}
+
+function showResults() {
+    document.getElementById('questionArea').style.display = 'none';
+    document.getElementById('resultsArea').classList.add('show');
+    document.getElementById('finalScore').textContent = correct;
+    const percent = (correct / 30) * 100;
+    let grade = '';
+    if (percent >= 80) grade = '🌟 ดีมาก! ผ่านเกณฑ์พร้อมปฏิบัติงาน!';
+    else if (percent >= 60) grade = '👍 ดี! แต่ควรทบทวนเพิ่มเติม';
+    else if (percent >= 40) grade = '📚 พอใช้! ต้องทบทวนอย่างจริงจัง';
+    else grade = '💪 ต้องศึกษาเพิ่ม! สู้ๆ!';
+    document.getElementById('resultGrade').textContent = `${percent.toFixed(0)}% — ${grade}`;
+    const labels = ['ก', 'ข', 'ค', 'ง'];
+    let summary = '';
+    userAnswers.forEach((a, i) => {
+        const icon = a.isCorrect ? '✅' : '❌';
+        summary += `<div class="result-item"><span class="icon">${icon}</span> ข้อ ${i+1} (${a.category}): ตอบ ${labels[a.user]} / เฉลย ${labels[a.correct]}</div>`;
+    });
+    document.getElementById('summaryList').innerHTML = summary;
+}
+
+function restartQuiz() {
+    currentQ = 0; correct = 0; wrong = 0; userAnswers = [];
+    document.getElementById('correctCount').textContent = '0';
+    document.getElementById('wrongCount').textContent = '0';
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultsArea').classList.remove('show');
+    loadQuestion();
+}
+
+loadQuestion();
+    </script>
+</body>
+</html>

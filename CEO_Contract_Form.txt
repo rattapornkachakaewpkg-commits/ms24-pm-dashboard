@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Contract of Extreme Ownership</title>
+<base target="_top">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.6}
+.container{max-width:800px;margin:0 auto;padding:16px}
+.header{text-align:center;padding:24px 20px;background:linear-gradient(135deg,#1a237e,#283593,#7c3aed);color:#fff;border-radius:14px;margin-bottom:16px;position:relative}
+.header h1{font-size:1.3em;letter-spacing:0.5px;margin-bottom:2px}
+.header .sub{font-size:0.82em;opacity:0.9}
+.card{background:#fff;border:1px solid #e0e6ed;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.card h2{font-size:1em;color:#1a237e;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #7c3aed;display:flex;align-items:center;gap:6px}
+.card h3{font-size:0.92em;color:#5c6bc0;margin:10px 0 6px}
+.form-group{margin-bottom:10px}
+.form-group label{display:block;font-size:0.82em;color:#546e7a;font-weight:600;margin-bottom:2px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border:1px solid #cfd8dc;border-radius:6px;font-size:0.92em;font-family:inherit;color:#1a1a2e;background:#fff;transition:border-color 0.2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 2px rgba(124,58,237,0.1)}
+.form-group input:read-only{background:#f5f3ff;color:#7c3aed;font-weight:600;cursor:default}
+.id-wrapper{position:relative}
+.ac-list{position:absolute;width:100%;max-height:180px;overflow-y:auto;background:#fff;border:1px solid #cfd8dc;border-radius:0 0 6px 6px;z-index:100;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.ac-list.show{display:block}
+.ac-item{padding:8px 10px;cursor:pointer;border-bottom:1px solid #eceff1;font-size:0.84em}
+.ac-item:hover,.ac-item.active{background:#f5f3ff}
+.ac-item .id{color:#7c3aed;font-weight:700}
+.ac-item .nm{color:#1a1a2e}
+.ac-item .dt{color:#78909c;font-size:0.78em}
+.section-header{background:linear-gradient(135deg,#1a237e,#7c3aed);color:#fff;padding:10px 14px;border-radius:8px;margin:12px 0 10px;font-size:1em;font-weight:700;text-align:center;letter-spacing:0.5px}
+.okr-box{background:#f5f3ff;border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px}
+.okr-box h4{font-size:0.88em;color:#7c3aed;margin-bottom:4px}
+.okr-box input[type=text],.okr-box select{width:100%;padding:4px 6px;border:1px solid #cfd8dc;border-radius:4px;font-size:0.86em}
+.pv-box{background:#fafafa;border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px}
+.pv-box h4{font-size:0.88em;color:#1a237e;margin-bottom:6px}
+.pv-box textarea{width:100%;border:1px solid #ddd;border-radius:6px;padding:8px;font-size:0.88em;font-family:inherit;min-height:50px;resize:vertical}
+.pg-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;padding:12px;background:#f5f3ff;border:1px solid #e0e0e0;border-radius:8px;position:relative}
+.pg-row .pg-remove{position:absolute;top:4px;right:8px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1}
+.pg-row .pg-remove:hover{color:#b91c1c}
+.kpi-row input[type=text],.kpi-row select{width:100%;padding:6px 8px;border:1px solid #cfd8dc;border-radius:4px;font-size:0.86em;font-family:inherit}
+.kpi-row input[type=text]:focus,.kpi-row select:focus{outline:none;border-color:#7c3aed}
+.quote-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:14px 16px;margin:12px 0;font-style:italic;font-size:0.92em;color:#4a1d96;text-align:center;line-height:1.7}
+.approval{background:#f5f3ff;border:1px solid #7c3aed;border-radius:8px;padding:14px;margin-top:10px}
+.approval .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e0e0e0}
+.approval .row:last-child{border:none}
+.approval .role{font-weight:600;color:#7c3aed;min-width:140px;font-size:0.88em}
+.approval .line{flex:1;border-bottom:1px dotted #78909c}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:0.92em;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-success{background:#16a34a;color:#fff;width:100%;font-size:1em;padding:14px}
+.btn-success:hover{background:#15803d}
+.btn-success:disabled{opacity:0.5;cursor:not-allowed}
+.btn-danger{background:#dc2626;color:#fff;border:none;border-radius:4px;padding:2px 8px;font-size:0.78em;cursor:pointer;font-family:inherit}
+.btn-danger:hover{background:#b91c1c}
+.btn-add{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;cursor:pointer;font-family:inherit}
+.btn-add:hover{background:#6d28d9}
+@media(max-width:480px){.pg-row{grid-template-columns:1fr}.okr-box input[type=text],.okr-box select{font-size:0.78em}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+<h1>Contract of Extreme Ownership</h1>
+<p class="sub">สัญญาแห่งความเป็นเจ้าของ - CEO</p>
+</div>
+
+<!-- SECTION 1: ข้อมูลสมาชิก + ผู้รับใช้ทีม/พี่เลี้ยง -->
+<div class="card">
+<h2>👤 ข้อมูลสมาชิก & 👥 ผู้รับใช้ทีม / พี่เลี้ยง</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div>
+<h3 style="font-size:0.92em;color:#1a237e;margin-bottom:8px;border-bottom:1px solid #e0e0e0;padding-bottom:4px">👤 ข้อมูลสมาชิก</h3>
+<div class="form-group">
+<label>รหัสสมาชิก (ID)</label>
+<div class="id-wrapper">
+<input type="text" id="memberInput" placeholder="พิมพ์รหัสสมาชิก เช่น 6407049..." autocomplete="off">
+<div class="ac-list" id="acList"></div>
+</div>
+</div>
+<div id="memberDebug" style="background:#fff3cd;padding:8px 12px;border-radius:6px;margin:8px 0;font-size:0.82em;color:#856404;display:none">⏳ กําลังโหลดข้อมูลสมาชิก...</div>
+<div id="memberInfo" style="display:none">
+<div class="form-group"><label>ชื่อ-นามสกุล</label><input type="text" id="fName" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>ชื่อบทบาท</label><input type="text" id="fRole" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>ชื่อทีม</label><input type="text" id="fTeam" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+<div class="form-group"><label>BU</label><input type="text" id="fBU" readonly style="background:#f5f3ff;color:#7c3aed;font-weight:600"></div>
+</div>
+</div>
+<div>
+<h3 style="font-size:0.92em;color:#1a237e;margin-bottom:8px;border-bottom:1px solid #e0e0e0;padding-bottom:4px">👥 ผู้รับใช้ทีม / พี่เลี้ยง</h3>
+<div class="form-group"><label>ผู้รับใช้ทีม (Service Leader)</label><div class="id-wrapper"><input type="text" id="serviceLeaderInput" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off"><div class="ac-list" id="serviceLeaderList"></div></div></div>
+<div class="form-group"><label>พี่เลี้ยง (Mentor) 1</label><div class="id-wrapper"><input type="text" id="mentor1Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off"><div class="ac-list" id="mentor1List"></div></div></div>
+<div class="form-group"><label>พี่เลี้ยง (Mentor) 2</label><div class="id-wrapper"><input type="text" id="mentor2Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off"><div class="ac-list" id="mentor2List"></div></div></div>
+<div class="form-group"><label>พี่เลี้ยง (Mentor) 3</label><div class="id-wrapper"><input type="text" id="mentor3Input" placeholder="พิมพ์รหัสหรือชื่อเพื่อค้นหา..." autocomplete="off"><div class="ac-list" id="mentor3List"></div></div></div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 2: Accountability (เพิ่ม/ลบแถว) -->
+<div class="card">
+<h2>📋 หน้าที่ความรับผิดชอบหลัก (Accountability)</h2>
+<div id="accContainer">
+<div class="form-group acc-row" style="display:flex;align-items:center;gap:6px"><label style="min-width:20px">1.</label><input type="text" id="acc1" placeholder="หน้าที่ความรับผิดชอบข้อ 1" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button></div>
+<div class="form-group acc-row" style="display:flex;align-items:center;gap:6px"><label style="min-width:20px">2.</label><input type="text" id="acc2" placeholder="หน้าที่ความรับผิดชอบข้อ 2" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button></div>
+<div class="form-group acc-row" style="display:flex;align-items:center;gap:6px"><label style="min-width:20px">3.</label><input type="text" id="acc3" placeholder="หน้าที่ความรับผิดชอบข้อ 3" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button></div>
+<div class="form-group acc-row" style="display:flex;align-items:center;gap:6px"><label style="min-width:20px">4.</label><input type="text" id="acc4" placeholder="หน้าที่ความรับผิดชอบข้อ 4" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button></div>
+<div class="form-group acc-row" style="display:flex;align-items:center;gap:6px"><label style="min-width:20px">5.</label><input type="text" id="acc5" placeholder="หน้าที่ความรับผิดชอบข้อ 5" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button></div>
+</div>
+<button class="btn btn-add" id="addAccBtn">➕ เพิ่มแถว</button>
+</div>
+
+<!-- SECTION 3: Purpose & Vision (กรอกได้จริง) -->
+<div class="card">
+<h2>🎯 จุดมุ่งหมาย & ภาพความสําเร็จ</h2>
+<div class="pv-box">
+<h4>จุดมุ่งหมาย (Purpose)</h4>
+<textarea id="purposeText" rows="3" placeholder="เขียนจุดมุ่งหมายของทีม..."></textarea>
+</div>
+<div class="pv-box">
+<h4>ภาพความสําเร็จที่อยากเห็น (Vision)</h4>
+<textarea id="visionText" rows="3" placeholder="เขียนภาพความสําเร็จที่อยากเห็น..."></textarea>
+</div>
+<div id="purposeTime" style="font-size:0.78em;color:#546e7a;margin-top:4px"></div>
+</div>
+
+<!-- SECTION HEADER -->
+<div class="section-header">ACCOUNTABILITY & OWNERSHIP</div>
+
+<!-- SECTION 4: BU OKR (เพิ่ม Objective ได้) -->
+<div class="card">
+<h2>🚀 OKR Business Growth - ระดับ BU</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดการเปลี่ยนแปลง (ระดับ BU) | มาจาก: แผนธุรกิจ / Target Sum</p>
+<div id="buOkrContainer" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<div class="okr-box bu-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeBuObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 1</h4>
+<input type="text" id="buObj1" placeholder="วัตถุประสงค์ 1">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>1.1</label><input type="text" id="buKr1_1" placeholder="Key Result 1.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.2</label><input type="text" id="buKr1_2" placeholder="Key Result 1.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.3</label><input type="text" id="buKr1_3" placeholder="Key Result 1.3"></div>
+</div>
+<div class="okr-box bu-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeBuObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 2</h4>
+<input type="text" id="buObj2" placeholder="วัตถุประสงค์ 2">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>2.1</label><input type="text" id="buKr2_1" placeholder="Key Result 2.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.2</label><input type="text" id="buKr2_2" placeholder="Key Result 2.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.3</label><input type="text" id="buKr2_3" placeholder="Key Result 2.3"></div>
+</div>
+<div class="okr-box bu-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeBuObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 3</h4>
+<input type="text" id="buObj3" placeholder="วัตถุประสงค์ 3">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>3.1</label><input type="text" id="buKr3_1" placeholder="Key Result 3.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.2</label><input type="text" id="buKr3_2" placeholder="Key Result 3.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.3</label><input type="text" id="buKr3_3" placeholder="Key Result 3.3"></div>
+</div>
+</div>
+<button class="btn btn-add" id="addBuObjBtn" style="margin-top:8px">➕ เพิ่มวัตถุประสงค์ (Objective)</button>
+</div>
+
+<!-- SECTION 5: Team OKR (เพิ่ม Objective ได้) -->
+<div class="card">
+<h2>🚀 OKR Team Growth - ระดับทีม</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดการเปลี่ยนแปลง (ระดับทีม) | "เราจะเก่งขึ้นเรื่องอะไร และพิสูจน์ยังไงว่าเก่งขึ้นจริง"</p>
+<div id="teamOkrContainer" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<div class="okr-box team-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeTeamObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 1</h4>
+<input type="text" id="teamObj1" placeholder="วัตถุประสงค์ 1">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>1.1</label><input type="text" id="teamKr1_1" placeholder="Key Result 1.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.2</label><input type="text" id="teamKr1_2" placeholder="Key Result 1.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>1.3</label><input type="text" id="teamKr1_3" placeholder="Key Result 1.3"></div>
+</div>
+<div class="okr-box team-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeTeamObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 2</h4>
+<input type="text" id="teamObj2" placeholder="วัตถุประสงค์ 2">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>2.1</label><input type="text" id="teamKr2_1" placeholder="Key Result 2.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.2</label><input type="text" id="teamKr2_2" placeholder="Key Result 2.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>2.3</label><input type="text" id="teamKr2_3" placeholder="Key Result 2.3"></div>
+</div>
+<div class="okr-box team-okr-box" style="position:relative">
+<button class="okr-remove" onclick="removeTeamObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button>
+<h4>วัตถุประสงค์ (Objective) 3</h4>
+<input type="text" id="teamObj3" placeholder="วัตถุประสงค์ 3">
+<h4 style="margin-top:6px">Key Results</h4>
+<div class="form-group" style="margin-bottom:4px"><label>3.1</label><input type="text" id="teamKr3_1" placeholder="Key Result 3.1"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.2</label><input type="text" id="teamKr3_2" placeholder="Key Result 3.2"></div>
+<div class="form-group" style="margin-bottom:4px"><label>3.3</label><input type="text" id="teamKr3_3" placeholder="Key Result 3.3"></div>
+</div>
+</div>
+<button class="btn btn-add" id="addTeamObjBtn" style="margin-top:8px">➕ เพิ่มวัตถุประสงค์ (Objective)</button>
+</div>
+
+<!-- Reflective Quote -->
+<div class="quote-box">💬 "เราจะเก่งขึ้นเรื่องอะไร และพิสูจน์ยังไงว่าเก่งขึ้นจริง"</div>
+
+<!-- SECTION 6: Personal Growth (3 คอลัมน์ + เพิ่ม/ลบ) -->
+<div class="card">
+<h2>🌱 Personal Growth</h2>
+<div id="pgContainer">
+<div class="pg-row" data-pg="1">
+<button class="pg-remove" onclick="removePG(this)" title="ลบแถว">✕</button>
+<div class="form-group" style="margin-bottom:0"><label>ประเภทการเติบโต</label><select id="pgType1"><option value="">-- เลือก --</option><option value="Skill">Skill (ทักษะ)</option><option value="Knowledge">Knowledge (ความรู้)</option><option value="Attitude">Attitude (เจตคติ)</option><option value="Leadership">Leadership (ภาวะผู้นํา)</option><option value="Wellness">Wellness (สุขภาพ)</option></select></div>
+<div class="form-group" style="margin-bottom:0"><label>เป้าหมาย</label><input type="text" id="pgTarget1" placeholder="เช่น เรียนรู้ Data Analysis"></div>
+<div class="form-group" style="margin-bottom:0"><label>แผนดําเนินการ</label><input type="text" id="pgDesc1" placeholder="จะทําอย่างไรเพื่อถึงเป้าหมาย"></div>
+</div>
+<div class="pg-row" data-pg="2">
+<button class="pg-remove" onclick="removePG(this)" title="ลบแถว">✕</button>
+<div class="form-group" style="margin-bottom:0"><label>ประเภทการเติบโต</label><select id="pgType2"><option value="">-- เลือก --</option><option value="Skill">Skill (ทักษะ)</option><option value="Knowledge">Knowledge (ความรู้)</option><option value="Attitude">Attitude (เจตคติ)</option><option value="Leadership">Leadership (ภาวะผู้นํา)</option><option value="Wellness">Wellness (สุขภาพ)</option></select></div>
+<div class="form-group" style="margin-bottom:0"><label>เป้าหมาย</label><input type="text" id="pgTarget2" placeholder="เช่น เรียนรู้ Data Analysis"></div>
+<div class="form-group" style="margin-bottom:0"><label>แผนดําเนินการ</label><input type="text" id="pgDesc2" placeholder="จะทําอย่างไรเพื่อถึงเป้าหมาย"></div>
+</div>
+<div class="pg-row" data-pg="3">
+<button class="pg-remove" onclick="removePG(this)" title="ลบแถว">✕</button>
+<div class="form-group" style="margin-bottom:0"><label>ประเภทการเติบโต</label><select id="pgType3"><option value="">-- เลือก --</option><option value="Skill">Skill (ทักษะ)</option><option value="Knowledge">Knowledge (ความรู้)</option><option value="Attitude">Attitude (เจตคติ)</option><option value="Leadership">Leadership (ภาวะผู้นํา)</option><option value="Wellness">Wellness (สุขภาพ)</option></select></div>
+<div class="form-group" style="margin-bottom:0"><label>เป้าหมาย</label><input type="text" id="pgTarget3" placeholder="เช่น เรียนรู้ Data Analysis"></div>
+<div class="form-group" style="margin-bottom:0"><label>แผนดําเนินการ</label><input type="text" id="pgDesc3" placeholder="จะทําอย่างไรเพื่อถึงเป้าหมาย"></div>
+</div>
+</div>
+<button class="btn btn-add" id="addPGBtn">➕ เพิ่ม Personal Growth</button>
+</div>
+
+<!-- SECTION 7: KPI (เพิ่ม/ลบแถว) -->
+<div class="card">
+<h2>📊 KPI (Operational Excellence - WI)</h2>
+<p style="font-size:0.76em;color:#78909c;margin-bottom:8px">วัดเพื่อรักษามาตรฐานงาน | มาจาก: PM/WI (Process Manual / Work Instruction)</p>
+<div id="kpiContainer">
+<div class="form-group kpi-row" style="display:grid;grid-template-columns:40px 1fr 80px 100px 30px;align-items:center;gap:6px">
+<label style="font-size:0.82em;color:#546e7a;font-weight:600">KPI1</label>
+<input type="text" id="kpi1n" placeholder="เช่น ยอดขาย, CSAT">
+<input type="text" id="kpi1t" placeholder="เป้า">
+<select id="kpi1f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select>
+<button class="btn-danger" onclick="removeKPI(this)" title="ลบแถว">✕</button>
+</div>
+<div class="form-group kpi-row" style="display:grid;grid-template-columns:40px 1fr 80px 100px 30px;align-items:center;gap:6px">
+<label style="font-size:0.82em;color:#546e7a;font-weight:600">KPI2</label>
+<input type="text" id="kpi2n" placeholder="เช่น Quality Metrics">
+<input type="text" id="kpi2t" placeholder="เป้า">
+<select id="kpi2f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select>
+<button class="btn-danger" onclick="removeKPI(this)" title="ลบแถว">✕</button>
+</div>
+<div class="form-group kpi-row" style="display:grid;grid-template-columns:40px 1fr 80px 100px 30px;align-items:center;gap:6px">
+<label style="font-size:0.82em;color:#546e7a;font-weight:600">KPI3</label>
+<input type="text" id="kpi3n" placeholder="เช่น Compliance">
+<input type="text" id="kpi3t" placeholder="เป้า">
+<select id="kpi3f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select>
+<button class="btn-danger" onclick="removeKPI(this)" title="ลบแถว">✕</button>
+</div>
+</div>
+<button class="btn btn-add" id="addKPIBtn">➕ เพิ่ม KPI</button>
+</div>
+
+
+
+<!-- html2canvas for screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- SAVE + SUBMIT -->
+<div style="margin:12px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<button class="btn btn-add" style="width:100%" id="saveAllBtn">💾 บันทึกข้อมูล</button>
+<span id="allTimestamp" style="font-size:0.78em;color:#546e7a;margin-left:8px"></span>
+</div>
+<div style="margin:16px 0">
+<button class="btn btn-success" id="submitBtn">ส่งสัญญา ✉️</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="successPage" style="display:none;text-align:center;padding:36px 16px">
+<div style="font-size:2.5em;color:#16a34a">✅</div>
+<h2 style="color:#16a34a;margin:10px 0">ส่งสัญญาสําเร็จ!</h2>
+<p id="successMsg" style="color:#546e7a;font-size:0.9em"></p>
+<p style="color:#78909c;font-size:0.82em;margin-top:14px">Timestamp: <span id="submitTime"></span></p>
+</div>
+
+</div>
+
+<!-- MEMBERS data loaded via google.script.run (no escaping issues) -->
+<script>
+var MEMBERS = [];
+var selectedMember = null;
+var accCount = 5;
+var pgCount = 3;
+
+// ===== โหลดข้อมูลสมาชิกผ่าน google.script.run =====
+var debugEl = document.getElementById('memberDebug');
+if(debugEl){debugEl.style.display='block';debugEl.innerHTML='⏳ กําลังโหลดข้อมูลสมาชิก...';}
+
+function loadMembersComplete(){
+  try {
+    google.script.run.withSuccessHandler(function(data){
+      if(data && data.length > 0){
+        MEMBERS = data;
+        if(debugEl){debugEl.style.display='block';debugEl.innerHTML='✅ โหลดสมาชิกสําเร็จ: ' + MEMBERS.length + ' คน';debugEl.style.background='#d4edda';debugEl.style.color='#155724';setTimeout(function(){debugEl.style.display='none';},5000);}
+        initAC(); initExtraAC();
+      } else {
+        if(debugEl){debugEl.innerHTML='❌ ไม่มีข้อมูลสมาชิก';debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';}
+      }
+    }).withFailureHandler(function(e){
+      if(debugEl){debugEl.innerHTML='❌ โหลดข้อมูลสมาชิกล้มเหลว: ' + e.message;debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';}
+    }).getMembersForClient();
+  } catch(ex) { if(debugEl){debugEl.innerHTML='❌ โหลดข้อมูลล้มเหลว: ' + ex.message;debugEl.style.background='#f8d7da';debugEl.style.color='#721c24';} }
+}
+
+function gv(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+
+// ===== AUTOCOMPLETE =====
+function initAC(){
+  var inp = document.getElementById('memberInput');
+  var list = document.getElementById('acList');
+  if(!inp||!list) return;
+  inp.addEventListener('input',function(){
+    var q = this.value.toLowerCase().trim();
+    if(q.length<1){list.classList.remove('show');return;}
+    var m = MEMBERS.filter(function(x){return (x.id||'').toLowerCase().indexOf(q)>=0 || (x.name||'').toLowerCase().indexOf(q)>=0;}).slice(0,20);
+    if(!m.length){list.classList.remove('show');return;}
+    list.innerHTML='';
+    m.forEach(function(x){
+      var d = document.createElement('div'); d.className='ac-item';
+      d.innerHTML='<span class="id">'+(x.id||'')+'</span> <span class="nm">'+(x.name||'')+'</span> <span class="dt">| '+(x.role||'')+' | '+(x.team||'')+'</span>';
+      d.addEventListener('click',function(){pickMember(x);});
+      list.appendChild(d);
+    });
+    list.classList.add('show');
+  });
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key==='Tab'){
+      var q=this.value.toLowerCase().trim(); if(!q)return;
+      var m=MEMBERS.filter(function(x){return(x.id||'').toLowerCase()===q||(x.id||'').toLowerCase().indexOf(q)===0||(x.name||'').toLowerCase().indexOf(q)>=0;});
+      if(m.length===1){pickMember(m[0]);}
+      else if(m.length>0){var exact=m.filter(function(x){return(x.id||'').toLowerCase()===q;});if(exact.length===1){pickMember(exact[0]);}else{pickMember(m[0]);}}
+      e.preventDefault();
+    }
+  });
+  inp.addEventListener('blur',function(){
+    if(selectedMember)return; var q=this.value.toLowerCase().trim(); if(!q)return;
+    var m=MEMBERS.filter(function(x){return(x.id||'').toLowerCase()===q||(x.id||'').toLowerCase().indexOf(q)===0||(x.name||'').toLowerCase().indexOf(q)>=0;});
+    if(m.length>0){pickMember(m[0]);}
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('.id-wrapper')){list.classList.remove('show');}});
+}
+
+function pickMember(m){
+  selectedMember = m;
+  document.getElementById('memberInput').value = m.name || '';
+  document.getElementById('fName').value = m.name || '-';
+  document.getElementById('fRole').value = m.role || '-';
+  document.getElementById('fTeam').value = m.team || '-';
+  document.getElementById('fBU').value = m.bu || '-';
+  document.getElementById('memberInfo').style.display = 'block';
+  document.getElementById('acList').classList.remove('show');
+  loadPurposeVision();
+  loadAccountability();
+}
+
+function initExtraAC(){
+  setupAC('serviceLeaderInput','serviceLeaderList');
+  setupAC('mentor1Input','mentor1List');
+  setupAC('mentor2Input','mentor2List');
+  setupAC('mentor3Input','mentor3List');
+}
+
+function setupAC(inputId, listId){
+  var inp = document.getElementById(inputId);
+  var list = document.getElementById(listId);
+  if(!inp||!list) return;
+  inp.addEventListener('input',function(){
+    var q = this.value.toLowerCase().trim();
+    if(q.length<1){list.classList.remove('show');return;}
+    var m = MEMBERS.filter(function(x){return (x.id||'').toLowerCase().indexOf(q)>=0 || (x.name||'').toLowerCase().indexOf(q)>=0;}).slice(0,20);
+    if(!m.length){list.classList.remove('show');return;}
+    list.innerHTML='';
+    m.forEach(function(x){
+      var d = document.createElement('div'); d.className='ac-item';
+      d.innerHTML='<span class="id">'+(x.id||'')+'</span> <span class="nm">'+(x.name||'')+'</span> <span class="dt">| '+(x.role||'')+' | '+(x.team||'')+'</span>';
+      d.addEventListener('click',function(){inp.value=(x.name||'')+' ('+(x.id||'')+')';list.classList.remove('show');});
+      list.appendChild(d);
+    });
+    list.classList.add('show');
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('.id-wrapper')){list.classList.remove('show');}});
+}
+
+// ===== ADD ACC ROW =====
+document.getElementById('addAccBtn').addEventListener('click',function(){
+  accCount++;
+  var container = document.getElementById('accContainer');
+  var div = document.createElement('div');
+  div.className = 'form-group acc-row';
+  div.style.cssText = 'display:flex;align-items:center;gap:6px';
+  div.innerHTML = '<label style="min-width:20px">'+accCount+'.</label><input type="text" id="acc'+accCount+'" placeholder="หน้าที่ความรับผิดชอบข้อ '+accCount+'" style="flex:1"><button class="btn-danger" onclick="removeAcc(this)" title="ลบแถว">✕</button>';
+  container.appendChild(div);
+});
+
+function removeAcc(btn){
+  var row = btn.parentElement;
+  row.remove();
+  // renumber ทั้งหมด
+  var items = document.querySelectorAll('#accContainer .acc-row');
+  for(var i=0;i<items.length;i++){
+    items[i].querySelector('label').textContent = (i+1)+'.';
+    var inp = items[i].querySelector('input');
+    if(inp){inp.id='acc'+(i+1);inp.placeholder='หน้าที่ความรับผิดชอบข้อ '+(i+1);}
+  }
+  accCount = items.length;
+}
+
+// ===== ADD/REMOVE BU OBJECTIVE =====
+var buObjCount = 3;
+document.getElementById('addBuObjBtn').addEventListener('click',function(){
+  buObjCount++; var n = buObjCount;
+  var container = document.getElementById('buOkrContainer');
+  var div = document.createElement('div'); div.className = 'okr-box bu-okr-box'; div.style.position = 'relative';
+  div.innerHTML = '<button class="okr-remove" onclick="removeBuObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button><h4>วัตถุประสงค์ (Objective) '+n+'</h4><input type="text" id="buObj'+n+'" placeholder="วัตถุประสงค์ '+n+'"><h4 style="margin-top:6px">Key Results</h4><div class="form-group" style="margin-bottom:4px"><label>'+n+'.1</label><input type="text" id="buKr'+n+'_1" placeholder="Key Result '+n+'.1"></div><div class="form-group" style="margin-bottom:4px"><label>'+n+'.2</label><input type="text" id="buKr'+n+'_2" placeholder="Key Result '+n+'.2"></div><div class="form-group" style="margin-bottom:4px"><label>'+n+'.3</label><input type="text" id="buKr'+n+'_3" placeholder="Key Result '+n+'.3"></div>';
+  container.appendChild(div);
+});
+
+function removeBuObj(btn){
+  var box = btn.parentElement;
+  box.remove();
+  var items = document.querySelectorAll('#buOkrContainer .bu-okr-box');
+  for(var i=0;i<items.length;i++){
+    items[i].querySelector('h4').textContent = 'วัตถุประสงค์ (Objective) '+(i+1);
+    var objInput = items[i].querySelector('input[type=text]');
+    if(objInput){objInput.id='buObj'+(i+1);objInput.placeholder='วัตถุประสงค์ '+(i+1);}
+    var labels = items[i].querySelectorAll('.form-group label');
+    var krInputs = items[i].querySelectorAll('.form-group input[type=text]');
+    for(var k=0;k<3;k++){
+      if(labels[k]) labels[k].textContent=(i+1)+'.'+(k+1);
+      if(krInputs[k]){krInputs[k].id='buKr'+(i+1)+'_'+(k+1);krInputs[k].placeholder='Key Result '+(i+1)+'.'+(k+1);}
+    }
+  }
+  buObjCount = items.length;
+}
+
+// ===== ADD/REMOVE TEAM OBJECTIVE =====
+var teamObjCount = 3;
+document.getElementById('addTeamObjBtn').addEventListener('click',function(){
+  teamObjCount++; var n = teamObjCount;
+  var container = document.getElementById('teamOkrContainer');
+  var div = document.createElement('div'); div.className = 'okr-box team-okr-box'; div.style.position = 'relative';
+  div.innerHTML = '<button class="okr-remove" onclick="removeTeamObj(this)" title="ลบ Objective" style="position:absolute;top:4px;right:6px;cursor:pointer;color:#dc2626;font-size:1.1em;font-weight:bold;border:none;background:none;line-height:1">✕</button><h4>วัตถุประสงค์ (Objective) '+n+'</h4><input type="text" id="teamObj'+n+'" placeholder="วัตถุประสงค์ '+n+'"><h4 style="margin-top:6px">Key Results</h4><div class="form-group" style="margin-bottom:4px"><label>'+n+'.1</label><input type="text" id="teamKr'+n+'_1" placeholder="Key Result '+n+'.1"></div><div class="form-group" style="margin-bottom:4px"><label>'+n+'.2</label><input type="text" id="teamKr'+n+'_2" placeholder="Key Result '+n+'.2"></div><div class="form-group" style="margin-bottom:4px"><label>'+n+'.3</label><input type="text" id="teamKr'+n+'_3" placeholder="Key Result '+n+'.3"></div>';
+  container.appendChild(div);
+});
+
+function removeTeamObj(btn){
+  var box = btn.parentElement;
+  box.remove();
+  var items = document.querySelectorAll('#teamOkrContainer .team-okr-box');
+  for(var i=0;i<items.length;i++){
+    items[i].querySelector('h4').textContent = 'วัตถุประสงค์ (Objective) '+(i+1);
+    var objInput = items[i].querySelector('input[type=text]');
+    if(objInput){objInput.id='teamObj'+(i+1);objInput.placeholder='วัตถุประสงค์ '+(i+1);}
+    var labels = items[i].querySelectorAll('.form-group label');
+    var krInputs = items[i].querySelectorAll('.form-group input[type=text]');
+    for(var k=0;k<3;k++){
+      if(labels[k]) labels[k].textContent=(i+1)+'.'+(k+1);
+      if(krInputs[k]){krInputs[k].id='teamKr'+(i+1)+'_'+(k+1);krInputs[k].placeholder='Key Result '+(i+1)+'.'+(k+1);}
+    }
+  }
+  teamObjCount = items.length;
+}
+
+// ===== ADD/REMOVE PERSONAL GROWTH =====
+document.getElementById('addPGBtn').addEventListener('click',function(){
+  pgCount++;
+  var n = pgCount;
+  var container = document.getElementById('pgContainer');
+  var div = document.createElement('div'); div.className = 'pg-row'; div.setAttribute('data-pg', n);
+  div.innerHTML = '<button class="pg-remove" onclick="removePG(this)" title="ลบแถว">✕</button><div class="form-group" style="margin-bottom:0"><label>ประเภทการเติบโต</label><select id="pgType'+n+'"><option value="">-- เลือก --</option><option value="Skill">Skill (ทักษะ)</option><option value="Knowledge">Knowledge (ความรู้)</option><option value="Attitude">Attitude (เจตคติ)</option><option value="Leadership">Leadership (ภาวะผู้นํา)</option><option value="Wellness">Wellness (สุขภาพ)</option></select></div><div class="form-group" style="margin-bottom:0"><label>เป้าหมาย</label><input type="text" id="pgTarget'+n+'" placeholder="เช่น เรียนรู้ Data Analysis"></div><div class="form-group" style="margin-bottom:0"><label>แผนดําเนินการ</label><input type="text" id="pgDesc'+n+'" placeholder="จะทําอย่างไรเพื่อถึงเป้าหมาย"></div>';
+  container.appendChild(div);
+});
+
+function removePG(btn){
+  var row = btn.parentElement;
+  row.remove();
+  // renumber ทั้งหมด
+  var items = document.querySelectorAll('#pgContainer .pg-row');
+  for(var i=0;i<items.length;i++){
+    items[i].setAttribute('data-pg', i+1);
+    var sel = items[i].querySelector('select');
+    if(sel) sel.id = 'pgType'+(i+1);
+    var inputs = items[i].querySelectorAll('input[type=text]');
+    if(inputs[0]){inputs[0].id='pgTarget'+(i+1);}
+    if(inputs[1]){inputs[1].id='pgDesc'+(i+1);}
+  }
+  pgCount = items.length;
+}
+
+// ===== ADD/REMOVE KPI =====
+var kpiCount = 3;
+document.getElementById('addKPIBtn').addEventListener('click',function(){
+  kpiCount++;
+  var n = kpiCount;
+  var container = document.getElementById('kpiContainer');
+  var div = document.createElement('div');
+  div.className = 'form-group kpi-row';
+  div.style.cssText = 'display:grid;grid-template-columns:40px 1fr 80px 100px 30px;align-items:center;gap:6px';
+  div.innerHTML = '<label style="font-size:0.82em;color:#546e7a;font-weight:600">KPI'+n+'</label><input type="text" id="kpi'+n+'n" placeholder="ชื่อตัวชี้วัด"><input type="text" id="kpi'+n+'t" placeholder="เป้า"><select id="kpi'+n+'f"><option value="">--</option><option value="รายเดือน">รายเดือน</option><option value="รายไตรมาส">รายไตรมาส</option><option value="รายปี">รายปี</option></select><button class="btn-danger" onclick="removeKPI(this)" title="ลบแถว">✕</button>';
+  container.appendChild(div);
+});
+
+function removeKPI(btn){
+  var row = btn.parentElement;
+  row.remove();
+  var items = document.querySelectorAll('#kpiContainer .kpi-row');
+  for(var i=0;i<items.length;i++){
+    items[i].querySelector('label').textContent = 'KPI'+(i+1);
+    var inputs = items[i].querySelectorAll('input[type=text]');
+    if(inputs[0]){inputs[0].id='kpi'+(i+1)+'n';inputs[0].placeholder='ชื่อตัวชี้วัด';}
+    if(inputs[1]){inputs[1].id='kpi'+(i+1)+'t';inputs[1].placeholder='เป้า';}
+    var sel = items[i].querySelector('select');
+    if(sel) sel.id='kpi'+(i+1)+'f';
+  }
+  kpiCount = items.length;
+}
+
+// ===== LOAD DATA FROM SHEETS =====
+function loadPurposeVision(){
+  if(!selectedMember) return;
+  var bu = selectedMember.bu||'';
+  google.script.run.withSuccessHandler(function(data){
+    if(data && data.length>0){
+      var p = data[0];
+      document.getElementById('purposeText').value = p['Purpose']||p['Purpose_Vision']||'';
+      document.getElementById('visionText').value = p['Vision']||p['Purpose_Vision']||'';
+      document.getElementById('purposeTime').textContent = 'อัปเดตล่าสุด: '+(p['Updated_Date']?new Date(p['Updated_Date']).toLocaleString('th-TH'):'-');
+    }
+  }).withFailureHandler(function(e){}).readSheetData('Purpose', bu);
+}
+
+function loadAccountability(){
+  if(!selectedMember) return;
+  var bu = selectedMember.bu||'';
+  google.script.run.withSuccessHandler(function(data){
+    if(data && data.length>0){
+      var items = (data[0]['Accountability_Items']||'').split(',');
+      for(var i=0; i<items.length; i++){
+        var el = document.getElementById('acc'+(i+1));
+        if(el) el.value = items[i].trim();
+      }
+    }
+  }).withFailureHandler(function(e){}).readSheetData('Accountability', bu);
+}
+
+// ===== COLLECT FORM DATA =====
+function collectFormData(){
+  var accItems = [];
+  for(var i=1; i<=accCount; i++){var v=gv('acc'+i); if(v) accItems.push(v);}
+  var buObjs = [];
+  for(var b=1; b<=buObjCount; b++){var obj=gv('buObj'+b); if(obj||gv('buKr'+b+'_1')||gv('buKr'+b+'_2')||gv('buKr'+b+'_3')){buObjs.push({objective:obj,kr1:gv('buKr'+b+'_1'),kr2:gv('buKr'+b+'_2'),kr3:gv('buKr'+b+'_3')});}}
+  var teamObjs = [];
+  for(var t=1; t<=teamObjCount; t++){var obj=gv('teamObj'+t); if(obj||gv('teamKr'+t+'_1')||gv('teamKr'+t+'_2')||gv('teamKr'+t+'_3')){teamObjs.push({objective:obj,kr1:gv('teamKr'+t+'_1'),kr2:gv('teamKr'+t+'_2'),kr3:gv('teamKr'+t+'_3')});}}
+  var kpis = [];
+  for(var k=1; k<=kpiCount; k++){var kn=gv('kpi'+k+'n'); if(kn) kpis.push({name:kn,target:gv('kpi'+k+'t'),freq:gv('kpi'+k+'f')});}
+  // Personal Growth (multiple rows)
+  var pgItems = [];
+  for(var p=1; p<=pgCount; p++){
+    var typeEl = document.getElementById('pgType'+p);
+    var targetEl = document.getElementById('pgTarget'+p);
+    var descEl = document.getElementById('pgDesc'+p);
+    if(!typeEl) continue;
+    var type = typeEl.value;
+    var target = targetEl ? targetEl.value : '';
+    var desc = descEl ? descEl.value : '';
+    if(type || target || desc){
+      pgItems.push({type:type, target:target, desc:desc});
+    }
+  }
+  return {
+    member_id: selectedMember?selectedMember.id:'',
+    name: selectedMember?selectedMember.name:'',
+    bu: selectedMember?selectedMember.bu:'',
+    team: selectedMember?selectedMember.team:'',
+    role: selectedMember?selectedMember.role:'',
+    service_leader: gv('serviceLeaderInput'),
+    mentor1: gv('mentor1Input'),
+    mentor2: gv('mentor2Input'),
+    mentor3: gv('mentor3Input'),
+    accountability: accItems.join(', '),
+    purpose: gv('purposeText'),
+    vision: gv('visionText'),
+    personal_growths: pgItems,
+    bu_objectives: buObjs,
+    team_objectives: teamObjs,
+    kpis: kpis
+  };
+}
+
+// ===== SAVE ALL =====
+document.getElementById('saveAllBtn').addEventListener('click',function(){
+  if(!selectedMember){alert('กรุณาเลือกสมาชิกก่อน');return;}
+  var formData = collectFormData();
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = '💾 บันทึกข้อมูล';
+  google.script.run.withSuccessHandler(function(r){
+    btn.disabled = false;
+    btn.textContent = '💾 บันทึกข้อมูล';
+    if(r && r.status === 'ok'){
+      var memberName = selectedMember ? selectedMember.name : '-';
+      var today = new Date().toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
+      document.getElementById('allTimestamp').textContent = 'บันทึกล่าสุด: ' + (r.timestamp || today);
+      alert(memberName + ' ได้ Update สถานะ CEO เรียบร้อยแล้ว\nลงวันที่ ' + today);
+    } else {
+      alert('เกิดข้อผิดพลาด: ' + (r ? r.message : 'Unknown error'));
+    }
+  }).withFailureHandler(function(e){
+    btn.disabled = false;
+    btn.textContent = '💾 บันทึกข้อมูล';
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+  }).saveAllData(formData);
+});
+
+// ===== SUBMIT =====
+document.getElementById('submitBtn').addEventListener('click',function(){
+  if(!selectedMember){alert('กรุณาเลือกสมาชิกก่อน');return;}
+  var formData = collectFormData();
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'กำลังส่ง...';
+  var memberName = selectedMember ? selectedMember.name : '-';
+  var today = new Date().toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
+  var caption = memberName + ' ได้ Update สถานะ CEO เรียบร้อยแล้ว\nลงวันที่ ' + today;
+
+  // Step 1: บันทึกข้อมูลลง Sheet
+  try {
+  google.script.run.withSuccessHandler(function(r){
+    // Step 2: Capture ฟอร์มเป็น JPG (ลดขนาดมาก)
+    var formEl = document.querySelector('.container');
+    html2canvas(formEl, {scale:1, useCORS:true, backgroundColor:'#f5f6fa', logging:true}).then(function(canvas){
+      // ลดขนาดภาพเพิ่ม
+      var maxW = 800;
+      var ratio = Math.min(maxW / canvas.width, 1);
+      var newCanvas = document.createElement('canvas');
+      newCanvas.width = canvas.width * ratio;
+      newCanvas.height = canvas.height * ratio;
+      newCanvas.getContext('2d').drawImage(canvas, 0, 0, newCanvas.width, newCanvas.height);
+      var jpgData = newCanvas.toDataURL('image/jpeg', 0.5);
+      
+      // ตรวจขนาด
+      var sizeKB = Math.round(jpgData.length * 3 / 4 / 1024);
+      alert('Capture สำเร็จ! ขนาด: ' + sizeKB + ' KB');
+      
+      if(sizeKB > 9000) {
+        // ภาพใหญ่เกิน — ส่งเฉพาะข้อความ
+        alert('ภาพใหญ่เกินไป (' + sizeKB + ' KB) — ส่งข้อความแทน');
+        google.script.run.withSuccessHandler(function(r3){
+          showSuccess(memberName, today, btn, formEl);
+        }).withFailureHandler(function(e3){
+          alert('ส่งข้อความล้มเหลว: ' + e3.message);
+          btn.disabled = false; btn.textContent = 'ส่งสัญญา ✉️';
+        }).submitCEOContract(formData);
+      } else {
+        // Step 3: ส่งข้อมูล + ภาพ JPG ไป GAS
+        alert('กำลังส่งภาพไป Telegram...');
+        google.script.run.withSuccessHandler(function(r2){
+          alert('ส่งสำเร็จ!');
+          showSuccess(memberName, today, btn, formEl);
+        }).withFailureHandler(function(e2){
+          alert('ส่งภาพล้มเหลว: ' + e2.message);
+          btn.disabled = false; btn.textContent = 'ส่งสัญญา ✉️';
+        }).submitCEOContractWithImage(formData, jpgData, caption);
+      }
+    }).catch(function(err){
+      alert('Capture ภาพล้มเหลว: ' + err.message);
+      btn.disabled = false; btn.textContent = 'ส่งสัญญา ✉️';
+    });
+  }).withFailureHandler(function(e){
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+    btn.disabled = false; btn.textContent = 'ส่งสัญญา ✉️';
+  }).submitCEOContract(formData);
+  } catch(ex) { alert('JS Error: ' + ex.message); btn.disabled = false; btn.textContent = 'ส่งสัญญา ✉️'; }
+});
+
+function showSuccess(memberName, today, btn, formEl) {
+  document.getElementById('submitTime').textContent = new Date().toLocaleString('th-TH');
+  document.getElementById('successMsg').innerHTML = '<strong>' + memberName + '</strong> ได้ Update สถานะ CEO เรียบร้อยแล้ว<br>ลงวันที่ ' + today;
+  formEl.style.display = 'none';
+  document.getElementById('successPage').style.display = 'block';
+}
+
+// ===== INIT =====
+// initAC() and initExtraAC() are called by loadMembersComplete()
+// after MEMBERS data is loaded. Do NOT call them here with empty MEMBERS.
+loadMembersComplete();
+</script>
+</body>
+</html>

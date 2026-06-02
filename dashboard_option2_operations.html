@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📋 PKG Training 2026 — Operations</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#11998e,#38ef7d);min-height:100vh;padding:10px}
+.container{max-width:1600px;margin:0 auto}
+.header{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;padding:20px 15px;border-radius:20px 20px 0 0;text-align:center}
+.header h1{font-size:1.5em}.header .sub{opacity:.9;font-size:.9em}
+.tag{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:20px;display:inline-block;margin:4px;font-size:.75em}
+.content{background:#fff;padding:15px;border-radius:0 0 20px 20px}
+.section{margin-bottom:25px}
+.section h2{color:#203a43;font-size:1.15em;margin-bottom:10px;border-bottom:2px solid #11998e;padding-bottom:6px;display:flex;align-items:center}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+.ki{color:#fff;padding:14px 8px;border-radius:12px;text-align:center}
+.ki.purple{background:linear-gradient(135deg,#667eea,#764ba2)}.ki.green{background:linear-gradient(135deg,#11998e,#38ef7d)}.ki.warning{background:linear-gradient(135deg,#f093fb,#f5576c)}.ki.dark{background:linear-gradient(135deg,#0f2027,#2c5364)}.ki.gold{background:linear-gradient(135deg,#f5af19,#f12711)}.ki.info{background:linear-gradient(135deg,#2196F3,#21CBF3)}
+.ki .v{font-size:1.6em;font-weight:800}.ki .l{font-size:.7em;opacity:.9;margin-top:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:500px}
+th{background:linear-gradient(135deg,#0f2027,#2c5364);color:#fff;padding:10px 8px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #f0f0f0;white-space:nowrap}
+tr:hover{background:#f0faf7}tr:nth-child(even){background:#fafafa}
+.badge{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.bg{background:#e6f4ea;color:#137333}.bo{background:#fef7e0;color:#b06000}.br{background:#fce8e6;color:#c5221f}.bb{background:#e8f0fe;color:#1a73e8}.bp{background:#f3e8ff;color:#7c3aed}
+.tw{max-height:400px;overflow-y:auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:10px}
+.tc{text-align:center}
+.ct{font-size:1em;font-weight:700;margin-bottom:8px;padding:6px 12px;border-radius:8px}
+.ty{background:#e6f4ea;color:#137333;border-left:4px solid #137333}
+.tn{background:#fce8e6;color:#c5221f;border-left:4px solid #c5221f}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;max-height:350px;overflow-y:auto;padding:8px;background:#f8f9fa;border-radius:12px}
+.cc{background:#fff;padding:8px;border-radius:8px;border-left:3px solid #11998e;font-size:11px}
+.cc.y{border-left-color:#137333}.cc.n{border-left-color:#c5221f}
+.footer{background:linear-gradient(135deg,#0f2027,#2c5364);color:#fff;padding:15px;text-align:center}.footer .tag{background:rgba(255,255,255,.15)}
+@media(max-width:500px){.ki .v{font-size:1.3em}.header h1{font-size:1.2em}.section h2{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📋 PKG Training Dashboard 2026</h1>
+<div class="sub">Operations View — มุมมองปฏิบัติการ</div>
+<div><span class="tag">📅 15 พฤษภาคม 2569</span><span class="tag">📚 105 หลักสูตร</span><span class="tag">👥 492 สมาชิก</span><span class="tag">🏢 7 BU</span></div>
+</div>
+<div class="content">
+<div class="kpi-row">
+<div class="ki purple"><div class="v">9,023</div><div class="l">บันทึกทั้งหมด</div></div>
+<div class="ki green"><div class="v">8,030</div><div class="l">เข้าอบรม</div></div>
+<div class="ki warning"><div class="v">991</div><div class="l">ไม่เข้า</div></div>
+<div class="ki info"><div class="v">89.0%</div><div class="l">อัตราเข้า</div></div>
+<div class="ki dark"><div class="v">99.1</div><div class="l">คะแนนเฉลี่ย</div></div>
+<div class="ki gold"><div class="v">100.0%</div><div class="l">อัตราผ่าน</div></div>
+</div>
+
+<div class="section">
+<h2>📚 หลักสูตรทั้งหมด (แบ่งตามประเภท)</h2>
+<div class="grid2">
+<div>
+<div class="ct ty">✅ หลักสูตร YES (นับเกรด+หน่วยกิต) — 94 หลักสูตร</div>
+<div class="cg">
+<div class="cc y"><strong>หลักสูตร LIA สมาชิก PKG</strong></div><div class="cc y"><strong>cost down pkg</strong></div><div class="cc y"><strong>ภาษีเงินได้บุคคลธรรมดา 2569</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มกราคม 26</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 เมษายน 26</strong></div><div class="cc y"><strong>Alignment PMSG</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 กุมภาพันธ์ 26</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มีนาคม 26</strong></div><div class="cc y"><strong>Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว</strong></div><div class="cc y"><strong>5 เทคนิค ที่คนทำคอนเทนต์ใน TikTok ต้องรู้!</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 เมษายน 26</strong></div><div class="cc y"><strong>สร้างคอนเทนต์ให้คนหยุดดูด้วยเทคนิค ปาด ชง ตบ</strong></div><div class="cc y"><strong>รถบรรทุกอีซูซุคิงออฟทรัคส์รุ่น NLR</strong></div><div class="cc y"><strong>เริ่มต้นขายผ่าน Facebook</strong></div><div class="cc y"><strong>Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว</strong></div><div class="cc y"><strong>ข้อมูลผลิตภัณฑ์อีซูซุ ดีแมคซ์ เอมเอชอีวี</strong></div><div class="cc y"><strong>แนะนําผลิตภัณฑ์อีซูซุรุ่นใหม่และข้อมูลเปรียบเทียบ</strong></div><div class="cc y"><strong>5 คาถากันเฟซบุ๊กเพจโดนปิด</strong></div><div class="cc y"><strong>การใช้งานฝาท้าย Smart Tailgate ด้วยระบบ Step Sensor</strong></div><div class="cc y"><strong>หลักสูตรการใช้งานระบบความบันเทิง Isuzu Ultimate Entertainment</strong></div><div class="cc y"><strong>ความรู้ผลิตภัณฑ์อีซูซุประเภทรถปิกอัพและรถยนต์นั่งอเนกประสงค์</strong></div><div class="cc y"><strong>ความรู้เบื้องต้นเกี่ยวกับผลิตภัณฑ์อีซูซุประเภทรถปิกอัพและรถยนต์นั่งอเนกประสงค์</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 มีนาคม 26</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 กุมภาพันธ์ 26</strong></div><div class="cc y"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 มกราคม 26</strong></div><div class="cc y"><strong>การบริหารองค์กร ด้วย BP LL</strong></div><div class="cc y"><strong>ความรู้เบื้องต้องการขับเคลื่อนผลงานด้วย OKR และ KPI</strong></div><div class="cc y"><strong>หลักสูตร นิยามเกรด และวงเงินพิเศษ</strong></div><div class="cc y"><strong>เปลี่ยน Dataเป็นความใส่ใจ: ยกระดับ Social Commerceให้รู้ใจด้วย AI</strong></div><div class="cc y"><strong>การดึงพิกัดบ้านลูกค้า</strong></div>
+<div class="cc y"><strong>...และอีก 64 หลักสูตร</strong></div>
+</div>
+</div>
+<div>
+<div class="ct tn">❌ หลักสูตร NO (ไม่นับเกรด+หน่วยกิต) — 11 หลักสูตร</div>
+<div class="cg">
+<div class="cc n"><strong>การทดสอบ, ตรวจสอบและแก้ไขปัญหาการใช้งาน Internet</strong></div><div class="cc n"><strong>ความรู้เกี่ยวกับรถยนต์</strong></div><div class="cc n"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 พฤษภาคม 26</strong></div><div class="cc n"><strong>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 พฤษภาคม 26</strong></div><div class="cc n"><strong>ความรู้เรือง  ISUZU และระบบเสียงลูกค้าภายนอก PMSG</strong></div><div class="cc n"><strong>Automate web/application Test ด้วย Agent AI</strong></div><div class="cc n"><strong>หลักสูตรการบริหารแผนงาน/โครงการ สำหรับผู้รับใช้ทีม</strong></div><div class="cc n"><strong>แผนธุรกิจPKG_2026</strong></div><div class="cc n"><strong></strong></div><div class="cc n"><strong>ทดสอบระบบจ่าย MSP</strong></div><div class="cc n"><strong>ระบบประเมินเครดิต ประจำปี 2026</strong></div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📅 สรุปผลรายเดือน 2026</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>เดือน</th><th class="tc">ทั้งหมด</th><th class="tc">เข้า</th><th class="tc">ไม่เข้า</th><th style="width:70px">อัตรา</th><th class="tc">ผ่าน</th><th class="tc">อัตราผ่าน</th></tr></thead>
+<tbody>
+<tr><td><strong>ม.ค. 2026</strong></td><td class="tc">1,103</td><td class="tc">1,083</td><td class="tc">20</td><td class="tc"><span class="badge bg">98.2%</span></td><td class="tc">1,082</td><td class="tc"><span class="badge bg">99.9</span></td></tr><tr><td><strong>ก.พ. 2026</strong></td><td class="tc">2,156</td><td class="tc">2,156</td><td class="tc">0</td><td class="tc"><span class="badge bg">100.0%</span></td><td class="tc">2,156</td><td class="tc"><span class="badge bg">100.0</span></td></tr><tr><td><strong>มี.ค. 2026</strong></td><td class="tc">2,673</td><td class="tc">2,605</td><td class="tc">68</td><td class="tc"><span class="badge bg">97.5%</span></td><td class="tc">2,613</td><td class="tc"><span class="badge bg">100.3</span></td></tr><tr><td><strong>เม.ย. 2026</strong></td><td class="tc">2,206</td><td class="tc">2,162</td><td class="tc">44</td><td class="tc"><span class="badge bg">98.0%</span></td><td class="tc">2,164</td><td class="tc"><span class="badge bg">100.1</span></td></tr><tr><td><strong>พ.ค. 2026</strong></td><td class="tc">816</td><td class="tc">1</td><td class="tc">815</td><td class="tc"><span class="badge br">0.1%</span></td><td class="tc">3</td><td class="tc"><span class="badge bg">300.0</span></td></tr><tr><td><strong>มิ.ย. 2026</strong></td><td class="tc">46</td><td class="tc">0</td><td class="tc">46</td><td class="tc"><span class="badge br">0.0%</span></td><td class="tc">0</td><td class="tc"><span class="badge bg">-</span></td></tr><tr><td><strong>ก.ค. 2026</strong></td><td class="tc">23</td><td class="tc">23</td><td class="tc">0</td><td class="tc"><span class="badge bg">100.0%</span></td><td class="tc">23</td><td class="tc"><span class="badge bg">100.0</span></td></tr>
+</tbody></table></div></div>
+
+<div class="section">
+<h2>🏢 สรุปผลตาม BU</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>BU</th><th class="tc">ทั้งหมด</th><th class="tc">เข้า</th><th class="tc">ไม่เข้า</th><th style="width:70px">อัตรา</th><th class="tc">ผ่าน</th></tr></thead>
+<tbody>
+<tr><td><strong>PMSG</strong></td><td class="tc">5,400</td><td class="tc">4,940</td><td class="tc">460</td><td class="tc"><span class="badge bg">91.5%</span></td><td class="tc">4,943</td></tr><tr><td><strong>AAMG</strong></td><td class="tc">1,978</td><td class="tc">1,729</td><td class="tc">249</td><td class="tc"><span class="badge bo">87.4%</span></td><td class="tc">1,730</td></tr><tr><td><strong>CPDG</strong></td><td class="tc">733</td><td class="tc">607</td><td class="tc">126</td><td class="tc"><span class="badge bo">82.8%</span></td><td class="tc">613</td></tr><tr><td><strong>RPLCG</strong></td><td class="tc">404</td><td class="tc">336</td><td class="tc">68</td><td class="tc"><span class="badge bo">83.2%</span></td><td class="tc">336</td></tr><tr><td><strong>RAFCOG</strong></td><td class="tc">268</td><td class="tc">218</td><td class="tc">50</td><td class="tc"><span class="badge bo">81.3%</span></td><td class="tc">218</td></tr><tr><td><strong>PKG</strong></td><td class="tc">222</td><td class="tc">184</td><td class="tc">38</td><td class="tc"><span class="badge bo">82.9%</span></td><td class="tc">185</td></tr><tr><td><strong>PGHG</strong></td><td class="tc">18</td><td class="tc">16</td><td class="tc">2</td><td class="tc"><span class="badge bo">88.9%</span></td><td class="tc">16</td></tr>
+</tbody></table></div></div>
+
+<div class="section">
+<h2>📊 หลักสูตร Top 20</h2>
+<div class="tw"><table>
+<thead><tr><th class="tc">#</th><th>รหัส</th><th>ชื่อหลักสูตร</th><th class="tc">ทั้งหมด</th><th class="tc">เข้า</th><th style="width:80px">อัตรา</th><th class="tc">ผ่าน</th><th class="tc">อัตราผ่าน</th></tr></thead>
+<tbody>
+<tr><td class="tc">1</td><td><code>20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td class="tc">474</td><td class="tc">474</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">474</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">2</td><td><code>23010710</code></td><td>cost down pkg</td><td class="tc">437</td><td class="tc">437</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">437</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">3</td><td><code>23010712</code></td><td>ภาษีเงินได้บุคคลธรรมดา 2569</td><td class="tc">426</td><td class="tc">426</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">426</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">4</td><td><code>23010767</code></td><td>การทดสอบ, ตรวจสอบและแก้ไขปัญหาการใช้งาน Internet</td><td class="tc">359</td><td class="tc">0</td><td class="tc"><span class="badge badge-orange">0.0%</span></td><td class="tc">0</td><td class="tc"><span class="badge bg">0%</span></td></tr><tr><td class="tc">5</td><td><code>23010704</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มกราคม 26</td><td class="tc">274</td><td class="tc">260</td><td class="tc"><span class="badge badge-green">94.9%</span></td><td class="tc">260</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">6</td><td><code>23010763</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม2 เมษายน 26</td><td class="tc">263</td><td class="tc">261</td><td class="tc"><span class="badge badge-green">99.2%</span></td><td class="tc">263</td><td class="tc"><span class="badge bg">100.8%</span></td></tr><tr><td class="tc">7</td><td><code>23010776</code></td><td>ความรู้เกี่ยวกับรถยนต์</td><td class="tc">254</td><td class="tc">212</td><td class="tc"><span class="badge badge-blue">83.5%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">8</td><td><code>23010436</code></td><td>Alignment PMSG</td><td class="tc">241</td><td class="tc">199</td><td class="tc"><span class="badge badge-blue">82.6%</span></td><td class="tc">199</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">9</td><td><code>23010735</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 กุมภาพันธ์ 26</td><td class="tc">235</td><td class="tc">235</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">235</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">10</td><td><code>23010738</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มีนาคม 26</td><td class="tc">233</td><td class="tc">233</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">233</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">11</td><td><code>23010753</code></td><td>Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว</td><td class="tc">230</td><td class="tc">230</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">230</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">12</td><td><code>23010754</code></td><td>5 เทคนิค ที่คนทำคอนเทนต์ใน TikTok ต้องรู้!</td><td class="tc">230</td><td class="tc">230</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">230</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">13</td><td><code>23010762</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 เมษายน 26</td><td class="tc">226</td><td class="tc">226</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">226</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">14</td><td><code>23010786</code></td><td>ความรู้เทคโนโลยีจากบทความ กลุ่ม1 พฤษภาคม 26</td><td class="tc">225</td><td class="tc">0</td><td class="tc"><span class="badge badge-orange">0.0%</span></td><td class="tc">0</td><td class="tc"><span class="badge bg">0%</span></td></tr><tr><td class="tc">15</td><td><code>23010713</code></td><td>สร้างคอนเทนต์ให้คนหยุดดูด้วยเทคนิค ปาด ชง ตบ</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">16</td><td><code>23010726</code></td><td>รถบรรทุกอีซูซุคิงออฟทรัคส์รุ่น NLR</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">17</td><td><code>23010727</code></td><td>เริ่มต้นขายผ่าน Facebook</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">18</td><td><code>23010728</code></td><td>Facebook Shops ฟีเจอร์ดีๆ ไม่มีไม่ได้แล้ว</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">19</td><td><code>23010731</code></td><td>ข้อมูลผลิตภัณฑ์อีซูซุ ดีแมคซ์ เอมเอชอีวี</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr><tr><td class="tc">20</td><td><code>23010732</code></td><td>แนะนําผลิตภัณฑ์อีซูซุรุ่นใหม่และข้อมูลเปรียบเทียบ</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge badge-green">100.0%</span></td><td class="tc">212</td><td class="tc"><span class="badge bg">100.0%</span></td></tr>
+</tbody></table></div></div>
+</div>
+<div class="footer">
+<p><strong>📋 Operations Dashboard — PKG Training 2026</strong></p>
+<p><span class="tag">📅 15 พฤษภาคม 2569</span><span class="tag">📚 105 หลักสูตร</span><span class="tag">👥 492 สมาชิก</span><span class="tag">✅ ตัด #N/A แล้ว</span></p>
+</div>
+</div>
+</body></html>

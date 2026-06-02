@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎓 PKG Training Hub 2026 — Complete</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f8fafc;min-height:100vh}
+.container{max-width:1400px;margin:0 auto}
+
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid #e2e8f0;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.3em;font-weight:800;background:linear-gradient(135deg,#1e3a8a,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:10px}
+.nav-btn{padding:8px 16px;border-radius:20px;border:none;background:#1e3a8a;color:white;cursor:pointer;font-size:0.85em;font-weight:600;transition:0.3s}
+.nav-btn:hover{background:#3b82f6;transform:translateY(-1px)}
+.nav-btn.secondary{background:#e2e8f0;color:#1e3a8a}
+.nav-btn.secondary:hover{background:#cbd5e1}
+
+/* PAGES */
+.page{display:none;padding-top:70px;min-height:100vh}
+.page.active{display:block}
+
+/* HOME PAGE STYLES */
+.home-header{background:linear-gradient(135deg,#667eea,#764ba2,#f093fb);color:white;padding:30px 20px 20px;text-align:center;border-radius:0 0 20px 20px;margin-bottom:20px}
+.home-header h1{font-size:1.8em;margin-bottom:5px}
+.home-header .sub{opacity:.9;font-size:.9em}
+.home-header .tags{margin-top:10px}
+.tag{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:15px;display:inline-block;margin:3px;font-size:.75em}
+
+.content{padding:0 15px 20px}
+.section{margin-bottom:25px}
+.section h2{color:#764ba2;font-size:1.15em;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #f0f0f0;display:flex;align-items:center}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.ki{color:#fff;padding:14px 8px;border-radius:12px;text-align:center}
+.ki.purple{background:linear-gradient(135deg,#667eea,#764ba2)}.ki.green{background:linear-gradient(135deg,#11998e,#38ef7d)}.ki.orange{background:linear-gradient(135deg,#f5af19,#f12711)}.ki.pink{background:linear-gradient(135deg,#f093fb,#f5576c)}.ki.deep{background:linear-gradient(135deg,#764ba2,#667eea)}.ki.teal{background:linear-gradient(135deg,#00b894,#00cec9)}
+.ki .v{font-size:1.6em;font-weight:800}.ki .l{font-size:.7em;opacity:.9;margin-top:2px}.ki .s{font-size:.6em;opacity:.75}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:linear-gradient(135deg,#764ba2,#667eea);color:#fff;padding:10px 8px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #f0f0f0;white-space:nowrap}
+tr:hover{background:#f8f0ff}tr:nth-child(even){background:#fafafa}
+.badge{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.bg{background:#e6f4ea;color:#137333}.bo{background:#fef7e0;color:#b06000}.br{background:#fce8e6;color:#c5221f}.bb{background:#e8f0fe;color:#1a73e8}.bp{background:#f3e8ff;color:#7c3aed}
+.tw{max-height:400px;overflow-y:auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:10px}
+.tc{text-align:center}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:500px){.sg{grid-template-columns:repeat(2,1fr)}}
+.sb{text-align:center;padding:14px 8px;border-radius:12px}.sb .sv{font-size:1.5em;font-weight:700}.sb .sl{font-size:11px;color:#666;margin-top:3px}
+.s1{background:linear-gradient(135deg,#e6f4ea,#ceead6)}.s1 .sv{color:#137333}.s2{background:linear-gradient(135deg,#e8f0fe,#d2e3fc)}.s2 .sv{color:#1a73e8}.s3{background:linear-gradient(135deg,#fef7e0,#feefc3)}.s3 .sv{color:#b06000}.s4{background:linear-gradient(135deg,#fce8e6,#f8d7da)}.s4 .sv{color:#c5221f}
+.ib{background:linear-gradient(135deg,#f8f0ff,#fce4ff);padding:15px;border-radius:12px;margin-bottom:15px;border-left:4px solid #764ba2}.ib h3{color:#764ba2;margin-bottom:8px;font-size:1.05em}.ib ul{margin-left:18px}.ib li{margin:5px 0;color:#555;font-size:.9em}
+.footer{background:linear-gradient(135deg,#764ba2,#667eea);color:#fff;padding:15px;text-align:center}
+.footer .tag{background:rgba(255,255,255,.15)}
+@media(max-width:500px){.ki .v{font-size:1.3em}.home-header h1{font-size:1.3em}.section h2{font-size:1em}}
+
+/* Home extras */
+.overview-banner{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-radius:15px;margin-bottom:20px;text-align:center}
+.overview-banner h2{color:white;border:none;margin-bottom:10px;font-size:1.3em}
+.overview-banner p{opacity:0.9;font-size:0.9em}
+.bu-visual{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:15px 0}
+.bu-mini{background:white;border-radius:10px;padding:12px;text-align:center;border:2px solid #e0e0e0;transition:0.3s}
+.bu-mini:hover{border-color:#764ba2;transform:translateY(-2px)}
+.bu-mini .name{font-weight:700;font-size:0.9em;color:#333;margin-bottom:5px}
+.bu-mini .rate{font-size:1.4em;font-weight:800;color:#764ba2}
+.bu-mini .detail{font-size:0.75em;color:#666;margin-top:3px}
+.progress-mini{width:100%;height:6px;background:#e0e0e0;border-radius:3px;margin-top:8px;overflow:hidden}
+.progress-mini .fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#667eea,#764ba2);transition:width 1s}
+.month-visual{display:flex;gap:8px;align-items:flex-end;height:120px;padding:0 10px;margin:10px 0}
+.month-bar{flex:1;display:flex;flex-direction:column;align-items:center}
+.month-bar .bar{width:100%;max-width:40px;border-radius:4px 4px 0 0}
+.month-bar .label{font-size:10px;color:#666;margin-top:4px;text-align:center}
+.month-bar .val{font-size:10px;font-weight:700;margin-bottom:2px}
+.go-search-btn{display:block;margin:20px auto;padding:15px 30px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:white;border:none;border-radius:15px;font-size:1.1em;font-weight:700;cursor:pointer;transition:0.3s;box-shadow:0 5px 15px rgba(30,58,138,0.3)}
+.go-search-btn:hover{transform:scale(1.05);box-shadow:0 8px 20px rgba(30,58,138,0.4)}
+
+/* SEARCH PAGE STYLES */
+.search-hero{min-height:80vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 10% 20%,#e0e7ff 0%,transparent 40%),radial-gradient(circle at 90% 80%,#fae8ff 0%,transparent 40%);position:relative;overflow:hidden;padding:80px 20px}
+.hero-bg-shape{position:absolute;border-radius:50%;opacity:0.6;filter:blur(80px);z-index:1}
+.shape-1{width:400px;height:400px;background:#3b82f6;top:-100px;left:-100px;animation:float 10s infinite alternate}
+.shape-2{width:300px;height:300px;background:#8b5cf6;bottom:50px;right:-50px;animation:float 8s infinite alternate-reverse}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
+.search-content{z-index:10;max-width:800px;width:100%;text-align:center}
+.search-content h1{font-size:2.5em;font-weight:800;color:#1e3a8a;margin-bottom:10px}
+.search-content h1 span{color:#8b5cf6}
+.search-content p{font-size:1.1em;color:#64748b;margin-bottom:30px}
+.search-box{background:white;padding:8px;border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,0.1);display:flex;align-items:center;border:2px solid transparent;transition:0.3s;max-width:600px;margin:0 auto}
+.search-box:focus-within{border-color:#3b82f6;transform:scale(1.02)}
+.search-box input{flex:1;border:none;padding:12px 20px;font-size:1.1em;outline:none;background:transparent}
+.search-box button{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:white;border:none;padding:12px 30px;border-radius:15px;font-size:1em;font-weight:600;cursor:pointer;transition:0.3s}
+.search-box button:hover{transform:scale(1.05)}
+.error-msg{color:#ef4444;margin-top:15px;font-weight:600;display:none;background:#fee2e2;padding:10px 20px;border-radius:10px;width:100%;max-width:600px;margin:15px auto 0;text-align:center}
+
+/* DASHBOARD STYLES */
+.dash-container{max-width:1200px;margin:0 auto;padding:20px 15px;animation:slideIn 0.5s}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.profile-header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);padding:25px;border-radius:20px;color:white;display:flex;align-items:center;gap:20px;margin-bottom:25px;position:relative;overflow:hidden}
+.profile-header::after{content:'';position:absolute;width:200px;height:200px;background:rgba(255,255,255,0.1);border-radius:50%;top:-50px;right:-50px}
+.avatar-circle{width:80px;height:80px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.2em;font-weight:bold;border:3px solid rgba(255,255,255,0.3);flex-shrink:0}
+.profile-info h2{font-size:1.8em;margin-bottom:5px}
+.profile-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.profile-tags .tag{background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:12px;font-size:0.8em}
+.grid-layout{display:grid;grid-template-columns:1fr 2fr;gap:20px}
+@media(max-width:900px){.grid-layout{grid-template-columns:1fr}}
+.d-card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:20px;border:1px solid #e2e8f0;transition:0.3s}
+.d-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:#3b82f6}
+.d-card h3{font-size:1.1em;margin-bottom:15px;color:#1e3a8a;display:flex;align-items:center;gap:8px;font-weight:700}
+.d-card h3 span{font-size:0.8em;background:#e0e7ff;color:#3b82f6;padding:3px 8px;border-radius:6px}
+.goal-card{text-align:center;padding:15px 0;border-bottom:1px solid #f1f5f9;margin-bottom:15px}
+.goal-val{font-size:2em;font-weight:800}
+.goal-label{font-size:0.85em;color:#64748b;margin-top:5px}
+.progress-bar-bg{width:100%;height:8px;background:#e2e8f0;border-radius:4px;margin-top:10px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:4px;transition:1s}
+.item-row{display:flex;align-items:center;justify-content:space-between;padding:12px;border-bottom:1px solid #f8fafc}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:#f8fafc;border-radius:8px}
+.item-main h4{font-size:0.95em;margin-bottom:3px}
+.item-meta{font-size:0.75em;color:#64748b;display:flex;gap:10px;flex-wrap:wrap}
+.status-badge{font-size:0.7em;padding:4px 10px;border-radius:8px;font-weight:600}
+.status-y{background:#dcfce7;color:#166534}
+.status-n{background:#fee2e2;color:#991b1b}
+.status-wait{background:#fef3c7;color:#92400e}
+.timeline-item{position:relative;padding-left:25px;margin-bottom:20px;border-left:2px solid #e2e8f0;padding-top:5px}
+.timeline-item:last-child{border-left-color:transparent;margin-bottom:0}
+.timeline-dot{position:absolute;left:-9px;top:0;width:14px;height:14px;border-radius:50%;background:#3b82f6;border:3px solid white;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.timeline-dot.pass{background:#10b981}
+.timeline-dot.fail{background:#ef4444}
+.action-bar{background:#1e3a8a;padding:20px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;color:white;margin-top:20px;flex-wrap:wrap;gap:15px}
+.btn-action{background:white;color:#1e3a8a;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;transition:0.3s}
+.btn-action:hover{background:#e0e7ff;transform:scale(1.05)}
+@media(max-width:768px){.profile-header{flex-direction:column;text-align:center}.profile-tags{justify-content:center}.item-row{flex-direction:column;align-items:flex-start;gap:10px}.action-bar{text-align:center;flex-direction:column}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+<div class="nav-logo">🎓 PKG Training Hub</div>
+<div class="nav-links">
+<button class="nav-btn" onclick="showPage('home')">🏠 ภาพรวมองค์กร</button>
+<button class="nav-btn secondary" onclick="showPage('search')">🔍 ค้นหาสมาชิก</button>
+</div>
+</div>
+
+<!-- ================= PAGE 1: HOME / OVERVIEW ================= -->
+<div class="page active" id="pageHome">
+<div class="container">
+<div class="home-header">
+<h1>🎓 PKG Training Dashboard 2026</h1>
+<div class="sub">ภาพรวมการอบรมทั้งองค์กร PKG Group</div>
+<div class="tags"><span class="tag">📅 15 พฤษภาคม 2569</span><span class="tag">📚 105 หลักสูตร</span><span class="tag">👥 492 สมาชิก</span><span class="tag">🏢 7 BU</span></div>
+</div>
+<div class="content">
+
+<div class="overview-banner">
+<h2>🏢 ภาพรวมการอบรมทั้งองค์กร PKG</h2>
+<p>ข้อมูลการฝึกอบรมสมาชิกทั้งหมด 7 BU ประจำปี 2026 (ตัดข้อมูล #N/A ออกแล้ว)</p>
+</div>
+
+<!-- KPI -->
+<div class="kpi-row">
+<div class="ki purple"><div class="v">9,023</div><div class="l">บันทึกทั้งหมด</div><div class="s">492 สมาชิก</div></div>
+<div class="ki green"><div class="v">89.0%</div><div class="l">เข้าอบรม</div><div class="s">8,030 / 9,023</div></div>
+<div class="ki orange"><div class="v">99.1</div><div class="l">คะแนนเฉลี่ย</div><div class="s">จาก 8,041 คะแนน</div></div>
+<div class="ki pink"><div class="v">95.0%</div><div class="l">ได้ 100 คะแนน</div><div class="s">7,640 คน</div></div>
+<div class="ki teal"><div class="v">105</div><div class="l">หลักสูตร</div><div class="s">YES 94 + NO 11</div></div>
+<div class="ki deep"><div class="v">7</div><div class="l">BU</div><div class="s">PMSG·AAMG·CPDG·RPLCG·RAFCOG·PKG·PGHG</div></div>
+</div>
+
+<!-- BU Visual -->
+<div class="section">
+<h2>📊 สัดส่วนการเข้าอบรมตาม BU</h2>
+<div class="bu-visual">
+<div class="bu-mini"><div class="name">PMSG</div><div class="rate">91.5%</div><div class="detail">4,940 / 5,400</div><div class="progress-mini"><div class="fill" style="width:91.5%"></div></div></div>
+<div class="bu-mini"><div class="name">AAMG</div><div class="rate">87.4%</div><div class="detail">1,729 / 1,978</div><div class="progress-mini"><div class="fill" style="width:87.4%"></div></div></div>
+<div class="bu-mini"><div class="name">CPDG</div><div class="rate">82.8%</div><div class="detail">607 / 733</div><div class="progress-mini"><div class="fill" style="width:82.8%"></div></div></div>
+<div class="bu-mini"><div class="name">RPLCG</div><div class="rate">83.2%</div><div class="detail">336 / 404</div><div class="progress-mini"><div class="fill" style="width:83.2%"></div></div></div>
+<div class="bu-mini"><div class="name">RAFCOG</div><div class="rate">81.3%</div><div class="detail">218 / 268</div><div class="progress-mini"><div class="fill" style="width:81.3%"></div></div></div>
+<div class="bu-mini"><div class="name">PKG</div><div class="rate">82.9%</div><div class="detail">184 / 222</div><div class="progress-mini"><div class="fill" style="width:82.9%"></div></div></div>
+<div class="bu-mini"><div class="name">PGHG</div><div class="rate">88.9%</div><div class="detail">16 / 18</div><div class="progress-mini"><div class="fill" style="width:88.9%"></div></div></div>
+</div>
+</div>
+
+<!-- Monthly -->
+<div class="section">
+<h2>📅 แนวโน้มรายเดือน (ภาพรวม)</h2>
+<div class="month-visual">
+<div class="month-bar"><div class="val">1,103</div><div class="bar" style="height:41%;background:linear-gradient(135deg,#11998e,#38ef7d)"></div><div class="label">ม.ค.</div></div>
+<div class="month-bar"><div class="val">2,156</div><div class="bar" style="height:80%;background:linear-gradient(135deg,#11998e,#38ef7d)"></div><div class="label">ก.พ.</div></div>
+<div class="month-bar"><div class="val">2,673</div><div class="bar" style="height:100%;background:linear-gradient(135deg,#11998e,#38ef7d)"></div><div class="label">มี.ค.</div></div>
+<div class="month-bar"><div class="val">2,206</div><div class="bar" style="height:82%;background:linear-gradient(135deg,#11998e,#38ef7d)"></div><div class="label">เม.ย.</div></div>
+<div class="month-bar"><div class="val">816</div><div class="bar" style="height:30%;background:linear-gradient(135deg,#f5576c,#f093fb)"></div><div class="label">พ.ค.</div></div>
+<div class="month-bar"><div class="val">46</div><div class="bar" style="height:2%;background:linear-gradient(135deg,#f5576c,#f093fb)"></div><div class="label">มิ.ย.</div></div>
+<div class="month-bar"><div class="val">23</div><div class="bar" style="height:1%;background:linear-gradient(135deg,#11998e,#38ef7d)"></div><div class="label">ก.ค.</div></div>
+</div>
+<div style="text-align:center;font-size:0.8em;color:#666;margin-top:8px">🟢 อัตราเข้าสูง | 🔴 อัตราเข้าต่ำ/ยังไม่เริ่ม</div>
+</div>
+
+<!-- Score -->
+<div class="section">
+<h2>🎯 การกระจายคะแนนสอบ</h2>
+<div class="sg">
+<div class="sb s1"><div class="sv">7,640</div><div class="sl">100 คะแนน (95.0%)</div></div>
+<div class="sb s2"><div class="sv">352</div><div class="sl">80-99 (4.4%)</div></div>
+<div class="sb s3"><div class="sv">36</div><div class="sl">60-79 (0.4%)</div></div>
+<div class="sb s4"><div class="sv">13</div><div class="sl">&lt;60 (0.2%)</div></div>
+</div>
+</div>
+
+<!-- Top 5 -->
+<div class="section">
+<h2>📚 หลักสูตรยอดนิยม Top 5</h2>
+<table>
+<thead><tr><th class="tc">#</th><th>รหัส</th><th>ชื่อหลักสูตร</th><th class="tc">สมาชิก</th><th class="tc">เข้าอบรม</th><th class="tc">อัตรา</th></tr></thead>
+<tbody>
+<tr><td class="tc">1</td><td><code>20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td class="tc">474</td><td class="tc">474</td><td class="tc"><span class="badge bg">100%</span></td></tr>
+<tr><td class="tc">2</td><td><code>23010710</code></td><td>cost down pkg</td><td class="tc">437</td><td class="tc">437</td><td class="tc"><span class="badge bg">100%</span></td></tr>
+<tr><td class="tc">3</td><td><code>23010712</code></td><td>ภาษีเงินได้บุคคลธรรมดา 2569</td><td class="tc">426</td><td class="tc">426</td><td class="tc"><span class="badge bg">100%</span></td></tr>
+<tr><td class="tc">4</td><td><code>23010767</code></td><td>การทดสอบ Internet</td><td class="tc">359</td><td class="tc">0</td><td class="tc"><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td class="tc">5</td><td><code>23010704</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 ม.ค. 26</td><td class="tc">274</td><td class="tc">260</td><td class="tc"><span class="badge bg">94.9%</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Highlights -->
+<div class="section">
+<h2>💡 จุดเด่นสำคัญ</h2>
+<div class="grid2">
+<div class="ib" style="border-left-color:#11998e">
+<h3>✅ ความสำเร็จ</h3>
+<ul>
+<li>อัตราเข้าอบรมรวม <strong>89.0%</strong></li>
+<li>BU PMSG สูงสุด <strong>91.5%</strong></li>
+<li>สมาชิก <strong>95%</strong> ได้ 100 เต็ม</li>
+<li>คะแนนเฉลี่ย <strong>99.1</strong></li>
+</ul>
+</div>
+<div class="ib" style="border-left-color:#f5576c">
+<h3>⚠️ สิ่งที่ต้องติดตาม</h3>
+<ul>
+<li>เดือน พ.ค. ยังไม่เริ่ม (<strong>816 รายการ</strong>)</li>
+<li>BU RAFCOG (81.3%) ต่ำสุด</li>
+<li>มีสมาชิกค้างสูงสุด <strong>7 หลักสูตร/คน</strong></li>
+<li>หลักสูตรยังไม่เริ่ม <strong>9 หลักสูตร</strong></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Go to Search -->
+<button class="go-search-btn" onclick="showPage('search')">🔍 ค้นหาข้อมูลรายบุคคล →</button>
+
+<!-- HR View -->
+<div style="text-align:center;padding:20px 0;border-top:2px solid #f0f0f0;margin:20px 0">
+<h2 style="color:#764ba2;font-size:1.3em">📊 HR & Development View</h2>
+<p style="color:#666;font-size:0.9em;margin-top:5px">ข้อมูลเชิงลึกราย BU และรายหลักสูตร</p>
+</div>
+
+<!-- Score + BU -->
+<div class="grid2">
+<div>
+<h2 style="color:#764ba2;margin-bottom:12px">🎯 การกระจายคะแนน</h2>
+<div class="sg">
+<div class="sb s1"><div class="sv">7,640</div><div class="sl">100 คะแนน</div></div>
+<div class="sb s2"><div class="sv">352</div><div class="sl">80-99</div></div>
+<div class="sb s3"><div class="sv">36</div><div class="sl">60-79</div></div>
+<div class="sb s4"><div class="sv">13</div><div class="sl">&lt;60</div></div>
+</div>
+</div>
+<div>
+<h2 style="color:#764ba2;margin-bottom:12px">📊 BU Performance</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>BU</th><th class="tc">สมาชิก</th><th class="tc">เข้า</th><th style="width:70px">อัตรา</th></tr></thead>
+<tbody>
+<tr><td><strong>PMSG</strong></td><td class="tc">5,400</td><td class="tc">4,940</td><td class="tc"><span class="badge bg">91.5%</span></td></tr>
+<tr><td><strong>AAMG</strong></td><td class="tc">1,978</td><td class="tc">1,729</td><td class="tc"><span class="badge bo">87.4%</span></td></tr>
+<tr><td><strong>CPDG</strong></td><td class="tc">733</td><td class="tc">607</td><td class="tc"><span class="badge bo">82.8%</span></td></tr>
+<tr><td><strong>RPLCG</strong></td><td class="tc">404</td><td class="tc">336</td><td class="tc"><span class="badge bo">83.2%</span></td></tr>
+<tr><td><strong>RAFCOG</strong></td><td class="tc">268</td><td class="tc">218</td><td class="tc"><span class="badge bo">81.3%</span></td></tr>
+<tr><td><strong>PKG</strong></td><td class="tc">222</td><td class="tc">184</td><td class="tc"><span class="badge bo">82.9%</span></td></tr>
+<tr><td><strong>PGHG</strong></td><td class="tc">18</td><td class="tc">16</td><td class="tc"><span class="badge bo">88.9%</span></td></tr>
+</tbody></table></div>
+</div>
+</div>
+
+<!-- Month Table -->
+<div class="section">
+<h2>📅 แนวโน้มรายเดือน</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>เดือน</th><th class="tc">ทั้งหมด</th><th class="tc">เข้า</th><th class="tc">ไม่เข้า</th><th style="width:70px">อัตรา</th><th class="tc">ผ่าน</th></tr></thead>
+<tbody>
+<tr><td><strong>ม.ค.</strong></td><td class="tc">1,103</td><td class="tc">1,083</td><td class="tc">20</td><td class="tc"><span class="badge bg">98.2%</span></td><td class="tc">1,082</td></tr>
+<tr><td><strong>ก.พ.</strong></td><td class="tc">2,156</td><td class="tc">2,156</td><td class="tc">0</td><td class="tc"><span class="badge bg">100.0%</span></td><td class="tc">2,156</td></tr>
+<tr><td><strong>มี.ค.</strong></td><td class="tc">2,673</td><td class="tc">2,605</td><td class="tc">68</td><td class="tc"><span class="badge bg">97.5%</span></td><td class="tc">2,613</td></tr>
+<tr><td><strong>เม.ย.</strong></td><td class="tc">2,206</td><td class="tc">2,162</td><td class="tc">44</td><td class="tc"><span class="badge bg">98.0%</span></td><td class="tc">2,164</td></tr>
+<tr><td><strong>พ.ค.</strong></td><td class="tc">816</td><td class="tc">1</td><td class="tc">815</td><td class="tc"><span class="badge br">0.1%</span></td><td class="tc">3</td></tr>
+<tr><td><strong>มิ.ย.</strong></td><td class="tc">46</td><td class="tc">0</td><td class="tc">46</td><td class="tc"><span class="badge br">0.0%</span></td><td class="tc">0</td></tr>
+<tr><td><strong>ก.ค.</strong></td><td class="tc">23</td><td class="tc">23</td><td class="tc">0</td><td class="tc"><span class="badge bg">100.0%</span></td><td class="tc">23</td></tr>
+</tbody></table></div></div>
+
+<!-- Courses -->
+<div class="section">
+<h2>📚 หลักสูตร Top 15</h2>
+<div class="tw"><table>
+<thead><tr><th class="tc">#</th><th>รหัส</th><th>ชื่อหลักสูตร</th><th class="tc">ทั้งหมด</th><th class="tc">เข้า</th><th style="width:100px">อัตรา</th><th class="tc">ผ่าน</th></tr></thead>
+<tbody>
+<tr><td class="tc">1</td><td><code>20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td class="tc">474</td><td class="tc">474</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">474</span></td></tr>
+<tr><td class="tc">2</td><td><code>23010710</code></td><td>cost down pkg</td><td class="tc">437</td><td class="tc">437</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">437</span></td></tr>
+<tr><td class="tc">3</td><td><code>23010712</code></td><td>ภาษีเงินได้บุคคลธรรมดา 2569</td><td class="tc">426</td><td class="tc">426</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">426</span></td></tr>
+<tr><td class="tc">4</td><td><code>23010767</code></td><td>การทดสอบ Internet</td><td class="tc">359</td><td class="tc">0</td><td class="tc"><span class="badge br">ยังไม่เริ่ม</span></td><td class="tc"><span class="badge bg">0</span></td></tr>
+<tr><td class="tc">5</td><td><code>23010704</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 ม.ค. 26</td><td class="tc">274</td><td class="tc">260</td><td class="tc"><span class="badge bg">94.9%</span></td><td class="tc"><span class="badge bg">260</span></td></tr>
+<tr><td class="tc">6</td><td><code>23010763</code></td><td>ความรู้เทคโนโลยี กลุ่ม2 เม.ย. 26</td><td class="tc">263</td><td class="tc">261</td><td class="tc"><span class="badge bg">99.2%</span></td><td class="tc"><span class="badge bg">263</span></td></tr>
+<tr><td class="tc">7</td><td><code>23010776</code></td><td>ความรู้เกี่ยวกับรถยนต์</td><td class="tc">254</td><td class="tc">212</td><td class="tc"><span class="badge bb">83.5%</span></td><td class="tc"><span class="badge bg">212</span></td></tr>
+<tr><td class="tc">8</td><td><code>23010436</code></td><td>Alignment PMSG</td><td class="tc">241</td><td class="tc">199</td><td class="tc"><span class="badge bb">82.6%</span></td><td class="tc"><span class="badge bg">199</span></td></tr>
+<tr><td class="tc">9</td><td><code>23010735</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 ก.พ. 26</td><td class="tc">235</td><td class="tc">235</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">235</span></td></tr>
+<tr><td class="tc">10</td><td><code>23010738</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 มี.ค. 26</td><td class="tc">233</td><td class="tc">233</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">233</span></td></tr>
+<tr><td class="tc">11</td><td><code>23010753</code></td><td>Facebook Shops</td><td class="tc">230</td><td class="tc">230</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">230</span></td></tr>
+<tr><td class="tc">12</td><td><code>23010754</code></td><td>5 เทคนิค TikTok</td><td class="tc">230</td><td class="tc">230</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">230</span></td></tr>
+<tr><td class="tc">13</td><td><code>23010762</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 เม.ย. 26</td><td class="tc">226</td><td class="tc">226</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">226</span></td></tr>
+<tr><td class="tc">14</td><td><code>23010786</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 พ.ค. 26</td><td class="tc">225</td><td class="tc">0</td><td class="tc"><span class="badge br">ยังไม่เริ่ม</span></td><td class="tc"><span class="badge bg">0</span></td></tr>
+<tr><td class="tc">15</td><td><code>23010713</code></td><td>สร้างคอนเทนต์ ปาด ชง ตบ</td><td class="tc">212</td><td class="tc">212</td><td class="tc"><span class="badge bg">100%</span></td><td class="tc"><span class="badge bg">212</span></td></tr>
+</tbody></table></div></div>
+
+<!-- Not Started -->
+<div class="section">
+<h2>⏳ หลักสูตรที่ยังไม่เริ่ม</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th class="tc">สมาชิก</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td><code>23010767</code></td><td>การทดสอบ Internet</td><td class="tc">359</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010786</code></td><td>ความรู้เทคโนโลยี กลุ่ม1 พ.ค. 26</td><td class="tc">225</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010787</code></td><td>ความรู้เทคโนโลยี กลุ่ม2 พ.ค. 26</td><td class="tc">134</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010765</code></td><td>ความรู้ ISUZU และระบบเสียง PMSG</td><td class="tc">99</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010785</code></td><td>Automate web/application Test ด้วย AI</td><td class="tc">19</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010764</code></td><td>หลักสูตรบริหารแผนงาน/โครงการ</td><td class="tc">12</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010784</code></td><td>แผนธุรกิจPKG_2026</td><td class="tc">8</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+<tr><td><code>23010761</code></td><td>ระบบประเมินเครดิต 2026</td><td class="tc">1</td><td><span class="badge br">ยังไม่เริ่ม</span></td></tr>
+</tbody></table></div></div>
+
+<!-- Not Attended Top 15 -->
+<div class="section">
+<h2>⚠️ สมาชิกที่ยังไม่เข้าอบรม (Top 15)</h2>
+<div class="table-scroll"><table style="min-width:600px">
+<thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>BU</th><th>หลักสูตรค้าง</th><th class="tc">จำนวน</th></tr></thead>
+<tbody>
+<tr><td>9601009</td><td>โกมล ไชยประสูตร</td><td>PMSG</td><td>BP LL, Speech Analytics...</td><td class="tc"><span class="badge br">7</span></td></tr>
+<tr><td>5604030</td><td>คณิศร ฉัยยา</td><td>CPDG</td><td>Speech Analytics, AI วิเคราะห์...</td><td class="tc"><span class="badge br">6</span></td></tr>
+<tr><td>6006083</td><td>ณัฐฑริณี คำนึง</td><td>CPDG</td><td>การทดสอบ Internet, ประเมินเครดิต...</td><td class="tc"><span class="badge br">6</span></td></tr>
+<tr><td>3305002</td><td>นพรัตน์ คงรอด</td><td>PMSG</td><td>บริหารแผนงาน, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>4611150</td><td>อรวรรณ วาโน</td><td>PMSG</td><td>Speech Analytics, Internet...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>5512141</td><td>พัชรินทร์ ไชยราช</td><td>PMSG</td><td>บริหารแผนงาน, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>5606065</td><td>สุดฤทัย วานิชล</td><td>PMSG</td><td>บริหารแผนงาน, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>6802006</td><td>ลักขณา ด้วงพรม</td><td>PMSG</td><td>Alignment, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>9711001</td><td>กรกต คงประเสริฐ</td><td>PMSG</td><td>Alignment, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>9901010</td><td>ราตรี เต็มศิริพันธุ์</td><td>PMSG</td><td>Alignment, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>9903001</td><td>สุทธินันท์ ไกยสิทธิ์</td><td>PMSG</td><td>Alignment, ISUZU...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>9916014</td><td>อัจฉรา คชพันธุ์</td><td>PMSG</td><td>Internet...</td><td class="tc"><span class="badge br">5</span></td></tr>
+<tr><td>3304004</td><td>กัลยา อุดมเจริญ</td><td>PMSG</td><td>Internet...</td><td class="tc"><span class="badge br">4</span></td></tr>
+<tr><td>3305001</td><td>ขวัญฤทัย ใจหาญ</td><td>PKG</td><td>Internet...</td><td class="tc"><span class="badge br">4</span></td></tr>
+<tr><td>4708062</td><td>กรณ์รัฐฌา วิสิทธิ์ธราสกุล</td><td>PMSG</td><td>ISUZU, Internet...</td><td class="tc"><span class="badge br">4</span></td></tr>
+</tbody></table></div></div>
+
+<!-- Analysis -->
+<div class="section">
+<h2>💡 สรุปเชิงวิเคราะห์</h2>
+<div class="ib">
+<h3>✅ จุดแข็ง</h3>
+<ul>
+<li>อัตราเข้าอบรมรวม <strong>89.0%</strong></li>
+<li>BU PMSG (91.5%) สูงสุด</li>
+<li>คะแนนเฉลี่ย <strong>99.1</strong></li>
+<li><strong>95.0%</strong> ได้ 100 เต็ม</li>
+</ul>
+</div>
+<div class="ib" style="border-left-color:#f5576c">
+<h3>⚠️ จุดที่ต้องปรับปรุง</h3>
+<ul>
+<li>ยังไม่เข้าอบรม <strong>991 รายการ</strong> (11.0%)</li>
+<li>เดือน พ.ค. ยังไม่เริ่ม (816 รายการ)</li>
+<li>BU <strong>RAFCOG</strong> (81.3%) ต่ำสุด</li><li>BU <strong>CPDG</strong> (82.8%) ต่ำกว่าเฉลี่ย</li><li>BU <strong>RPLCG</strong> (83.2%) ต่ำกว่าเฉลี่ย</li><li>BU <strong>PKG</strong> (82.9%) ต่ำกว่าเฉลี่ย</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><strong>🎓 PKG Training Dashboard 2026</strong></p>
+<p><span class="tag">📅 15 พฤษภาคม 2569</span><span class="tag">📚 105 หลักสูตร</span><span class="tag">👥 492 สมาชิก</span><span class="tag">🏢 7 BU</span></p>
+</div>
+</div>
+
+<!-- ================= PAGE 2: SEARCH + DASHBOARD ================= -->
+<div class="page" id="pageSearch">
+<!-- Search Hero -->
+<div class="search-hero" id="searchHero">
+<div class="hero-bg-shape shape-1"></div>
+<div class="hero-bg-shape shape-2"></div>
+<div class="search-content">
+<div class="badge-pill" style="background:rgba(59,130,246,0.1);color:#3b82f6;padding:8px 16px;border-radius:50px;font-size:0.85em;font-weight:600;display:inline-block;margin-bottom:20px">✨ ระบบตรวจสอบผลการเรียนออนไลน์</div>
+<h1>ค้นหาข้อมูล<br><span>รายบุคคล</span></h1>
+<p>พิมพ์รหัสสมาชิกเพื่อดูข้อมูลการอบรม เป้าหมาย GPA และหน่วยกิต</p>
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="พิมพ์รหัสสมาชิก (เช่น 123456)">
+<button onclick="searchMember()">🔍 ค้นหา</button>
+</div>
+<div style="margin-top:15px;font-size:0.85em;color:#64748b">ตัวอย่างไอดี: <code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-weight:600">123456</code> หรือ <code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-weight:600">789000</code></div>
+<div class="error-msg" id="errorMsg">⚠️ ไม่พบข้อมูลรหัสสมาชิกนี้ในระบบ</div>
+</div>
+</div>
+
+<!-- Dashboard Result (Hidden) -->
+<div class="dash-container" id="dashContainer" style="display:none">
+<div class="profile-header">
+<div class="avatar-circle" id="avatarChar">M</div>
+<div class="profile-info">
+<h2 id="userName">-</h2>
+<div class="profile-tags">
+<span class="tag">🆔 ID: <span id="userId">-</span></span>
+<span class="tag">🏢 <span id="userBU">-</span></span>
+<span class="tag">👥 <span id="userTeam">-</span></span>
+</div>
+</div>
+</div>
+
+<div class="grid-layout">
+<!-- Left -->
+<div>
+<div class="d-card">
+<h3>🎯 เป้าหมายประจำปี <span>2026</span></h3>
+<div class="goal-card"><div class="goal-val" id="targetGpa">3.50</div><div class="goal-label">เป้าหมาย GPA</div></div>
+<div class="goal-card" style="border:none;padding-bottom:0"><div class="goal-val" id="targetCredits">44</div><div class="goal-label">เป้าหมายหน่วยกิต</div></div>
+</div>
+
+<div class="d-card" style="border:2px solid #3b82f6">
+<h3>📊 สถานะปัจจุบัน <span id="currentDateDisplay">-</span></h3>
+<div class="goal-card"><div class="goal-val" id="currentGpa" style="color:#1e3a8a">0.00</div><div class="goal-label">GPA ที่ทำได้ปัจจุบัน</div><div class="progress-bar-bg"><div class="progress-bar-fill" id="gpaBar" style="width:0%;background:#3b82f6"></div></div></div>
+<div class="goal-card" style="border:none"><div class="goal-val" id="currentCredits" style="color:#10b981">0</div><div class="goal-label">หน่วยกิตที่ทำได้ปัจจุบัน</div><div class="progress-bar-bg"><div class="progress-bar-fill" id="creditBar" style="width:0%;background:#10b981"></div></div></div>
+<div id="passStatus" style="text-align:center;padding-top:15px;font-weight:bold;font-size:1.1em">⏳ กำลังประเมิน</div>
+</div>
+
+<div class="d-card">
+<h3>🏅 สถิติการเข้าเรียน</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><div style="font-size:1.5em;font-weight:800;color:#166534" id="statY">0</div><div style="font-size:0.75em;color:#166534">เข้าอบรม (Y)</div></div>
+<div style="background:#fee2e2;padding:10px;border-radius:10px;text-align:center"><div style="font-size:1.5em;font-weight:800;color:#991b1b" id="statN">0</div><div style="font-size:0.75em;color:#991b1b">ยังไม่เข้า (N)</div></div>
+</div>
+</div>
+</div>
+
+<!-- Right -->
+<div>
+<div class="d-card">
+<h3>📅 ประวัติการอบรมล่าสุด <span>(ทั้งปี)</span></h3>
+<div id="historyList"></div>
+</div>
+
+<div class="d-card">
+<h3>⏳ หลักสูตรที่รออบรม <span>จากวันนี้ถึงสิ้นปี</span></h3>
+<div id="pendingList" style="max-height:300px;overflow-y:auto"></div>
+</div>
+
+<div class="d-card">
+<h3>📚 รายวิชาทั้งหมดทั้งปี <span>รวมเข้าแล้ว & รออบรม</span></h3>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-size:0.85em">
+<thead><tr style="background:#f1f5f9;text-align:left"><th style="padding:10px">หลักสูตร</th><th style="padding:10px">เดือน</th><th style="padding:10px">สถานะ</th><th style="padding:10px">วิทยากร</th></tr></thead>
+<tbody id="fullYearTable"></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Action Bar -->
+<div class="action-bar">
+<div><h3>📤 ต้องการส่งรายงานให้หัวหน้างาน?</h3><p style="opacity:0.8;font-size:0.85em">สรุปผลการเรียนทั้งหมดเป็นไฟล์ PDF หรือส่งลิงก์ด่วน</p></div>
+<button class="btn-action">ส่งรายงานทันที</button>
+</div>
+
+</div>
+</div>
+
+<script>
+// PAGE NAVIGATION
+function showPage(page){
+document.getElementById('pageHome').classList.remove('active');
+document.getElementById('pageSearch').classList.remove('active');
+if(page==='home')document.getElementById('pageHome').classList.add('active');
+else{document.getElementById('pageSearch').classList.add('active');document.getElementById('searchHero').style.display='flex';document.getElementById('dashContainer').style.display='none';}
+}
+
+// MOCK DATA
+const db={
+"123456":{id:"123456",name:"นาย โกมล ไชยประสูตร",bu:"PMSG",team:"ทีมตรวจสอบธุรกิจ",targets:{gpa:3.5,credits:44},courses:[
+{date:"2026-01-15",name:"การบริหารองค์กร ด้วย BP LL",score:95,passed:true,credits:4,status:"Y",lecturer:"อาจารย์สมชาย",icon:"🏛️",month:"ม.ค."},
+{date:"2026-03-10",name:"ความปลอดภัยในการทำงาน จป.",score:88,passed:true,credits:6,status:"Y",lecturer:"อาจารย์วิชัย",icon:"⛑️",month:"มี.ค."},
+{date:"2026-06-20",name:"ภาวะผู้นำยุคใหม่",score:0,passed:false,credits:0,status:"N",lecturer:"ดร.สมหญิง",icon:"🌟",month:"มิ.ย."},
+{date:"2026-08-15",name:"การเงินสำหรับหัวหน้างาน",score:0,passed:false,credits:3,status:"N",lecturer:"คุณธนกร",icon:"💰",month:"ส.ค."},
+{date:"2026-10-05",name:"การใช้ AI เพื่อการตัดสินใจ",score:0,passed:false,credits:4,status:"N",lecturer:"AI Expert",icon:"🤖",month:"ต.ค."}
+]},
+"789000":{id:"789000",name:"นางสาว สมหญิง รักงาน",bu:"AAMG",team:"ทีมบริการลูกค้า",targets:{gpa:3.5,credits:44},courses:[
+{date:"2026-02-14",name:"การบริการลูกค้าแบบเหนือชั้น",score:98,passed:true,credits:3,status:"Y",lecturer:"คุณมารีญา",icon:"💖",month:"ก.พ."},
+{date:"2026-05-18",name:"การใช้ AI เพื่อการทำงาน",score:100,passed:true,credits:4,status:"Y",lecturer:"ตี๋ตี๋",icon:"🤖",month:"พ.ค."}
+]}
+};
+
+const mockCurrentDate=new Date('2026-05-22');
+
+function searchMember(){
+const input=document.getElementById('searchInput').value.trim();
+const errorMsg=document.getElementById('errorMsg');
+if(db[input]){
+errorMsg.style.display='none';
+document.getElementById('searchHero').style.display='none';
+document.getElementById('dashContainer').style.display='block';
+window.scrollTo(0,0);
+renderDashboard(db[input]);
+}else{errorMsg.style.display='block';}
+}
+
+function renderDashboard(data){
+document.getElementById('userName').innerText=data.name;
+document.getElementById('userId').innerText=data.id;
+document.getElementById('userBU').innerText=data.bu;
+document.getElementById('userTeam').innerText=data.team;
+document.getElementById('avatarChar').innerText=data.name.charAt(0);
+document.getElementById('currentDateDisplay').innerText='(ข้อมูล ณ '+mockCurrentDate.toLocaleDateString('th-TH')+')';
+document.getElementById('targetGpa').innerText=data.targets.gpa.toFixed(2);
+document.getElementById('targetCredits').innerText=data.targets.credits;
+
+let totalCredits=0,totalScore=0,countY=0,countN=0,currentGPA=0;
+const activeCourses=data.courses.filter(c=>c.status==='Y');
+const allCourses=data.courses;
+if(activeCourses.length>0){
+totalCredits=activeCourses.reduce((s,c)=>s+c.credits,0);
+totalScore=activeCourses.reduce((s,c)=>s+c.score,0);
+currentGPA=(totalScore/activeCourses.length)/25;
+currentGPA=Math.min(currentGPA,4.0);
+}
+countY=data.courses.filter(c=>c.status==='Y').length;
+countN=data.courses.filter(c=>c.status==='N').length;
+
+document.getElementById('currentGpa').innerText=currentGPA.toFixed(2);
+document.getElementById('currentCredits').innerText=totalCredits;
+document.getElementById('statY').innerText=countY;
+document.getElementById('statN').innerText=countN;
+
+document.getElementById('gpaBar').style.width=Math.min((currentGPA/data.targets.gpa)*100,100)+'%';
+document.getElementById('creditBar').style.width=Math.min((totalCredits/data.targets.credits)*100,100)+'%';
+
+const passEl=document.getElementById('passStatus');
+if(currentGPA>=data.targets.gpa&&totalCredits>=data.targets.credits){passEl.innerHTML='<span style="color:#10b981">✅ ผ่านเกณฑ์เป้าหมายแล้ว!</span>';}
+else{passEl.innerHTML='<span style="color:#f59e0b">⚠️ ยังไม่ผ่านเกณฑ์เป้าหมาย</span>';}
+
+// History (only Y)
+const historyEl=document.getElementById('historyList');
+historyEl.innerHTML='';
+const sorted=allCourses.filter(c=>c.status==='Y').sort((a,b)=>new Date(b.date)-new Date(a.date));
+if(sorted.length===0){historyEl.innerHTML='<div style="text-align:center;padding:20px;color:#64748b">ยังไม่มีประวัติการอบรมในปีนี้</div>';}
+else{
+sorted.forEach(c=>{
+historyEl.innerHTML+=`<div class="timeline-item"><div class="timeline-dot pass"></div><div style="font-size:0.8em;color:#64748b;margin-bottom:5px">${formatDate(c.date)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${c.icon} ${c.name}</strong><div style="font-size:0.8em;color:#64748b;margin-top:3px">วิทยากร: ${c.lecturer}</div></div><div style="text-align:right"><div style="font-weight:bold;font-size:1.2em">${c.score}</div><div style="color:#10b981;font-size:0.8em;font-weight:600">ผ่านแล้ว</div></div></div></div>`;
+});
+}
+
+// Pending
+const pendingEl=document.getElementById('pendingList');
+pendingEl.innerHTML='';
+const pendingCourses=allCourses.filter(c=>c.status==='N'&&new Date(c.date)>=mockCurrentDate);
+if(pendingCourses.length===0){pendingEl.innerHTML='<div style="text-align:center;color:#64748b;padding:20px">ไม่มีหลักสูตรที่รออบรมในช่วงนี้</div>';}
+else{
+pendingCourses.forEach(c=>{
+pendingEl.innerHTML+=`<div class="item-row"><div class="item-main"><h4>${c.icon} ${c.name}</h4><div class="item-meta"><i>📅 ${formatDate(c.date)}</i><i>👨‍🏫 ${c.lecturer}</i><i>📚 ${c.credits} หน่วยกิต</i></div></div><span class="status-badge status-wait">รออบรม</span></div>`;
+});
+}
+
+// Full Year Table
+const tableEl=document.getElementById('fullYearTable');
+tableEl.innerHTML='';
+allCourses.forEach(c=>{
+const badge=c.status==='Y'?'<span class="status-badge status-y">เข้าแล้ว</span>':'<span class="status-badge status-n">รออบรม</span>';
+tableEl.innerHTML+=`<tr style="border-bottom:1px solid #eee"><td style="padding:10px">${c.icon} ${c.name}</td><td style="padding:10px">${c.month}</td><td style="padding:10px">${badge}</td><td style="padding:10px;color:#64748b">${c.lecturer}</td></tr>`;
+});
+}
+
+function formatDate(dateStr){const d=new Date(dateStr);return d.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
+</script>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎓 PP5 — PKG AI Learning Hub (UX/UI Design)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f8fafc;color:#1e293b}
+
+/* DESIGN SYSTEM */
+:root{
+--primary:#1e3a8a;--primary-light:#3b82f6;--primary-lighter:#60a5fa;
+--secondary:#7c3aed;--secondary-light:#a78bfa;
+--accent:#f59e0b;--accent-light:#fbbf24;
+--success:#10b981;--warning:#f59e0b;--danger:#ef4444;
+--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#1e293b;--text-light:#64748b;
+--radius:12px;--shadow:0 2px 8px rgba(0,0,0,0.06);--shadow-lg:0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* NAV */
+.topnav{background:white;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topnav .logo{font-size:1.2em;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topnav .nav-links{display:flex;gap:8px}
+.topnav .nav-link{padding:6px 14px;border-radius:8px;font-size:0.85em;font-weight:600;color:var(--text-light);cursor:pointer;transition:0.2s}
+.topnav .nav-link:hover,.topnav .nav-link.active{background:#f1f5f9;color:var(--primary)}
+.topnav .user-pill{display:flex;align-items:center;gap:8px;background:#f1f5f9;padding:6px 12px;border-radius:20px;font-size:0.85em;font-weight:600}
+.topnav .avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:700}
+
+/* LAYOUT SELECTOR */
+.layout-selector{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:30px 25px;text-align:center;margin-bottom:25px}
+.layout-selector h1{font-size:1.5em;margin-bottom:5px}
+.layout-selector p{opacity:0.85;font-size:0.9em}
+.layout-tabs{display:flex;gap:8px;justify-content:center;margin-top:15px;flex-wrap:wrap}
+.layout-tab{padding:8px 18px;border-radius:20px;border:2px solid rgba(255,255,255,0.3);background:transparent;color:white;cursor:pointer;font-size:0.85em;font-weight:600;transition:0.2s}
+.layout-tab:hover,.layout-tab.active{background:white;color:var(--primary);border-color:white}
+
+/* CONTENT */
+.content{max-width:1400px;margin:0 auto;padding:0 20px 40px}
+.page{display:none}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;border:1px solid var(--border)}
+.card h3{color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1em}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-bottom:20px}
+.stat-card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;transition:0.3s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.stat-card .icon{font-size:1.8em;margin-bottom:5px}
+.stat-card .value{font-size:1.8em;font-weight:800;color:var(--primary)}
+.stat-card .label{font-size:0.75em;color:var(--text-light);margin-top:3px}
+.stat-card.accent{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d}
+.stat-card.success{background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-color:#86efac}
+.stat-card.purple{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#c4b5fd}
+
+/* WIREFRAME NOTE */
+.wireframe-note{background:#fef3c7;border-left:4px solid var(--accent);padding:12px 15px;border-radius:0 8px 8px 0;margin-bottom:15px;font-size:0.85em;color:#92400e}
+.wireframe-note strong{display:block;margin-bottom:3px}
+
+/* FLOW DIAGRAM */
+.flow-container{padding:20px 0}
+.flow-step{display:flex;gap:15px;margin-bottom:20px;align-items:flex-start;position:relative}
+.flow-node{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3em;flex-shrink:0;position:relative;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.flow-node.start{background:linear-gradient(135deg,#10b981,#34d399)}
+.flow-node.training{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.flow-node.work{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.flow-node.assess{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+.flow-node.mentor{background:linear-gradient(135deg,#ec4899,#f472b6)}
+.flow-node.leader{background:linear-gradient(135deg,#ef4444,#f87171)}
+.flow-line{position:absolute;left:24px;top:50px;bottom:-20px;width:2px;background:#e2e8f0;z-index:1}
+.flow-content{flex:1;background:var(--card);border-radius:12px;padding:15px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flow-content h4{font-size:0.95em;color:var(--primary);margin-bottom:5px}
+.flow-content p{font-size:0.82em;color:var(--text-light);line-height:1.5}
+.flow-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.flow-tag{padding:3px 8px;border-radius:6px;font-size:0.68em;font-weight:600}
+.flow-tag.org{background:#dbeafe;color:#1e40af}
+.flow-tag.human{background:#fef3c7;color:#92400e}
+.flow-tag.it{background:#d1fae5;color:#065f46}
+
+/* LAYOUT 1: SIDEBAR */
+.layout1-preview{display:grid;grid-template-columns:240px 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;min-height:400px}
+.layout1-sidebar{background:linear-gradient(180deg,var(--primary),#1e40af);color:white;padding:15px}
+.layout1-sidebar .ls-logo{font-size:1em;font-weight:800;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.layout1-sidebar .ls-item{padding:8px 10px;border-radius:8px;font-size:0.82em;margin-bottom:4px;cursor:pointer;transition:0.2s;display:flex;align-items:center;gap:8px}
+.layout1-sidebar .ls-item:hover,.layout1-sidebar .ls-item.active{background:rgba(255,255,255,0.15)}
+.layout1-main{padding:20px;background:#f8fafc}
+.layout1-main .lm-header{font-size:1.1em;font-weight:700;color:var(--primary);margin-bottom:15px}
+.layout1-main .lm-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.layout1-main .lm-card{background:white;padding:12px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.layout1-main .lm-card .v{font-size:1.3em;font-weight:800;color:var(--primary)}
+.layout1-main .lm-card .l{font-size:0.7em;color:var(--text-light)}
+
+/* LAYOUT 2: TOP NAV */
+.layout2-preview{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;min-height:400px}
+.layout2-topnav{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.layout2-topnav .lt-logo{font-weight:800;font-size:1em}
+.layout2-topnav .lt-links{display:flex;gap:12px;font-size:0.82em}
+.layout2-topnav .lt-link{opacity:0.7;cursor:pointer}
+.layout2-topnav .lt-link:hover,.layout2-topnav .lt-link.active{opacity:1}
+.layout2-main{padding:20px;background:#f8fafc}
+.layout2-main .lm-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* LAYOUT 3: TABS */
+.layout3-preview{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;min-height:400px}
+.layout3-header{background:white;padding:15px 20px;border-bottom:1px solid var(--border)}
+.layout3-header .lh-logo{font-weight:800;font-size:1em;color:var(--primary);margin-bottom:10px}
+.layout3-tabs{display:flex;gap:5px}
+.layout3-tab{padding:8px 16px;border-radius:8px 8px 0 0;font-size:0.82em;font-weight:600;color:var(--text-light);cursor:pointer;background:#f1f5f9}
+.layout3-tab.active{background:var(--primary);color:white}
+.layout3-main{padding:20px;background:#f8fafc}
+.layout3-main .lm-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* DESIGN SYSTEM PREVIEW */
+.color-palette{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.color-swatch{width:60px;height:60px;border-radius:10px;display:flex;align-items:flex-end;padding:5px;font-size:0.6em;font-weight:700;color:white}
+.font-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:15px 0}
+.font-card{background:var(--card);padding:15px;border-radius:10px;border:1px solid var(--border)}
+.font-card .ff{font-size:0.75em;color:var(--text-light);margin-bottom:5px}
+.font-card .sample{font-size:1.1em;color:var(--text)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.layout1-preview{grid-template-columns:1fr}
+.layout1-sidebar{display:none}
+.layout2-topnav .lt-links{display:none}
+.layout2-main .lm-cards,.layout3-main .lm-cards,.layout1-main .lm-cards{grid-template-columns:repeat(2,1fr)}
+.flow-step{flex-direction:column}
+.flow-line{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+<div class="logo">🎓 PP5 — PKG AI Learning Hub</div>
+<div class="nav-links">
+<span class="nav-link active" onclick="showPage('flow')">🔄 Flow Diagram</span>
+<span class="nav-link" onclick="showPage('layout1')">📐 Layout 1</span>
+<span class="nav-link" onclick="showPage('layout2')">📐 Layout 2</span>
+<span class="nav-link" onclick="showPage('layout3')">📐 Layout 3</span>
+<span class="nav-link" onclick="showPage('design')">🎨 Design System</span>
+<span class="nav-link" onclick="showPage('dashboard')">📊 Dashboard</span>
+<span class="nav-link" onclick="showPage('ux')">💡 UX Guide</span>
+</div>
+<div class="user-pill"><div class="avatar">N</div> คุณแนน</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== PAGE: FLOW DIAGRAM ==================== -->
+<div class="page active" id="pageFlow">
+<div class="wireframe-note"><strong>📌 Flow Diagram: วงจรการพัฒนาสมาชิก</strong>แสดงเส้นทางตั้งแต่ก้าวเข้ามาจนเติบโตเป็นผู้นำองค์กร</div>
+
+<div class="card">
+<h3>🔄 วงจรการพัฒนาสมาชิก 1 คน — ตั้งแต่ Day 1 ถึง ผู้นำ</h3>
+<div class="flow-container">
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node start">👋</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 1: สมาชิกใหม่ (Day 1)</h4>
+<p>ปฐมนิเทศ — เรียนรู้วัฒนธรรมองค์กร (PKG 6 รับ, 9 มาตรฐาน, 20 วัฒนธรรม), เปิด Account ระบบ, กำหนด IDP</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 ทุนองค์กร</span>
+<span class="flow-tag human">👤 ทุนมนุษย์</span>
+<span class="flow-tag it">💻 ทุนสารสนเทศ</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node training">📚</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 2: อบรมปฐมนิเทศ (เดือนที่ 1)</h4>
+<p>เข้าอบรม: LIA สมาชิก PKG, Cost Down PKG, ความปลอดภัย, การใช้ AI เพื่อการทำงาน — ประเมินทักษะเริ่มต้น</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 LIA + Cost Down</span>
+<span class="flow-tag human">👤 ความปลอดภัย</span>
+<span class="flow-tag it">💻 AI พื้นฐาน</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node human">🌱</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 3: พัฒนาทุนมนุษย์ (เดือนที่ 2-3)</h4>
+<p>พัฒนาทักษะการสื่อสาร, การทำงานเป็นทีม, การแก้ปัญหาพื้นฐาน — เข้าอบรมหลักสูตรประถม</p>
+<div class="flow-tags">
+<span class="flow-tag human">👤 การสื่อสาร</span>
+<span class="flow-tag human">👤 ทีมเวิร์ค</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node work">💼</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 4: ทำงานจริง (เดือนที่ 3-6)</h4>
+<p>ปฏิบัติงานจริง — เก็บชั่วโมงอบรม, สะสมหน่วยกิต, พัฒนา GPA — ผ่านประเมินประถม</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 กระบวนการทำงาน</span>
+<span class="flow-tag it">💻 เครื่องมือพื้นฐาน</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node assess">✅</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 5: ผ่านประเมิน (เดือนที่ 6)</h4>
+<p>ผ่านเกณฑ์: หน่วยกิต ≥ 44, GPA ≥ 3.5, ผ่านที่ 3 — ได้รับใบรับรองระดับประถม</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 ใบรับรอง</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node training">🎓</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 6: อบรมทุติยนิเทศ (เดือนที่ 6-12)</h4>
+<p>เข้าอบรมระดับทุติย: กลยุทธ์องค์กร, ภาวะผู้นำ, AI ขั้นสูง, Data Analysis</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 กลยุทธ์</span>
+<span class="flow-tag human">👤 ภาวะผู้นำ</span>
+<span class="flow-tag it">💻 AI ขั้นสูง</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node mentor">🤝</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 7: พี่เลี้ยง (Mentor) (ปีที่ 1-2)</h4>
+<p>เป็นพี่เลี้ยงให้สมาชิกใหม่ — Coaching, Mentoring — พัฒนาผู้อื่น</p>
+<div class="flow-tags">
+<span class="flow-tag human">👤 Coaching</span>
+<span class="flow-tag human">👤 Mentoring</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node training">🏆</div><div class="flow-line"></div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 8: อบรมตติยนิเทศ → จตุรนิเทศ → ปัญจนิเทศ</h4>
+<p>อบรมระดับสูงขึ้นตามลำดับ — เป็นวิทยากรภายใน, ที่ปรึกษา, สร้างกระบวนการใหม่</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 วิทยากร</span>
+<span class="flow-tag it">💻 พัฒนาเครื่องมือ</span>
+</div>
+</div>
+</div>
+
+<div class="flow-step">
+<div style="position:relative"><div class="flow-node leader">👑</div></div>
+<div class="flow-content">
+<h4>ก้าวที่ 9: อบรมภาวะผู้นำ → ผู้นำองค์กร</h4>
+<p>กำหนดนโยบาย, วางกลยุทธ์, นำการเปลี่ยนแปลง — Digital Transformation Leader</p>
+<div class="flow-tags">
+<span class="flow-tag org">🏢 นโยบาย</span>
+<span class="flow-tag human">👤 ผู้นำ</span>
+<span class="flow-tag it">💻 Digital Transformation</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: LAYOUT 1 (SIDEBAR) ==================== -->
+<div class="page" id="pageLayout1">
+<div class="wireframe-note"><strong>📐 Layout 1: Sidebar Navigation</strong>เหมาะสำหรับ ADMIN PAD — มีพื้นที่เมนูเยอะ จัดการได้ง่าย</div>
+
+<div class="card">
+<h3>📐 Layout 1: Sidebar + Main Content</h3>
+<p style="color:var(--text-light);font-size:0.85em;margin-bottom:15px">✅ เหมาะกับ ADMIN PAD | ❌ ไม่เหมาะกับมือถือ (เมนูซ่อน)</p>
+<div class="layout1-preview">
+<div class="layout1-sidebar">
+<div class="ls-logo">🎓 PKG AI School</div>
+<div class="ls-item active">🏠 หน้าแรก</div>
+<div class="ls-item">📊 Dashboard</div>
+<div class="ls-item">👥 จัดการสมาชิก</div>
+<div class="ls-item">📚 จัดการหลักสูตร</div>
+<div class="ls-item">🔄 วงจรการเรียนรู้</div>
+<div class="ls-item">📈 รายงาน</div>
+<div class="ls-item">⚙️ ตั้งค่า</div>
+</div>
+<div class="layout1-main">
+<div class="lm-header">📊 Dashboard ภาพรวม</div>
+<div class="lm-cards">
+<div class="lm-card"><div class="v">492</div><div class="l">สมาชิก</div></div>
+<div class="lm-card"><div class="v">78.3%</div><div class="l">ผ่านเกณฑ์</div></div>
+<div class="lm-card"><div class="v">105</div><div class="l">หลักสูตร</div></div>
+<div class="lm-card"><div class="v">8,023</div><div class="l">ชม.อบรม</div></div>
+<div class="lm-card"><div class="v">3.60</div><div class="l">GPA เฉลี่ย</div></div>
+<div class="lm-card"><div class="v">28</div><div class="l">หน่วยกิตเฉลี่ย</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: LAYOUT 2 (TOP NAV) ==================== -->
+<div class="page" id="pageLayout2">
+<div class="wireframe-note"><strong>📐 Layout 2: Top Navigation</strong>เหมาะสำหรับสมาชิก/BMC — เรียบง่าย ใช้งานบนมือถือได้ดี</div>
+
+<div class="card">
+<h3>📐 Layout 2: Top Nav + Full Width Content</h3>
+<p style="color:var(--text-light);font-size:0.85em;margin-bottom:15px">✅ เหมาะกับสมาชิก/BMC + มือถือ | ❌ เมนูจำกัดจำนวน</p>
+<div class="layout2-preview">
+<div class="layout2-topnav">
+<div class="lt-logo">🎓 PKG AI School</div>
+<div class="lt-links">
+<span class="lt-link active">หน้าแรก</span>
+<span class="lt-link">หลักสูตรของฉัน</span>
+<span class="lt-link">Progress</span>
+<span class="lt-link">รายงาน</span>
+<span class="lt-link">👤 คุณแนน</span>
+</div>
+</div>
+<div class="layout2-main">
+<div class="lm-cards">
+<div class="lm-card"><div class="v">20/44</div><div class="l">หน่วยกิต</div></div>
+<div class="lm-card"><div class="v">3.60</div><div class="l">GPA</div></div>
+<div class="lm-card"><div class="v">24</div><div class="l">ชม.อบรม</div></div>
+<div class="lm-card"><div class="v">2/5</div><div class="l">วิชาที่ผ่าน</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: LAYOUT 3 (TABS) ==================== -->
+<div class="page" id="pageLayout3">
+<div class="wireframe-note"><strong>📐 Layout 3: Tab Navigation</strong>เหมาะสำหรับผู้ใช้ที่ต้องการสลับหน้าบ่อย — เห็นทุกหน้าในครั้งเดียว</div>
+
+<div class="card">
+<h3>📐 Layout 3: Tabs + Content Area</h3>
+<p style="color:var(--text-light);font-size:0.85em;margin-bottom:15px">✅ เหมาะกับทุกกลุ่ม + สลับหน้าง่าย | ❌ แท็บเยอะอาจดูรก</p>
+<div class="layout3-preview">
+<div class="layout3-header">
+<div class="lh-logo">🎓 PKG AI School</div>
+<div class="layout3-tabs">
+<div class="layout3-tab active">🏠 หน้าแรก</div>
+<div class="layout3-tab">📚 หลักสูตร</div>
+<div class="layout3-tab">📈 Progress</div>
+<div class="layout3-tab">📊 รายงาน</div>
+<div class="layout3-tab">⚙️ ตั้งค่า</div>
+</div>
+</div>
+<div class="layout3-main">
+<div class="lm-cards">
+<div class="lm-card"><div class="v">492</div><div class="l">สมาชิก</div></div>
+<div class="lm-card"><div class="v">78.3%</div><div class="l">ผ่านเกณฑ์</div></div>
+<div class="lm-card"><div class="v">105</div><div class="l">หลักสูตร</div></div>
+<div class="lm-card"><div class="v">8,023</div><div class="l">ชม.อบรม</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: DESIGN SYSTEM ==================== -->
+<div class="page" id="pageDesign">
+<div class="wireframe-note"><strong>🎨 Design System: สี, ฟอนต์, Mood & Tone</strong>มาตรฐานการออกแบบสำหรับ PP5 Web</div>
+
+<div class="card">
+<h3>🎨 Color Palette</h3>
+<div class="color-palette">
+<div class="color-swatch" style="background:#1e3a8a">#1e3a8a</div>
+<div class="color-swatch" style="background:#3b82f6">#3b82f6</div>
+<div class="color-swatch" style="background:#7c3aed">#7c3aed</div>
+<div class="color-swatch" style="background:#f59e0b">#f59e0b</div>
+<div class="color-swatch" style="background:#10b981">#10b981</div>
+<div class="color-swatch" style="background:#ef4444">#ef4444</div>
+<div class="color-swatch" style="background:#f8fafc;color:#1e293b">#f8fafc</div>
+</div>
+</div>
+
+<div class="card">
+<h3>🔤 Font System</h3>
+<div class="font-preview">
+<div class="font-card"><div class="ff">Heading: Segoe UI Bold, 1.2-1.5em</div><div class="sample" style="font-weight:700;font-size:1.3em">PKG AI Learning Hub</div></div>
+<div class="font-card"><div class="ff">Body: Segoe UI Regular, 0.85-1em</div><div class="sample" style="font-size:0.95em">ระบบบริหารและติดตามการพัฒนาสมาชิกองค์กร</div></div>
+<div class="font-card"><div class="ff">Caption: Segoe UI, 0.7-0.75em, color #64748b</div><div class="sample" style="font-size:0.75em;color:#64748b">ข้อมูล ณ 22 พฤษภาคม 2569</div></div>
+<div class="font-card"><div class="ff">Value: Segoe UI Bold, 1.5-1.8em</div><div class="sample" style="font-weight:800;font-size:1.6em;color:#1e3a8a">3.60</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>✨ Mood & Tone</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px">
+<div style="background:#f0f9ff;padding:15px;border-radius:10px;border:1px solid #bae6fd"><strong style="color:#0369a1">🏢 Professional</strong><p style="font-size:0.82em;color:#0369a1;margin-top:5px">สีน้ำเงินเข้ม, ตัวเลขชัดเจน, ตารางข้อมูล</p></div>
+<div style="background:#f0fdf4;padding:15px;border-radius:10px;border:1px solid #bbf7d0"><strong style="color:#166534">🌱 Human Development</strong><p style="font-size:0.82em;color:#166534;margin-top:5px">สีเขียว, Progress Bar, Achievement</p></div>
+<div style="background:#faf5ff;padding:15px;border-radius:10px;border:1px solid #e9d5ff"><strong style="color:#7c3aed">🎓 Modern Learning</strong><p style="font-size:0.82em;color:#7c3aed;margin-top:5px">สีม่วง, Card Layout, Animation</p></div>
+<div style="background:#fefce8;padding:15px;border-radius:10px;border:1px solid #fef08a"><strong style="color:#854d0e">⭐ Achievement</strong><p style="font-size:0.82em;color:#854d0e;margin-top:5px">สีเหลือง, Badges, Progress Rings</p></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: DASHBOARD ==================== -->
+<div class="page" id="pageDashboard">
+<div class="wireframe-note"><strong>📊 Dashboard Example: เข้าใจง่ายใน 3 วินาที</strong>เห็นภาพรวม → กดดูรายละเอียด → ดำเนินการ</div>
+
+<div class="card-grid">
+<div class="stat-card"><div class="icon">👥</div><div class="value">492</div><div class="label">สมาชิกทั้งหมด</div></div>
+<div class="stat-card success"><div class="icon">✅</div><div class="value">78.3%</div><div class="label">ผ่านเกณฑ์</div></div>
+<div class="stat-card accent"><div class="icon">📚</div><div class="value">105</div><div class="label">หลักสูตร</div></div>
+<div class="stat-card purple"><div class="icon">⏱️</div><div class="value">8,023</div><div class="label">ชม.อบรมรวม</div></div>
+</div>
+
+<div class="card">
+<h3>📈 KPI / TA / Progress</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px">
+<div style="background:#f0f9ff;padding:15px;border-radius:10px">
+<div style="font-size:0.8em;color:#0369a1;font-weight:600">🏢 ทุนองค์กร</div>
+<div style="font-size:1.5em;font-weight:800;color:#1e40af;margin:5px 0">89.0%</div>
+<div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden"><div style="height:100%;width:89%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:4px"></div></div>
+<div style="font-size:0.75em;color:#64748b;margin-top:5px">4,806 / 5,400 ผ่านเกณฑ์</div>
+</div>
+<div style="background:#fef3c7;padding:15px;border-radius:10px">
+<div style="font-size:0.8em;color:#92400e;font-weight:600">👤 ทุนมนุษย์</div>
+<div style="font-size:1.5em;font-weight:800;color:#92400e;margin:5px 0">76.5%</div>
+<div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden"><div style="height:100%;width:76.5%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:4px"></div></div>
+<div style="font-size:0.75em;color:#64748b;margin-top:5px">2,850 / 3,725 ผ่านเกณฑ์</div>
+</div>
+<div style="background:#d1fae5;padding:15px;border-radius:10px">
+<div style="font-size:0.8em;color:#065f46;font-weight:600">💻 ทุนสารสนเทศ</div>
+<div style="font-size:1.5em;font-weight:800;color:#065f46;margin:5px 0">82.1%</div>
+<div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden"><div style="height:100%;width:82.1%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:4px"></div></div>
+<div style="font-size:0.75em;color:#64748b;margin-top:5px">1,642 / 2,000 ผ่านเกณฑ์</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>👥 ติดตามสถานะสมาชิก (5 ลำดับล่าสุด)</h3>
+<table style="width:100%;border-collapse:collapse;font-size:0.85em">
+<thead><tr style="background:#f1f5f9;text-align:left"><th style="padding:10px">ID</th><th style="padding:10px">ชื่อ-สกุล</th><th style="padding:10px">BU</th><th style="padding:10px">หน่วยกิต</th><th style="padding:10px">GPA</th><th style="padding:10px">สถานะ</th><th style="padding:10px">จัดการ</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:10px">123456</td><td style="padding:10px">นาย โกมล</td><td style="padding:10px">PMSG</td><td style="padding:10px">28/44</td><td style="padding:10px">3.80</td><td style="padding:10px"><span style="background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;font-size:0.75em;font-weight:600">ยังไม่ผ่าน</span></td><td style="padding:10px"><button style="padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:white;cursor:pointer;font-size:0.75em">ดูรายละเอียด</button></td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:10px">5604030</td><td style="padding:10px">คณิศร ฉัยยา</td><td style="padding:10px">CPDG</td><td style="padding:10px">22/44</td><td style="padding:10px">3.92</td><td style="padding:10px"><span style="background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;font-size:0.75em;font-weight:600">ยังไม่ผ่าน</span></td><td style="padding:10px"><button style="padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:white;cursor:pointer;font-size:0.75em">ดูรายละเอียด</button></td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:10px">6006083</td><td style="padding:10px">ณัฐฑริณี คำนึง</td><td style="padding:10px">CPDG</td><td style="padding:10px">20/44</td><td style="padding:10px">3.60</td><td style="padding:10px"><span style="background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;font-size:0.75em;font-weight:600">ยังไม่ผ่าน</span></td><td style="padding:10px"><button style="padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:white;cursor:pointer;font-size:0.75em">ดูรายละเอียด</button></td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:10px">9601009</td><td style="padding:10px">โกมล ไชยประสูตร</td><td style="padding:10px">PMSG</td><td style="padding:10px">44/44</td><td style="padding:10px">3.80</td><td style="padding:10px"><span style="background:#dcfce7;color:#166534;padding:3px 8px;border-radius:6px;font-size:0.75em;font-weight:600">✅ ผ่านแล้ว</span></td><td style="padding:10px"><button style="padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:white;cursor:pointer;font-size:0.75em">ดูรายละเอียด</button></td></tr>
+</tbody></table>
+</div>
+
+<div class="card">
+<h3>🔔 งานที่ต้องอนุมัติ</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0">
+<div style="width:40px;height:40px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.2em">📋</div>
+<div style="flex:1"><div style="font-size:0.85em;font-weight:600">นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</div><div style="font-size:0.75em;color:#64748b">รออนุมัติจาก ADMIN PAD</div></div>
+<div style="display:flex;gap:6px"><button style="padding:5px 12px;border-radius:6px;border:none;background:#10b981;color:white;font-size:0.75em;cursor:pointer;font-weight:600">✅ อนุมัติ</button><button style="padding:5px 12px;border-radius:6px;border:1px solid #e2e8f0;background:white;font-size:0.75em;cursor:pointer">❌ ปฏิเสธ</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0">
+<div style="width:40px;height:40px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.2em">📤</div>
+<div style="flex:1"><div style="font-size:0.85em;font-weight:600">น.ส. สมหญิง ส่งงาน Role Play</div><div style="font-size:0.75em;color:#64748b">รอ AI ตรวจ + ADMIN ทวนสอบ</div></div>
+<div style="display:flex;gap:6px"><button style="padding:5px 12px;border-radius:6px;border:none;background:#3b82f6;color:white;font-size:0.75em;cursor:pointer;font-weight:600">🤖 ให้ AI ตรวจ</button><button style="padding:5px 12px;border-radius:6px;border:1px solid #e2e8f0;background:white;font-size:0.75em;cursor:pointer">👀 ดูงาน</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: UX GUIDE ==================== -->
+<div class="page" id="pageUx">
+<div class="wireframe-note"><strong>💡 UX Guide: ทำไมใช้งานง่าย?</strong>ออกแบบตามหลัก Human-Centered Design</div>
+
+<div class="card">
+<h3>🎯 หลักการ UX ที่ใช้</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px">
+<div style="background:#f0f9ff;padding:15px;border-radius:10px;border-left:4px solid #3b82f6">
+<strong style="color:#0369a1">1. เห็นภาพรวมใน 3 วินาที</strong>
+<p style="font-size:0.82em;color:#0369a1;margin-top:5px">Dashboard แสดง KPI หลัก 4 ตัว — สมาชิก, ผ่านเกณฑ์, หลักสูตร, ชม.อบรม</p>
+</div>
+<div style="background:#f0fdf4;padding:15px;border-radius:10px;border-left:4px solid #10b981">
+<strong style="color:#166534">2. สีสื่อความหมาย</strong>
+<p style="font-size:0.82em;color:#166534;margin-top:5px">เขียว = ผ่าน, เหลือง = รอ, แดง = ไม่ผ่าน — ไม่ต้องอ่านก็เข้าใจ</p>
+</div>
+<div style="background:#faf5ff;padding:15px;border-radius:10px;border-left:4px solid #7c3aed">
+<strong style="color:#7c3aed">3. จัดกลุ่มตามงาน</strong>
+<p style="font-size:0.82em;color:#7c3aed;margin-top:5px">ADMIN จัดการ / สมาชิก ดูผล — แยกมุมมองชัดเจน</p>
+</div>
+<div style="background:#fefce8;padding:15px;border-radius:10px;border-left:4px solid #f59e0b">
+<strong style="color:#854d0e">4. กดน้อยสุด = ทำได้มากสุด</strong>
+<p style="font-size:0.82em;color:#854d0e;margin-top:5px">1 คลิก → ดูรายละเอียด, 2 คลิก → อนุมัติ, 3 คลิก → ส่งรายงาน</p>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>📱 Responsive Design</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px">
+<div style="background:#f8fafc;padding:15px;border-radius:10px;text-align:center;border:1px solid #e2e8f0">
+<div style="font-size:2em;margin-bottom:5px">💻</div>
+<strong style="color:var(--primary)">Desktop</strong>
+<p style="font-size:0.75em;color:var(--text-light);margin-top:3px">Sidebar + Full Content</p>
+</div>
+<div style="background:#f8fafc;padding:15px;border-radius:10px;text-align:center;border:1px solid #e2e8f0">
+<div style="font-size:2em;margin-bottom:5px">📱</div>
+<strong style="color:var(--primary)">Mobile</strong>
+<p style="font-size:0.75em;color:var(--text-light);margin-top:3px">Top Nav + Stacked Cards</p>
+</div>
+<div style="background:#f8fafc;padding:15px;border-radius:10px;text-align:center;border:1px solid #e2e8f0">
+<div style="font-size:2em;margin-bottom:5px">📊</div>
+<strong style="color:var(--primary)">Tablet</strong>
+<p style="font-size:0.75em;color:var(--text-light);margin-top:3px">Collapsible Sidebar</p>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>🚀 สรุป: ทำไมเลือกใช้ Layout 2 (Top Nav)</h3>
+<div style="background:linear-gradient(135deg,#f0f9ff,#ede9fe);padding:20px;border-radius:12px;border:2px solid #c4b5fd">
+<p style="font-size:0.9em;line-height:1.6;color:#1e293b">
+<strong>Layout 2 (Top Navigation)</strong> เป็นตัวเลือกที่ดีที่สุดสำหรับ PP5 เพราะ:<br><br>
+✅ <strong>เหมาะกับทั้ง ADMIN และสมาชิก</strong> — เมนูไม่เยอะเกินไป<br>
+✅ <strong>รองรับมือถือได้ดี</strong> — Top Nav ซ่อนใน Hamburger Menu ได้<br>
+✅ <strong>ขยายได้ง่าย</strong> — เพิ่มเมนูได้โดยไม่รก<br>
+✅ <strong>เรียนรู้เร็ว</strong> — ผู้ใช้คุ้นเคยกับ Top Nav จากเว็บทั่วไป<br><br>
+<strong>แนะนำ:</strong> ใช้ Layout 2 เป็นหลัก + เพิ่ม Sidebar แบบ Collapsible สำหรับ ADMIN PAD เมื่อต้องการจัดการเยอะ
+</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function showPage(page){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+document.getElementById('page'+page.charAt(0).toUpperCase()+page.slice(1)).classList.add('active');
+event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

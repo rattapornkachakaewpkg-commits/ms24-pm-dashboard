@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วิเคราะห์ปัญหา Likepoint Platform × MS24 Bugs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f6fa; --surface: #ffffff; --surface2: #eef0f7;
+            --border: #d4d8ea; --red: #dc2626; --red-bg: #fef2f2;
+            --yellow: #f59e0b; --yellow-bg: #fffbeb;
+            --green: #16a34a; --green-bg: #f0fdf4;
+            --blue: #2563eb; --blue-bg: #eff6ff;
+            --purple: #7c3aed; --text: #1a1a2e; --text-muted: #626680;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.8; font-size: 16px; padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .hero {
+            background: linear-gradient(135deg, #dc2626, #7c3aed);
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px;
+        }
+        .hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 16px; }
+        .hero p { font-size: 1.1rem; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 32px; }
+        .section h2 {
+            font-size: 1.4rem; font-weight: 800; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 3px solid var(--purple);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-bottom: 16px;
+        }
+        .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+        .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th {
+            background: var(--surface2); padding: 12px 16px; text-align: left;
+            font-size: 13px; font-weight: 700; color: var(--purple); white-space: nowrap;
+        }
+        td { padding: 12px 16px; border-top: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+        tr:hover td { background: rgba(124,58,237,0.04); }
+        .severity { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+        .sev-p0 { background: var(--red-bg); color: var(--red); }
+        .sev-p1 { background: var(--yellow-bg); color: #92400e; }
+        .sev-p2 { background: var(--blue-bg); color: var(--blue); }
+        .arch {
+            background: var(--surface); border: 2px solid var(--border);
+            border-radius: 16px; padding: 32px; text-align: center;
+            font-family: 'Sarabun', sans-serif; margin: 16px 0;
+        }
+        .arch-row { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+        .arch-box {
+            background: var(--surface2); border: 2px solid var(--border);
+            border-radius: 10px; padding: 14px 20px; font-size: 14px; font-weight: 600;
+        }
+        .arch-box.ms24 { border-color: var(--blue); color: var(--blue); }
+        .arch-box.lp { border-color: var(--purple); color: var(--purple); }
+        .arch-arrow { color: var(--text-muted); padding: 0 14px; font-size: 20px; }
+        .arch-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 16px; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg, var(--red), var(--yellow), var(--green), var(--purple));
+            border-radius: 2px;
+        }
+        .timeline-item { position: relative; margin-bottom: 24px; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -32px; top: 8px;
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 3px solid white;
+        }
+        .timeline-item.t1::before { background: var(--red); box-shadow: 0 0 0 2px var(--red); }
+        .timeline-item.t2::before { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+        .timeline-item.t3::before { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+        .timeline-item.t4::before { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+        .timeline-content {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px;
+        }
+        .timeline-content h4 { font-size: 1rem; margin-bottom: 12px; }
+        .timeline-content ul { margin-left: 20px; }
+        .timeline-content li { font-size: 14px; margin-bottom: 4px; color: var(--text-muted); }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+        .kpi-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+        }
+        .kpi-name { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .kpi-values { display: flex; justify-content: center; gap: 16px; font-size: 13px; }
+        .kpi-current { color: var(--red); font-weight: 700; }
+        .kpi-target { color: var(--green); font-weight: 700; }
+        .callout {
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .callout-warn { background: var(--yellow-bg); border: 1px solid rgba(245,158,11,0.35); }
+        .callout-info { background: var(--blue-bg); border: 1px solid rgba(37,99,235,0.25); }
+        .callout-icon { font-size: 20px; flex-shrink: 0; }
+        .callout-body { font-size: 14px; line-height: 1.7; }
+        .callout-body strong { display: block; margin-bottom: 4px; font-size: 15px; }
+        footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--text-muted); font-size: 14px; }
+        @media (max-width: 600px) { table { font-size: 12px; } th, td { padding: 8px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+    <h1>🔍 วิเคราะห์ปัญหา Likepoint Platform × MS24 Bugs</h1>
+    <p>บัตรส่วนใหญ่ที่ลูกค้า MS24 ประสบปัญหา มาจาก Likepoint Platform — การวิเคราะห์นี้ชี้ให้เห็นจุดเชื่อมโยง และเสนอแนวทางการแก้ไขใหม่แบบบูรณาการ</p>
+</div>
+
+<!-- SECTION 1: ARCHITECTURE -->
+<div class="section">
+    <h2>📊 ส่วนที่ 1: ความสัมพันธ์ Likepoint ↔ MS24</h2>
+    <div class="arch">
+        <div class="arch-row">
+            <div class="arch-box ms24">
+                📱 MS24 Web App (Flutter)<br>
+                <span style="font-size:12px;font-weight:400;color:var(--text-muted)">• Like Credit (POI) • Like Wallet • เคลมรางวัล • Spin Wheel/Lotto • Notification</span>
+            </div>
+        </div>
+        <div style="margin:12px 0;font-size:24px;color:var(--text-muted)">⬇️<br><span style="font-size:12px">เชื่อมต่อ API (ไม่เสถียร)</span></div>
+        <div class="arch-row">
+            <div class="arch-box lp">
+                ⚡ Likepoint 2.0 Platform (Google Cloud)<br>
+                <span style="font-size:12px;font-weight:400;color:var(--text-muted)">• POI Management • Spin Game Algorithm • Cash-out • Lock Plan • Lotto • Authen ⚠️</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: BUGS -->
+<div class="section">
+    <h2>🐛 ส่วนที่ 2: Bugs ที่เชื่อมโยงกัน</h2>
+
+    <div class="card">
+        <h3>🔴 Critical Bugs (P0/P1) — ส่งผลต่อลูกค้าโดยตรง</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Bug</th><th>มาจากระบบ</th><th>ผลกระทบต่อลูกค้า MS24</th><th>Severity</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td><strong>Cash-out จ่ายเกินไป</strong></td><td>Likepoint</td><td>ลูกค้าได้เงินผิด, เสียหายทางการเงิน</td><td><span class="severity sev-p0">P0</span></td></tr>
+                    <tr><td>2</td><td><strong>Authen ไม่เสถียร</strong></td><td>Likepoint → MS24</td><td>Login ไม่ได้, Session หลุด, เข้าระบบไม่ได้</td><td><span class="severity sev-p0">P0</span></td></tr>
+                    <tr><td>3</td><td><strong>Spin Game Algorithm ผิดพลาด</strong></td><td>Likepoint</td><td>หมุนแล้วไม่ได้รางวัลที่ควรได้, งบประมาณควบคุมไม่ได้</td><td><span class="severity sev-p0">P0</span></td></tr>
+                    <tr><td>4</td><td><strong>Like Credit / POI ไม่อัปเดต</strong></td><td>Likepoint → MS24</td><td>POI ไม่เข้า, ยอดไม่ตรง, ลูกค้าเสียสิทธิ์</td><td><span class="severity sev-p0">P0</span></td></tr>
+                    <tr><td>5</td><td><strong>MSP Claim ล้มเหลว</strong></td><td>Likepoint → MS24</td><td>เคลมรางวัลไม่ได้ ทั้งที่มี MSP พอ</td><td><span class="severity sev-p1">P1</span></td></tr>
+                    <tr><td>6</td><td><strong>Spin Wheel V2 ยังไม่เสร็จ</strong></td><td>Likepoint</td><td>ฟีเจอร์ที่ลูกค้ารอ ยังใช้งานไม่ได้</td><td><span class="severity sev-p1">P1</span></td></tr>
+                    <tr><td>7</td><td><strong>Lock Plan Config ไม่ยืดหยุ่น</strong></td><td>Likepoint</td><td>BU กำหนด Privilege ไม่ได้ตามที่ต้องการ</td><td><span class="severity sev-p1">P1</span></td></tr>
+                    <tr><td>8</td><td><strong>Notification Claim ไม่เสถียร</strong></td><td>MS24 + Likepoint</td><td>กดเคลมจากแจ้งเตือนแล้ว error</td><td><span class="severity sev-p1">P1</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>🟡 Medium Bugs (P2) — ผลกระทบบางส่วน</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Bug</th><th>มาจากระบบ</th><th>ผลกระทบ</th><th>Severity</th></tr></thead>
+                <tbody>
+                    <tr><td>9</td><td>Like Wallet แสดงยอดไม่ตรง</td><td>MS24 Frontend</td><td>ลูกค้าเห็นยอดผิด</td><td><span class="severity sev-p2">P2</span></td></tr>
+                    <tr><td>10</td><td>MSP Auto คำนวณผิด</td><td>MS24 + Likepoint</td><td>MSP คำนวณอัตโนมัติผิดพลาด</td><td><span class="severity sev-p2">P2</span></td></tr>
+                    <tr><td>11</td><td>Cross-Country POI ไม่ sync</td><td>Likepoint</td><td>POI ไม่ sync ระหว่าง TH/LA/KH</td><td><span class="severity sev-p2">P2</span></td></tr>
+                    <tr><td>12</td><td>Bookbank History ขาดหาย</td><td>Likepoint</td><td>ประวัติการทำรายการไม่ครบ</td><td><span class="severity sev-p2">P2</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: ROOT CAUSE -->
+<div class="section">
+    <h2>🔍 ส่วนที่ 3: Root Cause Analysis</h2>
+
+    <div class="card" style="border-left:4px solid var(--red);">
+        <h3>❌ LL (สิ่งที่ล้มเหลว) — ต้นเหตุของปัญหา MS24</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>ปัญหา</th><th>สาเหตุรากฐาน</th><th>ผลกระทบต่อ MS24</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Auth จาก BuApp อย่างเดียวไม่พอ</strong></td>
+                        <td>Likepoint ไม่มี Auth ของตัวเอง ต้องพึ่ง BuApp</td>
+                        <td>เมื่อ BuApp ล่ม → MS24 ใช้งานไม่ได้ทั้งหมด</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cash-out จ่ายเกินไป</strong></td>
+                        <td>ช่องโหว่เชิงเทคนิค ในระบบตรวจสอบ Transaction</td>
+                        <td>ลูกค้าได้เงินผิด → เสียหายทางการเงิน → ร้องเรียน</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--yellow);">
+        <h3>⚠️ AL (สิ่งที่ต้องปรับ) — ยังไม่เสร็จ</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>สิ่งที่ต้องทำ</th><th>สถานะ</th><th>ผลกระทบถ้าไม่ทำ</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Spin Game V2</strong> ควบคุมงบประมาณ + Custom ได้</td><td>🔄 กำลังทำ</td><td>ลูกค้าไม่ได้ประสบการณ์ที่ดี งบประมาณควบคุมไม่ได้</td></tr>
+                    <tr><td><strong>เพิ่มระบบ Authen ของ Platform</strong></td><td>🔄 กำลังทำ</td><td>ยังพึ่ง BuApp ต่อไป → เสี่ยงล่มทั้งระบบ</td></tr>
+                    <tr><td><strong>ออกแบบเกม/รูปแบบแจก POI ให้ Partner</strong></td><td>⏳ ยังไม่เริ่ม</td><td>Partner ไม่มีตัวเลือก ใช้ได้แค่แบบเดิม</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--green);">
+        <h3>✅ BP (สิ่งที่ทำได้ดี) — ควรคงไว้</h3>
+        <ul style="margin-left:20px;font-size:14px;">
+            <li><strong>Feature Toggle</strong> — BU เปิด/ปิดส่วนที่มีปัญหาได้ทันที โดยไม่ต้อง deploy ใหม่</li>
+            <li><strong>การสื่อสาร Feature/API</strong> — ช่วยให้ MS24 เข้าถึง Features ได้สะดวกขึ้น</li>
+        </ul>
+    </div>
+</div>
+
+<!-- SECTION 4: SOLUTIONS -->
+<div class="section">
+    <h2>💡 ส่วนที่ 4: แนวทางการแก้ไขใหม่ — 4 ระดับ</h2>
+
+    <div class="timeline">
+        <!-- Level 1 -->
+        <div class="timeline-item t1">
+            <div class="timeline-content">
+                <h4>🚨 ระดับ 1: แก้ไขเร่งด่วน (ภายใน 2 สัปดาห์)</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>การแก้ไข</th><th>ระบบ</th><th>ผลลัพธ์</th></tr></thead>
+                        <tbody>
+                            <tr><td>1.1</td><td><strong>เพิ่ม Algorithm เช็ค Transaction ผิดปกติ</strong></td><td>Likepoint</td><td>ตรวจจับ Cash-out ผิดปกติได้ทันที</td></tr>
+                            <tr><td>1.2</td><td><strong>เพิ่ม Validation Layer หน้า Cash-out</strong></td><td>Likepoint</td><td>ป้องกันจ่ายเงินผิดซ้ำซ้อน</td></tr>
+                            <tr><td>1.3</td><td><strong>Fix Auth Session Timeout</strong></td><td>MS24 + LP</td><td>ลูกค้าไม่หลุดกลางคัน</td></tr>
+                            <tr><td>1.4</td><td><strong>เพิ่ม Monitoring Dashboard</strong></td><td>Likepoint</td><td>เห็นปัญหา real-time ก่อนลูกค้าร้องเรียน</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 2 -->
+        <div class="timeline-item t2">
+            <div class="timeline-content">
+                <h4>🔧 ระดับ 2: เสถียรภาพ (ภายใน 1 เดือน)</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>การแก้ไข</th><th>ระบบ</th><th>ผลลัพธ์</th></tr></thead>
+                        <tbody>
+                            <tr><td>2.1</td><td><strong>สร้าง Auth ของ Likepoint เอง</strong></td><td>Likepoint</td><td>ไม่พึ่ง BuApp → เสถียรภาพ +80%</td></tr>
+                            <tr><td>2.2</td><td><strong>Spin Game V2 Algorithm ใหม่</strong></td><td>Likepoint</td><td>ควบคุมงบประมาณได้ ทุกผู้ใช้มีรางวัล</td></tr>
+                            <tr><td>2.3</td><td><strong>API Gateway + Rate Limiting</strong></td><td>LP → MS24</td><td>ป้องกัน overload, ลด error 50%</td></tr>
+                            <tr><td>2.4</td><td><strong>Sync POI แบบ Real-time</strong></td><td>Likepoint</td><td>POI ไม่หาย, ยอดตรงกันทุกครั้ง</td></tr>
+                            <tr><td>2.5</td><td><strong>Fix MSP Claim Flow</strong></td><td>MS24 + LP</td><td>เคลมรางวัลสำเร็จ 100% เมื่อมี MSP พอ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 3 -->
+        <div class="timeline-item t3">
+            <div class="timeline-content">
+                <h4>🏗️ ระดับ 3: ปรับปรุงโครงสร้าง (ภายใน 3 เดือน)</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>การแก้ไข</th><th>ระบบ</th><th>ผลลัพธ์</th></tr></thead>
+                        <tbody>
+                            <tr><td>3.1</td><td><strong>Re-design UX Likepoint</strong></td><td>Likepoint</td><td>ใช้งานง่ายขึ้น ลดปัญหาจากการใช้งานผิด</td></tr>
+                            <tr><td>3.2</td><td><strong>Lock Plan Config ยืดหยุ่น</strong></td><td>Likepoint</td><td>BU กำหนด Privilege ได้ตามต้องการ</td></tr>
+                            <tr><td>3.3</td><td><strong>Microservice Architecture</strong></td><td>Likepoint</td><td>Bug ส่วนนึงไม่กระทบทั้งหมด</td></tr>
+                            <tr><td>3.4</td><td><strong>Cross-Country POI Sync</strong></td><td>Likepoint</td><td>POI sync TH/LA/KH แบบ real-time</td></tr>
+                            <tr><td>3.5</td><td><strong>Bookbank History ครบถ้วน</strong></td><td>Likepoint</td><td>ประวัติครบ ไม่หาย ตรวจสอบได้</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 4 -->
+        <div class="timeline-item t4">
+            <div class="timeline-content">
+                <h4>🚀 ระดับ 4: นวัตกรรม (ภายใน 6 เดือน)</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>การแก้ไข</th><th>ระบบ</th><th>ผลลัพธ์</th></tr></thead>
+                        <tbody>
+                            <tr><td>4.1</td><td><strong>TAP2EARN</strong></td><td>Likepoint</td><td>ฟีเจอร์ใหม่ เพิ่ม engagement</td></tr>
+                            <tr><td>4.2</td><td><strong>Onchain Likepoint</strong></td><td>Likepoint</td><td>ความโปร่งใส ตรวจสอบได้</td></tr>
+                            <tr><td>4.3</td><td><strong>AI-Powered Fraud Detection</strong></td><td>Likepoint</td><td>ตรวจจับกิจกรรมผิดปกติด้วย AI</td></tr>
+                            <tr><td>4.4</td><td><strong>Loyalty Program Money Buddy</strong></td><td>Likepoint</td><td>ขยายระบบไปยัง Partner ใหม่</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 5: KPIs -->
+<div class="section">
+    <h2>📊 ส่วนที่ 6: ตัวชี้วัดความสำเร็จ</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-name">Bug P0/P1 ต่อลูกค้า</div>
+            <div class="kpi-values"><span class="kpi-current">8 bugs</span> → <span class="kpi-target">0 bugs</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-name">Cash-out Error Rate</div>
+            <div class="kpi-values"><span class="kpi-current">สูง</span> → <span class="kpi-target">0%</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-name">POI Sync Accuracy</div>
+            <div class="kpi-values"><span class="kpi-current">ไม่ตรง</span> → <span class="kpi-target">99.9%</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-name">MSP Claim Success</div>
+            <div class="kpi-values"><span class="kpi-current">ไม่ทราบ</span> → <span class="kpi-target">99.9%</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-name">Customer Complaint</div>
+            <div class="kpi-values"><span class="kpi-current">สูง</span> → <span class="kpi-target">-95%</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-name">Auth Stability</div>
+            <div class="kpi-values"><span class="kpi-current">พึ่ง BuApp</span> → <span class="kpi-target">Auth เอง 100%</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 6: RECOMMENDATIONS -->
+<div class="section">
+    <h2>📝 ส่วนที่ 7: ข้อแนะนำเพิ่มเติม</h2>
+
+    <div class="callout callout-info">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+            <strong>สิ่งที่ควรทำทันที</strong>
+            <ul style="margin-left:16px;margin-top:6px;">
+                <li><strong>สร้าง Bug Triage Process</strong> — จัดลำดับ bug ใหม่ เน้น bug ที่ส่งผลต่อลูกค้า MS24 ก่อน</li>
+                <li><strong>สร้าง Communication Channel</strong> — ทีม Likepoint + ทีม MS24 สื่อสาร real-time เมื่อเกิดปัญหา</li>
+                <li><strong>สร้าง Alert System</strong> — แจ้งเตือนอัตโนมัติเมื่อเกิด Cash-out ผิดปกติ หรือ POI ไม่ sync</li>
+                <li><strong>ทำ Post-Mortem ทุก Critical Bug</strong> — เรียนรู้จากปัญหา ป้องกันไม่ให้เกิดซ้ำ</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+            <strong>สิ่งที่ควรหยุดทำทันที</strong>
+            <ul style="margin-left:16px;margin-top:6px;">
+                <li><strong>หยุด deploy โดยไม่มี rollback plan</strong> — ทุกการ deploy ต้องมีแผนย้อนกลับ</li>
+                <li><strong>หยุดแก้ไข production โดยไม่มี testing</strong> — ต้องทดสอบใน staging ก่อนเสมอ</li>
+                <li><strong>หยุดปล่อย Cash-out โดยไม่มี validation</strong> — ต้องมี validation layer ทุกครั้ง</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 7: RISKS -->
+<div class="section">
+    <h2>⚠️ ส่วนที่ 8: ความเสี่ยงและแผนสำรอง</h2>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>ความเสี่ยง</th><th>ผลกระทบ</th><th>แผนสำรอง</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>Auth ใหม่ใช้เวลานานกว่ากำหนด</strong></td>
+                    <td>MS24 ยังพึ่ง BuApp ต่อไป</td>
+                    <td>ใช้ Feature Toggle ปิดส่วนที่ไม่เสถียรชั่วคราว</td>
+                </tr>
+                <tr>
+                    <td><strong>Spin Game V2 ยังไม่เสร็จทัน</strong></td>
+                    <td>งบประมาณควบคุมไม่ได้</td>
+                    <td>ใช้ Algorithm เดิม + เพิ่ม manual monitoring</td>
+                </tr>
+                <tr>
+                    <td><strong>Microservice refactor ล้มเหลว</strong></td>
+                    <td>ระบบล่มชั่วคราว</td>
+                    <td>ทำใน staging ก่อน, มี rollback plan</td>
+                </tr>
+                <tr>
+                    <td><strong>ข้อมูล POI หายระหว่าง migrate</strong></td>
+                    <td>ลูกค้าเสียสิทธิ์ POI</td>
+                    <td>backup ข้อมูลทั้งหมดก่อน migrate, มี restore plan</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer>
+    <div>📖 วิเคราะห์ปัญหา Likepoint Platform × MS24 Bugs — สร้างโดย AliClaw | 24 พฤษภาคม 2569</div>
+    <div style="font-size:12px;margin-top:8px;">อ้างอิง: LIKEpoint2.0 Platform (ม.ค. 2026) + MS24 Test Checklist (134 Test Cases)</div>
+</footer>
+
+</div>
+</body>
+</html>

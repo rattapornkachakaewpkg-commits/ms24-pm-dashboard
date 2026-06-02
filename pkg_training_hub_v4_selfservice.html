@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎓 PKG Training Hub v4 — Self-Service Portal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh}
+
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.98);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.nav-logo{font-size:1.3em;font-weight:800;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-btn{padding:8px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:white;cursor:pointer;font-size:0.85em;font-weight:600;transition:0.3s}
+.nav-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,0.4)}
+.nav-btn.secondary{background:#e2e8f0;color:#1e3a8a}
+.nav-btn.secondary:hover{background:#cbd5e1}
+.nav-search{display:flex;align-items:center;background:#f1f5f9;border-radius:25px;padding:5px 8px;border:2px solid transparent;transition:0.3s;min-width:220px}
+.nav-search:focus-within{border-color:#667eea;background:white;box-shadow:0 0 0 3px rgba(102,126,234,0.1)}
+.nav-search input{flex:1;border:none;padding:8px 12px;font-size:0.9em;outline:none;background:transparent}
+.nav-search button{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:8px 18px;border-radius:18px;font-size:0.85em;font-weight:600;cursor:pointer;transition:0.3s}
+.nav-search button:hover{transform:scale(1.05)}
+.user-pill{display:flex;align-items:center;gap:8px;background:#f8fafc;padding:6px 12px;border-radius:20px;font-size:0.85em;font-weight:600;color:#1e3a8a}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700}
+
+/* PAGES */
+.page{display:none;padding-top:70px;min-height:100vh}
+.page.active{display:block}
+
+/* WELCOME SECTION */
+.welcome-banner{background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);color:white;padding:35px 25px 25px;border-radius:0 0 25px 25px;position:relative;overflow:hidden;margin-bottom:25px}
+.welcome-banner::after{content:'';position:absolute;width:300px;height:300px;background:rgba(255,255,255,0.08);border-radius:50%;top:-100px;right:-50px}
+.welcome-banner::before{content:'';position:absolute;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%;bottom:-80px;left:-40px}
+.welcome-banner h1{font-size:1.6em;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.welcome-banner p{opacity:0.9;font-size:0.95em;position:relative;z-index:1}
+.welcome-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:1}
+.welcome-tags .tag{background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:12px;font-size:0.75em;font-weight:600;backdrop-filter:blur(4px)}
+
+/* PROGRESS CARDS */
+.progress-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:25px;padding:0 15px}
+.progress-card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,0.06);border:1px solid #e2e8f0;transition:0.3s}
+.progress-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.1);border-color:#667eea}
+.progress-card .icon{font-size:1.8em;margin-bottom:8px}
+.progress-card .label{font-size:0.8em;color:#64748b;font-weight:600;margin-bottom:5px}
+.progress-card .value{font-size:1.8em;font-weight:800;color:#1e3a8a}
+.progress-card .target{font-size:0.75em;color:#94a3b8;margin-top:3px}
+.progress-bar-bg{width:100%;height:10px;background:#e2e8f0;border-radius:5px;margin-top:10px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:5px;transition:1s;position:relative}
+.progress-bar-fill::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);animation:shimmer 2s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.progress-bar-fill.green{background:linear-gradient(90deg,#10b981,#34d399)}
+.progress-bar-fill.blue{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.progress-bar-fill.purple{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.progress-bar-fill.orange{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+
+/* STATUS BADGES */
+.status-summary{display:flex;gap:12px;margin:15px 0;flex-wrap:wrap}
+.status-pill{padding:8px 14px;border-radius:20px;font-size:0.8em;font-weight:700;display:flex;align-items:center;gap:6px}
+.status-pill.pass{background:#dcfce7;color:#166534}
+.status-pill.pending{background:#fef3c7;color:#92400e}
+.status-pill.fail{background:#fee2e2;color:#991b1b}
+
+/* COURSE CARDS */
+.course-section{padding:0 15px 25px}
+.course-section h2{color:#764ba2;font-size:1.15em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.course-card{background:white;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);border-left:4px solid #10b981;transition:0.3s}
+.course-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.1);transform:translateX(4px)}
+.course-card.pending{border-left-color:#f59e0b}
+.course-card.pending:hover{transform:translateX(4px)}
+.course-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+.course-info h3{font-size:1em;margin-bottom:5px;color:#1e3a8a}
+.course-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:0.78em;color:#64748b}
+.course-meta span{display:flex;align-items:center;gap:4px}
+.course-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{padding:4px 10px;border-radius:8px;font-size:0.72em;font-weight:600}
+.badge.cap-org{background:#dbeafe;color:#1e40af}
+.badge.cap-human{background:#fef3c7;color:#92400e}
+.badge.cap-it{background:#d1fae5;color:#065f46}
+.badge.grade-A{background:#dcfce7;color:#166534}
+.badge.grade-B{background:#e0f2fe;color:#075985}
+.badge.grade-C{background:#fef3c7;color:#92400e}
+.badge.pass-l3{background:#dcfce7;color:#166534}
+.badge.pass-l2{background:#fef3c7;color:#92400e}
+.badge.pass-l1{background:#fee2e2;color:#991b1b}
+.badge.status-y{background:#dcfce7;color:#166534}
+.badge.status-n{background:#fee2e2;color:#991b1b}
+.course-score{text-align:right;min-width:80px}
+.course-score .score{font-size:1.5em;font-weight:800;color:#10b981}
+.course-score .hours{font-size:0.7em;color:#64748b}
+
+/* ACTION BAR */
+.action-bar{background:linear-gradient(135deg,#1e3a8a,#3b82f6);padding:20px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;color:white;margin:20px 15px;flex-wrap:wrap;gap:12px}
+.action-bar h3{font-size:1.1em}
+.action-bar p{opacity:0.85;font-size:0.85em}
+.action-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-action{background:white;color:#1e3a8a;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;transition:0.3s;font-size:0.85em}
+.btn-action:hover{background:#e0e7ff;transform:scale(1.05)}
+.btn-action.outline{background:transparent;border:2px solid white;color:white}
+.btn-action.outline:hover{background:rgba(255,255,255,0.15)}
+
+/* ACHIEVEMENT */
+.achievement-section{padding:0 15px 25px}
+.achievement-section h2{color:#764ba2;font-size:1.15em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.achievement-card{background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:0.3s;border:2px solid transparent}
+.achievement-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
+.achievement-card.earned{border-color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fffbeb)}
+.achievement-card.locked{opacity:0.5;filter:grayscale(1)}
+.achievement-card .emoji{font-size:2em;margin-bottom:8px}
+.achievement-card .name{font-size:0.8em;font-weight:700;color:#1e3a8a}
+.achievement-card .desc{font-size:0.7em;color:#64748b;margin-top:3px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.nav-search{min-width:120px}
+.progress-row{grid-template-columns:1fr 1fr}
+.course-header{flex-direction:column}
+.course-score{text-align:left}
+.action-bar{flex-direction:column;text-align:center}
+.action-btns{justify-content:center}
+}
+@media(max-width:480px){
+.progress-row{grid-template-columns:1fr}
+.nav-search{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+<div class="nav-logo" onclick="goHome()">🎓 PKG Training Hub</div>
+<div class="nav-right">
+<div class="nav-search">
+<input type="text" id="navSearchInput" placeholder="ค้นหาสมาชิก..." onkeydown="if(event.key==='Enter')navSearch()">
+<button onclick="navSearch()">🔍</button>
+</div>
+<button class="nav-btn secondary" onclick="goHome()">🏠 ภาพรวม</button>
+<div class="user-pill"><div class="user-avatar">N</div><span>คุณแนน</span></div>
+</div>
+</div>
+
+<!-- ================= PAGE 1: HOME ================= -->
+<div class="page active" id="pageHome">
+<div class="welcome-banner">
+<h1>👋 สวัสดีครับ คุณแนน (LDC-PAD-ณัฐฑริณี)</h1>
+<p>BU: CPDG | ทีม: ADM | รหัสสมาชิก: 6006083</p>
+<div class="welcome-tags">
+<span class="tag">📅 ข้อมูล ณ 22 พฤษภาคม 2569</span>
+<span class="tag">📚 หลักสูตรทั้งปี: 5 วิชา</span>
+<span class="tag">✅ ผ่านแล้ว: 2 วิชา</span>
+</div>
+</div>
+
+<div class="progress-row">
+<div class="progress-card">
+<div class="icon">📚</div>
+<div class="label">หน่วยกิตที่ได้</div>
+<div class="value">20</div>
+<div class="target">เป้าหมาย: 44 หน่วยกิต</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:45%"></div></div>
+<div style="font-size:0.75em;color:#92400e;margin-top:5px;font-weight:600">ยังขาดอีก 24 หน่วยกิต</div>
+</div>
+<div class="progress-card">
+<div class="icon">📊</div>
+<div class="label">GPA ที่ได้</div>
+<div class="value">3.60</div>
+<div class="target">เป้าหมาย: 3.50</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:100%"></div></div>
+<div style="font-size:0.75em;color:#166534;margin-top:5px;font-weight:600">✅ ผ่านเกณฑ์แล้ว (+0.10)</div>
+</div>
+<div class="progress-card">
+<div class="icon">⏱️</div>
+<div class="label">ชั่วโมงอบรม</div>
+<div class="value">24</div>
+<div class="target">เป้าหมาย: 40 ชม.</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill purple" style="width:60%"></div></div>
+<div style="font-size:0.75em;color:#92400e;margin-top:5px;font-weight:600">ยังขาดอีก 16 ชม.</div>
+</div>
+<div class="progress-card">
+<div class="icon">🏆</div>
+<div class="label">ผ่านที่ 3</div>
+<div class="value">2</div>
+<div class="target">จาก 2 วิชาที่ผ่าน</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:100%"></div></div>
+<div style="font-size:0.75em;color:#166534;margin-top:5px;font-weight:600">100% ของวิชาที่ผ่าน</div>
+</div>
+</div>
+
+<div class="status-summary" style="padding:0 15px">
+<div class="status-pill pass">✅ ผ่านแล้ว: 2 วิชา</div>
+<div class="status-pill pending">⏳ รออบรม: 3 วิชา</div>
+<div class="status-pill fail">❌ ยังไม่ผ่านเกณฑ์: หน่วยกิตขาด 24</div>
+</div>
+
+<div class="achievement-section">
+<h2>🏅 Achievement Badges</h2>
+<div class="achievement-grid">
+<div class="achievement-card earned"><div class="emoji">🎓</div><div class="name">First Blood</div><div class="desc">ผ่านวิชาแรก</div></div>
+<div class="achievement-card earned"><div class="emoji">📊</div><div class="name">GPA Master</div><div class="desc">GPA ≥ 3.5</div></div>
+<div class="achievement-card earned"><div class="emoji">🏆</div><div class="name">Pass L3</div><div class="desc">ผ่านที่ 3</div></div>
+<div class="achievement-card locked"><div class="emoji">📚</div><div class="name">Credit King</div><div class="desc">44 หน่วยกิต</div></div>
+<div class="achievement-card locked"><div class="emoji">⏱️</div><div class="name">Time Master</div><div class="desc">40 ชม.</div></div>
+<div class="achievement-card locked"><div class="emoji">🌟</div><div class="name">All Pass</div><div class="desc">ผ่านทุกวิชา</div></div>
+</div>
+</div>
+
+<div class="course-section">
+<h2>✅ หลักสูตรที่ผ่านแล้ว (สถานะ Y)</h2>
+
+<div class="course-card">
+<div class="course-header">
+<div class="course-info">
+<h3>🏛️ การบริหารองค์กร ด้วย BP LL</h3>
+<div class="course-meta">
+<span>📅 15 มกราคม 2569</span>
+<span>👨‍🏫 อาจารย์สมชาย</span>
+<span>⏱️ 6 ชม.</span>
+</div>
+<div class="course-badges">
+<span class="badge cap-org">💰 ทุนองค์กร</span>
+<span class="badge grade-A">A</span>
+<span class="badge pass-l3">✅ ผ่านที่ 3</span>
+</div>
+</div>
+<div class="course-score">
+<div class="score">95</div>
+<div class="hours">คะแนน</div>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<div class="course-header">
+<div class="course-info">
+<h3>⛑️ ความปลอดภัยในการทำงาน จป.</h3>
+<div class="course-meta">
+<span>📅 10 มีนาคม 2569</span>
+<span>👨‍🏫 อาจารย์วิชัย</span>
+<span>⏱️ 8 ชม.</span>
+</div>
+<div class="course-badges">
+<span class="badge cap-human">👤 ทุนมนุษย์</span>
+<span class="badge grade-B">B</span>
+<span class="badge pass-l2">✅ ผ่านที่ 2</span>
+</div>
+</div>
+<div class="course-score">
+<div class="score">88</div>
+<div class="hours">คะแนน</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="course-section">
+<h2>⏳ หลักสูตรที่รออบรม (สถานะ N)</h2>
+
+<div class="course-card pending">
+<div class="course-header">
+<div class="course-info">
+<h3>🌟 ภาวะผู้นำยุคใหม่</h3>
+<div class="course-meta">
+<span>📅 20 มิถุนายน 2569</span>
+<span>👨‍🏫 ดร.สมหญิง</span>
+<span>⏱️ 6 ชม. | 📚 4 หน่วยกิต</span>
+</div>
+<div class="course-badges">
+<span class="badge cap-human">👤 ทุนมนุษย์</span>
+<span class="badge status-n">รออบรม</span>
+</div>
+</div>
+<div class="course-score">
+<div class="score" style="color:#94a3b8">-</div>
+<div class="hours">รอสอบ</div>
+</div>
+</div>
+</div>
+
+<div class="course-card pending">
+<div class="course-header">
+<div class="course-info">
+<h3>💰 การเงินสำหรับหัวหน้างาน</h3>
+<div class="course-meta">
+<span>📅 15 สิงหาคม 2569</span>
+<span>👨‍🏫 คุณธนกร</span>
+<span>⏱️ 3 ชม. | 📚 3 หน่วยกิต</span>
+</div>
+<div class="course-badges">
+<span class="badge cap-org">💰 ทุนองค์กร</span>
+<span class="badge status-n">รออบรม</span>
+</div>
+</div>
+<div class="course-score">
+<div class="score" style="color:#94a3b8">-</div>
+<div class="hours">รอสอบ</div>
+</div>
+</div>
+</div>
+
+<div class="course-card pending">
+<div class="course-header">
+<div class="course-info">
+<h3>🤖 การใช้ AI เพื่อการตัดสินใจ</h3>
+<div class="course-meta">
+<span>📅 5 ตุลาคม 2569</span>
+<span>👨‍🏫 AI Expert</span>
+<span>⏱️ 4 ชม. | 📚 4 หน่วยกิต</span>
+</div>
+<div class="course-badges">
+<span class="badge cap-it">💻 ทุนสารสนเทศ</span>
+<span class="badge status-n">รออบรม</span>
+</div>
+</div>
+<div class="course-score">
+<div class="score" style="color:#94a3b8">-</div>
+<div class="hours">รอสอบ</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="action-bar">
+<div>
+<h3>📤 ส่งรายงานให้หัวหน้างาน</h3>
+<p>สรุปผลการเรียนทั้งหมดเป็น PDF หรือแชร์ลิงก์ด่วน</p>
+</div>
+<div class="action-btns">
+<button class="btn-action">📄 Export PDF</button>
+<button class="btn-action outline">🔗 แชร์ลิงก์</button>
+</div>
+</div>
+
+<div style="height:40px"></div>
+</div>
+
+<!-- ================= PAGE 2: SEARCH RESULT ================= -->
+<div class="page" id="pageDash">
+<div class="welcome-banner">
+<h1 id="dashWelcome">👋 สวัสดีครับ</h1>
+<p id="dashInfo">ค้นหาสมาชิกเพื่อดูข้อมูล</p>
+<div class="welcome-tags" id="dashTags"></div>
+</div>
+<div class="progress-row" id="dashProgress"></div>
+<div class="status-summary" id="dashStatus" style="padding:0 15px"></div>
+<div class="course-section" id="dashCourses"></div>
+<div class="action-bar">
+<div><h3>📤 ส่งรายงานให้หัวหน้างาน</h3><p>สรุปผลการเรียนทั้งหมดเป็น PDF หรือแชร์ลิงก์ด่วน</p></div>
+<div class="action-btns"><button class="btn-action">📄 Export PDF</button><button class="btn-action outline">🔗 แชร์ลิงก์</button></div>
+</div>
+<div style="height:40px"></div>
+</div>
+
+<script>
+function goHome(){
+document.getElementById('pageHome').classList.add('active');
+document.getElementById('pageDash').classList.remove('active');
+window.scrollTo(0,0);
+}
+
+const db={
+"123456":{id:"123456",name:"นาย โกมล ไชยประสูตร",bu:"PMSG",team:"ทีมตรวจสอบธุรกิจ",targets:{gpa:3.5,credits:44},courses:[
+{date:"2026-01-15",name:"การบริหารองค์กร ด้วย BP LL",score:95,passed:true,credits:4,status:"Y",lecturer:"อาจารย์สมชาย",icon:"🏛️",month:"ม.ค.",capital:"org",hours:6,grade:"A",passLevel:3},
+{date:"2026-03-10",name:"ความปลอดภัยในการทำงาน จป.",score:88,passed:true,credits:6,status:"Y",lecturer:"อาจารย์วิชัย",icon:"⛑️",month:"มี.ค.",capital:"human",hours:8,grade:"B",passLevel:2},
+{date:"2026-06-20",name:"ภาวะผู้นำยุคใหม่",score:0,passed:false,credits:0,status:"N",lecturer:"ดร.สมหญิง",icon:"🌟",month:"มิ.ย.",capital:"human",hours:0,grade:"N",passLevel:0},
+{date:"2026-08-15",name:"การเงินสำหรับหัวหน้างาน",score:0,passed:false,credits:3,status:"N",lecturer:"คุณธนกร",icon:"💰",month:"ส.ค.",capital:"org",hours:0,grade:"N",passLevel:0},
+{date:"2026-10-05",name:"การใช้ AI เพื่อการตัดสินใจ",score:0,passed:false,credits:4,status:"N",lecturer:"AI Expert",icon:"🤖",month:"ต.ค.",capital:"it",hours:0,grade:"N",passLevel:0}
+]},
+"789000":{id:"789000",name:"นางสาว สมหญิง รักงาน",bu:"AAMG",team:"ทีมบริการลูกค้า",targets:{gpa:3.5,credits:44},courses:[
+{date:"2026-02-14",name:"การบริการลูกค้าแบบเหนือชั้น",score:98,passed:true,credits:3,status:"Y",lecturer:"คุณมารีญา",icon:"💖",month:"ก.พ.",capital:"human",hours:4,grade:"A",passLevel:3},
+{date:"2026-05-18",name:"การใช้ AI เพื่อการทำงาน",score:100,passed:true,credits:4,status:"Y",lecturer:"ตี๋ตี๋",icon:"🤖",month:"พ.ค.",capital:"it",hours:6,grade:"A",passLevel:3}
+]}
+};
+
+const capitalMap={org:{label:"💰 ทุนองค์กร",class:"cap-org"},human:{label:"👤 ทุนมนุษย์",class:"cap-human"},it:{label:"💻 ทุนสารสนเทศ",class:"cap-it"}};
+const passLevelMap={3:{label:"✅ ผ่านที่ 3",class:"pass-l3"},2:{label:"✅ ผ่านที่ 2",class:"pass-l2"},1:{label:"✅ ผ่านที่ 1",class:"pass-l1"},0:{label:"ยังไม่ประเมิน",class:"pass-n"}};
+
+function navSearch(){
+const input=document.getElementById('navSearchInput').value.trim();
+if(db[input]){
+renderDash(db[input]);
+document.getElementById('pageHome').classList.remove('active');
+document.getElementById('pageDash').classList.add('active');
+window.scrollTo(0,0);
+}else{alert('⚠️ ไม่พบข้อมูลรหัสสมาชิกนี้ในระบบ');}
+}
+
+function renderDash(data){
+const all=data.courses;
+const passed=all.filter(c=>c.status==='Y');
+const pending=all.filter(c=>c.status==='N');
+let totalCredits=0,totalScore=0,totalHours=0;
+passed.forEach(c=>{totalCredits+=c.credits;totalScore+=c.score;totalHours+=c.hours||0;});
+const gpa=passed.length>0?Math.min((totalScore/passed.length)/25,4.0):0;
+const passL3=passed.filter(c=>c.passLevel===3).length;
+
+document.getElementById('dashWelcome').innerHTML=`👋 สวัสดีครับ ${data.name}`;
+document.getElementById('dashInfo').innerHTML=`BU: ${data.bu} | ทีม: ${data.team} | รหัส: ${data.id}`;
+document.getElementById('dashTags').innerHTML=`<span class="tag">📚 หลักสูตรทั้งปี: ${all.length} วิชา</span><span class="tag">✅ ผ่านแล้ว: ${passed.length} วิชา</span><span class="tag">⏳ รออบรม: ${pending.length} วิชา</span>`;
+
+const credPct=Math.min((totalCredits/data.targets.credits)*100,100);
+const gpaPct=Math.min((gpa/data.targets.gpa)*100,100);
+const credMissing=Math.max(data.targets.credits-totalCredits,0);
+const gpaDiff=(gpa-data.targets.gpa).toFixed(2);
+
+document.getElementById('dashProgress').innerHTML=`
+<div class="progress-card"><div class="icon">📚</div><div class="label">หน่วยกิตที่ได้</div><div class="value">${totalCredits}</div><div class="target">เป้าหมาย: ${data.targets.credits} หน่วยกิต</div><div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:${credPct}%"></div></div><div style="font-size:0.75em;color:#92400e;margin-top:5px;font-weight:600">ยังขาดอีก ${credMissing} หน่วยกิต</div></div>
+<div class="progress-card"><div class="icon">📊</div><div class="label">GPA ที่ได้</div><div class="value">${gpa.toFixed(2)}</div><div class="target">เป้าหมาย: ${data.targets.gpa}</div><div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:${gpaPct}%"></div></div><div style="font-size:0.75em;color:${gpa>=data.targets.gpa?'#166534':'#991b1b'};margin-top:5px;font-weight:600">${gpa>=data.targets.gpa?'✅ ผ่านเกณฑ์แล้ว':'❌ ยังไม่ผ่านเกณฑ์'}</div></div>
+<div class="progress-card"><div class="icon">⏱️</div><div class="label">ชั่วโมงอบรม</div><div class="value">${totalHours}</div><div class="target">เป้าหมาย: 40 ชม.</div><div class="progress-bar-bg"><div class="progress-bar-fill purple" style="width:${Math.min(totalHours/40*100,100)}%"></div></div><div style="font-size:0.75em;color:#92400e;margin-top:5px;font-weight:600">ยังขาดอีก ${Math.max(40-totalHours,0)} ชม.</div></div>
+<div class="progress-card"><div class="icon">🏆</div><div class="label">ผ่านที่ 3</div><div class="value">${passL3}</div><div class="target">จาก ${passed.length} วิชาที่ผ่าน</div><div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:${passed.length>0?(passL3/passed.length*100):0}%"></div></div><div style="font-size:0.75em;color:#166534;margin-top:5px;font-weight:600">${passed.length>0?Math.round(passL3/passed.length*100):0}% ของวิชาที่ผ่าน</div></div>
+`;
+
+document.getElementById('dashStatus').innerHTML=`<div class="status-pill pass">✅ ผ่านแล้ว: ${passed.length} วิชา</div><div class="status-pill pending">⏳ รออบรม: ${pending.length} วิชา</div>${credMissing>0||gpa<data.targets.gpa?'<div class="status-pill fail">❌ ยังไม่ผ่านเกณฑ์</div>':''}`;
+
+let html='<h2>✅ หลักสูตรที่ผ่านแล้ว</h2>';
+passed.sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(c=>{
+const cap=capitalMap[c.capital]||{label:c.capital,class:''};
+const pass=passLevelMap[c.passLevel]||passLevelMap[0];
+html+=`<div class="course-card"><div class="course-header"><div class="course-info"><h3>${c.icon} ${c.name}</h3><div class="course-meta"><span>📅 ${formatDate(c.date)}</span><span>👨‍🏫 ${c.lecturer}</span><span>⏱️ ${c.hours} ชม.</span></div><div class="course-badges"><span class="badge ${cap.class}">${cap.label}</span><span class="badge grade-${c.grade}">${c.grade}</span><span class="badge ${pass.class}">${pass.label}</span></div></div><div class="course-score"><div class="score">${c.score}</div><div class="hours">คะแนน</div></div></div></div>`;
+});
+
+html+='<h2 style="margin-top:20px">⏳ หลักสูตรที่รออบรม</h2>';
+if(pending.length===0)html+='<div class="course-card pending" style="text-align:center;color:#64748b;padding:20px">ไม่มีหลักสูตรที่รออบรม</div>';
+pending.forEach(c=>{
+const cap=capitalMap[c.capital]||{label:c.capital,class:''};
+html+=`<div class="course-card pending"><div class="course-header"><div class="course-info"><h3>${c.icon} ${c.name}</h3><div class="course-meta"><span>📅 ${formatDate(c.date)}</span><span>👨‍🏫 ${c.lecturer}</span><span>⏱️ ${c.hours||0} ชม. | 📚 ${c.credits} หน่วยกิต</span></div><div class="course-badges"><span class="badge ${cap.class}">${cap.label}</span><span class="badge status-n">รออบรม</span></div></div><div class="course-score"><div class="score" style="color:#94a3b8">-</div><div class="hours">รอสอบ</div></div></div></div>`;
+});
+
+document.getElementById('dashCourses').innerHTML=html;
+}
+
+function formatDate(d){const date=new Date(d);return date.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 PKG AI School — Executive Summary</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; padding: 15px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 30px 25px; text-align: center; }
+        .header h1 { font-size: 1.6em; }
+        .header .sub { opacity: 0.9; margin-top: 6px; font-size: 0.95em; }
+        .header .type-badge { background: rgba(255,255,255,0.25); display: inline-block; padding: 4px 16px; border-radius: 20px; margin-top: 10px; font-size: 0.85em; }
+        .content { padding: 25px; }
+        .section { margin-bottom: 25px; }
+        .section h2 { color: #1a73e8; font-size: 1.2em; margin-bottom: 12px; border-bottom: 2px solid #1a73e8; padding-bottom: 6px; }
+        .section h2 .icon { margin-right: 6px; }
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+        .kpi-card { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 15px; border-radius: 10px; text-align: center; }
+        .kpi-card.green { background: linear-gradient(135deg, #0f9d58, #0b8043); }
+        .kpi-card.orange { background: linear-gradient(135deg, #f9ab00, #e37400); }
+        .kpi-card.red { background: linear-gradient(135deg, #ea4335, #c5221f); }
+        .kpi .v { font-size: 1.8em; font-weight: 800; }
+        .kpi .l { font-size: 0.8em; opacity: 0.9; margin-top: 3px; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .tl-card { background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #1a73e8; }
+        .tl-card.done { border-left-color: #0f9d58; }
+        .tl-card.current { border-left-color: #f9ab00; }
+        .tl-card .month { font-weight: 700; color: #1a73e8; font-size: 0.9em; }
+        .tl-card .activity { color: #555; font-size: 0.85em; margin-top: 3px; }
+        .level-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        @media (max-width: 600px) { .level-row { flex-direction: column; } }
+        .level-card { flex: 1; background: white; border-radius: 8px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid; }
+        .level-card.green { border-left-color: #0f9d58; }
+        .level-card.yellow { border-left-color: #f9ab00; }
+        .level-card.blue { border-left-color: #1a73e8; }
+        .level-card h4 { font-size: 0.95em; margin-bottom: 5px; }
+        .level-card.green h4 { color: #0f9d58; }
+        .level-card.yellow h4 { color: #e37400; }
+        .level-card.blue h4 { color: #1a73e8; }
+        .level-card p { font-size: 0.8em; color: #666; }
+        .obj-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .obj-card { background: #f8f9fa; border-radius: 8px; padding: 12px; }
+        .obj-card h4 { font-size: 0.9em; color: #333; margin-bottom: 5px; }
+        .obj-card ul { margin-left: 14px; font-size: 0.8em; color: #555; }
+        .obj-card li { margin: 2px 0; }
+        .footer { background: #1a73e8; color: white; padding: 15px; text-align: center; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎓 PKG AI School 2026</h1>
+        <div class="sub">แผนงานโรงเรียนผู้ใช้ AI — สรุปสำหรับผู้บริหาร</div>
+        <div class="type-badge">แบบ A: Executive Summary</div>
+    </div>
+
+    <div class="content">
+        <!-- KPI -->
+        <div class="section">
+            <h2><span class="icon">🎯</span> เป้าหมายหลัก (OKR/KPI)</h2>
+            <div class="kpi-row">
+                <div class="kpi-card green"><div class="v">80%</div><div class="l">พนักงานใช้ AI เป็น</div></div>
+                <div class="kpi-card"><div class="v">50%</div><div class="l">ลดเวลาเอกสาร</div></div>
+                <div class="kpi-card orange"><div class="v">30%</div><div class="l">เพิ่มประสิทธิภาพ</div></div>
+                <div class="kpi-card red"><div class="v">0</div><div class="l">AI Error Policy</div></div>
+            </div>
+        </div>
+
+        <!-- Objectives -->
+        <div class="section">
+            <h2><span class="icon">📌</span> 3 วัตถุประสงค์หลัก</h2>
+            <div class="obj-row">
+                <div class="obj-card">
+                    <h4>🟢 วัฒนธรรม AI-First</h4>
+                    <ul>
+                        <li>พนักงาน 80% ใช้ AI/สัปดาห์</li>
+                        <li>ลดเวลาเอกสาร 50%</li>
+                        <li>ทุกคนผ่าน Level 1</li>
+                    </ul>
+                </div>
+                <div class="obj-card">
+                    <h4>🟡 ยกระดับด้วย AI</h4>
+                    <ul>
+                        <li>Manager 100% ใช้ AI ตัดสินใจ</li>
+                        <li>ลดประชุม 40%</li>
+                        <li>Dashboard อัตโนมัติ 100%</li>
+                    </ul>
+                </div>
+                <div class="obj-card">
+                    <h4>🔵 AI Automation</h4>
+                    <ul>
+                        <li>สร้าง 5 AI System</li>
+                        <li>ลด Human Error 90%</li>
+                        <li>Deploy ≤ 2 สัปดาห์</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="section">
+            <h2><span class="icon">📅</span> Timeline การดำเนินการ</h2>
+            <div class="timeline-grid">
+                <div class="tl-card done"><div class="month">พ.ค.</div><div class="activity">✅ เตรียมระบบ AI + Bot</div></div>
+                <div class="tl-card done"><div class="month">พ.ค.-มิ.ย.</div><div class="activity">✅ AI เป็นทีม Support</div></div>
+                <div class="tl-card current"><div class="month">15 มิ.ย.</div><div class="activity">🔄 Train AI (โรงเรียนฝึก)</div></div>
+                <div class="tl-card current"><div class="month">17-30 มิ.ย.</div><div class="activity">🔄 Admin + Implement</div></div>
+                <div class="tl-card"><div class="month">17 มิ.ย.</div><div class="activity">📋 Level 1 CPDG (ทดลอง)</div></div>
+                <div class="tl-card"><div class="month">ก.ค.</div><div class="activity">📋 Level 1 AAMG + Level 2 PKG</div></div>
+                <div class="tl-card"><div class="month">ส.ค.</div><div class="activity">📋 Level 1 PMSG + Level 2 Backoffice</div></div>
+                <div class="tl-card"><div class="month">ส.ค.-ธ.ค.</div><div class="activity">📋 Level 3 (IT/Dev)</div></div>
+            </div>
+        </div>
+
+        <!-- Levels -->
+        <div class="section">
+            <h2><span class="icon">📚</span> โครงสร้าง 3 ระดับ</h2>
+            <div class="level-row">
+                <div class="level-card green">
+                    <h4>🟢 Level 1: เลขาส่วนตัว</h4>
+                    <p>7 ชม. | 7 Modules | ผู้ใช้ทั่วไป (70%)</p>
+                    <p style="margin-top:4px; font-size:0.75em;">สรุปเอกสาร, ร่างอีเมล, แปลภาษา, จัดตาราง</p>
+                </div>
+                <div class="level-card yellow">
+                    <h4>🟡 Level 2: Co-Worker</h4>
+                    <p>20 ชม. | 7 Modules | Management (25%)</p>
+                    <p style="margin-top:4px; font-size:0.75em;">วิเคราะห์ข้อมูล, Dashboard, Google Sheets + AI</p>
+                </div>
+                <div class="level-card blue">
+                    <h4>🔵 Level 3: เชี่ยวชาญ</h4>
+                    <p>28 ชม. | 5 Modules | IT/Dev (5%)</p>
+                    <p style="margin-top:4px; font-size:0.75em;">AI System, Integration, Automation, Champion</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team -->
+        <div class="section">
+            <h2><span class="icon">🏢</span> ทีมรับผิดชอบ</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <div style="background:#e3f2fd; padding:10px; border-radius:8px; text-align:center;">
+                    <div style="font-weight:700; color:#1565c0;">ทีม CI/AI</div>
+                    <div style="font-size:0.8em; color:#555;">เตรียมระบบ + Bot</div>
+                </div>
+                <div style="background:#f3e5f5; padding:10px; border-radius:8px; text-align:center;">
+                    <div style="font-weight:700; color:#7b1fa2;">ทีม AI</div>
+                    <div style="font-size:0.8em; color:#555;">Support</div>
+                </div>
+                <div style="background:#e8f5e9; padding:10px; border-radius:8px; text-align:center;">
+                    <div style="font-weight:700; color:#2e7d32;">ทีม OST</div>
+                    <div style="font-size:0.8em; color:#555;">Admin + Implement + ทำคู่มือ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <strong>PKG AI School 2026 — Executive Summary</strong> | สร้างโดย: AI Co-Worker (ตี๋ตี๋) | Product Manager: ลูกหมี
+    </div>
+</div>
+</body>
+</html>

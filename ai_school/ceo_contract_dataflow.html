@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Contract LIA 2.0 — Data Flow + Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Noto+Sans+Thai:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a237e; --secondary: #283593; --accent: #5c6bc0;
+            --green: #16a34a; --green-bg: #f0fdf4;
+            --blue: #2563eb; --blue-bg: #eff6ff;
+            --orange: #f59e0b; --orange-bg: #fffbeb;
+            --purple: #7c3aed; --purple-bg: #f5f3ff;
+            --bg: #f5f6fa; --surface: #ffffff; --border: #d4d8ea;
+            --text: #1a1a2e; --text-muted: #626680;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Noto Sans Thai', 'Sarabun', sans-serif;
+            line-height: 1.8; font-size: 15px; padding: 20px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: white; border-radius: 16px; padding: 40px 32px;
+            text-align: center; margin-bottom: 32px;
+        }
+        .header h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 100px; padding: 4px 14px; font-size: 12px; margin-bottom: 16px; }
+
+        /* SECTION */
+        .section { margin-bottom: 32px; }
+        .section h2 {
+            font-size: 1.3rem; font-weight: 800; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 3px solid var(--accent);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-bottom: 16px;
+        }
+        .card h3 { font-size: 1.1rem; margin-bottom: 12px; }
+
+        /* FLOW DIAGRAM */
+        .flow-container {
+            background: var(--surface); border: 2px solid var(--border);
+            border-radius: 16px; padding: 24px; overflow-x: auto;
+        }
+        .flow {
+            display: flex; align-items: center; justify-content: center;
+            flex-wrap: wrap; gap: 0; min-width: 600px;
+        }
+        .flow-box {
+            background: var(--surface); border: 2px solid var(--border);
+            border-radius: 12px; padding: 16px 20px; text-align: center;
+            font-weight: 700; font-size: 14px; min-width: 140px;
+            transition: all 0.2s;
+        }
+        .flow-box:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .flow-box.webapp { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
+        .flow-box.sheet { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+        .flow-box.apps { border-color: var(--orange); color: #92400e; background: var(--orange-bg); }
+        .flow-box.gsheets { border-color: var(--purple); color: var(--purple); background: var(--purple-bg); }
+        .flow-box.db { border-color: var(--primary); color: var(--primary); }
+        .flow-box.report { border-color: #0891b2; color: #0891b2; background: #ecfeff; }
+        .flow-arrow { color: var(--text-muted); padding: 0 8px; font-size: 20px; }
+        .flow-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .flow-row { margin: 12px 0; }
+
+        /* WORKFLOW STEPS */
+        .workflow { position: relative; padding-left: 40px; }
+        .workflow::before {
+            content: ''; position: absolute; left: 16px; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg, var(--blue), var(--green), var(--orange), var(--purple));
+            border-radius: 2px;
+        }
+        .wf-item { position: relative; margin-bottom: 24px; }
+        .wf-item::before {
+            content: attr(data-step); position: absolute; left: -32px; top: 8px;
+            width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 800; color: white;
+        }
+        .wf-item.s1::before { background: var(--blue); }
+        .wf-item.s2::before { background: var(--green); }
+        .wf-item.s3::before { background: var(--orange); }
+        .wf-item.s4::before { background: var(--purple); }
+        .wf-content {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px;
+        }
+        .wf-content h4 { font-size: 1rem; margin-bottom: 8px; }
+        .wf-content ul { margin-left: 20px; font-size: 14px; }
+        .wf-content li { margin-bottom: 4px; }
+
+        /* TABLE */
+        .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: var(--surface2); padding: 12px 10px; text-align: left; font-size: 12px; font-weight: 700; color: var(--primary); }
+        td { padding: 10px; border-top: 1px solid var(--border); vertical-align: top; }
+        tr:hover td { background: rgba(92,107,192,0.04); }
+
+        /* SHEET STRUCTURE */
+        .sheet-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .sheet-tab {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 14px; font-size: 13px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .sheet-tab:hover { border-color: var(--accent); background: rgba(92,107,192,0.05); }
+        .sheet-tab.active { border-color: var(--accent); background: var(--accent); color: white; }
+
+        /* CODE */
+        pre {
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 8px; padding: 16px; overflow-x: auto;
+            font-family: 'Sarabun', monospace; font-size: 13px; line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .flow { min-width: auto; flex-direction: column; align-items: stretch; }
+            .flow-arrow { transform: rotate(90deg); text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+    <div class="badge">LIA 2.0 Architecture</div>
+    <h1>🔄 Data Flow + Workflow</h1>
+    <p>CEO Contract of Extreme Ownership — รับข้อมูลจาก WebApp + Google Sheet, รวบรวมรายงานอัตโนมัติ</p>
+</div>
+
+<!-- SECTION 1: DATA FLOW -->
+<div class="section">
+    <h2>📊 ส่วนที่ 1: Data Flow Diagram</h2>
+    <div class="card">
+        <h3>ภาพรวมสถาปัตยกรรม</h3>
+        <div class="flow-container">
+            <!-- Row 1: Input Sources -->
+            <div class="flow-row">
+                <div style="text-align:center;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text-muted);">📥 แหล่งข้อมูลเข้า (Input Sources)</div>
+                <div class="flow">
+                    <div class="flow-box webapp">
+                        🌐 WebApp
+                        <div class="flow-label">ฟอร์มกรอกข้อมูล</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box gsheets">
+                        📋 Google Sheets
+                        <div class="flow-label">CEO_Contract Sheet</div>
+                    </div>
+                    <div class="flow-arrow">←</div>
+                    <div class="flow-box sheet">
+                        ✏️ Edit Google Sheet
+                        <div class="flow-label">แก้ไขข้อมูลตรงใน Sheet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Processing -->
+            <div class="flow-row" style="margin-top:24px;">
+                <div style="text-align:center;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text-muted);">⚙️ ประมวลผล (Processing)</div>
+                <div class="flow">
+                    <div class="flow-box gsheets">
+                        📋 Google Sheets
+                        <div class="flow-label">Database / Data Store</div>
+                    </div>
+                    <div class="flow-arrow">↔</div>
+                    <div class="flow-box apps">
+                        🔧 Google Apps Script
+                        <div class="flow-label">API / Web App</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Output -->
+            <div class="flow-row" style="margin-top:24px;">
+                <div style="text-align:center;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text-muted);">📤 ผลลัพธ์ (Output)</div>
+                <div class="flow">
+                    <div class="flow-box apps">
+                        🔧 Google Apps Script
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box report">
+                        📊 Dashboard Report
+                        <div class="flow-label">HTML / PDF</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box db">
+                        👤 CEO / Mentor / Service Leader
+                        <div class="flow-label">อนุมัติ & ติดตาม</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two-Way Sync Detail -->
+    <div class="card">
+        <h3>🔄 Two-Way Sync: WebApp ↔ Google Sheet</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>ทิศทาง</th><th>วิธีการ</th><th>ตัวอย่างการใช้งาน</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WebApp → Sheet</strong><br><span class="flow-label">กรอกฟอร์ม → บันทึกลง Sheet</span></td>
+                        <td>Google Apps Script doPost()<br>รับ JSON จาก WebApp → เขียนลง Sheet</td>
+                        <td>สมาชิกกรอก CEO Contract ผ่าน WebApp → ข้อมูลเข้า Sheet อัตโนมัติ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sheet → WebApp</strong><br><span class="flow-label">แก้ไข Sheet → WebApp อัปเดต</span></td>
+                        <td>Google Apps Script doGet()<br>WebApp อ่านข้อมูลจาก Sheet มาแสดงผล</td>
+                        <td>Mentor แก้ไข OKR ใน Sheet → WebApp แสดงข้อมูลใหม่ทันที</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sheet → Report</strong><br><span class="flow-label">ข้อมูล Sheet → สร้างรายงาน</span></td>
+                        <td>Apps Script อ่าน Sheet → สร้าง HTML Dashboard</td>
+                        <td>ดึงข้อมูล CEO Contract ทั้งหมด → สร้าง Dashboard สรุปภาพรวม</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: WORKFLOW -->
+<div class="section">
+    <h2>🔀 ส่วนที่ 2: Workflow</h2>
+
+    <div class="workflow">
+        <!-- Step 1 -->
+        <div class="wf-item s1" data-step="1">
+            <div class="wf-content">
+                <h4>🌐 Step 1: รับข้อมูลเข้า (Data Entry)</h4>
+                <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">ข้อมูลเข้ามาได้ 2 ช่องทาง:</p>
+                <ul>
+                    <li><strong>ช่องทาง A — WebApp:</strong> สมาชิกกรอกฟอร์ม CEO Contract → กดบันทึก → ข้อมูลส่งผ่าน Apps Script → ลง Google Sheet</li>
+                    <li><strong>ช่องทาง B — Google Sheet:</strong> Mentor/Service Leader เปิด Sheet แก้ไขข้อมูลโดยตรง → ข้อมูลเปลี่ยนทันที</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wf-item s2" data-step="2">
+            <div class="wf-content">
+                <h4>💾 Step 2: จัดเก็บข้อมูล (Data Storage)</h4>
+                <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">Google Sheets เป็น Database หลัก:</p>
+                <ul>
+                    <li><strong>Sheet: CEO_Contract</strong> — เก็บข้อมูลสัญญาของสมาชิกทุกคน</li>
+                    <li><strong>Sheet: OKRs_KPIs</strong> — เก็บ OKR และ KPI ของแต่ละคน</li>
+                    <li><strong>Sheet: Task_Tracker</strong> — เก็บ Task ที่มอบหมาย</li>
+                    <li><strong>Sheet: Approval_Log</strong> — เก็บประวัติการอนุมัติ</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="wf-item s3" data-step="3">
+            <div class="wf-content">
+                <h4>🔄 Step 3: ประมวลผล & Sync (Processing)</h4>
+                <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">Google Apps Script ทำหน้าที่:</p>
+                <ul>
+                    <li><strong>doPost():</strong> รับข้อมูลจาก WebApp → เขียนลง Sheet → ตอบกลับ WebApp</li>
+                    <li><strong>doGet():</strong> WebApp ขอข้อมูล → อ่านจาก Sheet → ส่ง JSON กลับ</li>
+                    <li><strong>onEdit():</strong> Trigger เมื่อแก้ไข Sheet → อัปเดตข้อมูลที่เกี่ยวข้อง → ส่งแจ้งเตือน</li>
+                    <li><strong>Time-driven:</strong> รันอัตโนมัติทุกวัน → สร้างรายงานสรุป → ส่งให้ CEO</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="wf-item s4" data-step="4">
+            <div class="wf-content">
+                <h4>📊 Step 4: รายงาน & อนุมัติ (Report & Approval)</h4>
+                <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">ผลลัพธ์ที่ผลิตได้:</p>
+                <ul>
+                    <li><strong>Dashboard รายบุคคล:</strong> แสดง CEO Contract, OKR, KPI, สถานะอนุมัติ</li>
+                    <li><strong>Dashboard ภาพรวม BU:</strong> สรุปทั้ง BU, Progress OKR, ทีมที่ค้างอนุมัติ</li>
+                    <li><strong>รายงานอนุมัติ:</strong> Member → Mentor → Service Leader (3 ระดับ)</li>
+                    <li><strong>แจ้งเตือน:</strong> Email/Line เมื่อมีการแก้ไข, รออนุมัติ, ครบกำหนด</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: GOOGLE SHEETS STRUCTURE -->
+<div class="section">
+    <h2>📋 ส่วนที่ 3: โครงสร้าง Google Sheets</h2>
+    <div class="card">
+        <h3>Sheet ทั้งหมดที่ต้องใช้</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>ชื่อ Sheet</th><th>หน้าที่</th><th>Columns หลัก</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>CEO_Contract</strong></td>
+                        <td>เก็บสัญญาสมาชิกทุกคน</td>
+                        <td>ID, ชื่อ, BU, Team, บทบาท, Purpose, Vision, 9 Accountability, สถานะ, วันที่สร้าง, วันที่อัปเดต</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>OKRs</strong></td>
+                        <td>เก็บ OKR รายบุคคล/ทีม</td>
+                        <td>ID, Member_ID, Level (BU/Team), Objective, Key_Results, Target, Actual, Status, Period</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>KPIs</strong></td>
+                        <td>เก็บ KPI รายบุคคล</td>
+                        <td>ID, Member_ID, KPI_Name, Target, Actual, Frequency, Status, Month, Year</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Approval_Log</strong></td>
+                        <td>เก็บประวัติการอนุมัติ</td>
+                        <td>ID, Contract_ID, Approver_Role, Approver_Name, Status, Date, Comment</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Task_Tracker</strong></td>
+                        <td>เก็บ Task ที่มอบหมาย</td>
+                        <td>ID, Member_ID, Task_Name, Description, Priority, Deadline, Status, Created_By</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><strong>Growth_Tracker</strong></td>
+                        <td>ติดตาม Business & Team Growth</td>
+                        <td>ID, Member_ID, Growth_Type, Description, Target, Progress, Notes, Date</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 4: APPS SCRIPT CODE -->
+<div class="section">
+    <h2>🔧 ส่วนที่ 4: Google Apps Script (ตัวอย่างโค้ด)</h2>
+
+    <div class="card">
+        <h3>📥 doPost() — รับข้อมูลจาก WebApp</h3>
+        <pre>
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    if (data.action === 'save_contract') {
+      const sheet = ss.getSheetByName('CEO_Contract');
+      sheet.appendRow([
+        data.id, data.name, data.bu, data.team, data.role,
+        data.purpose, data.vision, data.accountability_json,
+        'Pending', new Date(), new Date()
+      ]);
+      return response({ status: 'ok', message: 'บันทึกสำเร็จ' });
+    }
+    
+    if (data.action === 'save_okr') {
+      const sheet = ss.getSheetByName('OKRs');
+      sheet.appendRow([
+        data.id, data.member_id, data.level, data.objective,
+        data.key_results, data.target, data.actual,
+        'On Track', data.period
+      ]);
+      return response({ status: 'ok', message: 'บันทึก OKR สำเร็จ' });
+    }
+    
+    if (data.action === 'update_approval') {
+      const sheet = ss.getSheetByName('Approval_Log');
+      sheet.appendRow([
+        data.id, data.contract_id, data.approver_role,
+        data.approver_name, data.status, new Date(), data.comment
+      ]);
+      
+      // อัปเดตสถานะใน CEO_Contract
+      const contractSheet = ss.getSheetByName('CEO_Contract');
+      const data = contractSheet.getDataRange().getValues();
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] === data.contract_id) {
+          contractSheet.getRange(i + 1, 9).setValue(data.status);
+          break;
+        }
+      }
+      return response({ status: 'ok', message: 'อัปเดตการอนุมัติสำเร็จ' });
+    }
+    
+  } catch (err) {
+    return response({ status: 'error', message: err.toString() });
+  }
+}
+
+function response(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+        </pre>
+    </div>
+
+    <div class="card">
+        <h3>📤 doGet() — ส่งข้อมูลให้ WebApp / Dashboard</h3>
+        <pre>
+function doGet(e) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const action = e.parameter.action;
+    
+    if (action === 'get_contracts') {
+      const sheet = ss.getSheetByName('CEO_Contract');
+      const data = sheet.getDataRange().getValues();
+      const headers = data[0];
+      const rows = data.slice(1).map(r => {
+        let obj = {};
+        headers.forEach((h, i) => obj[h] = r[i]);
+        return obj;
+      });
+      return response({ status: 'ok', data: rows });
+    }
+    
+    if (action === 'get_dashboard') {
+      const bu = e.parameter.bu;
+      const contracts = ss.getSheetByName('CEO_Contract').getDataRange().getValues();
+      const okrs = ss.getSheetByName('OKRs').getDataRange().getValues();
+      
+      // สรุปข้อมูล
+      let summary = {
+        total_members: contracts.length - 1,
+        approved: 0,
+        pending: 0,
+        bu_progress: {}
+      };
+      
+      for (let i = 1; i < contracts.length; i++) {
+        if (contracts[i][8] === 'Approved') summary.approved++;
+        else summary.pending++;
+        
+        let bu = contracts[i][2];
+        if (!summary.bu_progress[bu]) summary.bu_progress[bu] = { total: 0, approved: 0 };
+        summary.bu_progress[bu].total++;
+        if (contracts[i][8] === 'Approved') summary.bu_progress[bu].approved++;
+      }
+      
+      return response({ status: 'ok', data: summary });
+    }
+    
+    if (action === 'get_member') {
+      const memberId = e.parameter.id;
+      const sheet = ss.getSheetByName('CEO_Contract');
+      const data = sheet.getDataRange().getValues();
+      
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] === memberId) {
+          let member = {};
+          data[0].forEach((h, j) => member[h] = data[i][j]);
+          return response({ status: 'ok', data: member });
+        }
+      }
+      return response({ status: 'error', message: 'ไม่พบสมาชิก' });
+    }
+    
+  } catch (err) {
+    return response({ status: 'error', message: err.toString() });
+  }
+}
+        </pre>
+    </div>
+
+    <div class="card">
+        <h3>🔄 onEdit() — Trigger เมื่อแก้ไข Sheet</h3>
+        <pre>
+function onEdit(e) {
+  const range = e.range;
+  const sheet = range.getSheet();
+  const sheetName = sheet.getName();
+  
+  // เมื่อมีการแก้ไขใน CEO_Contract Sheet
+  if (sheetName === 'CEO_Contract') {
+    const col = range.getColumn();
+    const row = range.getRow();
+    
+    // ถ้ามีการแก้ไขสถานะ (Column 9 = สถานะ)
+    if (col === 9 && row > 1) {
+      const newStatus = range.getValue();
+      const memberId = sheet.getRange(row, 1).getValue();
+      const memberName = sheet.getRange(row, 2).getValue();
+      
+      // บันทึกใน Approval_Log
+      const logSheet = SpreadsheetApp.getActiveSpreadsheet()
+        .getSheetByName('Approval_Log');
+      logSheet.appendRow([
+        'LOG-' + Date.now(), memberId, 'System', 'Auto',
+        'Status changed to: ' + newStatus, new Date(), ''
+      ]);
+      
+      // ส่งแจ้งเตือน (ถ้ามี)
+      sendNotification(memberName, newStatus);
+    }
+  }
+}
+
+function sendNotification(name, status) {
+  // TODO: ส่ง Line Notify / Email แจ้งเตือน
+  // ตัวอย่าง:
+  // UrlFetchApp.fetch('https://notify-api.line.me/api/notify', {
+  //   method: 'post',
+  //   headers: { 'Authorization': 'Bearer ' + TOKEN },
+  //   payload: { message: name + ' สถานะเปลี่ยนเป็น: ' + status }
+  // });
+}
+        </pre>
+    </div>
+</div>
+
+<!-- SECTION 5: REPORT -->
+<div class="section">
+    <h2>📊 ส่วนที่ 5: รายงานที่เรียกได้</h2>
+    <div class="card">
+        <h3>รายงานทั้งหมดที่ระบบผลิตได้</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>รายงาน</th><th>ข้อมูลจาก Sheet</th><th>เรียกผ่าน</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Dashboard รายบุคคล</strong><br>แสดง CEO Contract, OKR, KPI ของสมาชิก 1 คน</td>
+                        <td>CEO_Contract, OKRs, KPIs</td>
+                        <td><code>doGet?action=get_member&id=xxx</code></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Dashboard ภาพรวม BU</strong><br>สรุปทั้ง BU, Progress OKR, ทีมที่ค้างอนุมัติ</td>
+                        <td>CEO_Contract, OKRs</td>
+                        <td><code>doGet?action=get_dashboard&bu=PKG</code></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>รายงานอนุมัติ</strong><br>รายการที่รออนุมัติ, อนุมัติแล้ว, ปฏิเสธ</td>
+                        <td>CEO_Contract, Approval_Log</td>
+                        <td><code>doGet?action=get_approvals</code></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>รายงาน OKR Progress</strong><br>ความคืบหน้า OKR ทุกคน แยกตามรอบ</td>
+                        <td>OKRs</td>
+                        <td><code>doGet?action=get_okr_progress</code></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>รายงาน KPI รายเดือน</strong><br>KPI ทุกคน ประจำเดือน/ปี</td>
+                        <td>KPIs</td>
+                        <td><code>doGet?action=get_kpi&month=5&year=2026</code></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><strong>รายงาน Growth Tracker</strong><br>Business Growth + Team Growth</td>
+                        <td>Growth_Tracker</td>
+                        <td><code>doGet?action=get_growth</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 6: SECURITY -->
+<div class="section">
+    <h2>🔒 ส่วนที่ 6: ความปลอดภัย</h2>
+    <div class="card">
+        <h3>มาตรการป้องกัน</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>ความเสี่ยง</th><th>วิธีป้องกัน</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ข้อมูลถูกแก้ไขโดยไม่มีสิทธิ์</strong></td>
+                        <td>Google Sheets ตั้งค่า Share: View-only สำหรับสมาชิก, Edit เฉพาะ Mentor/Service Leader</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ข้อมูลหาย/ถูก ลบ</strong></td>
+                        <td>Google Sheets มี Version History กู้คืนได้, สร้าง Backup Sheet ทุกวันด้วย Time-driven Trigger</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API ถูกเรียกโดยไม่มีสิทธิ์</strong></td>
+                        <td>Apps Script ตรวจสอบ parameter "secret_key" ก่อนประมวลผล</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ข้อมูลซ้ำ/ขัดแย้งกัน</strong></td>
+                        <td>ใช้ Member_ID เป็น Primary Key, ตรวจสอบก่อนบันทึก, onEdit() ป้องกันการแก้ไขซ้อน</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding:32px 0;text-align:center;color:var(--text-muted);font-size:14px;">
+    <p>📖 CEO Contract LIA 2.0 — Data Flow + Workflow Design</p>
+    <p style="font-size:12px;margin-top:8px;">สร้างโดย AliClaw | 26 พฤษภาคม 2569</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5 Training — ขอเปิดอบรม (4 แบบให้เลือก)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans Thai','Inter',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+
+.design-header{text-align:center;padding:36px 20px 18px;background:linear-gradient(135deg,#0d5a2b 0%,#16a34a 50%,#d4a017 100%)}
+.design-header h1{font-size:1.8em;font-weight:800;color:#fff}
+.design-header p{color:rgba(255,255,255,0.85);font-size:0.85em;margin-top:4px}
+.design-header .badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;padding:4px 14px;border-radius:20px;font-size:0.72em;margin-top:10px}
+
+/* Steps */
+.workflow-steps{display:flex;justify-content:center;gap:6px;padding:16px 20px;background:#1e293b;border-bottom:1px solid #334155;flex-wrap:wrap}
+.wf-step{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:0.78em;font-weight:600;color:#64748b;border:1.5px solid #334155;transition:0.3s}
+.wf-step .num{width:24px;height:24px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:0.7em;color:#94a3b8;flex-shrink:0;font-weight:700}
+.wf-step.active{background:linear-gradient(135deg,#16a34a,#0d5a2b);border-color:transparent;color:#fff}
+.wf-step.active .num{background:rgba(255,255,255,0.25);color:#fff}
+.wf-step.current{background:rgba(212,160,23,0.15);border-color:var(--gold,#d4a017);color:var(--gold,#d4a017)}
+.wf-step.current .num{background:var(--gold,#d4a017);color:#0f172a}
+.wf-connector{width:24px;height:2px;background:#334155;margin-top:16px;border-radius:1px;flex-shrink:0}
+
+/* Selector */
+.design-selector{display:flex;justify-content:center;gap:10px;padding:18px 20px;background:#1e293b;position:sticky;top:0;z-index:50;flex-wrap:wrap;border-bottom:1px solid #334155}
+.design-btn{padding:9px 18px;border-radius:10px;border:2px solid #334155;background:#1e293b;color:#94a3b8;font-size:0.82em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit}
+.design-btn:hover{border-color:#d4a017;color:#fbbf24}
+.design-btn.active{background:linear-gradient(135deg,#16a34a,#d4a017);border-color:transparent;color:#fff;box-shadow:0 4px 15px rgba(22,163,74,0.3)}
+
+/* Sections */
+.design-section{display:none;padding:20px;max-width:900px;margin:0 auto}
+.design-section.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.design-label{text-align:center;margin:18px 0 12px}
+.design-label h2{font-size:1.2em;font-weight:700;color:#fbbf24}
+.design-label p{color:#94a3b8;font-size:0.75em;margin-top:4px}
+.design-pros{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.design-pros span{background:rgba(22,163,74,0.15);color:#4ade80;padding:3px 10px;border-radius:16px;font-size:0.65em;font-weight:500}
+
+/* Common form */
+:root{--green:#16a34a;--gold:#d4a017;--gold-light:#fbbf24;--card-bg:#1e293b;--input-bg:#0f172a;--border-c:#334155;--text-c:#e2e8f0;--text-dim:#94a3b8}
+input[type="text"],input[type="number"],input[type="email"],input[type="tel"],input[type="date"],input[type="time"],select,textarea{font-family:inherit;font-size:0.82em;border-radius:8px;padding:9px 13px;border:1.5px solid var(--border-c);background:var(--input-bg);color:var(--text-c);outline:none;transition:0.3s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,0.15)}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+label{font-size:0.75em;font-weight:600;color:var(--text-dim);margin-bottom:3px;display:block}
+.required::after{content:' *';color:#ef4444}
+.btn-primary{background:linear-gradient(135deg,var(--green),#0d5a2b);color:#fff;padding:11px 28px;border:none;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,0.35)}
+.btn-outline{background:transparent;border:2px solid var(--green);color:var(--green);padding:9px 22px;border-radius:10px;font-size:0.82em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-outline:hover{background:var(--green);color:#fff}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#a67c00);color:#0f172a;padding:11px 28px;border:none;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,0.35)}
+.form-group{margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-full{grid-column:1/-1}
+
+/* ===== DESIGN A: Tab-Based ===== */
+.design-a .tab-bar{display:flex;gap:4px;background:var(--card-bg);border-radius:12px;padding:4px;margin-bottom:20px;border:1px solid var(--border-c)}
+.tab-btn{flex:1;padding:10px 12px;border:none;border-radius:10px;background:transparent;color:var(--text-dim);font-size:0.78em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab-btn.active{background:linear-gradient(135deg,var(--green),var(--gold));color:#fff;box-shadow:0 2px 10px rgba(22,163,74,0.3)}
+.tab-btn:hover:not(.active){background:rgba(22,163,74,0.1);color:var(--green)}
+.tab-content{display:none;animation:tabIn 0.3s ease}
+.tab-content.active{display:block}
+@keyframes tabIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tab-card{background:var(--card-bg);border-radius:16px;padding:24px;border:1px solid var(--border-c)}
+.tab-card h4{font-size:0.9em;font-weight:700;color:var(--gold-light);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tab-card h4 .icon-sm{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.8em;color:#fff;flex-shrink:0}
+.tab-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border-c)}
+
+/* ===== DESIGN B: Kanban Columns ===== */
+.design-b .kanban{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.kanban-col{background:var(--card-bg);border-radius:16px;padding:18px;border:1px solid var(--border-c);min-height:400px}
+.kanban-col h4{font-size:0.85em;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.kanban-col h4 .col-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700;flex-shrink:0}
+.kanban-col h4 .col-num.green{background:rgba(22,163,74,0.2);color:#4ade80}
+.kanban-col h4 .col-num.gold{background:rgba(212,160,23,0.2);color:#fbbf24}
+.kanban-col h4 .col-num.blue{background:rgba(59,130,246,0.2);color:#60a5fa}
+.kanban-field{margin-bottom:10px}
+.kanban-field label{font-size:0.68em}
+.kanban-field input,.kanban-field select,.kanban-field textarea{padding:7px 10px;font-size:0.78em}
+.kanban-divider{height:1px;background:var(--border-c);margin:12px 0}
+
+/* ===== DESIGN C: Timeline/Form ===== */
+.design-c .timeline-container{background:var(--card-bg);border-radius:20px;padding:28px;border:1px solid var(--border-c);max-width:620px;margin:0 auto;position:relative}
+.timeline-line{position:absolute;left:22px;top:60px;bottom:40px;width:3px;background:linear-gradient(180deg,var(--green),var(--gold),#3b82f6);border-radius:2px}
+.tl-step{display:flex;gap:16px;margin-bottom:24px;position:relative}
+.tl-step:last-child{margin-bottom:0}
+.tl-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;z-index:1;position:relative}
+.tl-dot.green{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 0 12px rgba(22,163,74,0.3)}
+.tl-dot.gold{background:linear-gradient(135deg,#d4a017,#fbbf24);box-shadow:0 0 12px rgba(212,160,23,0.3)}
+.tl-dot.blue{background:linear-gradient(135deg,#3b82f6,#60a5fa);box-shadow:0 0 12px rgba(59,130,246,0.3)}
+.tl-content{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border-c);border-radius:12px;padding:16px}
+.tl-content h4{font-size:0.88em;font-weight:700;color:var(--text-c);margin-bottom:4px}
+.tl-content .sub{font-size:0.7em;color:var(--text-dim);margin-bottom:10px}
+
+/* ===== DESIGN D: Dashboard Panel ===== */
+.design-d .dash-grid{display:grid;grid-template-columns:1fr 2fr;gap:16px;min-height:500px}
+.dash-sidebar{background:var(--card-bg);border-radius:16px;padding:20px;border:1px solid var(--border-c);display:flex;flex-direction:column;gap:6px}
+.dash-sidebar .sidebar-title{font-size:0.85em;font-weight:700;color:var(--gold-light);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:0.2s;font-size:0.82em;color:var(--text-dim);border:1px solid transparent}
+.sb-item:hover{background:rgba(22,163,74,0.08);color:var(--text-c)}
+.sb-item.active{background:rgba(22,163,74,0.12);border-color:var(--green);color:var(--green);font-weight:600}
+.sb-item .sb-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85em;flex-shrink:0}
+.sb-item.active .sb-icon{background:linear-gradient(135deg,var(--green),var(--gold));color:#fff}
+.sb-item:not(.active) .sb-icon{background:rgba(255,255,255,0.05);color:var(--text-dim)}
+.sb-item .sb-label{flex:1}
+.sb-item .sb-badge{background:#ef4444;color:#fff;font-size:0.6em;padding:2px 6px;border-radius:8px;font-weight:700}
+.dash-main{background:var(--card-bg);border-radius:16px;padding:24px;border:1px solid var(--border-c);overflow-y:auto}
+.dash-main .main-title{font-size:1em;font-weight:700;color:var(--text-c);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.dash-main .main-sub{font-size:0.72em;color:var(--text-dim);margin-bottom:16px}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.dash-stat{background:rgba(255,255,255,0.03);border:1px solid var(--border-c);border-radius:10px;padding:12px;text-align:center}
+.dash-stat .stat-val{font-size:1.3em;font-weight:800;color:var(--green)}
+.dash-stat .stat-label{font-size:0.65em;color:var(--text-dim);margin-top:2px}
+
+/* Responsive */
+@media(max-width:768px){
+.design-selector{gap:6px;padding:12px}
+.design-btn{padding:7px 12px;font-size:0.72em}
+.form-row{grid-template-columns:1fr}
+.design-b .kanban{grid-template-columns:1fr}
+.design-d .dash-grid{grid-template-columns:1fr}
+.dash-stats{grid-template-columns:1fr 1fr}
+.workflow-steps{gap:4px;padding:12px}
+.wf-step{padding:6px 10px;font-size:0.7em}
+.wf-connector{width:12px}
+.timeline-line{display:none}
+}
+@media(max-width:480px){
+.design-header h1{font-size:1.3em}
+.tab-bar{flex-wrap:wrap}
+.tab-btn{font-size:0.7em;padding:8px}
+.dash-stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="design-header">
+<h1>📋 P5 — ขอเปิดอบรม (วิทยากร)</h1>
+<p>เลือกรูปแบบฟอร์ม "ขอเปิดอบรม" ที่ชอบ — สำหรับวิทยากร จาก 4 แบบด้านล่าง</p>
+<span class="badge">🎨 4 Designs — เลือกแบบที่ชอบแล้วบอกเลข</span>
+</div>
+
+<div class="workflow-steps">
+<div class="wf-step active"><span class="num">1</span>นักเรียนอบรมลงทะเบียน</div>
+<div class="wf-connector"></div>
+<div class="wf-step current"><span class="num">2</span>วิทยากรขอเปิดอบรม</div>
+<div class="wf-connector"></div>
+<div class="wf-step"><span class="num">3</span>นักเรียนอบรมส่งผล</div>
+</div>
+
+<div class="design-selector">
+<button class="design-btn active" onclick="showDesign('a')">📑 แบบที่ 1<br>Tab Panels</button>
+<button class="design-btn" onclick="showDesign('b')">📊 แบบที่ 2<br>Kanban Columns</button>
+<button class="design-btn" onclick="showDesign('c')">🔄 แบบที่ 3<br>Timeline Flow</button>
+<button class="design-btn" onclick="showDesign('d')">🖥️ แบบที่ 4<br>Dashboard Panel</button>
+</div>
+
+<!-- ========== DESIGN A: Tab Panels ========== -->
+<div class="design-section design-a active" id="design-a">
+<div class="design-label">
+<h2>📑 แบบที่ 1 — Tab Panels</h2>
+<p>แบ่งเป็น 3 แท็บ กรอกข้อมูลทีละส่วน เหมาะสำหรับข้อมูลเยอะ</p>
+</div>
+<div class="design-pros">
+<span>✅ เห็นโครงสร้างชัด</span><span>✅ สลับแท็บได้อิสระ</span><span>✅ ทันสมัย</span><span>✅ Mobile-friendly</span>
+</div>
+
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab(1)">📋 ข้อมูลหลักสูตร</button>
+<button class="tab-btn" onclick="showTab(2)">👥 กลุ่มเป้าหมาย</button>
+<button class="tab-btn" onclick="showTab(3)">📅 นัดหมาย & อนุมัติ</button>
+</div>
+
+<!-- Tab 1 -->
+<div class="tab-content active" id="tab-1">
+<div class="tab-card">
+<h4><span class="icon-sm">📋</span> ข้อมูลหลักสูตร</h4>
+<div class="form-row">
+<div class="form-group"><label class="required">ชื่อหลักสูตร</label><input type="text" placeholder="เช่น ทักษะการเป็นผู้นำระดับ 3"></div>
+<div class="form-group"><label class="required">ระดับการอบรม</label><select><option value="">— เลือกระดับ —</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>จำนวนหน่วยกิต</label><input type="number" value="6" min="1"></div>
+<div class="form-group"><label>รูปแบบการอบรม</label><select><option>On-site (ในสถานที่)</option><option>Online (ออนไลน์)</option><option>Hybrid (ผสมผสาน)</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div>
+<div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link Online"></div>
+</div>
+<div class="form-group"><label>วัตถุประสงค์หลักสูตร</label><textarea rows="3" placeholder="อธิบายวัตถุประสงค์และเนื้อหาหลักของหลักสูตร"></textarea></div>
+</div>
+<div class="tab-actions">
+<button class="btn-outline" onclick="showTab(2)">ถัดไป →</button>
+</div>
+</div>
+
+<!-- Tab 2 -->
+<div class="tab-content" id="tab-2">
+<div class="tab-card">
+<h4><span class="icon-sm">👥</span> กลุ่มเป้าหมาย</h4>
+<div class="form-row">
+<div class="form-group"><label class="required">BU ที่เปิดอบรม</label><select><option value="">— เลือก BU —</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div>
+<div class="form-group"><label>จำนวนผู้เข้าอบรมสูงสุด</label><input type="number" value="30"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">— เลือกกลุ่ม —</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div>
+<div class="form-group"><label>เงื่อนไขการสมัคร</label><select><option>เปิดให้ทุกคน</option><option>ต้องผ่านระดับก่อนหน้า</option><option>ต้องได้รับการเสนอชื่อ</option></select></div>
+</div>
+<div class="form-group"><label>หมายเหตุเพิ่มเติม</label><textarea rows="2" placeholder="ระบุเงื่อนไขเพิ่มเติม (ถ้ามี)"></textarea></div>
+</div>
+<div class="tab-actions">
+<button class="btn-outline" onclick="showTab(1)">← ย้อนกลับ</button>
+<button class="btn-outline" onclick="showTab(3)">ถัดไป →</button>
+</div>
+</div>
+
+<!-- Tab 3 -->
+<div class="tab-content" id="tab-3">
+<div class="tab-card">
+<h4><span class="icon-sm">📅</span> นัดหมาย & อนุมัติ</h4>
+<div class="form-row">
+<div class="form-group"><label class="required">วันที่เริ่มอบรม</label><input type="date"></div>
+<div class="form-group"><label class="required">วันที่สิ้นสุด</label><input type="date"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>เวลาเริ่ม</label><input type="time" value="09:00"></div>
+<div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" value="16:00"></div>
+</div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">— เลือกผู้อนุมัติ —</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option><option>ผู้อำนวยการ</option></select></div>
+<div class="form-group"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์เอกสารประกอบ (เช่น หลักสูตร.pdf)"></div>
+<div style="background:rgba(22,163,74,0.08);border-radius:10px;padding:14px;margin-top:10px;border:1px solid rgba(22,163,74,0.2)">
+<div style="font-size:0.78em;font-weight:600;color:var(--green);margin-bottom:6px">✅ เงื่อนไขการอนุมัติ</div>
+<div style="font-size:0.72em;color:var(--text-dim);line-height:1.7">
+• หลักสูตรต้องผ่านการอนุมัติจาก ADMIN PAD<br>
+• จำนวนผู้เข้าอบรมขั้นต่ำ 10 คน<br>
+• วิทยากรต้องผ่านการรับรอง<br>
+• สถานที่/ระบบต้องพร้อมก่อนวันอบรมอย่างน้อย 3 วัน
+</div>
+</div>
+</div>
+<div class="tab-actions">
+<button class="btn-outline" onclick="showTab(2)">← ย้อนกลับ</button>
+<button class="btn-primary">📝 ส่งคำขอเปิดอบรม</button>
+</div>
+</div>
+</div>
+
+<!-- ========== DESIGN B: Kanban Columns ========== -->
+<div class="design-section design-b" id="design-b">
+<div class="design-label">
+<h2>📊 แบบที่ 2 — Kanban Columns</h2>
+<p>แบ่ง 3 คอลัมน์ เห็นภาพรวมทุกส่วนพร้อมกัน</p>
+</div>
+<div class="design-pros">
+<span>✅ เห็นภาพรวม</span><span>✅ กรอกข้ามคอลัมน์ได้</span><span>✅ เหมือน Trello/Jira</span><span>✅ เหมาะผู้จัด</span>
+</div>
+
+<div class="kanban">
+<!-- Col 1 -->
+<div class="kanban-col">
+<h4><span class="col-num green">1</span> ข้อมูลหลักสูตร</h4>
+<div class="kanban-field"><label class="required">ชื่อหลักสูตร</label><input type="text" placeholder="ชื่อหลักสูตร"></div>
+<div class="kanban-field"><label class="required">ระดับ</label><select><option value="">เลือก</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div>
+<div class="kanban-field"><label>หน่วยกิต</label><input type="number" value="6"></div>
+<div class="kanban-field"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div>
+<div class="kanban-field"><label>วิทยากร</label><input type="text" placeholder="ชื่อ"></div>
+<div class="kanban-field"><label>สถานที่</label><input type="text" placeholder="ห้อง/Link"></div>
+<div class="kanban-divider"></div>
+<div class="kanban-field"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบาย..." style="font-size:0.72em;padding:6px 8px"></textarea></div>
+</div>
+
+<!-- Col 2 -->
+<div class="kanban-col">
+<h4><span class="col-num gold">2</span> กลุ่มเป้าหมาย</h4>
+<div class="kanban-field"><label class="required">BU</label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div>
+<div class="kanban-field"><label>จำนวนสูงสุด</label><input type="number" value="30"></div>
+<div class="kanban-field"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div>
+<div class="kanban-field"><label>เงื่อนไขสมัคร</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div>
+<div class="kanban-divider"></div>
+<div style="background:rgba(212,160,23,0.1);border-radius:8px;padding:10px;font-size:0.7em;color:#fbbf24">
+<strong>💡 หมายเหตุ:</strong><br>
+กลุ่มเป้าหมายจะแสดงในหน้า "ลงทะเบียน" ให้สมาชิกเลือกได้
+</div>
+</div>
+
+<!-- Col 3 -->
+<div class="kanban-col">
+<h4><span class="col-num blue">3</span> นัดหมาย & อนุมัติ</h4>
+<div class="kanban-field"><label class="required">วันเริ่ม</label><input type="date"></div>
+<div class="kanban-field"><label class="required">วันสิ้นสุด</label><input type="date"></div>
+<div class="kanban-field"><label>เวลา</label><input type="time" value="09:00"></div>
+<div class="kanban-field"><label>ถึง</label><input type="time" value="16:00"></div>
+<div class="kanban-field"><label>ผู้อนุมัติ</label><select><option value="">เลือก</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+<div class="kanban-divider"></div>
+<div class="kanban-field"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์"></div>
+<div style="text-align:center;margin-top:14px">
+<button class="btn-gold" style="width:100%">📝 ส่งคำขอเปิดอบรม</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ========== DESIGN C: Timeline Flow ========== -->
+<div class="design-section design-c" id="design-c">
+<div class="design-label">
+<h2>🔄 แบบที่ 3 — Timeline Flow</h2>
+<p>เห็นลำดับขั้นตอนชัดเจน เหมือนเดินตามเส้นทาง</p>
+</div>
+<div class="design-pros">
+<span>✅ เข้าใจง่าย</span><span>✅ เห็นลำดับชัด</span><span>✅ มี Progress</span><span>✅ เหมาะ Admin</span>
+</div>
+
+<div class="timeline-container">
+<div class="timeline-line"></div>
+
+<!-- Step 1 -->
+<div class="tl-step">
+<div class="tl-dot green">📋</div>
+<div class="tl-content">
+<h4>ข้อมูลหลักสูตร</h4>
+<div class="sub">ระบุรายละเอียดหลักสูตรที่ต้องการเปิด</div>
+<div class="form-row">
+<div class="form-group"><label class="required">ชื่อหลักสูตร</label><input type="text" placeholder="เช่น ทักษะการเป็นผู้นำระดับ 3"></div>
+<div class="form-group"><label class="required">ระดับอบรม</label><select><option value="">เลือกระดับ</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>หน่วยกิต</label><input type="number" value="6"></div>
+<div class="form-group"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div>
+<div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link"></div>
+</div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์หลักสูตร" style="font-size:0.8em"></textarea></div>
+</div>
+</div>
+
+<!-- Step 2 -->
+<div class="tl-step">
+<div class="tl-dot gold">👥</div>
+<div class="tl-content">
+<h4>กลุ่มเป้าหมาย</h4>
+<div class="sub">ระบุกลุ่มผู้เข้าอบรมและเงื่อนไข</div>
+<div class="form-row">
+<div class="form-group"><label class="required">BU ที่เปิดอบรม</label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div>
+<div class="form-group"><label>จำนวนสูงสุด</label><input type="number" value="30"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div>
+<div class="form-group"><label>เงื่อนไขสมัคร</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div>
+</div>
+</div>
+</div>
+
+<!-- Step 3 -->
+<div class="tl-step">
+<div class="tl-dot blue">📅</div>
+<div class="tl-content">
+<h4>นัดหมาย & อนุมัติ</h4>
+<div class="sub">กำหนดวันเวลาและส่งคำขอ</div>
+<div class="form-row">
+<div class="form-group"><label class="required">วันเริ่ม</label><input type="date"></div>
+<div class="form-group"><label class="required">วันสิ้นสุด</label><input type="date"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>เวลาเริ่ม</label><input type="time" value="09:00"></div>
+<div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" value="16:00"></div>
+</div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือกผู้อนุมัติ</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option><option>ผู้อำนวยการ</option></select></div>
+<div class="form-group"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์เอกสาร"></div>
+<div style="text-align:center;margin-top:16px">
+<button class="btn-primary">📝 ส่งคำขอเปิดอบรม</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ========== DESIGN D: Dashboard Panel ========== -->
+<div class="design-section design-d" id="design-d">
+<div class="design-label">
+<h2>🖥️ แบบที่ 4 — Dashboard Panel</h2>
+<p>แบบ Dashboard มี Sidebar + สถิติ + ฟอร์ม ดู Professional มาก</p>
+</div>
+<div class="design-pros">
+<span>✅ Professional</span><span>✅ เห็นสถิติ</span><span>✅ เหมาะ Admin</span><span>✅ ครบจบในหน้า</span>
+</div>
+
+<div class="dash-grid">
+<!-- Sidebar -->
+<div class="dash-sidebar">
+<div class="sidebar-title">📋 ขอเปิดอบรม</div>
+<div class="sb-item active" onclick="showDashPanel('info')"><div class="sb-icon">📋</div><span class="sb-label">ข้อมูลหลักสูตร</span><span class="sb-badge">!</span></div>
+<div class="sb-item" onclick="showDashPanel('target')"><div class="sb-icon">👥</div><span class="sb-label">กลุ่มเป้าหมาย</span></div>
+<div class="sb-item" onclick="showDashPanel('schedule')"><div class="sb-icon">📅</div><span class="sb-label">นัดหมาย & อนุมัติ</span></div>
+<div style="border-top:1px solid var(--border-c);margin:12px 0"></div>
+<div class="sb-item" onclick="showDashPanel('info')"><div class="sb-icon">📊</div><span class="sb-label">ภาพรวมระบบ</span></div>
+<div class="sb-item"><div class="sb-icon">⚙️</div><span class="sb-label">ตั้งค่า</span></div>
+</div>
+
+<!-- Main -->
+<div class="dash-main">
+<div id="panel-info">
+<div class="main-title">📋 ข้อมูลหลักสูตร</div>
+<div class="main-sub">ระบุรายละเอียดหลักสูตรที่ต้องการเปิดอบรม</div>
+<div class="dash-stats">
+<div class="dash-stat"><div class="stat-val">6</div><div class="stat-label">หน่วยกิต</div></div>
+<div class="dash-stat"><div class="stat-val">30</div><div class="stat-label">ที่นั่งสูงสุด</div></div>
+<div class="dash-stat"><div class="stat-val">3</div><div class="stat-label">วันอบรม</div></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label class="required">ชื่อหลักสูตร</label><input type="text" placeholder="เช่น ทักษะการเป็นผู้นำระดับ 3"></div>
+<div class="form-group"><label class="required">ระดับอบรม</label><select><option value="">เลือกระดับ</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>หน่วยกิต</label><input type="number" value="6"></div>
+<div class="form-group"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div>
+<div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link"></div>
+</div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์หลักสูตร"></textarea></div>
+<div style="text-align:right;margin-top:14px"><button class="btn-primary" onclick="showDashPanel('target')">ถัดไป →</button></div>
+</div>
+
+<div id="panel-target" style="display:none">
+<div class="main-title">👥 กลุ่มเป้าหมาย</div>
+<div class="main-sub">ระบุกลุ่มผู้เข้าอบรมและเงื่อนไขการสมัคร</div>
+<div class="form-row">
+<div class="form-group"><label class="required">BU</label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div>
+<div class="form-group"><label>จำนวนสูงสุด</label><input type="number" value="30"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div>
+<div class="form-group"><label>เงื่อนไข</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div>
+</div>
+<div class="form-group"><label>หมายเหตุ</label><textarea rows="2" placeholder="ระบุเงื่อนไขเพิ่มเติม"></textarea></div>
+<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn-outline" onclick="showDashPanel('info')">← ย้อนกลับ</button><button class="btn-primary" onclick="showDashPanel('schedule')">ถัดไป →</button></div>
+</div>
+
+<div id="panel-schedule" style="display:none">
+<div class="main-title">📅 นัดหมาย & อนุมัติ</div>
+<div class="main-sub">กำหนดวันเวลาและส่งคำขออนุมัติ</div>
+<div class="form-row">
+<div class="form-group"><label class="required">วันเริ่ม</label><input type="date"></div>
+<div class="form-group"><label class="required">วันสิ้นสุด</label><input type="date"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>เวลาเริ่ม</label><input type="time" value="09:00"></div>
+<div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" value="16:00"></div>
+</div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือกผู้อนุมัติ</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+<div class="form-group"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์เอกสาร"></div>
+<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn-outline" onclick="showDashPanel('target')">← ย้อนกลับ</button><button class="btn-gold">📝 ส่งคำขอเปิดอบรม</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function showDesign(d){document.querySelectorAll('.design-section').forEach(s=>s.classList.remove('active'));document.getElementById('design-'+d).classList.add('active');document.querySelectorAll('.design-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.design-btn').classList.add('active');}
+function showTab(n){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');document.querySelectorAll('.tab-btn')[n-1].classList.add('active');}
+function showDashPanel(p){['info','target','schedule'].forEach(id=>{document.getElementById('panel-'+id).style.display='none';});document.getElementById('panel-'+p).style.display='block';document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));const items=document.querySelectorAll('.sb-item');const map={info:0,target:1,schedule:2};if(map[p]!==undefined)items[map[p]].classList.add('active');}
+</script>
+</body>
+</html>

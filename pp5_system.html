@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5 — ระบบพัฒนาสมาชิก PKG</title>
+<style>
+:root{
+--gold:#d4a017;--gold-light:#f0d060;--gold-dark:#a67c00;
+--green:#16a34a;--green-light:#22c55e;--green-dark:#15803d;
+--green-deep:#0d5a2b;--green-bg:#0a3d1f;
+--accent:#f59e0b;--success:#22c55e;--danger:#ef4444;--warning:#eab308;
+--bg:#f8faf5;--bg-card:#ffffff;--bg-hover:#f0fdf4;
+--text:#1a2e1a;--text-dim:#4a6a4a;--text-muted:#7a9a7a;--text-light:#ffffff;
+--border:#d4e8d4;--border-gold:#d4a017;
+--sidebar-w:220px;--topbar-h:56px;
+--radius:10px;--radius-sm:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* LOGIN */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0d5a2b 0%,#16a34a 40%,#1a8a3a 70%,#d4a017 100%);position:relative;overflow:hidden}
+#loginScreen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 70%,rgba(212,160,23,0.15) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(34,197,94,0.1) 0%,transparent 50%);animation:float 20s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-2%,2%) rotate(1deg)}}
+.login-box{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:40px;width:420px;max-width:90vw;border:2px solid var(--gold);box-shadow:0 25px 50px rgba(0,0,0,0.15),0 0 40px rgba(212,160,23,0.1);position:relative;z-index:1}
+.login-box h1{text-align:center;font-size:1.5em;margin-bottom:4px;background:linear-gradient(135deg,#16a34a,#0d5a2b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-box .subtitle{text-align:center;color:var(--text-dim);font-size:0.85em;margin-bottom:24px}
+.login-box .logo{text-align:center;font-size:2.5em;margin-bottom:12px}
+.login-input{width:100%;padding:14px 18px;border-radius:var(--radius);border:2px solid var(--border);background:#fff;color:var(--text);font-size:1em;margin-bottom:12px;outline:none;transition:0.3s}
+.login-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,0.15)}
+.login-input::placeholder{color:var(--text-muted)}
+.login-btn{width:100%;padding:14px;border-radius:var(--radius);border:none;background:linear-gradient(135deg,#16a34a,#0d5a2b);color:#fff;font-size:1em;font-weight:700;cursor:pointer;transition:0.3s;margin-top:8px}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(22,163,74,0.4)}
+.login-error{color:var(--danger);font-size:0.8em;text-align:center;margin-top:8px;display:none}
+.login-hint{color:var(--text-muted);font-size:0.75em;text-align:center;margin-top:16px;line-height:1.6}
+.login-guest{text-align:center;margin-top:12px}
+.login-guest a{color:var(--green);font-size:0.85em;cursor:pointer;text-decoration:underline}
+
+/* TOP BAR */
+.topbar{height:var(--topbar-h);background:linear-gradient(90deg,#0d5a2b,#16a34a);color:#fff;display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topbar .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.1em}
+.topbar .brand .brand-icon{font-size:1.3em}
+.topbar .brand .brand-gold{color:var(--gold-light)}
+.topbar-nav{display:flex;gap:2px;margin-left:24px;flex:1}
+.topbar-nav .tnav{padding:8px 12px;border-radius:6px;font-size:0.75em;cursor:pointer;transition:0.2s;color:rgba(255,255,255,0.75);white-space:nowrap;font-weight:500}
+.topbar-nav .tnav:hover{background:rgba(255,255,255,0.12);color:#fff}
+.topbar-nav .tnav.active{background:rgba(255,255,255,0.2);color:var(--gold-light);font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.bu-filter{display:flex;gap:3px;align-items:center}
+.bu-btn{padding:5px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:transparent;color:rgba(255,255,255,0.7);font-size:0.7em;cursor:pointer;transition:0.2s;white-space:nowrap}
+.bu-btn:hover{border-color:var(--gold);color:#fff}
+.bu-btn.active{background:var(--gold);color:#1a2e1a;border-color:var(--gold);font-weight:700}
+.user-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:14px;background:rgba(255,255,255,0.12);font-size:0.75em;cursor:pointer}
+.user-badge .ub-avatar{width:24px;height:24px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7em;font-weight:700;color:#1a2e1a}
+.mobile-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,0.12);color:#fff;font-size:1.1em;cursor:pointer}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:linear-gradient(180deg,#0a3d1f,#0d5a2b);color:#fff;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;border-right:1px solid rgba(212,160,23,0.15);height:calc(100vh - var(--topbar-h));position:sticky;top:var(--topbar-h)}
+.sidebar-header{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:0.65em;text-transform:uppercase;color:rgba(255,255,255,0.4);letter-spacing:1px}
+.nav-group{padding:6px 16px 2px;margin-top:4px;font-size:0.6em;text-transform:uppercase;color:rgba(255,255,255,0.35);letter-spacing:1px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:0.2s;color:rgba(255,255,255,0.65);font-size:0.82em;position:relative;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+.nav-item.active{background:rgba(212,160,23,0.12);color:var(--gold-light);border-left-color:var(--gold)}
+.nav-item .icon{font-size:1em;width:22px;text-align:center}
+.nav-item .label{flex:1}
+.nav-item .badge{background:var(--danger);color:#fff;font-size:0.65em;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center}
+.sidebar-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);margin-top:auto}
+.sidebar-footer .sf-info{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sidebar-footer .sf-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700;color:#1a2e1a}
+.sidebar-footer .sf-name{font-size:0.85em;font-weight:600;color:#fff}
+.sidebar-footer .sf-role{font-size:0.65em;color:rgba(255,255,255,0.5)}
+.logout-btn{width:100%;padding:8px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.6);cursor:pointer;font-size:0.78em;transition:0.2s;margin-top:4px}
+.logout-btn:hover{background:rgba(239,68,68,0.15);color:#ef4444;border-color:#ef4444}
+
+/* MAIN */
+.app-layout{display:flex;min-height:calc(100vh - var(--topbar-h))}
+.main-content{flex:1;overflow-y:auto;background:var(--bg);padding:24px}
+.page-content{max-width:1200px;margin:0 auto}
+
+/* GUEST NOTICE */
+.guest-notice{background:linear-gradient(135deg,rgba(22,163,74,0.08),rgba(212,160,23,0.08));border:1px solid var(--border-gold);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.guest-notice .icon{font-size:1.3em}
+.guest-notice .text{font-size:0.85em;color:var(--text-dim)}
+.guest-notice .text strong{color:var(--green-dark)}
+
+/* SECTION TITLE */
+.section-title{font-size:1.05em;font-weight:700;color:var(--green-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.section-title .icon{font-size:1.2em}
+.section-title .gold{color:var(--gold-dark)}
+
+/* SYSTEM CARD */
+.system-card{background:var(--bg-card);border-radius:var(--radius);padding:18px;margin-bottom:18px;border:1px solid var(--border);position:relative;overflow:hidden}
+.system-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--gold))}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi-card{background:var(--bg-card);border-radius:var(--radius);padding:14px;border:1px solid var(--border);transition:0.3s;position:relative;overflow:hidden}
+.kpi-card:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(22,163,74,0.08)}
+.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--gold))}
+.kpi-card .kpi-icon{font-size:1.2em;margin-bottom:4px}
+.kpi-card .kpi-value{font-size:1.5em;font-weight:800;background:linear-gradient(135deg,var(--green-dark),var(--gold-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-card .kpi-label{font-size:0.68em;color:var(--text-muted);margin-top:1px}
+.kpi-card .kpi-sub{font-size:0.65em;color:var(--text-dim);margin-top:2px}
+.kpi-card .kpi-change{font-size:0.65em;margin-top:2px}
+.kpi-card .kpi-change.up{color:var(--success)}
+.kpi-card .kpi-change.down{color:var(--danger)}
+
+/* BU TABLE */
+.bu-table{width:100%;border-collapse:collapse;font-size:0.78em;margin-bottom:12px}
+.bu-table th{background:linear-gradient(135deg,rgba(22,163,74,0.06),rgba(212,160,23,0.06));padding:9px 10px;text-align:left;font-weight:600;color:var(--green-dark);border-bottom:2px solid var(--border);font-size:0.7em;text-transform:uppercase;letter-spacing:0.5px}
+.bu-table td{padding:8px 10px;border-bottom:1px solid #f0f0f0}
+.bu-table tr:hover td{background:rgba(22,163,74,0.03)}
+.bu-table .bu-name{font-weight:700;color:var(--green-dark)}
+.bu-table .num{text-align:center}
+.bu-table .pct{text-align:center;font-weight:700}
+.pct-green{color:#16a34a}.pct-gold{color:#d4a017}.pct-red{color:#ef4444}
+
+/* PROGRESS */
+.progress-bar{height:7px;background:#e8f5e9;border-radius:4px;overflow:hidden;margin-top:3px}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--gold));transition:width 0.5s}
+
+/* MONTH GRID */
+.month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px}
+.month-cell{background:var(--bg-card);border-radius:var(--radius-sm);padding:10px;text-align:center;border:1px solid var(--border);cursor:pointer;transition:0.2s}
+.month-cell:hover{border-color:var(--green);box-shadow:0 2px 8px rgba(22,163,74,0.1)}
+.month-cell.current{border-color:var(--gold);background:rgba(212,160,23,0.06);box-shadow:0 0 0 2px rgba(212,160,23,0.2)}
+.month-cell .month-name{font-size:0.72em;color:var(--text-muted);margin-bottom:3px}
+.month-cell .month-val{font-size:1.1em;font-weight:700}
+.month-cell .month-pct{font-size:0.68em;color:var(--text-dim)}
+
+/* LEVEL GRID */
+.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.level-card{background:var(--bg-card);border-radius:var(--radius-sm);padding:12px;text-align:center;border:1px solid var(--border);transition:0.3s;cursor:pointer}
+.level-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 12px rgba(212,160,23,0.1)}
+.level-card .level-num{font-size:0.6em;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.level-card .level-name{font-size:0.82em;font-weight:700;margin:3px 0}
+.level-card .level-count{font-size:1.2em;font-weight:800;color:var(--green-dark)}
+.level-card .level-sub{font-size:0.62em;color:var(--text-muted)}
+
+/* MENTOR GROUP */
+.mentor-group{background:var(--bg-card);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.mentor-group .mg-title{font-weight:700;font-size:0.85em;color:var(--green-dark);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.mentor-group .mg-row{display:flex;justify-content:space-between;padding:4px 0;font-size:0.78em;border-bottom:1px solid #f5f5f5}
+.mentor-group .mg-row:last-child{border:none}
+.mentor-group .mg-label{color:var(--text-muted)}
+.mentor-group .mg-val{font-weight:600}
+
+/* DETAIL TOGGLE */
+.detail-toggle{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;padding:6px 14px;border-radius:16px;font-size:0.72em;cursor:pointer;border:none;font-weight:600;transition:0.2s}
+.detail-toggle:hover{opacity:0.9;transform:translateY(-1px)}
+.detail-panel{display:none;margin-top:10px;background:#fafdf7;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:0.78em}
+.detail-panel.show{display:block}
+
+/* SUB-SECTION */
+.sub-section{background:var(--bg-card);border-radius:var(--radius);padding:16px;margin-bottom:16px;border:1px solid var(--border)}
+.sub-title{font-size:0.9em;font-weight:700;color:var(--green-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sub-title .gold{color:var(--gold-dark)}
+
+/* STATUS */
+.status-pass{color:#16a34a;font-weight:700}.status-fail{color:#ef4444;font-weight:700}.status-pending{color:#d4a017;font-weight:700}
+
+/* MOBILE */
+@media(max-width:900px){
+.sidebar{position:fixed;left:-240px;height:calc(100vh - var(--topbar-h));z-index:200;transition:0.3s;top:var(--topbar-h)}
+.sidebar.open{left:0}
+.mobile-toggle{display:flex!important}
+.topbar-nav{display:none}
+.bu-filter{display:none}
+.kpi-grid{grid-template-columns:1fr 1fr}
+.bu-table{font-size:0.68em}
+.month-grid{grid-template-columns:repeat(3,1fr)}
+.level-grid{grid-template-columns:1fr 1fr}
+.main-content{padding:14px}
+.system-card{padding:14px}
+}
+@media(max-width:480px){
+.kpi-grid{grid-template-columns:1fr}
+.month-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+.sidebar-overlay{display:none;position:fixed;top:var(--topbar-h);left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:150}
+.sidebar-overlay.show{display:block}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-section{display:none}
+.page-section.active{display:block;animation:fadeIn 0.3s ease}
+
+/* PKG TOTAL */
+.pkg-total{background:linear-gradient(135deg,rgba(22,163,74,0.06),rgba(212,160,23,0.06));border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;font-size:0.85em}
+.pkg-total .pt-label{color:var(--green-dark);font-weight:700}
+.pkg-total .pt-val{font-weight:800;font-size:1.1em;color:var(--gold-dark)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+<div class="login-box">
+<div class="logo">🏛️</div>
+<h1>P5 — ระบบพัฒนาสมาชิก PKG</h1>
+<p class="subtitle">ระบบพัฒนาสมาชิก กลุ่มบริษัท PKG</p>
+<input type="text" class="login-input" id="loginInput" placeholder="รหัสสมาชิก / ADMIN PAD / BMC" autocomplete="off">
+<button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+<div class="login-error" id="loginError">❌ รหัสไม่ถูกต้อง กรุณาลองใหม่</div>
+<p class="login-hint">ใส่รหัสสมาชิก เช่น 6407049<br>ADMIN PAD = ดูได้ทุกระบบ<br>BMC = ดูภาพรวม</p>
+<div class="login-guest"><a onclick="doLogin('guest')">👁️ เข้าชมแบบไม่ Login (Dashboard เท่านั้น)</a></div>
+</div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appScreen" style="display:none">
+<header class="topbar">
+<div class="mobile-toggle" onclick="toggleSidebar()">☰</div>
+<div class="brand"><span class="brand-icon">🏛️</span><span>P5</span><span class="brand-gold">PKG</span></div>
+<nav class="topbar-nav">
+<div class="tnav active" onclick="showPage('dashboard')" data-page="dashboard">📊 Dashboard</div>
+</nav>
+<div class="topbar-right">
+
+<div class="user-badge" id="userBadge" onclick="toggleSidebar()">
+<div class="ub-avatar" id="userAvatar">?</div>
+<span id="userNameTop">—</span>
+</div>
+</div>
+</header>
+
+<div class="app-layout">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">เมนูระบบ</div>
+<div class="nav-group">หลัก</div>
+<div class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard"><span class="icon">📊</span><span class="label">Dashboard P5</span></div>
+<div class="nav-group">ระบบ</div>
+<div class="nav-item" onclick="showPage('training')" data-page="training"><span class="icon">📚</span><span class="label">Training</span></div>
+<div class="nav-item" onclick="showPage('mentor')" data-page="mentor"><span class="icon">👥</span><span class="label">Mentor</span></div>
+<div class="nav-item" onclick="showPage('coach')" data-page="coach"><span class="icon">🎯</span><span class="label">Coach</span></div>
+<div class="nav-item" onclick="showPage('roleplay')" data-page="roleplay"><span class="icon">🎭</span><span class="label">Roleplay</span></div>
+<div class="nav-item" onclick="showPage('capital')" data-page="capital"><span class="icon">🏛️</span><span class="label">กำกับทุนองค์กร</span></div>
+<div class="nav-group">อื่นๆ</div>
+<div class="nav-item" onclick="showPage('other')" data-page="other"><span class="icon">⚙️</span><span class="label">อื่นๆ</span></div>
+<div class="sidebar-footer">
+<div class="sf-info">
+<div class="sf-avatar" id="userAvatar2">?</div>
+<div><div class="sf-name" id="userName">—</div><div class="sf-role" id="userRole">—</div></div>
+</div>
+<button class="logout-btn" onclick="doLogout()">🚪 ออกจากระบบ</button>
+</div>
+</aside>
+
+<main class="main-content">
+<div class="page-content">
+
+<!-- ===== DASHBOARD ===== -->
+<div class="page-section active" id="page-dashboard">
+<div class="guest-notice" id="guestNotice" style="display:none">
+<span class="icon">👁️</span>
+<span class="text">คุณกำลังดูแบบ <strong>Guest</strong> — เข้าสู่ระบบเพื่อดูข้อมูลเพิ่มเติม</span>
+</div>
+
+<!-- ===== ระบบ Training ===== -->
+<div class="system-card">
+<div class="section-title"><span class="icon">📚</span> ระบบ <span class="gold">Training</span></div>
+
+<div class="sub-section">
+<div class="sub-title">📊 ส่วนที่ 1: เป้าหมายหน่วยกิต & GPA (สมาชิกสถานะประจำ บรรจุก่อน 1 ม.ค. 2026)</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-icon">🎯</div><div class="kpi-value">44</div><div class="kpi-label">เป้าหมายหน่วยกิต/ปี</div></div>
+<div class="kpi-card"><div class="kpi-icon">📊</div><div class="kpi-value">3.50</div><div class="kpi-label">เป้าหมาย GPA/ปี</div></div>
+<div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-value" >327</div><div class="kpi-label">สมาชิกสถานะประจำ (Y+N)</div></div>
+<div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-value" >248</div><div class="kpi-label">ครบ 44 หน่วยกิต</div></div>
+<div class="kpi-card"><div class="kpi-icon">📈</div><div class="kpi-value" >219</div><div class="kpi-label">GPA ≥ 3.5</div></div>
+</div>
+
+<table class="bu-table">
+<thead><tr><th>BU</th><th>สมาชิกสถานะประจำ</th><th>ครบ 44 หน่วยกิต</th><th>% ครบ</th><th>GPA ≥ 3.5</th><th>% GPA</th></tr></thead>
+<tbody id="trainBuTable">
+<tr><td class="bu-name">PMSG</td><td class="num">85</td><td class="num">72</td><td class="pct pct-green">84.7%</td><td class="num">65</td><td class="pct pct-gold">76.5%</td></tr>
+<tr><td class="bu-name">CPDG</td><td class="num">62</td><td class="num">48</td><td class="pct pct-gold">77.4%</td><td class="num">42</td><td class="pct pct-gold">67.7%</td></tr>
+<tr><td class="bu-name">AAMG</td><td class="num">78</td><td class="num">65</td><td class="pct pct-green">83.3%</td><td class="num">58</td><td class="pct pct-gold">74.4%</td></tr>
+<tr><td class="bu-name">RPLCG</td><td class="num">54</td><td class="num">38</td><td class="pct pct-gold">70.4%</td><td class="num">33</td><td class="pct pct-gold">61.1%</td></tr>
+<tr><td class="bu-name">RAFCOG</td><td class="num">48</td><td class="num">25</td><td class="pct pct-red">52.1%</td><td class="num">21</td><td class="pct pct-red">43.8%</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<!-- ===== ระบบ Mentor ===== -->
+<div class="system-card">
+<div class="section-title"><span class="icon">👥</span> ระบบ <span class="gold">Mentor</span> — น้องเลี้ยง & รายงานวินัย</div>
+
+<div class="pkg-total">
+<span class="pt-label">🏛️ PKG รวมทุก BU:</span>
+<span>สมาชิก <span class="pt-val" >327</span> คน</span>
+<span>| ส่งรายงาน ≥90% <span class="pt-val" >285</span> คน</span>
+<span>| ไม่ผ่าน <span style="color:#ef4444;font-weight:700" >42</span> คน</span>
+<span>| <span class="pt-val" >87.2</span>%</span>
+</div>
+
+<table class="bu-table" style="font-size:0.72em">
+<thead>
+<tr>
+<th>กลุ่มน้องเลี้ยง</th>
+<th>BU</th>
+<th>จำนวนสมาชิก</th>
+<th>ส่งรายงาน ≥90%</th>
+<th>ไม่ผ่าน</th>
+<th>% วินัย</th>
+</tr>
+</thead>
+<tbody id="mentorTable">
+<!-- กลุ่ม 1 -->
+<tr style="background:rgba(22,163,74,0.04)"><td rowspan="6" style="font-weight:700;background:rgba(22,163,74,0.08);vertical-align:middle;text-align:center">👶 กลุ่ม 1</td><td class="bu-name">PMSG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(22,163,74,0.04)"><td class="bu-name">CPDG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(22,163,74,0.04)"><td class="bu-name">AAMG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(22,163,74,0.04)"><td class="bu-name">RPLCG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(22,163,74,0.04)"><td class="bu-name">RAFCOG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(22,163,74,0.12);font-weight:600"><td style="background:rgba(22,163,74,0.08)">รวมกลุ่ม 1</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<!-- กลุ่ม 2 -->
+<tr style="background:rgba(212,160,23,0.04)"><td rowspan="6" style="font-weight:700;background:rgba(212,160,23,0.08);vertical-align:middle;text-align:center">👦 กลุ่ม 2</td><td class="bu-name">PMSG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(212,160,23,0.04)"><td class="bu-name">CPDG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(212,160,23,0.04)"><td class="bu-name">AAMG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(212,160,23,0.04)"><td class="bu-name">RPLCG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(212,160,23,0.04)"><td class="bu-name">RAFCOG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(212,160,23,0.12);font-weight:600"><td style="background:rgba(212,160,23,0.08)">รวมกลุ่ม 2</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<!-- กลุ่ม 4 -->
+<tr style="background:rgba(99,102,241,0.04)"><td rowspan="6" style="font-weight:700;background:rgba(99,102,241,0.08);vertical-align:middle;text-align:center">🧑 กลุ่ม 4</td><td class="bu-name">PMSG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(99,102,241,0.04)"><td class="bu-name">CPDG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(99,102,241,0.04)"><td class="bu-name">AAMG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(99,102,241,0.04)"><td class="bu-name">RPLCG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(99,102,241,0.04)"><td class="bu-name">RAFCOG</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+<tr style="background:rgba(99,102,241,0.12);font-weight:600"><td style="background:rgba(99,102,241,0.08)">รวมกลุ่ม 4</td><td class="num">—</td><td class="num" style="color:#16a34a">—</td><td class="num" style="color:#ef4444">—</td><td class="pct">—</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ===== ระบบ Coach ===== -->
+<div class="system-card">
+<div class="section-title"><span class="icon">🎯</span> ระบบ <span class="gold">Coach</span> — พี่เลี้ยงโค้ชน้องเลี้ยง</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-icon">👨‍🏫</div><div class="kpi-value" >156</div><div class="kpi-label">พี่เลี้ยงทั้งหมด</div></div>
+<div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-value" >118</div><div class="kpi-label">โค้ชแล้ว</div></div>
+<div class="kpi-card"><div class="kpi-icon">❌</div><div class="kpi-value" >38</div><div class="kpi-label">ยังไม่โค้ช</div></div>
+<div class="kpi-card"><div class="kpi-icon">📊</div><div class="kpi-value" >75.6</div><div class="kpi-label">% โค้ช</div></div>
+</div>
+<table class="bu-table">
+<thead><tr><th>BU</th><th>พี่เลี้ยงทั้งหมด</th><th>โค้ชแล้ว</th><th>ยังไม่โค้ช</th><th>% โค้ช</th></tr></thead>
+<tbody id="coachBuTable">
+<tr><td class="bu-name">PMSG</td><td class="num">42</td><td class="num" style="color:#16a34a">34</td><td class="num" style="color:#ef4444">8</td><td class="pct pct-green">81.0%</td></tr>
+<tr><td class="bu-name">CPDG</td><td class="num">30</td><td class="num" style="color:#16a34a">22</td><td class="num" style="color:#ef4444">8</td><td class="pct pct-gold">73.3%</td></tr>
+<tr><td class="bu-name">AAMG</td><td class="num">38</td><td class="num" style="color:#16a34a">31</td><td class="num" style="color:#ef4444">7</td><td class="pct pct-green">81.6%</td></tr>
+<tr><td class="bu-name">RPLCG</td><td class="num">25</td><td class="num" style="color:#16a34a">17</td><td class="num" style="color:#ef4444">8</td><td class="pct pct-gold">68.0%</td></tr>
+<tr><td class="bu-name">RAFCOG</td><td class="num">21</td><td class="num" style="color:#16a34a">14</td><td class="num" style="color:#ef4444">7</td><td class="pct pct-gold">66.7%</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ===== ระบบ Roleplay ===== -->
+<div class="system-card">
+<div class="section-title"><span class="icon">🎭</span> ระบบ <span class="gold">Roleplay</span></div>
+
+<div class="sub-section">
+<div class="sub-title">📊 ส่วนที่ 1: สถานะส่ง Roleplay แยกเดือน</div>
+<div class="month-grid" id="rpMonthGrid"></div>
+<table class="bu-table">
+<thead><tr><th>BU</th><th>ทีมทั้งหมด</th><th>ส่งแล้ว</th><th>ยังไม่ส่ง</th><th>% ส่ง</th></tr></thead>
+<tbody id="rpBuTable"></tbody>
+</table>
+</div>
+
+<div class="sub-section">
+<div class="sub-title">📋 ส่วนที่ 2: เดือนปัจจุบัน — ทีมที่ยังไม่ส่ง <button class="detail-toggle" onclick="toggleDetail('rpDetail')">ดูรายละเอียด</button></div>
+<div class="detail-panel" id="rpDetail"><p style="color:var(--text-muted)">กำลังโหลดข้อมูล...</p></div>
+</div>
+</div>
+
+<!-- ===== ระบบ กำกับทุนองค์กร ===== -->
+<div class="system-card">
+<div class="section-title"><span class="icon">🏛️</span> ระบบ <span class="gold">กำกับทุนองค์กรสมาชิก PKG</span></div>
+
+<div class="sub-section">
+<div class="sub-title">📊 ส่วนที่ 1: สถานะอบรม 5 ระดับ + ภาวะผู้นำผู้รับใช้</div>
+<div class="level-grid">
+<div class="level-card"><div class="level-num">ระดับ 1</div><div class="level-name">ปฐมนิเทศ</div><div class="level-count" style="color:#16a34a" >327</div><div class="level-sub">ผ่าน 327 / รอ 0 / ไม่ต้อง 0ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+<div class="level-card"><div class="level-num">ระดับ 2</div><div class="level-name">ทุติยนิเทศ</div><div class="level-count" style="color:#16a34a" >310</div><div class="level-sub">ผ่าน 310 / รอ 12 / ไม่ต้อง 5ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+<div class="level-card"><div class="level-num">ระดับ 3</div><div class="level-name">ตติยนิเทศ</div><div class="level-count" style="color:#d4a017" >265</div><div class="level-sub">ผ่าน 265 / รอ 48 / ไม่ต้อง 14ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+<div class="level-card"><div class="level-num">ระดับ 4</div><div class="level-name">จตุรนิเทศ</div><div class="level-count" style="color:#d4a017" >198</div><div class="level-sub">ผ่าน 198 / รอ 95 / ไม่ต้อง 34ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+<div class="level-card"><div class="level-num">ระดับ 5</div><div class="level-name">ปัญจนิเทศ</div><div class="level-count" style="color:#ef4444" >112</div><div class="level-sub">ผ่าน 112 / รอ 158 / ไม่ต้อง 57ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+<div class="level-card"><div class="level-num">ระดับ 6</div><div class="level-name">ภาวะผู้นำผู้รับใช้</div><div class="level-count" style="color:#ef4444" >45</div><div class="level-sub">ผ่าน 45 / รอ 192 / ไม่ต้อง 90ผ่าน 327 / รอ 0 / ไม่ต้อง 0</div></div>
+</div>
+<table class="bu-table">
+<thead><tr><th>BU</th><th>ปฐมนิเทศ ผ่าน/รอ/ไม่ต้อง</th><th>ทุติยนิเทศ</th><th>ตติยนิเทศ</th><th>จตุรนิเทศ</th><th>ปัญจนิเทศ</th><th>ภาวะผู้นำ</th></tr></thead>
+<tbody id="capBuTable"><tr><td class="bu-name">PMSG</td><td>85/0/0</td><td>80/5/0</td><td>68/12/5</td><td>52/25/8</td><td>30/40/15</td><td>15/55/15</td></tr><tr><td class="bu-name">CPDG</td><td>62/0/0</td><td>58/4/0</td><td>48/10/4</td><td>35/18/9</td><td>20/28/14</td><td>10/38/14</td></tr><tr><td class="bu-name">AAMG</td><td>78/0/0</td><td>73/5/0</td><td>63/10/5</td><td>48/22/8</td><td>28/35/15</td><td>12/48/18</td></tr><tr><td class="bu-name">RPLCG</td><td>54/0/0</td><td>50/4/0</td><td>42/8/4</td><td>30/16/8</td><td>18/26/10</td><td>8/34/12</td></tr><tr><td class="bu-name">RAFCOG</td><td>48/0/0</td><td>49/3/0</td><td>44/3/1</td><td>33/14/1</td><td>16/24/8</td><td>0/17/31</td></tr></tbody>
+</table>
+</div>
+
+<div class="sub-section">
+<div class="sub-title">📅 ส่วนที่ 2: ตารางการอบรมทั้งปี</div>
+<p style="color:var(--text-muted);font-size:0.82em">แสดงตารางการอบรมแยกระดับตามเดือน — กำลังโหลดข้อมูล...</p>
+</div>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+
+<script>
+const SHEET_ID='15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0';
+const SHEETS={employees:{gid:'356926090'},training:{gid:'1160880627'},roleplay:{gid:'123339608'}};
+const BU_LIST=['PMSG','CPDG','AAMG','RPLCG','RAFCOG'];
+const MONTHS_TH=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const MONTHS_SHORT=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+let currentUser=null,allEmployees=[],allTraining=[],allRoleplay=[],currentBU='all';
+
+function doLogin(type){
+const input=document.getElementById('loginInput'),val=input.value.trim();
+if(type==='guest'){currentUser={id:'guest',name:'Guest',role:'guest',bu:'all'};}
+else if(!val){document.getElementById('loginError').textContent='❌ กรุณาใส่รหัส';document.getElementById('loginError').style.display='block';return;}
+else if(val.toUpperCase()==='ADMIN PAD'){currentUser={id:'ADMIN PAD',name:'ADMIN PAD',role:'admin',bu:'all'};}
+else if(val.toUpperCase()==='BMC'){currentUser={id:'BMC',name:'BMC',role:'bmc',bu:'all'};}
+else{const emp=allEmployees.find(e=>e['รหัสสมาชิก']==val);if(emp){currentUser={id:val,name:emp['ชื่อ']+' '+emp['นามสกุล'],role:'member',bu:emp['บริษัท'],emp:emp};}else if(allEmployees.length===0){currentUser={id:val,name:'สมาชิก #'+val,role:'member',bu:'unknown'};}else{document.getElementById('loginError').textContent='❌ รหัสสมาชิกไม่ถูกต้อง';document.getElementById('loginError').style.display='block';return;}}
+enterApp();}
+
+function enterApp(){
+document.getElementById('loginScreen').style.display='none';document.getElementById('appScreen').style.display='block';
+document.getElementById('userName').textContent=currentUser.name;
+document.getElementById('userNameTop').textContent=currentUser.name;
+document.getElementById('userRole').textContent={admin:'👑 ADMIN PAD',bmc:'📊 BMC',member:'👤 สมาชิก',guest:'👁️ Guest'}[currentUser.role];
+document.getElementById('userAvatar').textContent=currentUser.name.charAt(0);
+document.getElementById('userAvatar2').textContent=currentUser.name.charAt(0);
+if(currentUser.role==='guest')document.getElementById('guestNotice').style.display='flex';
+showPage('dashboard');}
+
+function doLogout(){currentUser=null;document.getElementById('appScreen').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('loginInput').value='';document.getElementById('loginError').style.display='none';document.getElementById('guestNotice').style.display='none';}
+
+function showPage(page){
+document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));const el=document.getElementById('page-'+page);if(el)el.classList.add('active');
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.tnav').forEach(n=>n.classList.remove('active'));
+const nav=document.querySelector(`.nav-item[data-page="${page}"]`);if(nav)nav.classList.add('active');
+const tnav=document.querySelector(`.tnav[data-page="${page}"]`);if(tnav)tnav.classList.add('active');
+if(window.innerWidth<900)closeSidebar();}
+
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('show');}
+function filterBU(bu){currentBU=bu;document.querySelectorAll('.bu-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
+function toggleDetail(id){document.getElementById(id).classList.toggle('show');}
+
+async function loadSheet(gid){try{const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;const res=await fetch(url);const text=await res.text();return parseCSV(text);}catch(e){console.error(e);return[];}}
+function parseCSV(text){const lines=text.split('\n').filter(l=>l.trim());if(lines.length<2)return[];const headers=parseCSVLine(lines[0]);return lines.slice(1).map(line=>{const vals=parseCSVLine(line);const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');return obj;});}
+function parseCSVLine(line){const result=[];let current='',inQuotes=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"')inQuotes=!inQuotes;else if(ch===','&&!inQuotes){result.push(current.trim());current='';}else current+=ch;}result.push(current.trim());return result;}
+
+function updateDashboard(){
+if(allEmployees.length>0){
+// ===== TRAINING =====
+const year2026=new Date('2026-01-01');
+const permanent=allEmployees.filter(e=>{
+const status=e['สถานะการเข้าอบรม']||'';
+return status==='Y'||status==='N';
+});
+const totalEl=document.getElementById('d-train-total');
+if(totalEl)totalEl.textContent=permanent.length;
+}
+
+// ===== ROLEPLAY =====
+if(allRoleplay.length>0){
+const now=new Date();
+const cm=now.getMonth(); // 0-11
+const monthGrid=document.getElementById('rpMonthGrid');
+const rpBuTable=document.getElementById('rpBuTable');
+let html='';
+// Build month grid (last 6 months visible)
+for(let m=0;m<6;m++){
+const mi=(cm-5+m+12)%12;
+const miNext=mi+1;
+let totalSent=0,totalTeams=0;
+allRoleplay.forEach(r=>{
+totalTeams++;
+const val=parseInt(r[MONTHS_TH[mi]]||'0');
+if(val>=1)totalSent++;
+});
+const pct=totalTeams>0?Math.round(totalSent/totalTeams*100):0;
+const isCurrent=(mi===cm);
+html+=`<div class="month-cell${isCurrent?' current':''}" onclick="showRpMonth(${mi})"><div class="month-name">${MONTHS_SHORT[mi]}${isCurrent?' ★':''}</div><div class="month-val" style="color:${pct>=90?'#16a34a':pct>=70?'#d4a017':'#ef4444'}">${totalSent}/${totalTeams}</div><div class="month-pct">${pct}%</div></div>`;
+}
+if(monthGrid)monthGrid.innerHTML=html;
+
+// BU breakdown for current month
+let buHtml='';
+BU_LIST.forEach(bu=>{
+const buTeams=allRoleplay.filter(r=>(r['BU']||'').trim()===bu);
+const total=buTeams.length;
+let sent=0;
+buTeams.forEach(r=>{const val=parseInt(r[MONTHS_TH[cm]]||'0');if(val>=1)sent++;});
+const notSent=total-sent;
+const pct=total>0?Math.round(sent/total*100):0;
+const pctClass=pct>=90?'pct-green':pct>=70?'pct-gold':'pct-red';
+buHtml+=`<tr><td class="bu-name">${bu}</td><td class="num">${total}</td><td class="num" style="color:#16a34a">${sent}</td><td class="num" style="color:#ef4444">${notSent}</td><td class="pct ${pctClass}">${pct}%</td></tr>`;
+});
+if(rpBuTable)rpBuTable.innerHTML=buHtml;
+
+// Detail: teams not submitted this month
+const rpDetail=document.getElementById('rpDetail');
+if(rpDetail){
+let detailHtml='<table class="bu-table"><thead><tr><th>BU</th><th>ทีมที่ยังไม่ส่ง</th></tr></thead><tbody>';
+BU_LIST.forEach(bu=>{
+const buTeams=allRoleplay.filter(r=>(r['BU']||'').trim()===bu);
+const notSent=buTeams.filter(r=>parseInt(r[MONTHS_TH[cm]]||'0')<1);
+detailHtml+=`<tr><td class="bu-name">${bu}</td><td>${notSent.length>0?notSent.map(r=>r['Team']||'—').join(', '):'✅ ส่งครบแล้ว'}</td></tr>`;
+});
+detailHtml+='</tbody></table>';
+rpDetail.innerHTML=detailHtml;
+}
+}
+}
+
+async function loadAllData(){
+const[emp,train,rp]=await Promise.all([loadSheet(SHEETS.employees.gid),loadSheet(SHEETS.training.gid),loadSheet(SHEETS.roleplay.gid)]);
+allEmployees=emp;allTraining=train;allRoleplay=rp;
+updateDashboard();
+}
+
+document.getElementById('loginInput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+loadAllData();
+</script>
+</body>
+</html>

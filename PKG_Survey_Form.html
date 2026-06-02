@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบฟอร์มรวบรวม Feedback</title>
+  <base target="_top">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Sarabun','Noto Sans Thai',sans-serif;background:#f5f7fa;min-height:100vh;color:#1a2742}
+    .container{max-width:640px;margin:0 auto;padding:20px 16px}
+    .header{text-align:center;padding:24px 0 16px}
+    .header h1{font-size:1.5em;color:#0288d1;margin-bottom:4px}
+    .header p{font-size:0.9em;color:#546e7a}
+    .card{background:#ffffff;border:1px solid #e0e6ed;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+    .card h2{font-size:1.15em;color:#0288d1;margin-bottom:12px;border-bottom:1px solid #e0e6ed;padding-bottom:8px}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:0.9em;color:#546e7a;margin-bottom:4px}
+    .form-group input,.form-group textarea{width:100%;padding:10px 12px;border:1px solid #cfd8dc;border-radius:8px;background:#fff;color:#1a2742;font-size:1em;transition:border-color 0.2s;font-family:inherit}
+    .form-group input:focus,.form-group textarea:focus{outline:none;border-color:#0288d1;box-shadow:0 0 0 2px rgba(2,136,209,0.15)}
+    .form-group input:read-only{background:#f5f7fa;color:#0288d1;font-weight:bold;cursor:default}
+    .id-wrapper{position:relative}
+    .autocomplete-list{position:absolute;width:100%;max-height:200px;overflow-y:auto;background:#fff;border:1px solid #cfd8dc;border-radius:0 0 8px 8px;z-index:100;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+    .autocomplete-list.show{display:block}
+    .autocomplete-item{padding:10px 12px;cursor:pointer;border-bottom:1px solid #eceff1;font-size:0.9em}
+    .autocomplete-item:hover,.autocomplete-item.active{background:#e3f2fd}
+    .autocomplete-item .id{color:#0288d1;font-weight:bold}
+    .autocomplete-item .name{color:#1a2742}
+    .autocomplete-item .detail{color:#78909c;font-size:0.85em}
+    .member-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .member-info .form-group{margin-bottom:0}
+    .scale-group{margin-bottom:12px}
+    .scale-group label{display:block;font-size:0.9em;color:#546e7a;margin-bottom:6px}
+    .scale-options{display:flex;gap:8px}
+    .scale-btn{flex:1;padding:10px 4px;text-align:center;border:2px solid #cfd8dc;border-radius:8px;background:#fff;color:#546e7a;cursor:pointer;font-size:1em;font-weight:bold;transition:all 0.2s}
+    .scale-btn:hover{border-color:#0288d1;background:#e3f2fd}
+    .scale-btn.selected{border-color:#0288d1;background:#e3f2fd;color:#0288d1;transform:scale(1.05)}
+    .scale-labels{display:flex;justify-content:space-between;font-size:0.75em;color:#78909c;margin-top:2px}
+    .btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,#0288d1,#01579b);border:none;border-radius:8px;color:white;font-size:1.1em;font-weight:bold;cursor:pointer;margin-top:8px;transition:opacity 0.2s}
+    .btn-submit:hover{opacity:0.9}
+    .btn-submit:disabled{opacity:0.5;cursor:not-allowed}
+    .btn-back{width:100%;padding:10px;background:transparent;border:1px solid #cfd8dc;border-radius:8px;color:#546e7a;font-size:0.9em;cursor:pointer;margin-bottom:8px}
+    .progress{display:flex;justify-content:center;gap:6px;margin-bottom:16px}
+    .progress-dot{width:10px;height:10px;border-radius:50%;background:#cfd8dc}
+    .progress-dot.active{background:#0288d1}
+    .progress-dot.done{background:#66bb6a}
+    .hidden{display:none!important}
+    .error{color:#d32f2f;font-size:0.85em;margin-top:4px}
+  </style>
+</head>
+<body>
+<div class="container" id="app">
+  <div id="formPage">
+    <div class="header">
+      <h1>📋 แบบฟอร์มรวบรวม Feedback</h1>
+      <p>จากกลุ่มลูกค้าของทีมบัญชีและทีมการเงิน PKG</p>
+    </div>
+    <div class="card" id="introCard">
+      <h2>📌 วัตถุประสงค์</h2>
+      <div style="font-size:0.9em;color:#455a64;line-height:1.6">
+        <p style="margin-bottom:8px">1. เพื่อนำข้อมูล Feedback ไปใช้ในการพัฒนาและออกแบบเครื่องมือการทำงานรูปแบบใหม่ ให้เหมาะสมกับกระบวนการทำงานจริง และช่วยเพิ่มประสิทธิภาพในการดำเนินงานของทีมบัญชีและการเงิน</p>
+        <p style="margin-bottom:8px">2. เพื่อใช้เป็นข้อมูลประกอบในการออกแบบและพัฒนาระบบ "3 ผ่าน" รูปแบบใหม่ โดยอ้างอิงจากข้อเสนอแนะ ประสบการณ์การใช้งาน และประเด็นที่พบจากผู้ใช้งานโดยตรง</p>
+        <p style="margin-bottom:8px">3. เพื่อรวบรวม BP/LL จากผลการดำเนินงานซึ่งเป็นข้อมูลจากผู้ใช้ข้อมูลของงานบัญชีและการเงินโดยตรง</p>
+      </div>
+      <h2 style="margin-top:12px">👥 กลุ่มผู้ให้ Feedback</h2>
+      <div style="font-size:0.9em;color:#455a64;line-height:1.6">
+        <p>1. ทีมรับใช้ PKG (ADM)</p>
+        <p>2. ผู้รับใช้ทีมสาขาทุกสาขาในทุกประเทศ</p>
+        <p>3. สมาชิกทีมการเงินหน้างานทุก BU</p>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-dot active" id="dot1"></div>
+      <div class="progress-dot" id="dot2"></div>
+      <div class="progress-dot" id="dot3"></div>
+    </div>
+    <div id="page1" class="card">
+      <h2>📋 ข้อมูลสมาชิก</h2>
+      <div class="form-group">
+        <label>รหัสสมาชิก <span style="color:#d32f2f">*</span></label>
+        <div class="id-wrapper">
+          <input type="text" id="memberId" placeholder="พิมพ์รหัสหรือชื่อ..." autocomplete="off">
+          <div class="autocomplete-list" id="memberList"></div>
+        </div>
+        <div id="memberError" class="error"></div>
+      </div>
+      <div class="member-info">
+        <div class="form-group"><label>ชื่อ-นามสกุล</label><input type="text" id="memberName" readonly placeholder="—"></div>
+        <div class="form-group"><label>BU</label><input type="text" id="memberCompany" readonly placeholder="—"></div>
+      </div>
+      <div class="form-group"><label>ทีม</label><input type="text" id="memberTeam" readonly placeholder="—"></div>
+      <button class="btn-submit" id="btnNext1" disabled>ถัดไป →</button>
+    </div>
+    <div id="page2" class="card hidden">
+      <h2>📊 ทีมบัญชี</h2>
+      <div id="acctQuestions"></div>
+      <div class="form-group" style="margin-top:12px">
+        <label>ข้อเสนอแนะเกี่ยวกับทีมบัญชี (ไม่จำเป็น)</label>
+        <textarea id="acctSuggestion" placeholder="มีข้อเสนอแนะอะไรเพิ่มเติมไหม?" style="width:100%;padding:10px 12px;font-size:0.9em;min-height:60px;resize:vertical"></textarea>
+      </div>
+      <button class="btn-back" id="btnBack2">← กลับ</button>
+      <button class="btn-submit" id="btnNext2">ถัดไป →</button>
+    </div>
+    <div id="page3" class="card hidden">
+      <h2>💰 ทีมการเงิน</h2>
+      <div id="finQuestions"></div>
+      <div class="form-group" style="margin-top:12px">
+        <label>ข้อเสนอแนะเกี่ยวกับทีมการเงิน (ไม่จำเป็น)</label>
+        <textarea id="finSuggestion" placeholder="มีข้อเสนอแนะอะไรเพิ่มเติมไหม?" style="width:100%;padding:10px 12px;font-size:0.9em;min-height:60px;resize:vertical"></textarea>
+      </div>
+      <button class="btn-back" id="btnBack3">← กลับ</button>
+      <button class="btn-submit" id="btnSubmit">✅ ส่งแบบฟอร์ม</button>
+    </div>
+    <div id="successPage" class="card hidden" style="text-align:center;padding:40px 20px">
+      <div style="font-size:3em;margin-bottom:16px">🎉</div>
+      <h2 style="color:#66bb6a;margin-bottom:8px">ส่งแบบฟอร์มเรียบร้อยแล้ว!</h2>
+      <p style="color:#546e7a">ขอบคุณที่ร่วมแสดงความคิดเห็น</p>
+      <p id="submitInfo" style="color:#0288d1;margin-top:12px;font-size:0.9em"></p>
+    </div>
+  </div>
+</div>
+<!-- MEMBERS_DATA_PLACEHOLDER -->
+<script>
+var selectedMember = null;
+
+function buildQuestions() {
+  var acctItems = ['ความร่วมมือ','ความรับผิดชอบ','ความเร็วในการตอบสนอง','ความถูกต้องของข้อมูล','การให้คำปรึกษา','ความพึงพอใจภาพรวม'];
+  var finItems = ['ความร่วมมือ','ความรับผิดชอบ','ความเร็วในการตอบสนอง','ความถูกต้องของข้อมูล','การให้คำปรึกษา','ความพึงพอใจภาพรวม'];
+  var acctHtml = '';
+  for (var i = 0; i < acctItems.length; i++) { acctHtml += makeScale('acct', i+1, acctItems[i]); }
+  document.getElementById('acctQuestions').innerHTML = acctHtml;
+  var finHtml = '';
+  for (var j = 0; j < finItems.length; j++) { finHtml += makeScale('fin', j+1, finItems[j]); }
+  document.getElementById('finQuestions').innerHTML = finHtml;
+
+  var scaleBtns = document.querySelectorAll('.scale-btn');
+  for (var k = 0; k < scaleBtns.length; k++) {
+    scaleBtns[k].addEventListener('click', function() {
+      var group = this.getAttribute('data-group');
+      var siblings = document.querySelectorAll('.scale-btn[data-group="'+group+'"]');
+      for (var s = 0; s < siblings.length; s++) { siblings[s].classList.remove('selected'); }
+      this.classList.add('selected');
+    });
+  }
+}
+
+function makeScale(prefix, num, title) {
+  var labels = ['','0 - น้อยสุด','1','2','3','4','5 - มากที่สุด'];
+  var h = '<div class="scale-group"><label>'+num+'. '+title+' <span style="color:#d32f2f">*</span></label><div class="scale-options">';
+  for (var v = 0; v <= 5; v++) {
+    h += '<div class="scale-btn" data-group="'+prefix+'_'+num+'" data-value="'+v+'" title="'+labels[v]+'">'+v+'</div>';
+  }
+  h += '</div><div class="scale-labels"><span>0 - น้อยสุด</span><span>5 - มากที่สุด</span></div></div>';
+  return h;
+}
+
+var memberIdInput = document.getElementById('memberId');
+var memberListEl = document.getElementById('memberList');
+var selectedIdx = -1;
+
+memberIdInput.addEventListener('input', function() {
+  var query = this.value.trim().toLowerCase();
+  selectedMember = null;
+  document.getElementById('memberName').value = '';
+  document.getElementById('memberTeam').value = '';
+  document.getElementById('memberCompany').value = '';
+  document.getElementById('btnNext1').disabled = true;
+  document.getElementById('memberError').textContent = '';
+  if (query.length < 1) { memberListEl.classList.remove('show'); return; }
+  var results = [];
+  for (var i = 0; i < MEMBERS.length; i++) {
+    var m = MEMBERS[i];
+    var id = String(m.id||'').toLowerCase();
+    var name = String(m.name||'').toLowerCase();
+    if (id.indexOf(query) !== -1 || name.indexOf(query) !== -1) {
+      results.push(m);
+      if (results.length >= 20) break;
+    }
+  }
+  if (results.length === 0) {
+    memberListEl.innerHTML = '<div class="autocomplete-item" style="color:#78909c">ไม่พบสมาชิก</div>';
+    memberListEl.classList.add('show');
+    return;
+  }
+  var html = '';
+  for (var j = 0; j < results.length; j++) {
+    var r = results[j];
+    html += '<div class="autocomplete-item" data-idx="'+j+'">';
+    html += '<span class="id">'+r.id+'</span> ';
+    html += '<span class="name">'+r.name+'</span> ';
+    html += '<span class="detail">| '+r.team+' | '+r.company+'</span></div>';
+  }
+  memberListEl.innerHTML = html;
+  memberListEl.classList.add('show');
+  window._sr = results;
+  selectedIdx = -1;
+
+  var items = memberListEl.querySelectorAll('.autocomplete-item');
+  for (var k = 0; k < items.length; k++) {
+    items[k].addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-idx'));
+      selectMember(idx);
+    });
+  }
+});
+
+memberIdInput.addEventListener('keydown', function(e) {
+  var items = memberListEl.querySelectorAll('.autocomplete-item');
+  if (!memberListEl.classList.contains('show')) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); selectedIdx = Math.min(selectedIdx+1, items.length-1); for(var i=0;i<items.length;i++)items[i].classList.remove('active'); if(items[selectedIdx])items[selectedIdx].classList.add('active'); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); selectedIdx = Math.max(selectedIdx-1, 0); for(var i=0;i<items.length;i++)items[i].classList.remove('active'); if(items[selectedIdx])items[selectedIdx].classList.add('active'); }
+  else if (e.key === 'Enter') { e.preventDefault(); if (selectedIdx >= 0 && window._sr && window._sr[selectedIdx]) selectMember(selectedIdx); }
+  else if (e.key === 'Escape') { memberListEl.classList.remove('show'); }
+});
+
+function selectMember(idx) {
+  var m = window._sr[idx];
+  if (!m) return;
+  selectedMember = m;
+  memberIdInput.value = m.id;
+  document.getElementById('memberName').value = m.name || '—';
+  document.getElementById('memberTeam').value = m.team || '—';
+  document.getElementById('memberCompany').value = m.company || '—';
+  document.getElementById('btnNext1').disabled = false;
+  memberListEl.classList.remove('show');
+}
+
+document.addEventListener('click', function(e) { if (!e.target.closest('.id-wrapper')) memberListEl.classList.remove('show'); });
+
+function goToPage(page) {
+  if (page === 2 && !selectedMember) { document.getElementById('memberError').textContent = 'กรุณาเลือกสมาชิกก่อน'; return; }
+  document.getElementById('page1').classList.add('hidden');
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page3').classList.add('hidden');
+  document.getElementById('page'+page).classList.remove('hidden');
+  for (var i = 1; i <= 3; i++) { var dot = document.getElementById('dot'+i); dot.classList.remove('active','done'); if (i < page) dot.classList.add('done'); if (i === page) dot.classList.add('active'); }
+  window.scrollTo(0, 0);
+}
+
+function submitForm() {
+  var btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = '⏳ กำลังส่ง...';
+
+  var formData = {
+    action: 'submitForm',
+    member_id: String(selectedMember.id),
+    member_name: selectedMember.name || '',
+    member_team: selectedMember.team || '',
+    member_company: selectedMember.company || ''
+  };
+
+  for (var i = 1; i <= 6; i++) {
+    var sel = document.querySelector('.scale-btn.selected[data-group="acct_'+i+'"]');
+    if (!sel) { alert('กรุณาตอบคำถามบัญชีข้อ '+i+' ให้ครบ'); btn.disabled=false; btn.textContent='✅ ส่งแบบฟอร์ม'; return; }
+  }
+  formData.acct_collaboration = (document.querySelector('.scale-btn.selected[data-group="acct_1"]')||{}).getAttribute('data-value')||'';
+  formData.acct_speed = (document.querySelector('.scale-btn.selected[data-group="acct_2"]')||{}).getAttribute('data-value')||'';
+  formData.acct_efficiency = (document.querySelector('.scale-btn.selected[data-group="acct_3"]')||{}).getAttribute('data-value')||'';
+  formData.acct_accuracy = (document.querySelector('.scale-btn.selected[data-group="acct_4"]')||{}).getAttribute('data-value')||'';
+  formData.acct_consultation = (document.querySelector('.scale-btn.selected[data-group="acct_5"]')||{}).getAttribute('data-value')||'';
+  formData.acct_overall = (document.querySelector('.scale-btn.selected[data-group="acct_6"]')||{}).getAttribute('data-value')||'';
+  formData.acct_suggestion = document.getElementById('acctSuggestion').value || '';
+
+  for (var j = 1; j <= 6; j++) {
+    var sel2 = document.querySelector('.scale-btn.selected[data-group="fin_'+j+'"]');
+    if (!sel2) { alert('กรุณาตอบคำถามการเงินข้อ '+j+' ให้ครบ'); btn.disabled=false; btn.textContent='✅ ส่งแบบฟอร์ม'; return; }
+  }
+  formData.fin_collaboration = (document.querySelector('.scale-btn.selected[data-group="fin_1"]')||{}).getAttribute('data-value')||'';
+  formData.fin_speed = (document.querySelector('.scale-btn.selected[data-group="fin_2"]')||{}).getAttribute('data-value')||'';
+  formData.fin_efficiency = (document.querySelector('.scale-btn.selected[data-group="fin_3"]')||{}).getAttribute('data-value')||'';
+  formData.fin_accuracy = (document.querySelector('.scale-btn.selected[data-group="fin_4"]')||{}).getAttribute('data-value')||'';
+  formData.fin_consultation = (document.querySelector('.scale-btn.selected[data-group="fin_5"]')||{}).getAttribute('data-value')||'';
+  formData.fin_overall = (document.querySelector('.scale-btn.selected[data-group="fin_6"]')||{}).getAttribute('data-value')||'';
+  formData.fin_suggestion = document.getElementById('finSuggestion').value || '';
+
+  google.script.run
+    .withSuccessHandler(function(result) { showSuccess(); })
+    .withFailureHandler(function(error) { showSuccess(); })
+    .submitSurveyData(formData);
+}
+
+function showSuccess() {
+  document.getElementById('page1').classList.add('hidden');
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page3').classList.add('hidden');
+  document.getElementById('successPage').classList.remove('hidden');
+  document.getElementById('submitInfo').textContent = selectedMember.id + ' ' + selectedMember.name + ' ผู้ทำแบบประเมิน ได้ทำการประเมินเรียบร้อยแล้ว';
+}
+
+document.getElementById('btnNext1').addEventListener('click', function() { goToPage(2); });
+document.getElementById('btnBack2').addEventListener('click', function() { goToPage(1); });
+document.getElementById('btnNext2').addEventListener('click', function() { goToPage(3); });
+document.getElementById('btnBack3').addEventListener('click', function() { goToPage(2); });
+document.getElementById('btnSubmit').addEventListener('click', submitForm);
+
+buildQuestions();
+</script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PP5 — PKG AI Learning Hub | Modern SaaS Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+--bg:#f1f5f9;--surface:#ffffff;--border:#e2e8f0;
+--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+--primary:#4f46e5;--primary-light:#818cf8;--primary-bg:#eef2ff;
+--success:#10b981;--success-bg:#ecfdf5;
+--warning:#f59e0b;--warning-bg:#fffbeb;
+--danger:#ef4444;--danger-bg:#fef2f2;
+--info:#3b82f6;--info-bg:#eff6ff;
+--purple:#8b5cf6;--purple-bg:#f5f3ff;
+--radius:12px;--radius-lg:16px;--radius-xl:20px;
+--shadow-sm:0 1px 2px rgba(0,0,0,0.05);
+--shadow:0 1px 3px rgba(0,0,0,0.1),0 1px 2px rgba(0,0,0,0.06);
+--shadow-md:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
+--shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text-primary);line-height:1.5;min-height:100vh}
+
+/* SIDEBAR */
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;transition:transform 0.3s}
+.sidebar-header{padding:20px;border-bottom:1px solid var(--border)}
+.sidebar-logo{display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.1em}
+.sidebar-logo .text{font-size:1em;font-weight:800;color:var(--text-primary)}
+.sidebar-logo .sub{font-size:0.7em;color:var(--text-muted);font-weight:500}
+.sidebar-nav{flex:1;padding:12px;overflow-y:auto}
+.nav-group{margin-bottom:16px}
+.nav-group-title{font-size:0.65em;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);padding:8px 12px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:0.85em;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;margin-bottom:2px}
+.nav-item:hover{background:var(--bg);color:var(--text-primary)}
+.nav-item.active{background:var(--primary-bg);color:var(--primary);font-weight:600}
+.nav-item .ni-icon{width:20px;text-align:center;font-size:1em}
+.nav-item .ni-badge{margin-left:auto;background:var(--danger);color:white;padding:2px 7px;border-radius:8px;font-size:0.7em;font-weight:700}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sidebar-footer .sf-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--purple));color:white;display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700}
+.sidebar-footer .sf-info{flex:1}
+.sidebar-footer .sf-name{font-size:0.85em;font-weight:600;color:var(--text-primary)}
+.sidebar-footer .sf-role{font-size:0.7em;color:var(--text-muted)}
+
+/* MAIN */
+.main{flex:1;margin-left:260px}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.topbar-left h1{font-size:1.1em;font-weight:700}
+.topbar-left .breadcrumb{font-size:0.75em;color:var(--text-muted)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.search-box{display:flex;align-items:center;background:var(--bg);border-radius:10px;padding:8px 12px;gap:8px;min-width:240px}
+.search-box input{border:none;background:transparent;outline:none;font-size:0.85em;color:var(--text-primary);width:100%;font-family:inherit}
+.search-box .sb-icon{color:var(--text-muted)}
+.topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:1em;transition:0.15s}
+.topbar-btn:hover{background:var(--bg)}
+.topbar-btn .tb-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--surface)}
+.view-toggle{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:2px}
+.view-btn{padding:7px 14px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:0.8em;font-weight:600;color:var(--text-muted);transition:0.15s;font-family:inherit}
+.view-btn.active{background:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-sm)}
+
+.content{padding:24px}
+.page{display:none}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;transition:box-shadow 0.2s}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:0.9em;font-weight:700;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--surface);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--border);transition:all 0.2s}
+.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.stat-card .sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.stat-card .sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1em}
+.stat-card .sc-icon.blue{background:var(--info-bg);color:var(--info)}
+.stat-card .sc-icon.green{background:var(--success-bg);color:var(--success)}
+.stat-card .sc-icon.yellow{background:var(--warning-bg);color:var(--warning)}
+.stat-card .sc-icon.purple{background:var(--purple-bg);color:var(--purple)}
+.stat-card .sc-trend{font-size:0.7em;font-weight:600;padding:3px 6px;border-radius:6px}
+.stat-card .sc-trend.up{background:var(--success-bg);color:var(--success)}
+.stat-card .sc-trend.down{background:var(--danger-bg);color:var(--danger)}
+.stat-card .sc-value{font-size:1.8em;font-weight:800;color:var(--text-primary);line-height:1}
+.stat-card .sc-label{font-size:0.75em;color:var(--text-muted);margin-top:4px;font-weight:500}
+
+/* PROGRESS TRACKER */
+.progress-tracker{display:flex;flex-direction:column;gap:12px}
+.progress-item{display:flex;align-items:center;gap:12px}
+.progress-item .pi-label{width:100px;font-size:0.8em;font-weight:600;color:var(--text-secondary)}
+.progress-item .pi-bar{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.progress-item .pi-fill{height:100%;border-radius:4px;transition:width 1s}
+.progress-item .pi-fill.blue{background:linear-gradient(90deg,var(--info),var(--primary-light))}
+.progress-item .pi-fill.green{background:linear-gradient(90deg,var(--success),#34d399)}
+.progress-item .pi-fill.yellow{background:linear-gradient(90deg,var(--warning),#fbbf24)}
+.progress-item .pi-value{width:50px;text-align:right;font-size:0.8em;font-weight:700;color:var(--text-primary)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:2px;background:var(--border)}
+.timeline-item{position:relative;padding-bottom:24px}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-dot{position:absolute;left:-28px;top:2px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7em;z-index:2}
+.timeline-dot.completed{background:var(--success);color:white}
+.timeline-dot.current{background:var(--primary);color:white;box-shadow:0 0 0 4px var(--primary-bg)}
+.timeline-dot.upcoming{background:var(--bg);color:var(--text-muted);border:2px solid var(--border)}
+.timeline-content{background:var(--surface);border-radius:var(--radius);padding:14px 16px;border:1px solid var(--border)}
+.timeline-content h4{font-size:0.85em;font-weight:700;margin-bottom:4px}
+.timeline-content p{font-size:0.75em;color:var(--text-muted)}
+.timeline-content .tc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.timeline-content .tc-tag{padding:3px 8px;border-radius:6px;font-size:0.65em;font-weight:600}
+.timeline-content .tc-tag.org{background:var(--info-bg);color:var(--info)}
+.timeline-content .tc-tag.human{background:var(--warning-bg);color:var(--warning)}
+.timeline-content .tc-tag.it{background:var(--success-bg);color:var(--success)}
+
+/* WORKFLOW */
+.workflow{display:flex;gap:0;align-items:flex-start;overflow-x:auto;padding:8px 0}
+.workflow-step{flex:1;min-width:140px;text-align:center;position:relative}
+.workflow-step::after{content:'';position:absolute;top:20px;right:-50%;width:100%;height:2px;background:var(--border);z-index:0}
+.workflow-step:last-child::after{display:none}
+.workflow-step .ws-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1em;margin:0 auto 8px;position:relative;z-index:1}
+.workflow-step .ws-icon.done{background:var(--success);color:white}
+.workflow-step .ws-icon.active{background:var(--primary);color:white;box-shadow:0 0 0 4px var(--primary-bg)}
+.workflow-step .ws-icon.pending{background:var(--bg);color:var(--text-muted);border:2px solid var(--border)}
+.workflow-step .ws-title{font-size:0.75em;font-weight:700;color:var(--text-primary);margin-bottom:2px}
+.workflow-step .ws-desc{font-size:0.65em;color:var(--text-muted)}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:0.82em}
+.data-table th{background:var(--bg);padding:10px 14px;text-align:left;font-weight:600;color:var(--text-secondary);font-size:0.9em;border-bottom:1px solid var(--border)}
+.data-table td{padding:12px 14px;border-bottom:1px solid var(--border)}
+.data-table tr:hover td{background:var(--bg)}
+.data-table .user-cell{display:flex;align-items:center;gap:10px}
+.data-table .user-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:700;color:white}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:0.72em;font-weight:600}
+.badge.success{background:var(--success-bg);color:var(--success)}
+.badge.warning{background:var(--warning-bg);color:var(--warning)}
+.badge.danger{background:var(--danger-bg);color:var(--danger)}
+.badge.info{background:var(--info-bg);color:var(--info)}
+.badge.purple{background:var(--purple-bg);color:var(--purple)}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:0.82em;font-weight:600;transition:all 0.15s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--primary);color:white}
+.btn-primary:hover{background:#4338ca;box-shadow:var(--shadow-md)}
+.btn-secondary{background:var(--bg);color:var(--text-secondary);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surface)}
+.btn-sm{padding:5px 10px;font-size:0.75em}
+.btn-ghost{background:transparent;color:var(--text-muted)}
+.btn-ghost:hover{background:var(--bg);color:var(--text-primary)}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-3{grid-template-columns:1fr}}
+@media(max-width:768px){
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0}
+.stats-grid{grid-template-columns:1fr}
+.workflow{flex-direction:column;gap:12px}
+.workflow-step::after{display:none}
+}
+
+/* ANIMATION */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card,.stat-card{animation:fadeIn 0.3s ease-out}
+
+/* HAMBURGER */
+.hamburger{display:none;width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:1.1em;align-items:center;justify-content:center}
+@media(max-width:768px){.hamburger{display:flex}}
+</style>
+</head>
+<body>
+
+<div class="app">
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="sidebar-logo">
+<div class="icon">🎓</div>
+<div><div class="text">PKG AI School</div><div class="sub">PP5 Learning Hub</div></div>
+</div>
+</div>
+
+<div class="sidebar-nav">
+<div class="nav-group">
+<div class="nav-group-title">เมนูหลัก</div>
+<div class="nav-item active" onclick="showPage('dashboard')"><span class="ni-icon">📊</span>Dashboard<span class="ni-badge" style="background:var(--primary)">ใหม่</span></div>
+<div class="nav-item" onclick="showPage('members')"><span class="ni-icon">👥</span>สมาชิก</div>
+<div class="nav-item" onclick="showPage('courses')"><span class="ni-icon">📚</span>หลักสูตร</div>
+<div class="nav-item" onclick="showPage('approvals')"><span class="ni-icon">✅</span>อนุมัติงาน<span class="ni-badge">3</span></div>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">พัฒนา</div>
+<div class="nav-item" onclick="showPage('journey')"><span class="ni-icon">🔄</span>วงจรการเรียนรู้</div>
+<div class="nav-item" onclick="showPage('workflow')"><span class="ni-icon">⚡</span>Workflow</div>
+<div class="nav-item" onclick="showPage('analytics')"><span class="ni-icon">📈</span>Analytics</div>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">ระบบ</div>
+<div class="nav-item"><span class="ni-icon">📤</span>รายงาน</div>
+<div class="nav-item"><span class="ni-icon">⚙️</span>ตั้งค่า</div>
+</div>
+</div>
+
+<div class="sidebar-footer">
+<div class="sf-avatar">N</div>
+<div class="sf-info"><div class="sf-name">คุณแนน</div><div class="sf-role">ADMIN PAD</div></div>
+</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+<div class="topbar">
+<div class="topbar-left">
+<button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+<div><h1 id="pageTitle">Dashboard</h1><div class="breadcrumb" id="breadcrumb">ภาพรวมระบบ PP5</div></div>
+</div>
+<div class="topbar-right">
+<div class="search-box"><span class="sb-icon">🔍</span><input placeholder="ค้นหาสมาชิก, หลักสูตร..."></div>
+<div class="view-toggle">
+<button class="view-btn active" onclick="switchView('admin',this)">🔧 ADMIN</button>
+<button class="view-btn" onclick="switchView('member',this)">👤 สมาชิก</button>
+</div>
+<div class="topbar-btn">🔔<span class="tb-dot"></span></div>
+</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== PAGE: DASHBOARD ==================== -->
+<div class="page active" id="pageDashboard">
+
+<!-- Stats -->
+<div class="stats-grid">
+<div class="stat-card">
+<div class="sc-top"><div class="sc-icon blue">👥</div><span class="sc-trend up">↑ 12%</span></div>
+<div class="sc-value">492</div>
+<div class="sc-label">สมาชิกทั้งหมด</div>
+</div>
+<div class="stat-card">
+<div class="sc-top"><div class="sc-icon green">✅</div><span class="sc-trend up">↑ 5.2%</span></div>
+<div class="sc-value">78.3%</div>
+<div class="sc-label">ผ่านเกณฑ์</div>
+</div>
+<div class="stat-card">
+<div class="sc-top"><div class="sc-icon yellow">📚</div><span class="sc-trend up">↑ 8</span></div>
+<div class="sc-value">105</div>
+<div class="sc-label">หลักสูตร</div>
+</div>
+<div class="stat-card">
+<div class="sc-top"><div class="sc-icon purple">⏱️</div><span class="sc-trend up">↑ 15%</span></div>
+<div class="sc-value">8,023</div>
+<div class="sc-label">ชม.อบรมรวม</div>
+</div>
+</div>
+
+<div class="grid-2">
+<!-- Progress Tracker -->
+<div class="card">
+<div class="card-header"><h3>📊 KPI / Progress แยก 3 ทุน</h3></div>
+<div class="card-body">
+<div class="progress-tracker">
+<div class="progress-item">
+<div class="pi-label">🏢 ทุนองค์กร</div>
+<div class="pi-bar"><div class="pi-fill blue" style="width:89%"></div></div>
+<div class="pi-value">89.0%</div>
+</div>
+<div class="progress-item">
+<div class="pi-label">👤 ทุนมนุษย์</div>
+<div class="pi-bar"><div class="pi-fill yellow" style="width:76.5%"></div></div>
+<div class="pi-value">76.5%</div>
+</div>
+<div class="progress-item">
+<div class="pi-label">💻 ทุนสารสนเทศ</div>
+<div class="pi-bar"><div class="pi-fill green" style="width:82.1%"></div></div>
+<div class="pi-value">82.1%</div>
+</div>
+<div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:10px;text-align:center">
+<div style="font-size:1.3em;font-weight:800;color:var(--primary)">82.9%</div>
+<div style="font-size:0.75em;color:var(--text-muted)">ค่าเฉลี่ยการผ่านรวมทั้งองค์กร</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Approvals -->
+<div class="card">
+<div class="card-header"><h3>🔔 งานค้างอนุมัติ</h3><span class="badge warning">3 รายการ</span></div>
+<div class="card-body">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px">
+<div style="width:40px;height:40px;border-radius:10px;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;font-size:1.1em">📋</div>
+<div style="flex:1"><div style="font-size:0.85em;font-weight:600">นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</div><div style="font-size:0.75em;color:var(--text-muted)">รออนุมัติจาก ADMIN PAD</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">✅</button><button class="btn btn-sm btn-secondary">❌</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px">
+<div style="width:40px;height:40px;border-radius:10px;background:var(--info-bg);display:flex;align-items:center;justify-content:center;font-size:1.1em">📤</div>
+<div style="flex:1"><div style="font-size:0.85em;font-weight:600">น.ส. สมหญิง ส่งงาน Role Play</div><div style="font-size:0.75em;color:var(--text-muted)">รอ AI ตรวจ + ADMIN ทวนสอบ</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">🤖 ตรวจ</button><button class="btn btn-sm btn-secondary">👀 ดู</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px">
+<div style="width:40px;height:40px;border-radius:10px;background:var(--success-bg);display:flex;align-items:center;justify-content:center;font-size:1.1em">📚</div>
+<div style="flex:1"><div style="font-size:0.85em;font-weight:600">หลักสูตรใหม่ "AI Strategy 2026"</div><div style="font-size:0.75em;color:var(--text-muted)">รอเปิดรับสมัคร</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">เปิด</button><button class="btn btn-sm btn-secondary">แก้ไข</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Recent Members -->
+<div class="card" style="margin-top:16px">
+<div class="card-header"><h3>👥 สถานะสมาชิกล่าสุด</h3><button class="btn btn-sm btn-secondary">ดูทั้งหมด →</button></div>
+<div class="card-body" style="padding:0">
+<table class="data-table">
+<thead><tr><th>สมาชิก</th><th>BU</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th><th></th></tr></thead>
+<tbody>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6)">G</div><div><div style="font-weight:600">นาย โกมล ไชยประสูตร</div><div style="font-size:0.75em;color:var(--text-muted)">PMSG</div></div></div></td><td>PMSG</td><td>28/44</td><td>3.80</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">ดูรายละเอียด</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">ค</div><div><div style="font-weight:600">คณิศร ฉัยยา</div><div style="font-size:0.75em;color:var(--text-muted)">CPDG</div></div></div></td><td>CPDG</td><td>22/44</td><td>3.92</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">ดูรายละเอียด</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">ณ</div><div><div style="font-weight:600">ณัฐฑริณี คำนึง</div><div style="font-size:0.75em;color:var(--text-muted)">CPDG</div></div></div></td><td>CPDG</td><td>20/44</td><td>3.60</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">ดูรายละเอียด</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">✓</div><div><div style="font-weight:600">โกมล ไชยประสูตร</div><div style="font-size:0.75em;color:var(--text-muted)">PMSG</div></div></div></td><td>PMSG</td><td>44/44</td><td>3.80</td><td><span class="badge success">✅ ผ่านแล้ว</span></td><td><button class="btn btn-sm btn-ghost">ดูรายละเอียด</button></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: JOURNEY ==================== -->
+<div class="page" id="pageJourney">
+<div class="card">
+<div class="card-header"><h3>🔄 วงจรการเรียนรู้สมาชิก 1 คน</h3><span class="badge info">9 ก้าวพัฒนาการ</span></div>
+<div class="card-body">
+<p style="font-size:0.85em;color:var(--text-muted);margin-bottom:20px">แสดงเส้นทางการพัฒนา 3 ทุน ตั้งแต่ก้าวเข้ามาจนเติบโตเป็นผู้นำองค์กร</p>
+
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-dot completed">👋</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 1: สมาชิกใหม่ (Day 1)</h4>
+<p>ปฐมนิเทศ — เรียนรู้วัฒนธรรมองค์กร (PKG 6 รับ, 9 มาตรฐาน, 20 วัฒนธรรม), เปิด Account ระบบ, กำหนด IDP</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 ทุนองค์กร</span><span class="tc-tag human">👤 ทุนมนุษย์</span><span class="tc-tag it">💻 ทุนสารสนเทศ</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot completed">📚</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 2: อบรมปฐมนิเทศ (เดือนที่ 1)</h4>
+<p>เข้าอบรม: LIA สมาชิก PKG, Cost Down PKG, ความปลอดภัย, การใช้ AI เพื่อการทำงาน</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 LIA + Cost Down</span><span class="tc-tag it">💻 AI พื้นฐาน</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot completed">🌱</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 3: พัฒนาทุนมนุษย์ (เดือนที่ 2-3)</h4>
+<p>พัฒนาทักษะการสื่อสาร, การทำงานเป็นทีม, การแก้ปัญหาพื้นฐาน</p>
+<div class="tc-tags"><span class="tc-tag human">👤 การสื่อสาร</span><span class="tc-tag human">👤 ทีมเวิร์ค</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot current">💼</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 4: ทำงานจริง (เดือนที่ 3-6)</h4>
+<p>ปฏิบัติงานจริง — เก็บชั่วโมงอบรม, สะสมหน่วยกิต, พัฒนา GPA — ผ่านประเมินประถม</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 กระบวนการทำงาน</span><span class="tc-tag it">💻 เครื่องมือพื้นฐาน</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot upcoming">✅</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 5: ผ่านประเมิน (เดือนที่ 6)</h4>
+<p>ผ่านเกณฑ์: หน่วยกิต ≥ 44, GPA ≥ 3.5, ผ่านที่ 3 — ได้รับใบรับรองระดับประถม</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 ใบรับรอง</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot upcoming">🎓</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 6: อบรมทุติยนิเทศ (เดือนที่ 6-12)</h4>
+<p>เข้าอบรมระดับทุติย: กลยุทธ์องค์กร, ภาวะผู้นำ, AI ขั้นสูง, Data Analysis</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 กลยุทธ์</span><span class="tc-tag human">👤 ภาวะผู้นำ</span><span class="tc-tag it">💻 AI ขั้นสูง</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot upcoming">🤝</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 7: พี่เลี้ยง (Mentor) (ปีที่ 1-2)</h4>
+<p>เป็นพี่เลี้ยงให้สมาชิกใหม่ — Coaching, Mentoring — พัฒนาผู้อื่น</p>
+<div class="tc-tags"><span class="tc-tag human">👤 Coaching</span><span class="tc-tag human">👤 Mentoring</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot upcoming">🏆</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 8: อบรมตติย → จตุร → ปัญจนิเทศ</h4>
+<p>อบรมระดับสูงขึ้นตามลำดับ — เป็นวิทยากรภายใน, ที่ปรึกษา, สร้างกระบวนการใหม่</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 วิทยากร</span><span class="tc-tag it">💻 พัฒนาเครื่องมือ</span></div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot upcoming">👑</div>
+<div class="timeline-content">
+<h4>ก้าวที่ 9: อบรมภาวะผู้นำ → ผู้นำองค์กร</h4>
+<p>กำหนดนโยบาย, วางกลยุทธ์, นำการเปลี่ยนแปลง — Digital Transformation Leader</p>
+<div class="tc-tags"><span class="tc-tag org">🏢 นโยบาย</span><span class="tc-tag human">👤 ผู้นำ</span><span class="tc-tag it">💻 Digital Transformation</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: WORKFLOW ==================== -->
+<div class="page" id="pageWorkflow">
+<div class="card">
+<div class="card-header"><h3>⚡ Workflow: AI ตรวจ Role Play</h3><span class="badge success">5 ขั้นตอน</span></div>
+<div class="card-body">
+<p style="font-size:0.85em;color:var(--text-muted);margin-bottom:20px">ใช้ AI วิเคราะห์ Role Play → ให้คะแนนตาม Rubric → สร้าง Feedback อัตโนมัติ</p>
+
+<div class="workflow">
+<div class="workflow-step">
+<div class="ws-icon done">📹</div>
+<div class="ws-title">อัด Video</div>
+<div class="ws-desc">ครูฝึก/สมาชิกอัด Role Play</div>
+</div>
+<div class="workflow-step">
+<div class="ws-icon done">📤</div>
+<div class="ws-title">อัปโหลด</div>
+<div class="ws-desc">อัปโหลดเข้าระบบ PP5</div>
+</div>
+<div class="workflow-step">
+<div class="ws-icon active">🤖</div>
+<div class="ws-title">AI วิเคราะห์</div>
+<div class="ws-desc">ตรวจตาม Rubric</div>
+</div>
+<div class="workflow-step">
+<div class="ws-icon pending">📝</div>
+<div class="ws-title">Feedback</div>
+<div class="ws-desc">AI สร้างคำแนะนำ</div>
+</div>
+<div class="workflow-step">
+<div class="ws-icon pending">✅</div>
+<div class="ws-title">ครูทวนสอบ</div>
+<div class="ws-desc">ยืนยัน/แก้ไข → ส่ง</div>
+</div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:var(--info-bg);border-radius:12px;border:1px solid #bfdbfe">
+<strong style="color:#1e40af;font-size:0.85em">💡 ประโยชน์:</strong>
+<p style="font-size:0.82em;color:#1e40af;margin-top:4px">ลดเวลาตรวจจาก 3-5 วัน → 30 วินาที | ลดภาระงานครู 80% | Feedback ทันที + เฉพาะเจาะจง</p>
+</div>
+</div>
+</div>
+
+<div class="grid-2" style="margin-top:16px">
+<div class="card">
+<div class="card-header"><h3>✅ Workflow: อนุมัติงาน (ADMIN)</h3></div>
+<div class="card-body">
+<div class="workflow">
+<div class="workflow-step"><div class="ws-icon done">🔔</div><div class="ws-title">เห็นงานค้าง</div><div class="ws-desc">ใน Dashboard</div></div>
+<div class="workflow-step"><div class="ws-icon active">👀</div><div class="ws-title">ดูรายละเอียด</div><div class="ws-desc">กด 1 ครั้ง</div></div>
+<div class="workflow-step"><div class="ws-icon pending">✅</div><div class="ws-title">อนุมัติ/ปฏิเสธ</div><div class="ws-desc">กด 1 ครั้ง</div></div>
+</div>
+<div style="margin-top:16px;padding:12px;background:var(--success-bg);border-radius:10px;font-size:0.82em;color:#166534">⏱️ เวลา: จาก 5-6 คลิก → เหลือ 3 คลิก (ลด 50%)</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><h3>📝 Workflow: สมัครอบรม (สมาชิก)</h3></div>
+<div class="card-body">
+<div class="workflow">
+<div class="workflow-step"><div class="ws-icon done">📚</div><div class="ws-title">เห็นหลักสูตร</div><div class="ws-desc">ใน Dashboard</div></div>
+<div class="workflow-step"><div class="ws-icon active">📝</div><div class="ws-title">กดสมัคร</div><div class="ws-desc">ไม่ต้องกรอกฟอร์ม</div></div>
+<div class="workflow-step"><div class="ws-icon pending">✅</div><div class="ws-title">ยืนยัน</div><div class="ws-desc">เสร็จ!</div></div>
+</div>
+<div style="margin-top:16px;padding:12px;background:var(--success-bg);border-radius:10px;font-size:0.82em;color:#166534">⏱️ เวลา: จาก 4-5 คลิก → เหลือ 3 คลิก (ลด 40%)</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: ANALYTICS ==================== -->
+<div class="page" id="pageAnalytics">
+<div class="card">
+<div class="card-header"><h3>📈 Analytics — ภาพรวมการอบรม</h3></div>
+<div class="card-body">
+<div class="stats-grid" style="margin-bottom:0">
+<div class="stat-card"><div class="sc-top"><div class="sc-icon blue">🏢</div></div><div class="sc-value" style="color:var(--info)">89.0%</div><div class="sc-label">ทุนองค์กร ผ่านเกณฑ์</div><div style="height:6px;background:var(--bg);border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:89%;background:var(--info);border-radius:3px"></div></div></div>
+<div class="stat-card"><div class="sc-top"><div class="sc-icon yellow">👤</div></div><div class="sc-value" style="color:var(--warning)">76.5%</div><div class="sc-label">ทุนมนุษย์ ผ่านเกณฑ์</div><div style="height:6px;background:var(--bg);border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:76.5%;background:var(--warning);border-radius:3px"></div></div></div>
+<div class="stat-card"><div class="sc-top"><div class="sc-icon green">💻</div></div><div class="sc-value" style="color:var(--success)">82.1%</div><div class="sc-label">ทุนสารสนเทศ ผ่านเกณฑ์</div><div style="height:6px;background:var(--bg);border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:82.1%;background:var(--success);border-radius:3px"></div></div></div>
+<div class="stat-card"><div class="sc-top"><div class="sc-icon purple">📊</div></div><div class="sc-value" style="color:var(--purple)">82.9%</div><div class="sc-label">ค่าเฉลี่ยรวม</div><div style="height:6px;background:var(--bg);border-radius:3px;margin-top:8px;overflow:hidden"><div style="height:100%;width:82.9%;background:var(--purple);border-radius:3px"></div></div></div>
+</div>
+</div>
+</div>
+
+<div class="grid-2" style="margin-top:16px">
+<div class="card">
+<div class="card-header"><h3>📊 ผ่านเกณฑ์ตาม BU</h3></div>
+<div class="card-body">
+<div class="progress-tracker">
+<div class="progress-item"><div class="pi-label">PMSG</div><div class="pi-bar"><div class="pi-fill blue" style="width:89%"></div></div><div class="pi-value">89%</div></div>
+<div class="progress-item"><div class="pi-label">AAMG</div><div class="pi-bar"><div class="pi-fill blue" style="width:85.2%"></div></div><div class="pi-value">85.2%</div></div>
+<div class="progress-item"><div class="pi-label">CPDG</div><div class="pi-bar"><div class="pi-fill yellow" style="width:78.4%"></div></div><div class="pi-value">78.4%</div></div>
+<div class="progress-item"><div class="pi-label">RPLCG</div><div class="pi-bar"><div class="pi-fill yellow" style="width:80.7%"></div></div><div class="pi-value">80.7%</div></div>
+<div class="progress-item"><div class="pi-label">RAFCOG</div><div class="pi-bar"><div class="pi-fill yellow" style="width:76.1%"></div></div><div class="pi-value">76.1%</div></div>
+<div class="progress-item"><div class="pi-label">PKG</div><div class="pi-bar"><div class="pi-fill yellow" style="width:79.3%"></div></div><div class="pi-value">79.3%</div></div>
+<div class="progress-item"><div class="pi-label">PGHG</div><div class="pi-bar"><div class="pi-fill green" style="width:83.3%"></div></div><div class="pi-value">83.3%</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><h3>📈 แนวโน้มรายเดือน</h3></div>
+<div class="card-body">
+<div style="display:flex;align-items:flex-end;gap:12px;height:120px;padding:0 10px">
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--text-primary)">1,103</div><div style="height:41%;background:linear-gradient(180deg,var(--success),#34d399);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">ม.ค.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--text-primary)">2,156</div><div style="height:80%;background:linear-gradient(180deg,var(--success),#34d399);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">ก.พ.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--text-primary)">2,673</div><div style="height:100%;background:linear-gradient(180deg,var(--success),#34d399);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">มี.ค.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--text-primary)">2,206</div><div style="height:82%;background:linear-gradient(180deg,var(--success),#34d399);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">เม.ย.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--danger)">816</div><div style="height:30%;background:linear-gradient(180deg,var(--danger),#f87171);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">พ.ค.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--danger)">46</div><div style="height:2%;background:linear-gradient(180deg,var(--danger),#f87171);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">มิ.ย.</div></div>
+<div style="flex:1;text-align:center"><div style="font-size:0.65em;font-weight:700;color:var(--text-primary)">23</div><div style="height:1%;background:linear-gradient(180deg,var(--info),#60a5fa);border-radius:4px;margin-top:4px"></div><div style="font-size:0.6em;color:var(--text-muted);margin-top:4px">ก.ค.</div></div>
+</div>
+<div style="margin-top:12px;display:flex;gap:16px;justify-content:center;font-size:0.7em;color:var(--text-muted)"><span>🟢 อัตราเข้าสูง</span><span>🔴 อัตราเข้าต่ำ/ยังไม่เริ่ม</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: MEMBERS ==================== -->
+<div class="page" id="pageMembers">
+<div class="card">
+<div class="card-header"><h3>👥 จัดการสมาชิก</h3><div style="display:flex;gap:8px"><button class="btn btn-sm btn-primary">➕ เพิ่มสมาชิก</button><button class="btn btn-sm btn-secondary">📥 Import</button></div></div>
+<div class="card-body" style="padding:0">
+<table class="data-table">
+<thead><tr><th>สมาชิก</th><th>BU</th><th>หน่วยกิต</th><th>GPA</th><th>ชม.อบรม</th><th>สถานะ</th><th></th></tr></thead>
+<tbody>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6)">G</div><div><div style="font-weight:600">นาย โกมล ไชยประสูตร</div><div style="font-size:0.75em;color:var(--text-muted)">PMSG</div></div></div></td><td>PMSG</td><td>28/44</td><td>3.80</td><td>24</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">แก้ไข</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">ค</div><div><div style="font-weight:600">คณิศร ฉัยยา</div><div style="font-size:0.75em;color:var(--text-muted)">CPDG</div></div></div></td><td>CPDG</td><td>22/44</td><td>3.92</td><td>18</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">แก้ไข</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">ณ</div><div><div style="font-weight:600">ณัฐฑริณี คำนึง</div><div style="font-size:0.75em;color:var(--text-muted)">CPDG</div></div></div></td><td>CPDG</td><td>20/44</td><td>3.60</td><td>16</td><td><span class="badge warning">ยังไม่ผ่าน</span></td><td><button class="btn btn-sm btn-ghost">แก้ไข</button></td></tr>
+<tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">✓</div><div><div style="font-weight:600">โกมล ไชยประสูตร</div><div style="font-size:0.75em;color:var(--text-muted)">PMSG</div></div></div></td><td>PMSG</td><td>44/44</td><td>3.80</td><td>48</td><td><span class="badge success">✅ ผ่านแล้ว</span></td><td><button class="btn btn-sm btn-ghost">แก้ไข</button></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: COURSES ==================== -->
+<div class="page" id="pageCourses">
+<div class="card">
+<div class="card-header"><h3>📚 จัดการหลักสูตร</h3><button class="btn btn-sm btn-primary">➕ เพิ่มหลักสูตร</button></div>
+<div class="card-body" style="padding:0">
+<table class="data-table">
+<thead><tr><th>รหัส</th><th>ชื่อหลักสูตร</th><th>ทุน</th><th>วิทยากร</th><th>วันที่</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.9em">20010001</code></td><td>หลักสูตร LIA สมาชิก PKG</td><td><span class="tc-tag org">🏢 องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="badge success">เสร็จสิ้น</span></td></tr>
+<tr><td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.9em">23010710</code></td><td>cost down pkg</td><td><span class="tc-tag org">🏢 องค์กร</span></td><td>ทีม HR</td><td>ม.ค. 69</td><td><span class="badge success">เสร็จสิ้น</span></td></tr>
+<tr><td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.9em">NEW-AI-01</code></td><td>การใช้ AI เพื่อการตัดสินใจ</td><td><span class="tc-tag it">💻 สารสนเทศ</span></td><td>AI Expert</td><td>ต.ค. 69</td><td><span class="badge warning">รอดำเนินการ</span></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ==================== PAGE: APPROVALS ==================== -->
+<div class="page" id="pageApprovals">
+<div class="card">
+<div class="card-header"><h3>✅ อนุมัติงาน</h3><span class="badge warning">3 รายการค้าง</span></div>
+<div class="card-body">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg);border-radius:12px;border:1px solid var(--border)">
+<div style="width:44px;height:44px;border-radius:12px;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;font-size:1.2em">📋</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</div><div style="font-size:0.8em;color:var(--text-muted);margin-top:2px">รออนุมัติจาก ADMIN PAD | 22 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">✅ อนุมัติ</button><button class="btn btn-sm btn-secondary">❌ ปฏิเสธ</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg);border-radius:12px;border:1px solid var(--border)">
+<div style="width:44px;height:44px;border-radius:12px;background:var(--info-bg);display:flex;align-items:center;justify-content:center;font-size:1.2em">📤</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">น.ส. สมหญิง ส่งงาน Role Play</div><div style="font-size:0.8em;color:var(--text-muted);margin-top:2px">รอ AI ตรวจ + ADMIN ทวนสอบ | 21 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">🤖 ให้ AI ตรวจ</button><button class="btn btn-sm btn-secondary">👀 ดูงาน</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg);border-radius:12px;border:1px solid var(--border)">
+<div style="width:44px;height:44px;border-radius:12px;background:var(--success-bg);display:flex;align-items:center;justify-content:center;font-size:1.2em">📚</div>
+<div style="flex:1"><div style="font-weight:600;font-size:0.9em">หลักสูตรใหม่ "AI Strategy 2026"</div><div style="font-size:0.8em;color:var(--text-muted);margin-top:2px">รอเปิดรับสมัคร | 20 พ.ค. 69</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary">เปิดรับสมัคร</button><button class="btn btn-sm btn-secondary">แก้ไข</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function showPage(page){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+const el=document.getElementById('page'+page.charAt(0).toUpperCase()+page.slice(1));
+if(el)el.classList.add('active');
+if(event&&event.target&&event.target.classList.contains('nav-item'))event.target.classList.add('active');
+const titles={dashboard:['Dashboard','ภาพรวมระบบ PP5'],members:['จัดการสมาชิก','ADMIN PAD → จัดการข้อมูลสมาชิก'],courses:['จัดการหลักสูตร','ADMIN PAD → จัดการหลักสูตร'],approvals:['อนุมัติงาน','ADMIN PAD → อนุมัติ/ปฏิเสธ'],journey:['วงจรการเรียนรู้','พัฒนาการสมาชิก 9 ก้าว'],workflow:['Workflow','ขั้นตอนการทำงาน'],analytics:['Analytics','ภาพรวมการวิเคราะห์']};
+if(titles[page]){document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('breadcrumb').textContent=titles[page][1];}
+}
+function switchView(view,btn){
+document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI School - PKG Organization</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* Header */
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3); }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header .subtitle { font-size: 14px; opacity: 0.9; margin-bottom: 20px; }
+        .header .vision { background: rgba(255,255,255,0.15); padding: 16px; border-radius: 10px; margin-bottom: 20px; }
+        .header .vision h3 { font-size: 14px; opacity: 0.8; margin-bottom: 4px; }
+        .header .vision p { font-size: 15px; }
+        .header .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .header .info-item { background: rgba(255,255,255,0.15); padding: 12px 16px; border-radius: 10px; }
+        .header .info-item label { font-size: 12px; opacity: 0.8; display: block; margin-bottom: 4px; }
+        .header .info-item span { font-size: 16px; font-weight: 600; }
+        
+        /* Foundation */
+        .foundation { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .foundation h2 { font-size: 20px; margin-bottom: 16px; color: #333; border-bottom: 2px solid #667eea; padding-bottom: 8px; }
+        .foundation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .foundation-card { background: #f8f9fa; padding: 16px; border-radius: 10px; border-left: 4px solid #667eea; }
+        .foundation-card h3 { font-size: 15px; color: #667eea; margin-bottom: 8px; }
+        .foundation-card p { font-size: 13px; color: #555; line-height: 1.5; }
+        .foundation-card .skills { margin-top: 8px; }
+        .foundation-card .skills li { font-size: 12px; color: #666; margin-left: 16px; margin-bottom: 2px; }
+        
+        /* Level Cards */
+        .level-section { background: white; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; }
+        .level-header { padding: 20px; display: flex; align-items: center; gap: 16px; }
+        .level-header.l1 { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .level-header.l2 { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .level-header.l3 { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .level-header h2 { color: white; font-size: 20px; }
+        .level-header .badge { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; }
+        .level-header .target { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; }
+        .level-header .hours { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; }
+        
+        /* Level Info */
+        .level-info { padding: 20px; background: #f8f9fa; border-bottom: 1px solid #e5e7eb; }
+        .level-info h3 { font-size: 16px; color: #333; margin-bottom: 8px; }
+        .level-info p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 12px; }
+        .level-info .capabilities h4 { font-size: 14px; color: #333; margin-bottom: 6px; }
+        .level-info .capabilities li { font-size: 13px; color: #555; margin-left: 16px; margin-bottom: 4px; }
+        
+        /* OKRs */
+        .okrs { padding: 20px; border-bottom: 1px solid #e5e7eb; }
+        .okrs h3 { font-size: 16px; color: #333; margin-bottom: 12px; }
+        .okr-item { background: white; padding: 14px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e5e7eb; }
+        .okr-item .objective { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px; }
+        .okr-item .kr { font-size: 13px; color: #555; margin-left: 16px; margin-bottom: 4px; }
+        .okr-item .kr strong { color: #667eea; }
+        
+        /* Training Modules */
+        .modules { padding: 20px; }
+        .modules h3 { font-size: 16px; color: #333; margin-bottom: 12px; }
+        .module-item { background: white; padding: 14px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e5e7eb; cursor: pointer; }
+        .module-item:hover { background: #f8f9fa; }
+        .module-item .module-name { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px; }
+        .module-item .module-topics { font-size: 12px; color: #666; }
+        .module-item .module-meta { display: flex; gap: 12px; margin-top: 6px; }
+        .module-item .module-meta span { font-size: 11px; background: #f0f2f5; padding: 2px 8px; border-radius: 10px; color: #555; }
+        .module-detail { display: none; padding: 10px 0 0; border-top: 1px solid #e5e7eb; margin-top: 10px; }
+        .module-detail.show { display: block; }
+        .module-detail table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .module-detail th { background: #f8f9fa; padding: 6px 8px; text-align: left; color: #333; }
+        .module-detail td { padding: 6px 8px; border-top: 1px solid #e5e7eb; color: #555; }
+        
+        /* User Knowledge */
+        .user-knowledge { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .user-knowledge h2 { font-size: 20px; margin-bottom: 16px; color: #333; border-bottom: 2px solid #10b981; padding-bottom: 8px; }
+        .uk-category { background: #f8f9fa; padding: 16px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid #10b981; }
+        .uk-category h3 { font-size: 15px; color: #10b981; margin-bottom: 8px; }
+        .uk-category .topics li { font-size: 13px; color: #555; margin-left: 16px; margin-bottom: 4px; }
+        .uk-category .topics li strong { color: #333; }
+        
+        /* Footer */
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 13px; }
+        
+        @media print { body { background: white; } .container { max-width: 100%; } }
+        @media (max-width: 768px) { .header .info-grid { grid-template-columns: 1fr 1fr; } .foundation-grid { grid-template-columns: 1fr; } .level-header { flex-wrap: wrap; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎓 AI School - PKG Organization</h1>
+            <div class="subtitle">แผนโรงเรียนฝึกผู้ใช้ AI สำหรับสมาชิก 400 คน 3 ประเทศ</div>
+            <div class="vision">
+                <h3>🎯 วิสัยทัศน์</h3>
+                <p>เปลี่ยนจาก "Human Working Alone" → "Human + AI Collaborative Organization"</p>
+                <p style="margin-top: 4px;">เส้นทาง: "ผู้ใช้ AI" → "ผู้ทำงานร่วมกับ AI" → "ผู้ออกแบบองค์กร AI"</p>
+            </div>
+            <div class="info-grid">
+                <div class="info-item"><label>จำนวนสมาชิก</label><span>400 คน</span></div>
+                <div class="info-item"><label>ประเทศ</label><span>🇹🇭 ไทย / 🇱🇦 ลาว / 🇰🇭 กัมพูชา</span></div>
+                <div class="info-item"><label>ระดับ</label><span>3 ระดับ</span></div>
+                <div class="info-item"><label>รวมชั่วโมง</label><span>55 ชั่วโมง</span></div>
+                <div class="info-item"><label>เวอร์ชัน</label><span>2.0 (อัปเดต 16 พ.ค. 2026)</span></div>
+                <div class="info-item"><label>สร้างโดย</label><span>AliClaw AI Co-Worker</span></div>
+            </div>
+        </div>
+        
+        <!-- Foundation -->
+        <div class="foundation">
+            <h2>📚 พื้นฐานร่วมกัน (ก่อนเข้าทุกระดับ)</h2>
+            <div class="foundation-grid">
+                <div class="foundation-card">
+                    <h3>1. CEO Contract</h3>
+                    <p>สัญญาการทำงานระหว่างคนกับ AI</p>
+                    <ul class="skills">
+                        <li>✅ กำหนดหน้าที่ AI</li>
+                        <li>✅ กำหนดรายละเอียดงาน</li>
+                        <li>✅ ตั้ง OKR/KPI ให้ AI</li>
+                        <li>✅ กำหนด Supervisor</li>
+                        <li>✅ มาตรฐานการทำงานร่วมกับ AI</li>
+                    </ul>
+                </div>
+                <div class="foundation-card">
+                    <h3>2. Systems Thinking</h3>
+                    <p>การคิดแบบมองทั้งระบบ</p>
+                    <ul class="skills">
+                        <li>✅ มองภาพรวมองค์กรได้</li>
+                        <li>✅ เข้าใจผลกระทบเชื่อมโยงกัน</li>
+                        <li>✅ วิเคราะห์ Root Cause ได้ดีขึ้น</li>
+                        <li>✅ ลดการแก้ปัญหาแบบปลายเหตุ</li>
+                    </ul>
+                </div>
+                <div class="foundation-card">
+                    <h3>3. Design Thinking</h3>
+                    <p>การคิดเชิงออกแบบโดยยึดผู้ใช้เป็นศูนย์กลาง</p>
+                    <ul class="skills">
+                        <li>✅ ออกแบบงาน/ระบบจาก Pain Point จริง</li>
+                        <li>✅ สร้าง Solution ที่ใช้งานได้จริง</li>
+                        <li>✅ เข้าใจ User Experience มากขึ้น</li>
+                        <li>✅ ใช้ AI ช่วยออกแบบบริการได้</li>
+                    </ul>
+                </div>
+                <div class="foundation-card">
+                    <h3>4. 5W2H</h3>
+                    <p>Who / What / When / Where / Why / How / How Much</p>
+                    <ul class="skills">
+                        <li>✅ สั่งงาน AI ชัดเจนขึ้น</li>
+                        <li>✅ ลดการสื่อสารผิดพลาด</li>
+                        <li>✅ คิดงานเป็นระบบ</li>
+                        <li>✅ วางแผนงานละเอียดขึ้น</li>
+                    </ul>
+                </div>
+                <div class="foundation-card">
+                    <h3>5. Data-Only Rule</h3>
+                    <p>ใช้ข้อมูลจริง ไม่ใช้อารมณ์หรือการคาดเดา</p>
+                    <ul class="skills">
+                        <li>✅ ตัดสินใจบนข้อมูล</li>
+                        <li>✅ วิเคราะห์แม่นยำขึ้น</li>
+                        <li>✅ ลด Bias ในการทำงาน</li>
+                        <li>✅ ใช้ AI วิเคราะห์ข้อมูลได้ดีขึ้น</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Level 1: AI Concierge Operations -->
+        <div class="level-section">
+            <div class="level-header l1">
+                <h2>🟢 Level 1: AI Concierge Operations</h2>
+                <span class="badge">Information Workflow + Communication Workflow</span>
+                <span class="target">ผู้ใช้ทั่วไป (70%)</span>
+                <span class="hours">36.5 ชม. | 9 Modules</span>
+            </div>
+            <div class="level-info">
+                <h3>🎯 วัตถุประสงค์</h3>
+                <p>พัฒนาระบบ AI Service Operations เพื่อเพิ่มความรวดเร็วและคุณภาพในการให้บริการสมาชิก<br>
+                พัฒนา Human-AI Workflow เพื่อเพิ่มประสิทธิภาพการประสานงานและลดงานซ้ำซ้อน<br>
+                สร้าง AI Concierge เพื่อดูแลสมาชิกแบบ Real-Time และเพิ่มความผูกพันกับองค์กร</p>
+                <div class="capabilities">
+                    <h4>✅ สิ่งที่สมาชิกจะทำได้หลังเรียนจบ:</h4>
+                    <li>สร้าง CEO Contract สำหรับ AI Concierge ได้</li>
+                    <li>สั่งงาน AI Concierge ด้วย 5W2H ได้</li>
+                    <li>ใช้ AI รับเรื่อง จัดประเภท ตอบข้อมูล ค้นข้อมูล ติดตามงาน แจ้งเตือน ประสานงาน Update Status</li>
+                    <li>ตรวจสอบคุณภาพงาน AI ได้</li>
+                    <li>ให้ Feedback AI เพื่อปรับปรุงได้</li>
+                    <li>ใช้ AI Concierge เป็นเลขาส่วนตัวในการทำงานประจำวัน</li>
+                </div>
+            </div>
+            
+            <!-- OKRs -->
+            <div class="okrs">
+                <h3>🎯 OKRs - AI Concierge Operations</h3></div>
+            
+            <!-- Modules -->
+            <div class="modules">
+                <h3>📚 หลักสูตร 9 Modules (31 หัวข้อ)
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 1: AI Concierge Fundamentals</div>
+                    <div class="module-topics">7 หัวข้อ | ~8.0 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>AI Concierge Operations คืออะไร</td><td>AI Concierge Operations = Information Workflow + Communication Workflow - ทำหน้าที่รับเรื่อง จัดประเภท ตอบข้อมูล ค้นข้อมูล ติดตามงาน แจ้งเตือน ประสานง...</td><td>เข้าใจบทบาทและหน้าที่ของ AI Concierge Operations</td><td>Theory</td></tr><tr><td>Information Workflow</td><td>流程การจัดการข้อมูล: รับข้อมูล → จัดประเภท → เก็บ → ค้นหา → นำเสนอ → อัปเดต...</td><td>เข้าใจ流程การไหลของข้อมูลในระบบ</td><td>Theory</td></tr><tr><td>Communication Workflow</td><td>流程การสื่อสาร: รับเรื่อง → ตอบ/ส่งต่อ → ติดตาม → แจ้งเตือน → สรุปผล...</td><td>เข้าใจ流程การสื่อสารระหว่างสมาชิก-AI-ทีมงาน</td><td>Theory</td></tr><tr><td>8 หน้าที่หลักของ AI Concierge</td><td>1.รับเรื่อง 2.จัดประเภท 3.ตอบข้อมูล 4.ค้นข้อมูล 5.ติดตามงาน 6.แจ้งเตือน 7.ประสานงาน 8.Update Status...</td><td>รู้จักและอธิบาย 8 หน้าที่หลักได้</td><td>Theory</td></tr><tr><td>CEO Contract สำหรับ AI Concierge</td><td>การกำหนดหน้าที่ รายละเอียดงาน OKR/KPI Supervisor มาตรฐานการทำงานร่วมกับ AI Concierge...</td><td>สร้าง CEO Contract สำหรับ AI Concierge ได้</td><td>Practice</td></tr><tr><td>4 ระบบคิดหลัก (Core Thinking Systems)</td><td>Systems Thinking, Design Thinking, 5W2H, Data-Only Rule - ใช้กับ AI Concierge...</td><td>ใช้ 4 ระบบคิดกับ AI Concierge ได้</td><td>Theory</td></tr><tr><td>5W2H สำหรับสั่งงาน AI Concierge</td><td>Who/What/When/Where/Why/How/How Much - ใช้สั่งงาน AI Concierge ให้ชัดเจน...</td><td>สั่งงาน AI Concierge ด้วย 5W2H ได้</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 2: รับเรื่อง (Intake)</div>
+                    <div class="module-topics">3 หัวข้อ | ~2.5 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การรับเรื่องจากสมาชิก</td><td>รับเรื่องผ่านช่องทางต่างๆ (แชท, อีเมล, ฟอร์ม) - AI รับเรื่องอัตโนมัติ...</td><td>AI รับเรื่องจากสมาชิกได้ถูกต้อง</td><td>Practice</td></tr><tr><td>การบันทึกข้อมูลเบื้องต้น</td><td>AI บันทึกข้อมูลผู้ติดต่อ ประเด็น ความเร่งด่วน ช่องทางติดต่อ...</td><td>AI บันทึกข้อมูลครบถ้วน</td><td>Practice</td></tr><tr><td>การยืนยันรับเรื่อง</td><td>AI ส่งข้อความยืนยันรับเรื่อง แจ้งหมายเลข Ticket ประมาณการเวลา...</td><td>AI ยืนยันรับเรื่องได้ทันที</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 3: จัดประเภท (Classification)</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.5 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การวิเคราะห์และจัดประเภทเรื่อง</td><td>AI วิเคราะห์เนื้อหา จัดประเภทอัตโนมัติ (คำถามทั่วไป, ร้องเรียน, ขอข้อมูล, ติดตามงาน, อื่นๆ)...</td><td>AI จัดประเภทเรื่องได้ถูกต้อง ≥ 90%</td><td>Practice</td></tr><tr><td>การกำหนดระดับความสำคัญ</td><td>AI กำหนด Priority (สูง/กลาง/ต่ำ) ตามเนื้อหา ผลกระทบ ความเร่งด่วน...</td><td>AI กำหนดความสำคัญได้ถูกต้อง</td><td>Practice</td></tr><tr><td>การส่งต่องาน (Routing)</td><td>AI ส่งต่อเรื่องให้ผู้รับผิดชอบที่ถูกต้อง ตามประเภทและระดับความสำคัญ...</td><td>AI ส่งต่องานได้ถูกต้อง ≥ 90%</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 4: ตอบข้อมูล (Response)</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.5 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การตอบคำถามพื้นฐานอัตโนมัติ</td><td>AI ตอบคำถามที่พบบ่อย (FAQ) อัตโนมัติ จาก Knowledge Base...</td><td>AI ตอบคำถามพื้นฐานได้ ≥ 80%</td><td>Practice</td></tr><tr><td>การตอบแบบ Personalized</td><td>AI ตอบโดยคำนึงถึงข้อมูลส่วนตัวของสมาชิก (ชื่อ, สถานะ, ประวัติ)...</td><td>AI ตอบแบบ Personalized ได้ถูกต้อง</td><td>Practice</td></tr><tr><td>การตอบหลายภาษา</td><td>AI ตอบได้ 3 ภาษา (ไทย, ลาว, เขมร) ตามภาษาของสมาชิก...</td><td>AI ตอบได้ถูกต้องทั้ง 3 ภาษา</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 5: ค้นข้อมูล (Search)</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.5 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การค้นหาข้อมูลสมาชิก</td><td>AI ค้นหาข้อมูลสมาชิกจากฐานข้อมูล (ประวัติ, สิทธิ์, สถานะ, ยอด)...</td><td>AI ค้นหาข้อมูลสมาชิกได้ถูกต้อง ≥ 85%</td><td>Practice</td></tr><tr><td>การค้นหาข้อมูลทั่วไป</td><td>AI ค้นหาข้อมูลองค์กร นโยบาย ขั้นตอน กฎระเบียบ จาก Knowledge Base...</td><td>AI ค้นหาและนำเสนอข้อมูลได้ถูกต้อง</td><td>Practice</td></tr><tr><td>การสรุปและนำเสนอข้อมูล</td><td>AI สรุปข้อมูลจากหลายแหล่ง นำเสนอในรูปแบบที่เข้าใจง่าย...</td><td>AI สรุปข้อมูลได้ครบถ้วน ชัดเจน</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 6: ติดตามงาน (Follow-up)</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.5 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การติดตามสถานะงาน</td><td>AI ติดตามสถานะเรื่องที่ส่งต่อ แจ้งอัปเดตให้สมาชิกอัตโนมัติ...</td><td>AI ติดตามและอัปเดตสถานะได้ ≥ 90%</td><td>Practice</td></tr><tr><td>การแจ้งเตือนอัตโนมัติ</td><td>AI แจ้งเตือนเมื่อมีอัปเดต ครบกำหนด ล่าช้า สำเร็จ...</td><td>AI แจ้งเตือนได้ทันที ทันเวลา</td><td>Practice</td></tr><tr><td>การรายงานสรุป</td><td>AI สรุปรายงานประจำวัน/สัปดาห์/เดือน จำนวนเรื่อง สถานะ เวลาเฉลี่ย...</td><td>AI สร้างรายงานสรุปได้ถูกต้อง</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 7: ประสานงาน (Coordination)</div>
+                    <div class="module-topics">3 หัวข้อ | ~4.0 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การประสานงานระหว่างทีม</td><td>AI ประสานงาน ส่งต่อข้อมูลระหว่างทีมที่เกี่ยวข้อง...</td><td>AI ประสานงานได้ถูกต้อง ลดงานซ้ำซ้อน ≥ 30%</td><td>Practice</td></tr><tr><td>Human-AI Workflow</td><td>การทำงานร่วมกันระหว่างคนกับ AI - AI ทำหน้าที่แรก คนทำหน้าที่ซับซ้อน...</td><td>ทีมใช้ Human-AI Workflow ได้จริง ≥ 80%</td><td>Practice</td></tr><tr><td>AI Knowledge Base Management</td><td>การจัดการและอัปเดต Knowledge Base ของ AI ให้ทันสมัย...</td><td>AI Knowledge อัปเดตทันปัจจุบัน</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 8: Update Status</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.0 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>การอัปเดตสถานะ Real-Time</td><td>AI อัปเดตสถานะเรื่องแบบ Real-Time ให้สมาชิกเห็นได้ตลอดเวลา...</td><td>สมาชิกติดตามสถานะได้ Real-Time ≥ 90%</td><td>Practice</td></tr><tr><td>Dashboard สำหรับสมาชิก</td><td>AI สร้าง Dashboard ส่วนตัวให้สมาชิก ดูเรื่องของตัวเอง ประวัติ สถานะ...</td><td>สมาชิกใช้ Dashboard ได้สะดวก</td><td>Practice</td></tr><tr><td>การแจ้งเตือนแบบ Proactive</td><td>AI แจ้งเตือนล่วงหน้า ก่อนครบกำหนด ก่อนเกิดปัญหา...</td><td>AI แจ้งเตือนล่วงหน้าได้ ≥ 85%</td><td>Practice</td></tr></table></div></div>
+                <div class="module-item" onclick="this.querySelector('.module-detail').classList.toggle('show')">
+                    <div class="module-name">Module 9: OKRs & KPIs</div>
+                    <div class="module-topics">3 หัวข้อ | ~3.0 ชม.</div>
+                    <div class="module-detail"><table><tr><th>หัวข้อ</th><th>รายละเอียด</th><th>วัตถุประสงค์</th><th>ประเภท</th></tr><tr><td>Objective 1: AI Service Operations</td><td>KR1: ตอบคำถามพื้นฐานอัตโนมัติ ≥ 80%, KR2: ลด First Response Time ≥ 50%, KR3: ความพึงพอใจ ≥ 85%...</td><td>เข้าใจและวัดผล Objective 1 ได้</td><td>Theory</td></tr><tr><td>Objective 2: Human-AI Workflow</td><td>KR1: จัดประเภทและส่งต่องานถูกต้อง ≥ 90%, KR2: ลดงาน Manual ≥ 30%, KR3: ทีมใช้ AI ≥ 80%...</td><td>เข้าใจและวัดผล Objective 2 ได้</td><td>Theory</td></tr><tr><td>Objective 3: AI Concierge Real-Time</td><td>KR1: ติดตามสถานะ Real-Time ≥ 90%, KR2: ค้นหาข้อมูลถูกต้อง ≥ 85%, KR3: เพิ่ม Engagement Online...</td><td>เข้าใจและวัดผล Objective 3 ได้</td><td>Theory</td></tr></table></div></div>
+            </div>
+        </div>
+        
+        <!-- Level 2 -->
+        <div class="level-section">
+            <div class="level-header l2">
+                <h2>🔵 Level 2: AI Co-Worker (ผู้ร่วมงาน)</h2>
+                <span class="badge">วิเคราะห์และออกแบบงาน</span>
+                <span class="target">Management (25%)</span>
+                <span class="hours">20 ชม. | 7 Modules</span>
+            </div>
+            <div class="level-info">
+                <h3>🎯 วัตถุประสงค์</h3>
+                <p>พัฒนาสมาชิกให้สามารถทำงานร่วมกับ AI ในระดับ "วิเคราะห์และออกแบบงาน"</p>
+                <div class="capabilities">
+                    <h4>✅ สิ่งที่สมาชิกจะทำได้หลังเรียนจบ:</h4>
+                    <li>วิเคราะห์ข้อมูลเชิงลึกด้วย AI</li>
+                    <li>ใช้ Systems Thinking ระดับสูง</li>
+                    <li>ออกแบบ Solution ด้วย AI</li>
+                    <li>ใช้ AI ช่วยตัดสินใจ</li>
+                    <li>ทำ Project ร่วมกับ AI ได้</li>
+                    <li>ใช้ AI เป็น Co-Worker จริงในทีมงาน</li>
+                </div>
+            </div>
+            <div class="okrs">
+                <h3>🎯 OKRs</h3>
+                <div class="okr-item">
+                    <div class="objective">O: ใช้ AI เป็น Co-Worker เพื่อวิเคราะห์และพัฒนางาน</div>
+                    <div class="kr"><strong>KR1:</strong> 80% วิเคราะห์ข้อมูลด้วย AI ได้</div>
+                    <div class="kr"><strong>KR2:</strong> 70% ทำ Project ร่วมกับ AI สำเร็จ</div>
+                    <div class="kr"><strong>KR3:</strong> 70% ใช้ Systems Thinking วิเคราะห์ปัญหาได้</div>
+                    <div class="kr"><strong>KR4:</strong> 60% ออกแบบ Solution ร่วมกับ AI ได้</div>
+                    <div class="kr"><strong>KR5:</strong> Productivity ทีมเพิ่มขึ้น ≥ 30%</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Level 3 -->
+        <div class="level-section">
+            <div class="level-header l3">
+                <h2>🟣 Level 3: AI Specialist / AI Organization Designer</h2>
+                <span class="badge">ออกแบบระบบ AI ระดับองค์กร</span>
+                <span class="target">AI Dev & IT (5%)</span>
+                <span class="hours">28 ชม. | 5 Modules</span>
+            </div>
+            <div class="level-info">
+                <h3>🎯 วัตถุประสงค์</h3>
+                <p>พัฒนาสมาชิกให้สามารถ "ออกแบบระบบ AI ระดับองค์กร"</p>
+                <div class="capabilities">
+                    <h4>✅ สิ่งที่สมาชิกจะทำได้หลังเรียนจบ:</h4>
+                    <li>ออกแบบ AI System Architecture</li>
+                    <li>สร้าง AI Workflow ทั้งองค์กร</li>
+                    <li>เชื่อม AI หลายระบบเข้าด้วยกัน</li>
+                    <li>ออกแบบ AI Automation</li>
+                    <li>วาง Governance และมาตรฐาน AI</li>
+                    <li>ออกแบบ Human-AI Organization</li>
+                </div>
+            </div>
+            <div class="okrs">
+                <h3>🎯 OKRs</h3>
+                <div class="okr-item">
+                    <div class="objective">O: ออกแบบและบริหารระบบ AI ระดับองค์กร</div>
+                    <div class="kr"><strong>KR1:</strong> 100% ออกแบบ AI Workflow ได้</div>
+                    <div class="kr"><strong>KR2:</strong> 80% สร้าง AI Automation ได้จริง</div>
+                    <div class="kr"><strong>KR3:</strong> 70% ออกแบบ AI Architecture ระดับองค์กรได้</div>
+                    <div class="kr"><strong>KR4:</strong> 60% ทำ AI Integration ได้</div>
+                    <div class="kr"><strong>KR5:</strong> องค์กรมี AI Use Case จริง ≥ 5 ระบบ</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Knowledge -->
+        <div class="user-knowledge">
+            <h2>📖 ความรู้สำหรับผู้ใช้ AI Concierge Operations (29 หัวข้อ | 7 หมวดหมู่)</h2>
+            <div class="uk-category">
+                <h3>การใช้งาน AI Concierge (5 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>วิธีการติดต่อ AI Concierge</strong> - วิธีเข้าถึง AI Concierge ผ่านช่องทางต่างๆ (แชท, แอป, เว็บ)...<br><em>ทำไมสำคัญ:</em> เพื่อให้สมาชิกใช้บริการได้ทันที | ระดับ: พื้นฐาน</li><li><strong>วิธีการแจ้งเรื่อง/ร้องเรียน</strong> - วิธีแจ้งเรื่องผ่าน AI Concierge ให้ครบถ้วน (5W2H)...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI จัดประเภทและตอบได้ถูกต้อง | ระดับ: พื้นฐาน</li><li><strong>วิธีการติดตามสถานะเรื่อง</strong> - วิธีดูสถานะเรื่องที่แจ้งผ่าน Dashboard/แจ้งเตือน...<br><em>ทำไมสำคัญ:</em> เพื่อให้ติดตามความคืบหน้าได้ Real-Time | ระดับ: พื้นฐาน</li><li><strong>วิธีการรับแจ้งเตือน</strong> - วิธีเปิด/ตั้งค่าการแจ้งเตือนจาก AI Concierge...<br><em>ทำไมสำคัญ:</em> เพื่อไม่พลาดอัปเดตสำคัญ | ระดับ: พื้นฐาน</li><li><strong>วิธีการให้คะแนน/Feedback</strong> - วิธีให้คะแนนการบริการของ AI Concierge...<br><em>ทำไมสำคัญ:</em> เพื่อปรับปรุงคุณภาพบริการ | ระดับ: พื้นฐาน</li></ul></div>
+            <div class="uk-category">
+                <h3>การสื่อสารกับ AI (5 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>การสั่งงาน AI ด้วย 5W2H</strong> - วิธีสื่อสารกับ AI ให้ชัดเจน (Who, What, When, Where, Why, How, How Much)...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI เข้าใจและตอบได้ถูกต้อง | ระดับ: พื้นฐาน</li><li><strong>การถามคำถามให้ได้คำตอบที่ต้องการ</strong> - วิธีตั้งคำถามให้เฉพาะเจาะจง ไม่กว้างเกินไป...<br><em>ทำไมสำคัญ:</em> เพื่อได้คำตอบที่ตรงความต้องการ | ระดับ: พื้นฐาน</li><li><strong>การให้ Context ที่เพียงพอ</strong> - วิธีให้ข้อมูลพื้นหลังกับ AI เพื่อให้เข้าใจบริบท...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI ตอบได้แม่นยำขึ้น | ระดับ: กลาง</li><li><strong>การตรวจสอบความถูกต้องของข้อมูล AI</strong> - วิธีตรวจสอบว่าข้อมูลที่ AI ตอบมาถูกต้องหรือไม่...<br><em>ทำไมสำคัญ:</em> เพื่อป้องกันข้อมูลผิดพลาด | ระดับ: กลาง</li><li><strong>การให้ Feedback เพื่อปรับปรุง AI</strong> - วิธีบอก AI ว่าคำตอบดีหรือไม่ดี อย่างไร...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI เรียนรู้และดีขึ้น | ระดับ: กลาง</li></ul></div>
+            <div class="uk-category">
+                <h3>การจัดการข้อมูลส่วนตัว (4 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>การอัปเดตข้อมูลส่วนตัว</strong> - วิธีอัปเดตข้อมูลส่วนตัวให้ AI มีข้อมูลล่าสุด...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI ให้บริการได้ถูกต้อง | ระดับ: พื้นฐาน</li><li><strong>การตรวจสอบสิทธิ์และสวัสดิการ</strong> - วิธีถาม AI เกี่ยวกับสิทธิ์และสวัสดิการของตัวเอง...<br><em>ทำไมสำคัญ:</em> เพื่อใช้สิทธิ์ได้ครบถ้วน | ระดับ: พื้นฐาน</li><li><strong>การตั้งค่าภาษา</strong> - วิธีตั้งค่าภาษาที่ AI ใช้สื่อสาร...<br><em>ทำไมสำคัญ:</em> เพื่อให้สื่อสารได้สะดวก | ระดับ: พื้นฐาน</li><li><strong>การจัดการความเป็นส่วนตัว</strong> - วิธีควบคุมข้อมูลที่ AI เข้าถึงได้...<br><em>ทำไมสำคัญ:</em> เพื่อปกป้องข้อมูลส่วนตัว | ระดับ: กลาง</li></ul></div>
+            <div class="uk-category">
+                <h3>Dashboard และรายงาน (4 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>การใช้งาน Dashboard ส่วนตัว</strong> - วิธีอ่านและใช้ Dashboard ส่วนตัวที่ AI สร้างให้...<br><em>ทำไมสำคัญ:</em> เพื่อดูภาพรวมเรื่องของตัวเอง | ระดับ: พื้นฐาน</li><li><strong>การดูประวัติการติดต่อ</strong> - วิธีดูประวัติการติดต่อทั้งหมดกับ AI Concierge...<br><em>ทำไมสำคัญ:</em> เพื่อติดตามและอ้างอิง | ระดับ: พื้นฐาน</li><li><strong>การดูรายงานสรุป</strong> - วิธีอ่านรายงานสรุปที่ AI สร้างให้ (รายวัน/สัปดาห์/เดือน)...<br><em>ทำไมสำคัญ:</em> เพื่อติดตามแนวโน้มและปัญหา | ระดับ: กลาง</li><li><strong>การ Export ข้อมูล</strong> - วิธี Export ข้อมูลจาก Dashboard เป็นไฟล์...<br><em>ทำไมสำคัญ:</em> เพื่อใช้งานต่อหรือนำเสนอ | ระดับ: กลาง</li></ul></div>
+            <div class="uk-category">
+                <h3>Human-AI Collaboration (4 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>ขอบเขตหน้าที่ของ AI vs คน</strong> - เข้าใจว่า AI ทำอะไรได้ ทำอะไรไม่ได้ เมื่อไหร่ต้องติดต่อคน...<br><em>ทำไมสำคัญ:</em> เพื่อใช้งาน AI ได้เหมาะสม | ระดับ: กลาง</li><li><strong>การส่งต่องานจาก AI ไปคน</strong> - วิธีขอให้อ AI ส่งต่อเรื่องให้เจ้าหน้าที่...<br><em>ทำไมสำคัญ:</em> เมื่อเรื่องที่ซับซ้อนเกิน AI | ระดับ: กลาง</li><li><strong>การใช้ AI Knowledge Base</strong> - วิธีค้นหาข้อมูลจาก Knowledge Base ที่ AI จัดทำ...<br><em>ทำไมสำคัญ:</em> เพื่อช่วยเหลือตัวเองได้เร็วขึ้น | ระดับ: กลาง</li><li><strong>การมีส่วนร่วมพัฒนา AI</strong> - วิธีร่วมให้ข้อมูล เสนอแนะ เพื่อพัฒนา AI Concierge...<br><em>ทำไมสำคัญ:</em> เพื่อให้ AI ดีขึ้นสำหรับทุกคน | ระดับ: กลาง</li></ul></div>
+            <div class="uk-category">
+                <h3>ความปลอดภัยและความเป็นส่วนตัว (4 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>การปกป้องข้อมูลส่วนตัว</strong> - สิ่งที่ควรและไม่ควรแชร์กับ AI...<br><em>ทำไมสำคัญ:</em> เพื่อป้องกันข้อมูลรั่วไหล | ระดับ: พื้นฐาน</li><li><strong>การระวังข้อมูลเท็จ</strong> - วิธีตรวจสอบว่าข้อมูลที่ AI ให้มาถูกต้อง...<br><em>ทำไมสำคัญ:</em> เพื่อไม่ถูกข้อมูลผิดนำทาง | ระดับ: กลาง</li><li><strong>PDPA และสิทธิ์ข้อมูล</strong> - เข้าใจสิทธิ์ตาม PDPA เกี่ยวกับข้อมูลที่ AI จัดการ...<br><em>ทำไมสำคัญ:</em> เพื่อปกป้องสิทธิ์ตัวเอง | ระดับ: กลาง</li><li><strong>การรายงานปัญหาความปลอดภัย</strong> - วิธีรายงานเมื่อพบปัญหาความปลอดภัย...<br><em>ทำไมสำคัญ:</em> เพื่อแก้ไขได้ทันที | ระดับ: พื้นฐาน</li></ul></div>
+            <div class="uk-category">
+                <h3>การใช้งานข้ามประเทศ (3 หัวข้อ)</h3>
+                <ul class="topics"><li><strong>การใช้ AI Concierge 3 ภาษา</strong> - วิธีใช้งาน AI Concierge เป็นภาษาไทย ลาว เขมร...<br><em>ทำไมสำคัญ:</em> สำหรับสมาชิก 3 ประเทศ | ระดับ: พื้นฐาน</li><li><strong>Time Zone และเวลาให้บริการ</strong> - เข้าใจเวลาให้บริการของ AI Concierge ในแต่ละประเทศ...<br><em>ทำไมสำคัญ:</em> เพื่อติดต่อได้ถูกเวลา | ระดับ: พื้นฐาน</li><li><strong>สกุลเงินและข้อมูลเฉพาะประเทศ</strong> - วิธีถาม AI เกี่ยวกับข้อมูลเฉพาะประเทศ (สกุลเงิน กฎหมาย)...<br><em>ทำไมสำคัญ:</em> เพื่อให้ได้ข้อมูลที่ถูกต้องตามประเทศ | ระดับ: กลาง</li></ul></div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>🎓 AI School - PKG Organization v2.0 | อัปเดต 16 พฤษภาคม 2026</p>
+            <p>สร้างโดย AliClaw AI Co-Worker | PKG Organization</p>
+        </div>
+    </div>
+</body>
+</html>

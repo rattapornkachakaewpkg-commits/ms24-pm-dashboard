@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PP5 - Senior UX Design Rationale</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8fafc;color:#0f172a;line-height:1.6}
+:root{--primary:#0f172a;--accent:#2563eb;--success:#059669;--warning:#d97706;--danger:#dc2626;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text-muted:#64748b;--radius:12px}
+.topnav{background:#fff;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-size:1.1em;color:#fff}
+.brand-text{font-size:0.95em;font-weight:700}
+.brand-sub{font-size:0.65em;color:var(--text-muted)}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78em;font-weight:600;color:var(--text-muted);cursor:pointer;transition:0.15s;white-space:nowrap}
+.nav-link:hover{background:#f1f5f9;color:var(--primary)}
+.nav-link.active{background:#eff6ff;color:var(--accent)}
+.content{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+.page{display:none}.page.active{display:block}
+.section{margin-bottom:32px}
+.section-header{margin-bottom:20px}
+.section-header h2{font-size:1.2em;font-weight:800;color:var(--primary);margin-bottom:4px}
+.section-header p{font-size:0.85em;color:var(--text-muted)}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-header h3{font-size:0.9em;font-weight:700;color:var(--primary)}
+.card-body{padding:20px}
+.rationale{background:#f0f9ff;border-left:4px solid var(--accent);padding:16px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rationale strong{display:block;font-size:0.82em;color:#0369a1;margin-bottom:4px}
+.rationale p{font-size:0.82em;color:#0c4a6e}
+.decision{background:#f0fdf4;border-left:4px solid var(--success);padding:16px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.decision strong{display:block;font-size:0.82em;color:#166534;margin-bottom:4px}
+.decision p{font-size:0.82em;color:#14532d}
+.avoid{background:#fef2f2;border-left:4px solid var(--danger);padding:16px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.avoid strong{display:block;font-size:0.82em;color:#991b1b;margin-bottom:4px}
+.avoid p{font-size:0.82em;color:#7f1d1d}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.nav-links{display:none}}
+.persona{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px}
+.persona .avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3em;margin-bottom:10px}
+.persona .avatar.admin{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+.persona .avatar.member{background:linear-gradient(135deg,#059669,#34d399)}
+.persona h4{font-size:0.95em;font-weight:700;color:var(--primary);margin-bottom:3px}
+.persona .role{font-size:0.75em;color:var(--text-muted);margin-bottom:10px}
+.persona ul{margin-left:16px;font-size:0.82em}
+.persona li{margin:4px 0}
+.wireframe{border:2px dashed #cbd5e1;border-radius:var(--radius);padding:20px;background:#fafbfc;position:relative}
+.wireframe::before{content:'WIREFRAME';position:absolute;top:-10px;left:16px;background:#fafbfc;padding:0 8px;font-size:0.65em;font-weight:700;color:#94a3b8;letter-spacing:1px}
+.flow-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.flow-node{padding:7px 12px;border-radius:8px;font-size:0.75em;font-weight:600;white-space:nowrap}
+.flow-node.start{background:#dcfce7;color:#166534}
+.flow-node.step{background:#eff6ff;color:#1e40af}
+.flow-node.milestone{background:#fef3c7;color:#92400e}
+.flow-arrow{color:#94a3b8;font-size:0.85em}
+.badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:0.68em;font-weight:600}
+.badge.blue{background:#dbeafe;color:#1e40af}
+.badge.green{background:#dcfce7;color:#166534}
+.badge.yellow{background:#fef3c7;color:#92400e}
+.badge.purple{background:#ede9fe;color:#6b21a8}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+.comparison .good{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px}
+.comparison .bad{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px}
+.comparison .good strong{color:#166534;font-size:0.82em}
+.comparison .bad strong{color:#991b1b;font-size:0.82em}
+.comparison p{font-size:0.8em;margin-top:5px}
+@media(max-width:768px){.comparison{grid-template-columns:1fr}}
+.design-table{width:100%;border-collapse:collapse;font-size:0.82em}
+.design-table th{background:#f1f5f9;padding:10px 12px;text-align:left;font-weight:600;color:var(--primary);border-bottom:2px solid var(--border)}
+.design-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+.design-table tr:hover{background:#f8fafc}
+</style>
+</head>
+<body>
+<div class="topnav">
+<div class="brand"><div class="brand-icon">PP5</div><div><div class="brand-text">PP5 - Senior UX Design</div><div class="brand-sub">Rationale & Design Decisions</div></div></div>
+<div class="nav-links">
+<span class="nav-link active" onclick="showPage('principles',this)">Principles</span>
+<span class="nav-link" onclick="showPage('users',this)">Users</span>
+<span class="nav-link" onclick="showPage('ia',this)">IA</span>
+<span class="nav-link" onclick="showPage('layout',this)">Layout</span>
+<span class="nav-link" onclick="showPage('dashboard',this)">Dashboard</span>
+<span class="nav-link" onclick="showPage('journey',this)">Journey</span>
+<span class="nav-link" onclick="showPage('workflow',this)">Workflow</span>
+<span class="nav-link" onclick="showPage('mobile',this)">Mobile</span>
+</div>
+</div>
+<div class="content">
+
+<!-- PRINCIPLES -->
+<div class="page active" id="pagePrinciples">
+<div class="section"><div class="section-header"><h2>UX Principles - หลักการออกแบบ</h2><p>ทุกการตัดสินใจมีเหตุผล มาจากปัญหาจริงของผู้ใช้</p></div>
+<div class="card"><div class="card-header"><h3>1. ผู้ใช้ไม่ต้องคิด - เห็นแล้วเข้าใจทันที</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไม?</strong><p>ผู้ใช้ PP5 มีตั้งแต่สมาชิกใหม่จนถึงผู้บริหาร - ถ้าต้อง "คิด" ว่าต้องกดอะไร ระบบล้มเหลวทันที Dashboard ต้องตอบ 3 ข้อใน 3 วินาที: (1) ฉันอยู่ไหน (2) ต้องทำอะไร (3) สถานะเป็นยังไง</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>ใช้ "Progressive Disclosure" - แสดงข้อมูลสำคัญก่อน (KPI 4 ตัว) -> กดดูรายละเอียดได้ทีหลัง ไม่ยัดทุกอย่างในหน้าเดียว</p></div>
+</div></div>
+<div class="card"><div class="card-header"><h3>2. งานที่เคยทำ 10 นาที -> ทำให้เสร็จใน 30 วินาที</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไม?</strong><p>ADMIN PAD ต้องอนุมัติงาน ตรวจสอบสถานะ ดูรายงาน - ถ้าทุกงานต้องกด 5-6 คลิก ADMIN จะเลิกใช้ระบบ และกลับไปใช้ Excel</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>1 คลิก = ดูรายละเอียด | 2 คลิก = อนุมัติ/ปฏิเสธ | 3 คลิก = ส่งรายงาน ทุกงานสำคัญอยู่ในหน้าแรก ไม่ต้องค้นหา</p></div>
+</div></div>
+<div class="card"><div class="card-header"><h3>3. แยกมุมมอง ADMIN / สมาชิก - ไม่ปนกัน</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไม?</strong><p>ADMIN ต้องการ "จัดการ + อนุมัติ + ดูภาพรวม" | สมาชิกต้องการ "ดูของตัวเอง + สมัคร + ส่งงาน" - ถ้ารวมเมนูเดียวกัน ADMIN จะเห็นเมนูที่ไม่ใช้ 50% สมาชิกจะเห็นเมนูที่กดไม่ได้ 70%</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>ใช้ Role-Based Navigation - เมนูต่างกันตาม Role แต่ใช้ Layout เดียวกัน (เรียนรู้ครั้งเดียว ใช้ได้ทั้งสองบทบาท)</p></div>
+</div></div>
+<div class="card"><div class="card-header"><h3>4. สี = ความหมาย ไม่ใช่ตกแต่ง</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไม?</strong><p>ผู้ใช้สแกนหน้าจอก่อนอ่าน - สีต้องสื่อสถานะทันที: เขียว = ผ่าน, เหลือง = รอ, แดง = ปัญหา, น้ำเงิน = ข้อมูล</p></div>
+<div class="avoid"><strong>อย่าทำ</strong><p>ใช้สีตามความสวยงาม, ใช้ Gradient ทุกรายการ, ใช้สีแดงสำหรับหัวข้อ (ผู้ใช้จะคิดว่าเป็นปัญหา)</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>สีหลัก: #0f172a (Neutral) | #2563eb (Action) | #059669 (Success) | #d97706 (Warning) | #dc2626 (Danger) - ทุกสีมีความหมายชัดเจน</p></div>
+</div></div>
+<div class="card"><div class="card-header"><h3>5. Mobile-First แต่ Desktop-Rich</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไม?</strong><p>สมาชิก 60% ดูผ่านมือถือ | ADMIN 80% ใช้ Desktop - ออกแบบให้มือถือใช้ง่ายก่อน แล้วค่อยเพิ่มฟีเจอร์สำหรับ Desktop</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>Mobile: Top Nav + Stacked Cards (กดง่าย) | Desktop: เพิ่ม Sidebar สำหรับ ADMIN (จัดการได้เร็วขึ้น)</p></div>
+</div></div>
+</div></div>
+
+<!-- USERS -->
+<div class="page" id="pageUsers">
+<div class="section"><div class="section-header"><h2>User Personas - รู้จักผู้ใช้</h2><p>ออกแบบตามความต้องการจริง ไม่ใช่สมมติ</p></div>
+<div class="grid-2">
+<div class="persona"><div class="avatar admin">ADMIN</div><h4>ADMIN PAD</h4><div class="role">ผู้จัดการระบบ HRD / Supervisor</div><ul><li><strong>เป้าหมาย:</strong> ดูภาพรวม, อนุมัติงาน, ติดตามสถานะสมาชิก</li><li><strong>ความถี่:</strong> ใช้ทุกวัน (10-30 นาที/วัน)</li><li><strong>อุปกรณ์:</strong> Desktop 80%, Tablet 20%</li><li><strong>ปัญหา:</strong> ต้องเปิดหลายหน้าเพื่ออนุมัติงาน</li><li><strong>Success Metric:</strong> อนุมัติงานได้ภายใน 2 คลิก</li></ul></div>
+<div class="persona"><div class="avatar member">MEM</div><h4>สมาชิก / BMC</h4><div class="role">พนักงานทุกระดับ</div><ul><li><strong>เป้าหมาย:</strong> ดูผลตัวเอง, สมัครอบรม, ส่งงาน</li><li><strong>ความถี่:</strong> ใช้สัปดาห์ละ 1-2 ครั้ง (2-5 นาที/ครั้ง)</li><li><strong>อุปกรณ์:</strong> Mobile 60%, Desktop 40%</li><li><strong>ปัญหา:</strong> ไม่รู้ว่าต้องอบรมอะไร</li><li><strong>Success Metric:</strong> ดูผลตัวเองได้ภายใน 1 คลิก</li></ul></div>
+</div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>User Journey Map - เปรียบเทียบ</h3></div><div class="card-body">
+<table class="design-table"><thead><tr><th>ขั้นตอน</th><th>ADMIN PAD ต้องการ</th><th>สมาชิก ต้องการ</th></tr></thead><tbody>
+<tr><td><strong>เข้าสู่ระบบ</strong></td><td>เห็นงานค้างอนุมัติทันที</td><td>เห็นหลักสูตรถัดไปของตัวเอง</td></tr>
+<tr><td><strong>ดูสถานะ</strong></td><td>ภาพรวมทั้งองค์กร + กรองตาม BU</td><td>หน่วยกิต/GPA ของตัวเอง</td></tr>
+<tr><td><strong>ดำเนินการ</strong></td><td>อนุมัติ/ปฏิเสธ/มอบหมาย</td><td>สมัครอบรม/ส่งงาน</td></tr>
+<tr><td><strong>ติดตาม</strong></td><td>รายงาน KPI, Progress แต่ละ BU</td><td>Timeline การเติบโต</td></tr>
+<tr><td><strong>ส่งออก</strong></td><td>Export PDF/Excel ส่งผู้บริหาร</td><td>ดูใบรับรอง/ใบเสร็จ</td></tr>
+</tbody></table>
+</div></div>
+</div></div>
+
+<!-- IA -->
+<div class="page" id="pageIa">
+<div class="section"><div class="section-header"><h2>Information Architecture - โครงสร้างข้อมูล</h2><p>จัดกลุ่มตาม "งานที่ผู้ใช้ทำ" ไม่ใช่ตาม "ฟีเจอร์ที่มี"</p></div>
+<div class="card"><div class="card-header"><h3>ADMIN PAD Navigation</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไมจัดแบบนี้?</strong><p>ADMIN ต้องการ "จัดการ -> ติดตาม -> รายงาน -> ตั้งค่า" - เรียงตามลำดับการใช้งานจริง (งานประจำ -> งานวิเคราะห์ -> งานตั้งค่า)</p></div>
+<div class="flow-row"><span class="flow-node start">หน้าแรก</span><span class="flow-arrow">-></span><span class="flow-node step">สมาชิก</span><span class="flow-arrow">-></span><span class="flow-node step">หลักสูตร</span><span class="flow-arrow">-></span><span class="flow-node step">อนุมัติงาน</span><span class="flow-arrow">-></span><span class="flow-node milestone">รายงาน</span><span class="flow-arrow">-></span><span class="flow-node step">ตั้งค่า</span></div>
+<table class="design-table" style="margin-top:12px"><thead><tr><th>เมนู</th><th>งานหลัก</th><th>ความถี่</th><th>เหตุผล</th></tr></thead><tbody>
+<tr><td>หน้าแรก</td><td>เห็นงานค้าง, KPI ด่วน</td><td>ทุกครั้ง</td><td>เป็น Landing Page</td></tr>
+<tr><td>สมาชิก</td><td>ดู/แก้ไข/เพิ่มสมาชิก</td><td>ทุกวัน</td><td>งานหลักของ ADMIN</td></tr>
+<tr><td>หลักสูตร</td><td>สร้าง/แก้ไข/กำหนดทุน</td><td>สัปดาห์ละครั้ง</td><td>จัดการเนื้อหา</td></tr>
+<tr><td>อนุมัติงาน</td><td>อนุมัติ/ปฏิเสธ/มอบหมาย</td><td>ทุกวัน</td><td>งานสำคัญที่สุด</td></tr>
+<tr><td>รายงาน</td><td>KPI, Progress, Export</td><td>สัปดาห์ละครั้ง</td><td>งานวิเคราะห์</td></tr>
+<tr><td>ตั้งค่า</td><td>เกณฑ์, สิทธิ์, Backup</td><td>เดือนละครั้ง</td><td>งานตั้งค่า - ซ่อนไว้</td></tr>
+</tbody></table>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>สมาชิก/BMC Navigation</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไมจัดแบบนี้?</strong><p>สมาชิกต้องการ "ดูของฉัน -> สมัคร -> ส่งงาน -> ดูผล" - เรียงตามลำดับที่ผู้ใช้ทำจริง</p></div>
+<div class="flow-row"><span class="flow-node start">หน้าแรก</span><span class="flow-arrow">-></span><span class="flow-node step">หลักสูตรของฉัน</span><span class="flow-arrow">-></span><span class="flow-node step">สมัครอบรม</span><span class="flow-arrow">-></span><span class="flow-node step">ส่งงาน</span><span class="flow-arrow">-></span><span class="flow-node milestone">Progress</span><span class="flow-arrow">-></span><span class="flow-node step">โปรไฟล์</span></div>
+<table class="design-table" style="margin-top:12px"><thead><tr><th>เมนู</th><th>งานหลัก</th><th>ความถี่</th><th>เหตุผล</th></tr></thead><tbody>
+<tr><td>หน้าแรก</td><td>เห็นหลักสูตรถัดไป, งานค้าง</td><td>ทุกครั้ง</td><td>เป็น Landing Page</td></tr>
+<tr><td>หลักสูตรของฉัน</td><td>ดูผล, ดูหลักสูตรที่ผ่าน/รอ</td><td>ทุกครั้ง</td><td>หน้าที่ใช้บ่อยที่สุด</td></tr>
+<tr><td>สมัครอบรม</td><td>เลือก + สมัคร</td><td>เดือนละครั้ง</td><td>แยกออกมา - งานสำคัญ</td></tr>
+<tr><td>ส่งงาน</td><td>อัปโหลด Role Play, งาน</td><td>ตามกำหนด</td><td>งานที่ต้องทำ</td></tr>
+<tr><td>Progress</td><td>ดู Timeline, ทุน, เกรด</td><td>เดือนละครั้ง</td><td>ดูการเติบโต</td></tr>
+<tr><td>โปรไฟล์</td><td>ข้อมูลส่วนตัว, เปลี่ยนรหัส</td><td>เดือนละครั้ง</td><td>จัดการตัวเอง</td></tr>
+</tbody></table>
+</div></div>
+</div></div>
+
+<!-- LAYOUT -->
+<div class="page" id="pageLayout">
+<div class="section"><div class="section-header"><h2>Layout Decision - ทำไมเลือกแบบนี้</h2><p>เปรียบเทียบ 3 แบบ -> เลือก 1 แบบที่ดีที่สุด</p></div>
+<div class="card"><div class="card-header"><h3>เลือก: Top Navigation + Content Area</h3></div><div class="card-body">
+<div class="decision"><strong>เหตุผลที่เลือก</strong><p>1. เหมาะกับทั้ง 2 บทบาท - เมนูไม่เยอะ (6-7 รายการ)<br>2. มือถือได้ดี - Top Nav ซ่อนใน Hamburger Menu ได้ง่าย<br>3. พื้นที่เนื้อหาเยอะ - Dashboard, ตาราง, กราฟ ต้องการพื้นที่กว้าง<br>4. ขยายได้ - เพิ่มเมนูได้โดยไม่รก (Dropdown ได้)<br>5. ผู้ใช้คุ้นเคย - ทุกเว็บสมัยใหม่ใช้ Top Nav - ไม่ต้องเรียนรู้ใหม่</p></div>
+<div class="avoid"><strong>ทำไมไม่เลือก Sidebar?</strong><p>Sidebar เหมาะกับระบบที่มีเมนู 10+ รายการ - PP5 มีแค่ 6-7 เมนู Sidebar จะเปลืองพื้นที่ 240px โดยไม่จำเป็น และบนมือถือต้องซ่อน -> ใช้งานยากกว่า</p></div>
+<div class="avoid"><strong>ทำไมไม่เลือก Tabs?</strong><p>Tabs เหมาะกับหน้าเดียวที่สลับ View - PP5 มีหลายหน้า/หลาย Section Tabs จะจำกัดจำนวนเมนู (ไม่เกิน 5-6) และดูไม่เป็นระบบ</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Wireframe - Top Nav Layout</h3></div><div class="card-body">
+<div class="wireframe">
+<div style="background:#1e3a8a;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;font-size:0.8em"><span>PKG AI School</span><span>หน้าแรก | สมาชิก | หลักสูตร | อนุมัติ | รายงาน | lookmee</span></div>
+<div style="background:#fff;padding:16px;border-radius:0 0 8px 8px">
+<div style="font-weight:700;color:#1e3a8a;margin-bottom:12px;font-size:0.9em">Dashboard ภาพรวม</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+<div style="background:#f0f9ff;padding:12px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#1e40af">492</div><div style="font-size:0.65em;color:#64748b">สมาชิก</div></div>
+<div style="background:#f0fdf4;padding:12px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#166534">78.3%</div><div style="font-size:0.65em;color:#64748b">ผ่านเกณฑ์</div></div>
+<div style="background:#fef3c7;padding:12px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#92400e">105</div><div style="font-size:0.65em;color:#64748b">หลักสูตร</div></div>
+<div style="background:#ede9fe;padding:12px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#6b21a8">8,023</div><div style="font-size:0.65em;color:#64748b">ชม.อบรม</div></div>
+</div>
+<div style="background:#f8fafc;padding:12px;border-radius:8px;font-size:0.8em;color:#64748b"><div style="font-weight:600;color:#1e3a8a;margin-bottom:8px">งานค้างอนุมัติ (2 รายการ)</div><div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#fff;border-radius:6px;margin-bottom:6px;border:1px solid #e2e8f0"><span>นาย โกมล สมัครอบรม "ภาวะผู้นำยุคใหม่"</span><span style="display:flex;gap:4px"><button style="padding:3px 8px;background:#10b981;color:#fff;border:none;border-radius:4px;font-size:0.75em;cursor:pointer">อนุมัติ</button><button style="padding:3px 8px;background:#fff;border:1px solid #e2e8f0;border-radius:4px;font-size:0.75em;cursor:pointer">ปฏิเสธ</button></span></div></div>
+</div>
+</div>
+</div></div>
+</div></div>
+
+<!-- DASHBOARD -->
+<div class="page" id="pageDashboard">
+<div class="section"><div class="section-header"><h2>Dashboard Design - ทำไมออกแบบแบบนี้</h2><p>Dashboard ที่ดี = เห็นทุกอย่างที่สำคัญ ในหน้าเดียว โดยไม่ต้องเลื่อน</p></div>
+<div class="card"><div class="card-header"><h3>หลักการออกแบบ Dashboard</h3></div><div class="card-body">
+<div class="grid-3">
+<div class="rationale"><strong>1. เห็นใน 3 วินาที</strong><p>KPI 4 ตัวบนสุด - ตัวใหญ่ สีชัดเจน ไม่ต้องอ่านคำอธิบายก็เข้าใจ</p></div>
+<div class="rationale"><strong>2. ทำงานได้ทันที</strong><p>งานค้างอนุมัติอยู่ใน Dashboard - ไม่ต้องกดไปหน้าอื่น อนุมัติได้เลยจากหน้าแรก</p></div>
+<div class="rationale"><strong>3. ดูแนวโน้มได้</strong><p>Progress Bar แต่ละทุน - เห็นว่า BU ไหนต้องติดตาม สีเปลี่ยนตามสถานะ</p></div>
+</div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Dashboard Layout - ADMIN PAD</h3></div><div class="card-body">
+<table class="design-table"><thead><tr><th>ส่วน</th><th>เนื้อหา</th><th>เหตุผล</th><th>ลำดับ</th></tr></thead><tbody>
+<tr><td><strong>1. KPI Bar</strong></td><td>สมาชิก, ผ่านเกณฑ์, หลักสูตร, ชม.อบรม</td><td>เห็นภาพรวมทันที</td><td><span class="badge blue">สูงสุด</span></td></tr>
+<tr><td><strong>2. งานค้างอนุมัติ</strong></td><td>รายการรออนุมัติ + ปุ่มอนุมัติ/ปฏิเสธ</td><td>งานสำคัญที่สุดของ ADMIN</td><td><span class="badge blue">สูงสุด</span></td></tr>
+<tr><td><strong>3. KPI/TA/Progress</strong></td><td>Progress Bar แต่ละทุน</td><td>เห็นแนวโน้มแต่ละ BU</td><td><span class="badge green">สูง</span></td></tr>
+<tr><td><strong>4. ตารางสมาชิก</strong></td><td>5 ลำดับล่าสุด + สถานะ</td><td>ติดตามรายบุคคล</td><td><span class="badge yellow">ปานกลาง</span></td></tr>
+<tr><td><strong>5. รายงานด่วน</strong></td><td>Export PDF/Excel</td><td>ส่งผู้บริหาร</td><td><span class="badge purple">ต่ำ</span></td></tr>
+</tbody></table>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>ทำไมไม่ใส่ทุกอย่างในหน้าแรก?</h3></div><div class="card-body">
+<div class="avoid"><strong>ผิด: ยัดทุกอย่างในหน้าแรก</strong><p>ผู้ใช้จะหาอะไรไม่เจอ, เลื่อนหน้าจอยาก, โหลดช้า, สับสน - "Information Overload"</p></div>
+<div class="decision"><strong>ถูก: Progressive Disclosure</strong><p>แสดงสิ่งที่สำคัญที่สุดก่อน (KPI + งานค้าง) -> กดดูรายละเอียดได้ทีหลัง - หน้าแรกโหลดเร็ว ใช้งานง่าย</p></div>
+</div></div>
+</div></div>
+
+<!-- JOURNEY -->
+<div class="page" id="pageJourney">
+<div class="section"><div class="section-header"><h2>Learning Journey - วงจรการเรียนรู้</h2><p>ออกแบบให้เห็น "เส้นทางพัฒนา" ชัดเจน ตั้งแต่ Day 1 ถึง ผู้นำ</p></div>
+<div class="card"><div class="card-header"><h3>หลักการออกแบบ Learning Journey</h3></div><div class="card-body">
+<div class="rationale"><strong>ทำไมต้องแสดงเป็น Timeline?</strong><p>สมาชิกต้องการเห็น "ฉันอยู่ไหน -> ต้องไปไหน -> อีกไกลไหม" - Timeline ตอบ 3 คำถามนี้ในหน้าเดียว ถ้าแสดงเป็นตาราง สมาชิกจะไม่เห็นภาพรวม</p></div>
+<div class="decision"><strong>ดีไซน์ที่เลือก</strong><p>Vertical Timeline - อ่านจากบนลงล่าง (ธรรมชาติ) - แต่ละก้าวมีสีแยก 3 ทุน - กดแต่ละก้าว -> ดูรายละเอียดหลักสูตร</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Flow Diagram - 9 ก้าวการพัฒนา</h3></div><div class="card-body">
+<div class="flow-row"><span class="flow-node start">สมาชิกใหม่</span><span class="flow-arrow">-></span><span class="flow-node step">ปฐมนิเทศ</span><span class="flow-arrow">-></span><span class="flow-node step">ทุนมนุษย์</span><span class="flow-arrow">-></span><span class="flow-node step">ทำงานจริง</span><span class="flow-arrow">-></span><span class="flow-node milestone">ผ่านประเมิน</span><span class="flow-arrow">-></span><span class="flow-node step">ทุติยนิเทศ</span><span class="flow-arrow">-></span><span class="flow-node step">พี่เลี้ยง</span><span class="flow-arrow">-></span><span class="flow-node milestone">ตติย->จตุร->ปัญจ</span><span class="flow-arrow">-></span><span class="flow-node milestone">ภาวะผู้นำ</span></div>
+<div class="rationale" style="margin-top:16px"><strong>ทำไมแสดง 3 ทุนในแต่ละก้าว?</strong><p>การพัฒนาไม่ใช่แค่ "อบรม" - ต้องพัฒนาทั้ง 3 ทุนพร้อมกัน: องค์กร (เข้าใจ PKG) + มนุษย์ (ทักษะ) + สารสนเทศ (เครื่องมือ) - ถ้าขาดทุนใดทุนหนึ่ง การพัฒนาไม่สมบูรณ์</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>ทำไมไม่ใช้ Spiral/Circular Diagram?</h3></div><div class="card-body">
+<div class="comparison">
+<div class="good"><strong>Vertical Timeline (เลือก)</strong><p>อ่านง่าย (บน->ล่าง)<br>เห็นความคืบหน้า (เลื่อนลง)<br>Mobile-Friendly<br>เพิ่มก้าวได้ง่าย</p></div>
+<div class="bad"><strong>Spiral/Circular (ไม่เลือก)</strong><p>อ่านยาก (ต้องหมุนตา)<br>ไม่เห็นลำดับชัดเจน<br>Mobile ยากมาก<br>เพิ่มก้าวต้องออกแบบใหม่</p></div>
+</div>
+</div></div>
+</div></div>
+
+<!-- WORKFLOW -->
+<div class="page" id="pageWorkflow">
+<div class="section"><div class="section-header"><h2>Workflow Design - ออกแบบขั้นตอนการทำงาน</h2><p>ทุก Workflow ต้องเสร็จใน <= 3 คลิก</p></div>
+<div class="card"><div class="card-header"><h3>Workflow 1: อนุมัติงาน (ADMIN)</h3></div><div class="card-body">
+<div class="flow-row"><span class="flow-node start">1. เห็นงานค้างใน Dashboard</span><span class="flow-arrow">-></span><span class="flow-node step">2. กด "ดูรายละเอียด"</span><span class="flow-arrow">-></span><span class="flow-node milestone">3. กด "อนุมัติ" หรือ "ปฏิเสธ"</span></div>
+<div class="decision"><strong>เหตุผล</strong><p>งานค้างแสดงใน Dashboard - ADMIN ไม่ต้องไปค้นหา -> กดอนุมัติได้ทันที จาก 5-6 คลิก -> เหลือ 3 คลิก</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Workflow 2: สมัครอบรม (สมาชิก)</h3></div><div class="card-body">
+<div class="flow-row"><span class="flow-node start">1. เห็นหลักสูตรถัดไปใน Dashboard</span><span class="flow-arrow">-></span><span class="flow-node step">2. กด "สมัคร"</span><span class="flow-arrow">-></span><span class="flow-node milestone">3. ยืนยัน (เสร็จ!)</span></div>
+<div class="decision"><strong>เหตุผล</strong><p>หลักสูตรถัดไปแสดงใน Dashboard - สมาชิกไม่ต้องค้นหา -> สมัครได้ทันที ไม่ต้องกรอกฟอร์มยาว</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Workflow 3: ส่งงาน Role Play</h3></div><div class="card-body">
+<div class="flow-row"><span class="flow-node start">1. เห็นงานค้างใน Dashboard</span><span class="flow-arrow">-></span><span class="flow-node step">2. กด "ส่งงาน" -> อัปโหลด</span><span class="flow-arrow">-></span><span class="flow-node step">3. AI ตรวจอัตโนมัติ</span><span class="flow-arrow">-></span><span class="flow-node milestone">4. ได้ผล + Feedback ทันที</span></div>
+<div class="rationale"><strong>ทำไม AI ตรวจก่อนครู?</strong><p>AI ให้ผลทันที - ไม่ต้องรอครูตรวจ (ลดเวลาจาก 3-5 วัน -> 30 วินาที) -> ครูทวนสอบทีหลัง (ยืนยัน/แก้ไข) - ลดภาระงานครู 80%</p></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Workflow 4: ดูรายงานภาพรวม (ADMIN)</h3></div><div class="card-body">
+<div class="flow-row"><span class="flow-node start">1. กด "รายงาน" ในเมนู</span><span class="flow-arrow">-></span><span class="flow-node step">2. เลือก BU / ทุน / ช่วงเวลา</span><span class="flow-arrow">-></span><span class="flow-node milestone">3. กด "Export PDF/Excel"</span></div>
+<div class="decision"><strong>เหตุผล</strong><p>กรองได้ 3 มิติ (BU, ทุน, เวลา) - ยืดหยุ่นแต่ไม่ซับซ้อน -> Export ได้ทันที ไม่ต้องคัดลอกข้อมูล</p></div>
+</div></div>
+</div></div>
+
+<!-- MOBILE -->
+<div class="page" id="pageMobile">
+<div class="section"><div class="section-header"><h2>Mobile Design - ออกแบบสำหรับมือถือ</h2><p>60% ของสมาชิกใช้มือถือ - ต้องใช้งานง่ายเท่า Desktop</p></div>
+<div class="card"><div class="card-header"><h3>Mobile Layout Decision</h3></div><div class="card-body">
+<div class="comparison">
+<div class="good"><strong>Mobile Design ที่เลือก</strong><p>Top Nav -> Hamburger Menu<br>Cards ซ้อนแนวตั้ง<br>ปุ่มใหญ่ (แตะง่าย)<br>ตาราง -> Card View<br>Scroll แนวนอนสำหรับข้อมูลเยอะ</p></div>
+<div class="bad"><strong>อย่าทำบน Mobile</strong><p>Sidebar (พื้นที่น้อย)<br>ตารางใหญ่ (เลื่อนยาก)<br>ปุ่มเล็ก (แตะผิด)<br>Hover Effect (ไม่มีบนมือถือ)<br>ข้อมูลเยอะเกิน 1 หน้า</p></div>
+</div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-header"><h3>Mobile Dashboard - Member View</h3></div><div class="card-body">
+<div class="wireframe">
+<div style="background:#1e3a8a;color:#fff;padding:10px 14px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;font-size:0.8em"><span>Hamburger Menu</span><span>lookmee</span></div>
+<div style="background:#fff;padding:14px">
+<div style="font-size:0.85em;font-weight:700;color:#1e3a8a;margin-bottom:10px">สวัสดี lookmee</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+<div style="background:#f0f9ff;padding:10px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#1e40af">20/44</div><div style="font-size:0.65em;color:#64748b">หน่วยกิต</div></div>
+<div style="background:#f0fdf4;padding:10px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#166534">3.60</div><div style="font-size:0.65em;color:#64748b">GPA</div></div>
+<div style="background:#fef3c7;padding:10px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#92400e">24</div><div style="font-size:0.65em;color:#64748b">ชม.อบรม</div></div>
+<div style="background:#ede9fe;padding:10px;border-radius:8px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#6b21a8">2/5</div><div style="font-size:0.65em;color:#64748b">วิชาที่ผ่าน</div></div>
+</div>
+<div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #e2e8f0">
+<div style="font-size:0.8em;font-weight:600;color:#1e3a8a;margin-bottom:6px">หลักสูตรถัดไป</div>
+<div style="font-size:0.75em;color:#64748b">ภาวะผู้นำยุคใหม่ - 20 มิ.ย. 69</div>
+<button style="width:100%;margin-top:8px;padding:8px;background:#2563eb;color:#fff;border:none;border-radius:6px;font-size:0.75em;font-weight:600;cursor:pointer">สมัครอบรม</button>
+</div>
+</div>
+</div>
+<div class="decision" style="margin-top:12px"><strong>เหตุผล</strong><p>Cards 2x2 - แตะง่าย เห็นชัด<br>หลักสูตรถัดไปอยู่ล่าง - Scroll ครั้งเดียวเจอ<br>ปุ่มสมัครเต็มความกว้าง - แตะง่าย<br>ไม่ใช้ตาราง - แปลงเป็น Card View</p></div>
+</div></div>
+</div></div>
+
+</div>
+<script>
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-link').forEach(function(n) { n.classList.remove('active'); });
+  var pages = { 'principles': 'pagePrinciples', 'users': 'pageUsers', 'ia': 'pageIa', 'layout': 'pageLayout', 'dashboard': 'pageDashboard', 'journey': 'pageJourney', 'workflow': 'pageWorkflow', 'mobile': 'pageMobile' };
+  var target = document.getElementById(pages[page]);
+  if (target) target.classList.add('active');
+  if (el) el.classList.add('active');
+}
+</script>
+</body>
+</html>

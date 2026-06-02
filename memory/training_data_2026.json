@@ -1,0 +1,288 @@
+{
+  "lastUpdate": "2026-05-15",
+  "source": "Google Sheets - PKG Training Records",
+  "sheetUrl": "https://docs.google.com/spreadsheets/d/15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0/edit?gid=1160880627",
+  "totalRecords": 9023,
+  "uniqueEmployees": 492,
+  "attended": 8030,
+  "notAttended": 991,
+  "attendanceRate": "89.0%",
+  "passed": 8029,
+  "passRate": "100.0%",
+  "avgScore": "99.1",
+  "totalScores": 8041,
+  "score100": 7640,
+  "score80": 352,
+  "score60": 36,
+  "score0": 13,
+  "totalCourses": 105,
+  "yesCourses": 94,
+  "noCourses": 11,
+  "bus": [
+    {
+      "name": "PMSG",
+      "total": 5400,
+      "attended": 4940,
+      "rate": "91.5%"
+    },
+    {
+      "name": "AAMG",
+      "total": 1978,
+      "attended": 1729,
+      "rate": "87.4%"
+    },
+    {
+      "name": "CPDG",
+      "total": 733,
+      "attended": 607,
+      "rate": "82.8%"
+    },
+    {
+      "name": "RPLCG",
+      "total": 404,
+      "attended": 336,
+      "rate": "83.2%"
+    },
+    {
+      "name": "RAFCOG",
+      "total": 268,
+      "attended": 218,
+      "rate": "81.3%"
+    },
+    {
+      "name": "PKG",
+      "total": 222,
+      "attended": 184,
+      "rate": "82.9%"
+    },
+    {
+      "name": "PGHG",
+      "total": 18,
+      "attended": 16,
+      "rate": "88.9%"
+    }
+  ],
+  "monthlyTrend": [
+    {
+      "month": "1/2026",
+      "total": 1103,
+      "attended": 1083,
+      "notAttended": 20,
+      "rate": "98.2%"
+    },
+    {
+      "month": "2/2026",
+      "total": 2156,
+      "attended": 2156,
+      "notAttended": 0,
+      "rate": "100.0%"
+    },
+    {
+      "month": "3/2026",
+      "total": 2673,
+      "attended": 2605,
+      "notAttended": 68,
+      "rate": "97.5%"
+    },
+    {
+      "month": "4/2026",
+      "total": 2206,
+      "attended": 2162,
+      "notAttended": 44,
+      "rate": "98.0%"
+    },
+    {
+      "month": "5/2026",
+      "total": 816,
+      "attended": 1,
+      "notAttended": 815,
+      "rate": "0.1%"
+    },
+    {
+      "month": "6/2026",
+      "total": 46,
+      "attended": 0,
+      "notAttended": 46,
+      "rate": "0.0%"
+    },
+    {
+      "month": "7/2026",
+      "total": 23,
+      "attended": 23,
+      "notAttended": 0,
+      "rate": "100.0%"
+    }
+  ],
+  "top10Courses": [
+    {
+      "code": "20010001",
+      "name": "หลักสูตร LIA สมาชิก PKG",
+      "total": 474,
+      "attended": 474
+    },
+    {
+      "code": "23010710",
+      "name": "cost down pkg",
+      "total": 437,
+      "attended": 437
+    },
+    {
+      "code": "23010712",
+      "name": "ภาษีเงินได้บุคคลธรรมดา 2569",
+      "total": 426,
+      "attended": 426
+    },
+    {
+      "code": "23010767",
+      "name": "การทดสอบ, ตรวจสอบและแก้ไขปัญหาการใช้งาน Internet",
+      "total": 359,
+      "attended": 0
+    },
+    {
+      "code": "23010704",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มกราคม 26",
+      "total": 274,
+      "attended": 260
+    },
+    {
+      "code": "23010763",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม2 เมษายน 26",
+      "total": 263,
+      "attended": 261
+    },
+    {
+      "code": "23010776",
+      "name": "ความรู้เกี่ยวกับรถยนต์",
+      "total": 254,
+      "attended": 212
+    },
+    {
+      "code": "23010436",
+      "name": "Alignment PMSG",
+      "total": 241,
+      "attended": 199
+    },
+    {
+      "code": "23010735",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม1 กุมภาพันธ์ 26",
+      "total": 235,
+      "attended": 235
+    },
+    {
+      "code": "23010738",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม1 มีนาคม 26",
+      "total": 233,
+      "attended": 233
+    }
+  ],
+  "notStartedCourses": [
+    {
+      "code": "23010767",
+      "name": "การทดสอบ, ตรวจสอบและแก้ไขปัญหาการใช้งาน Internet",
+      "total": 359
+    },
+    {
+      "code": "23010786",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม1 พฤษภาคม 26",
+      "total": 225
+    },
+    {
+      "code": "23010787",
+      "name": "ความรู้เทคโนโลยีจากบทความ กลุ่ม2 พฤษภาคม 26",
+      "total": 134
+    },
+    {
+      "code": "23010765",
+      "name": "ความรู้เรือง  ISUZU และระบบเสียงลูกค้าภายนอก PMSG",
+      "total": 99
+    },
+    {
+      "code": "23010785",
+      "name": "Automate web/application Test ด้วย Agent AI",
+      "total": 19
+    },
+    {
+      "code": "23010764",
+      "name": "หลักสูตรการบริหารแผนงาน/โครงการ สำหรับผู้รับใช้ทีม",
+      "total": 12
+    },
+    {
+      "code": "23010784",
+      "name": "แผนธุรกิจPKG_2026",
+      "total": 8
+    },
+    {
+      "code": "",
+      "name": "",
+      "total": 4
+    },
+    {
+      "code": "23010761",
+      "name": "ระบบประเมินเครดิต ประจำปี 2026",
+      "total": 1
+    }
+  ],
+  "top10NotAttended": [
+    {
+      "id": "9601009",
+      "name": "โกมล ไชยประสูตร",
+      "bu": "PMSG",
+      "pendingCourses": 7
+    },
+    {
+      "id": "5604030",
+      "name": "คณิศร ฉัยยา",
+      "bu": "CPDG",
+      "pendingCourses": 6
+    },
+    {
+      "id": "6006083",
+      "name": "ณัฐฑริณี คำนึง",
+      "bu": "CPDG",
+      "pendingCourses": 6
+    },
+    {
+      "id": "3305002",
+      "name": "นพรัตน์ คงรอด",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "4611150",
+      "name": "อรวรรณ วาโน",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "5512141",
+      "name": "พัชรินทร์ ไชยราช",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "5606065",
+      "name": "สุดฤทัย วานิชล",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "6802006",
+      "name": "ลักขณา ด้วงพรม",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "9711001",
+      "name": "กรกต คงประเสริฐ",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    },
+    {
+      "id": "9901010",
+      "name": "ราตรี เต็มศิริพันธุ์",
+      "bu": "PMSG",
+      "pendingCourses": 5
+    }
+  ],
+  "removedNARows": 58
+}

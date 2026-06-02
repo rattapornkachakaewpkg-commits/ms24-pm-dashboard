@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5 Training — วิทยากร 4 แบบให้เลือก</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans Thai','Inter',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+:root{--green:#16a34a;--green-light:#22c55e;--green-dark:#15803d;--green-deep:#0d5a2b;--green-5:rgba(22,163,74,0.05);--green-10:rgba(22,163,74,0.1);--gold:#d4a017;--gold-light:#fbbf24;--gold-dark:#a67c00;--gold-10:rgba(212,160,23,0.1);--blue:#3b82f6;--blue-10:rgba(59,130,246,0.1);--red:#ef4444;--bg:#0f172a;--card:#1e293b;--card2:#263548;--border:#334155;--text:#e2e8f0;--text-dim:#94a3b8;--text-muted:#64748b;--shadow:0 4px 15px rgba(0,0,0,0.2)}
+
+.design-header{text-align:center;padding:32px 20px 14px;background:linear-gradient(135deg,#0d5a2b,#16a34a,#d4a017)}
+.design-header h1{font-size:1.7em;font-weight:800;color:#fff}
+.design-header p{color:rgba(255,255,255,0.85);font-size:0.82em;margin-top:4px}
+.design-header .badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;padding:3px 12px;border-radius:16px;font-size:0.68em;margin-top:8px}
+
+.workflow{display:flex;align-items:center;justify-content:center;gap:0;padding:14px 16px;background:#1e293b;border-bottom:1px solid #334155;flex-wrap:wrap}
+.wf-step{display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:10px;font-size:0.72em;font-weight:600;cursor:pointer;transition:0.2s;color:#64748b;border:1.5px solid #334155}
+.wf-step .num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65em;font-weight:700;background:#334155;color:#94a3b8;flex-shrink:0}
+.wf-step.active{background:linear-gradient(135deg,#16a34a,#d4a017);border-color:transparent;color:#fff}
+.wf-step.active .num{background:rgba(255,255,255,0.25);color:#fff}
+.wf-connector{width:20px;height:2px;background:#334155;flex-shrink:0}
+
+.design-selector{display:flex;justify-content:center;gap:8px;padding:14px 16px;background:#1e293b;position:sticky;top:0;z-index:50;flex-wrap:wrap;border-bottom:1px solid #334155}
+.design-btn{padding:8px 16px;border-radius:10px;border:2px solid #334155;background:#1e293b;color:#94a3b8;font-size:0.78em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit}
+.design-btn:hover{border-color:#d4a017;color:#fbbf24}
+.design-btn.active{background:linear-gradient(135deg,#16a34a,#d4a017);border-color:transparent;color:#fff;box-shadow:0 4px 15px rgba(22,163,74,0.3)}
+
+.design-section{display:none;padding:16px;max-width:900px;margin:0 auto}
+.design-section.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.design-label{text-align:center;margin:14px 0 10px}
+.design-label h2{font-size:1.15em;font-weight:700;color:#fbbf24}
+.design-label p{color:#94a3b8;font-size:0.72em;margin-top:3px}
+.design-pros{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.design-pros span{background:rgba(22,163,74,0.15);color:#4ade80;padding:2px 10px;border-radius:14px;font-size:0.63em;font-weight:500}
+
+/* FORM */
+input[type="text"],input[type="number"],input[type="email"],input[type="tel"],input[type="date"],input[type="time"],select,textarea{font-family:inherit;font-size:0.82em;border-radius:8px;padding:9px 13px;border:1.5px solid #334155;background:#0f172a;color:#e2e8f0;outline:none;transition:0.3s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,0.15)}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+label{font-size:0.73em;font-weight:600;color:#94a3b8;margin-bottom:3px;display:block}
+.req{color:#ef4444;margin-left:1px}
+.form-group{margin-bottom:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-full{grid-column:1/-1}
+.btn-primary{background:linear-gradient(135deg,#16a34a,#0d5a2b);color:#fff;padding:11px 26px;border:none;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,0.35)}
+.btn-outline{background:transparent;border:2px solid #16a34a;color:#16a34a;padding:9px 20px;border-radius:10px;font-size:0.82em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-outline:hover{background:#16a34a;color:#fff}
+.btn-gold{background:linear-gradient(135deg,#d4a017,#a67c00);color:#0f172a;padding:11px 26px;border:none;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;transition:0.3s;font-family:inherit}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,0.35)}
+
+/* CARDS */
+.form-card{background:#1e293b;border-radius:16px;padding:22px;margin-bottom:14px;border:1px solid #334155;box-shadow:var(--shadow)}
+.form-card .card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.form-card .card-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1em;color:#fff;flex-shrink:0}
+.form-card .card-icon.green{background:linear-gradient(135deg,#16a34a,#0d5a2b)}
+.form-card .card-icon.gold{background:linear-gradient(135deg,#d4a017,#a67c00)}
+.form-card .card-icon.blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.form-card .card-icon.red{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.form-card h3{font-size:0.92em;font-weight:700;color:#e2e8f0}
+.form-card .card-sub{font-size:0.68em;color:#94a3b8;margin-top:1px}
+
+/* INFO BOX */
+.info-box{background:rgba(22,163,74,0.08);border:1px solid rgba(22,163,74,0.2);border-radius:10px;padding:12px;margin-top:10px}
+.info-box .info-title{font-size:0.76em;font-weight:700;color:#4ade80;margin-bottom:4px}
+.info-box .info-text{font-size:0.7em;color:#94a3b8;line-height:1.6}
+
+/* TABLE */
+.mini-table{width:100%;border-collapse:collapse;font-size:0.78em;margin-top:10px}
+.mini-table th{background:rgba(22,163,74,0.1);padding:8px 10px;text-align:left;font-weight:600;color:#4ade80;border-bottom:1px solid #334155;font-size:0.7em;text-transform:uppercase;letter-spacing:0.5px}
+.mini-table td{padding:7px 10px;border-bottom:1px solid #1e293b}
+.mini-table tr:hover td{background:rgba(22,163,74,0.05)}
+.mini-table input,.mini-table select{padding:5px 8px;font-size:0.78em;border-radius:6px}
+
+/* ADD ROW */
+.add-row{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:2px dashed #334155;cursor:pointer;transition:0.3s;margin-top:10px;font-size:0.82em;color:#94a3b8;background:transparent}
+.add-row:hover{border-color:#16a34a;color:#4ade80;background:rgba(22,163,74,0.05)}
+
+/* SUBMIT */
+.submit-section{background:linear-gradient(135deg,rgba(22,163,74,0.08),rgba(212,160,23,0.08));border:1px solid #334155;border-radius:16px;padding:18px;text-align:center;margin-top:14px}
+
+/* STEP BAR */
+.step-bar{display:flex;justify-content:center;gap:6px;margin-bottom:18px}
+.step-dot{width:36px;height:4px;border-radius:2px;background:#334155;transition:0.3s}
+.step-dot.active{background:#16a34a}
+.step-dot.done{background:#d4a017}
+
+/* TOGGLE */
+.toggle-bar{display:flex;gap:4px;background:#1e293b;border-radius:12px;padding:4px;margin-bottom:16px;border:1px solid #334155}
+.toggle-btn{flex:1;padding:9px 12px;border:none;border-radius:10px;background:transparent;color:#94a3b8;font-size:0.78em;font-weight:600;cursor:pointer;transition:0.3s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
+.toggle-btn.active{background:linear-gradient(135deg,#16a34a,#0d5a2b);color:#fff;box-shadow:0 2px 10px rgba(22,163,74,0.3)}
+
+/* SPLIT */
+.split-container{display:flex;border-radius:16px;overflow:hidden;border:1px solid #334155;box-shadow:var(--shadow)}
+.split-left{flex:1;background:linear-gradient(160deg,#0d5a2b,#16a34a 40%,#22c55e 80%);display:flex;flex-direction:column;justify-content:center;padding:30px 22px;text-align:center;position:relative;min-height:500px}
+.split-left::before{content:'';position:absolute;top:-30%;right:-30%;width:60%;height:60%;background:radial-gradient(circle,rgba(212,160,23,0.15) 0%,transparent 70%);border-radius:50%}
+.split-left h2{color:#fff;font-size:1.3em;font-weight:800;line-height:1.3;margin-bottom:8px;position:relative;z-index:1}
+.split-left p{color:rgba(255,255,255,0.85);font-size:0.78em;line-height:1.5;position:relative;z-index:1}
+.split-left .feature-list{list-style:none;padding:0;margin-top:16px;text-align:left;position:relative;z-index:1}
+.split-left .feature-list li{color:rgba(255,255,255,0.9);font-size:0.74em;padding:4px 0;display:flex;align-items:center;gap:7px}
+.split-left .feature-list li::before{content:'✓';background:rgba(255,255,255,0.2);color:#fbbf24;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6em;font-weight:700;flex-shrink:0}
+.split-right{flex:1.3;background:#1e293b;padding:24px;overflow-y:auto}
+
+/* GLASS */
+.glass-bg{min-height:400px;border-radius:16px;padding:24px;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(22,163,74,0.06),rgba(212,160,23,0.04))}
+.glass-bg::before{content:'';position:absolute;top:-40%;left:-40%;width:180%;height:180%;background:radial-gradient(circle at 20% 30%,rgba(22,163,74,0.08) 0%,transparent 40%),radial-gradient(circle at 80% 70%,rgba(212,160,23,0.06) 0%,transparent 40%);animation:glassFloat 15s ease-in-out infinite}
+@keyframes glassFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,1%)}}
+.glass-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:22px;position:relative;z-index:1;margin-bottom:14px}
+.glass-card h3{font-size:0.9em;font-weight:700;color:#fbbf24;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.glass-card .card-icon-sm{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#16a34a,#d4a017);display:flex;align-items:center;justify-content:center;font-size:0.8em;color:#fff;flex-shrink:0}
+.glass-card input,.glass-card select,.glass-card textarea{background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);color:#e2e8f0}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.design-selector{gap:5px;padding:10px}
+.design-btn{padding:7px 10px;font-size:0.7em}
+.form-row{grid-template-columns:1fr}
+.split-container{flex-direction:column}
+.split-left{min-height:auto;padding:24px 16px}
+.workflow{gap:0;padding:10px 8px}
+.wf-step{padding:6px 8px;font-size:0.65em}
+.wf-connector{width:12px}
+}
+@media(max-width:480px){
+.design-header h1{font-size:1.3em}
+.step-bar{gap:4px}
+}
+</style>
+</head>
+<body>
+
+<div class="design-header">
+<h1>📚 P5 Training — มุมมองวิทยากร</h1>
+<p>ออกแบบใหม่ — เลือกรูปแบบที่ชอบ 4 แบบ</p>
+<span class="badge">🎨 4 Designs — เลือกแบบที่ชอบแล้วบอกเลข</span>
+</div>
+
+<div class="workflow">
+<div class="wf-step active"><span class="num">1</span>วิทยากรลงทะเบียน</div>
+<div class="wf-connector"></div>
+<div class="wf-step"><span class="num">2</span>วิทยากรขอเปิดอบรม</div>
+<div class="wf-connector"></div>
+<div class="wf-step"><span class="num">3</span>วิทยากรส่งผลอบรม</div>
+</div>
+
+<div class="design-selector">
+<button class="design-btn active" onclick="showDesign('a')">🪜 แบบที่ 1<br>Stepper Wizard</button>
+<button class="design-btn" onclick="showDesign('b')">🃏 แบบที่ 2<br>Card Sections</button>
+<button class="design-btn" onclick="showDesign('c')">🔀 แบบที่ 3<br>Split Screen</button>
+<button class="design-btn" onclick="showDesign('d')">🪟 แบบที่ 4<br>Glassmorphism</button>
+</div>
+
+<!-- ==================== DESIGN A: Stepper ==================== -->
+<div class="design-section active" id="design-a">
+<div class="design-label"><h2>🪜 แบบที่ 1 — Stepper Wizard</h2><p>แบ่งเป็นขั้นตอน กรอกทีละส่วน เห็น Progress ชัด</p></div>
+<div class="design-pros"><span>✅ ลด Cognitive Load</span><span>✅ เห็น Progress</span><span>✅ เหมาะฟอร์มยาว</span><span>✅ รองรับหลายคน</span></div>
+
+<div style="background:#1e293b;border-radius:16px;padding:24px;max-width:580px;margin:0 auto;border:1px solid #334155">
+<div class="step-bar" id="stepBarA"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+
+<div id="stepA1">
+<div style="font-size:1.1em;font-weight:700;color:#e2e8f0;margin-bottom:3px">📋 ขั้นที่ 1 — ลงทะเบียนหลักสูตร</div>
+<div style="font-size:0.72em;color:#94a3b8;margin-bottom:16px">วิทยากรลงทะเบียนหลักสูตรที่จะจัดอบรม</div>
+<div class="form-row"><div class="form-group"><label>ชื่อหลักสูตร <span class="req">*</span></label><input type="text" placeholder="เช่น ทักษะการเป็นผู้นำระดับ 3"></div><div class="form-group"><label>ระดับการอบรม <span class="req">*</span></label><select><option value="">เลือกระดับ</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>จำนวนหน่วยกิต</label><input type="number" value="6"></div><div class="form-group"><label>รูปแบบการอบรม</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div><div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link"></div></div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์หลักสูตร"></textarea></div>
+<div style="text-align:right;margin-top:14px"><button class="btn-primary" onclick="goStepA(2)">ถัดไป →</button></div>
+</div>
+
+<div id="stepA2" style="display:none">
+<div style="font-size:1.1em;font-weight:700;color:#e2e8f0;margin-bottom:3px">📋 ขั้นที่ 2 — ขอเปิดอบรม</div>
+<div style="font-size:0.72em;color:#94a3b8;margin-bottom:16px">วิทยากรขอเปิดหลักสูตรอบรม ระบุกลุ่มเป้าหมาย</div>
+<div class="form-row"><div class="form-group"><label>BU <span class="req">*</span></label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div><div class="form-group"><label>จำนวนผู้เข้าอบรมสูงสุด</label><input type="number" value="30"></div></div>
+<div class="form-row"><div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div><div class="form-group"><label>เงื่อนไขสมัคร</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อนหน้า</option><option>เสนอชื่อ</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วันเริ่ม <span class="req">*</span></label><input type="date"></div><div class="form-group"><label>วันสิ้นสุด <span class="req">*</span></label><input type="date"></div></div>
+<div class="form-row"><div class="form-group"><label>เวลาเริ่ม</label><input type="time" value="09:00"></div><div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" value="16:00"></div></div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือกผู้อนุมัติ</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+<div style="display:flex;gap:10px;justify-content:space-between;margin-top:14px"><button class="btn-outline" onclick="goStepA(1)">← ย้อนกลับ</button><button class="btn-primary" onclick="goStepA(3)">ถัดไป →</button></div>
+</div>
+
+<div id="stepA3" style="display:none">
+<div style="font-size:1.1em;font-weight:700;color:#e2e8f0;margin-bottom:3px">📋 ขั้นที่ 3 — ส่งผลอบรม</div>
+<div style="font-size:0.72em;color:#94a3b8;margin-bottom:16px">วิทยากรส่งผลอบรม รองรับผู้เข้าอบรมจำนวนมาก</div>
+
+<div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:12px;margin-bottom:14px">
+<div style="font-size:0.76em;font-weight:600;color:#60a5fa;margin-bottom:6px">👥 รองรับผู้เข้าอบรมหลายคน</div>
+<div style="font-size:0.7em;color:#94a3b8">กรอกข้อมูลผลอบรมของผู้เข้าอบรมแต่ละคน หรือเพิ่มรายการได้เรื่อยๆ</div>
+</div>
+
+<div style="overflow-x:auto">
+<table class="mini-table">
+<thead><tr><th>ลำดับ</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>BU</th><th>คะแนน</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><input type="text" placeholder="6407049" style="width:80px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:120px"></td><td><select style="width:70px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="85" style="width:55px"></td><td><input type="number" placeholder="6" style="width:45px"></td><td><input type="number" placeholder="3.50" step="0.01" style="width:60px"></td><td><select style="width:75px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+<tr><td>2</td><td><input type="text" placeholder="6407050" style="width:80px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:120px"></td><td><select style="width:70px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="78" style="width:55px"></td><td><input type="number" placeholder="6" style="width:45px"></td><td><input type="number" placeholder="3.20" step="0.01" style="width:60px"></td><td><select style="width:75px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+<tr><td>3</td><td><input type="text" placeholder="6407051" style="width:80px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:120px"></td><td><select style="width:70px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="92" style="width:55px"></td><td><input type="number" placeholder="6" style="width:45px"></td><td><input type="number" placeholder="3.80" step="0.01" style="width:60px"></td><td><select style="width:75px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="add-row" onclick="this.style.display='none'">➕ เพิ่มรายการผู้เข้าอบรม</div>
+
+<div class="form-group" style="margin-top:12px"><label>เอกสารแนบ (ใบรับรอง, รายงานผล)</label><input type="text" placeholder="ชื่อไฟล์เอกสาร"></div>
+<div style="display:flex;gap:10px;justify-content:space-between;margin-top:14px"><button class="btn-outline" onclick="goStepA(2)">← ย้อนกลับ</button><button class="btn-gold">✅ ส่งข้อมูลทั้งหมด</button></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== DESIGN B: Card Sections ==================== -->
+<div class="design-section" id="design-b">
+<div class="design-label"><h2>🃏 แบบที่ 2 — Card Sections</h2><p>ฟอร์มเดียวจบ แบ่งสัดส่วนชัดเจนด้วยการ์ด รองรับหลายคน</p></div>
+<div class="design-pros"><span>✅ เห็นทั้งหมด</span><span>✅ กรอกได้ทุกช่อง</span><span>✅ ตารางหลายคน</span><span>✅ เหมาะมือถือ</span></div>
+
+<div style="background:#1e293b;border-radius:16px;padding:24px;max-width:620px;margin:0 auto;border:1px solid #334155">
+<div class="form-card" style="background:#263548;border:1px solid #334155;border-radius:14px;padding:20px;margin-bottom:14px">
+<div class="card-header"><div class="card-icon green">📋</div><div><h3>วิทยากรลงทะเบียนหลักสูตร</h3><div class="card-sub">ระบุรายละเอียดหลักสูตร</div></div></div>
+<div class="form-row"><div class="form-group"><label>ชื่อหลักสูตร <span class="req">*</span></label><input type="text" placeholder="เช่น ทักษะการเป็นผู้นำระดับ 3"></div><div class="form-group"><label>ระดับ <span class="req">*</span></label><select><option value="">เลือกระดับ</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>หน่วยกิต</label><input type="number" value="6"></div><div class="form-group"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div><div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link"></div></div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์หลักสูตร"></textarea></div>
+</div>
+
+<div class="form-card" style="background:#263548;border:1px solid #334155;border-radius:14px;padding:20px;margin-bottom:14px">
+<div class="card-header"><div class="card-icon gold">📋</div><div><h3>วิทยากรขอเปิดอบรม</h3><div class="card-sub">ระบุกลุ่มเป้าหมายและนัดหมาย</div></div></div>
+<div class="form-row"><div class="form-group"><label>BU <span class="req">*</span></label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div><div class="form-group"><label>จำนวนสูงสุด</label><input type="number" value="30"></div></div>
+<div class="form-row"><div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div><div class="form-group"><label>เงื่อนไขสมัคร</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วันเริ่ม <span class="req">*</span></label><input type="date"></div><div class="form-group"><label>วันสิ้นสุด <span class="req">*</span></label><input type="date"></div></div>
+<div class="form-row"><div class="form-group"><label>เวลา</label><input type="time" value="09:00"></div><div class="form-group"><label>ถึง</label><input type="time" value="16:00"></div></div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือกผู้อนุมัติ</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+</div>
+
+<div class="form-card" style="background:#263548;border:1px solid #334155;border-radius:14px;padding:20px;margin-bottom:0">
+<div class="card-header"><div class="card-icon blue">📊</div><div><h3>วิทยากรส่งผลอบรม</h3><div class="card-sub">รองรับผู้เข้าอบรมจำนวนมาก</div></div></div>
+
+<div style="overflow-x:auto">
+<table class="mini-table">
+<thead><tr><th>#</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>BU</th><th>คะแนน</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><input type="text" placeholder="6407049" style="width:75px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:110px"></td><td><select style="width:65px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="85" style="width:50px"></td><td><input type="number" placeholder="6" style="width:40px"></td><td><input type="number" placeholder="3.5" step="0.01" style="width:55px"></td><td><select style="width:70px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+<tr><td>2</td><td><input type="text" placeholder="6407050" style="width:75px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:110px"></td><td><select style="width:65px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="78" style="width:50px"></td><td><input type="number" placeholder="6" style="width:40px"></td><td><input type="number" placeholder="3.2" step="0.01" style="width:55px"></td><td><select style="width:70px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+<tr><td>3</td><td><input type="text" placeholder="6407051" style="width:75px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:110px"></td><td><select style="width:65px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="92" style="width:50px"></td><td><input type="number" placeholder="6" style="width:40px"></td><td><input type="number" placeholder="3.8" step="0.01" style="width:55px"></td><td><select style="width:70px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอผล</option></select></td></tr>
+</tbody>
+</table>
+</div>
+<div class="add-row">➕ เพิ่มรายการผู้เข้าอบรม</div>
+
+<div class="form-group" style="margin-top:12px"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์ใบรับรอง / รายงานผล"></div>
+</div>
+
+<div style="text-align:center;margin-top:16px">
+<button class="btn-gold" style="width:100%;max-width:300px">✅ ส่งข้อมูลทั้งหมด</button>
+</div>
+</div>
+</div>
+
+<!-- ==================== DESIGN C: Split Screen ==================== -->
+<div class="design-section" id="design-c">
+<div class="design-label"><h2>🔀 แบบที่ 3 — Split Screen</h2><p>ฟอร์มซ้าย + ข้อมูลขวา ดึงดูดสายตา Professional</p></div>
+<div class="design-pros"><span>✅ ดึงดูดสายตา</span><span>✅ ข้อมูลครบ</span><span>✅ ตารางหลายคน</span><span>✅ เหมาะ Desktop</span></div>
+
+<div class="split-container">
+<div class="split-left">
+<h2>📚 วิทยากร<br>P5 Training</h2>
+<p>ระบบจัดการอบรมครบวงจร<br>มุมมองวิทยากร</p>
+<ul class="feature-list">
+<li>ลงทะเบียนหลักสูตร</li>
+<li>ขอเปิดอบรม</li>
+<li>ส่งผลอบรมหลายคน</li>
+<li>ติดตามสถานะเรียลไทม์</li>
+<li>รองรับ 44 หน่วยกิต/ปี</li>
+</ul>
+</div>
+<div class="split-right" style="max-height:580px;overflow-y:auto">
+<div class="toggle-bar">
+<button class="toggle-btn active" onclick="showCSplit(1)">📋 ลงทะเบียน</button>
+<button class="toggle-btn" onclick="showCSplit(2)">📝 ขอเปิด</button>
+<button class="toggle-btn" onclick="showCSplit(3)">📊 ส่งผล</button>
+</div>
+
+<div id="csplit-1">
+<div style="font-size:0.95em;font-weight:700;color:#e2e8f0;margin-bottom:12px">📋 ลงทะเบียนหลักสูตร</div>
+<div class="form-row"><div class="form-group"><label>ชื่อหลักสูตร <span class="req">*</span></label><input type="text" placeholder="ชื่อหลักสูตร"></div><div class="form-group"><label>ระดับ <span class="req">*</span></label><select><option value="">เลือก</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>หน่วยกิต</label><input type="number" value="6"></div><div class="form-group"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div><div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้อง/Link"></div></div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์" style="font-size:0.78em"></textarea></div>
+<button class="btn-primary" style="width:100%;margin-top:6px">✅ ลงทะเบียนหลักสูตร</button>
+</div>
+
+<div id="csplit-2" style="display:none">
+<div style="font-size:0.95em;font-weight:700;color:#e2e8f0;margin-bottom:12px">📝 ขอเปิดอบรม</div>
+<div class="form-row"><div class="form-group"><label>BU <span class="req">*</span></label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div><div class="form-group"><label>จำนวนสูงสุด</label><input type="number" value="30"></div></div>
+<div class="form-row"><div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div><div class="form-group"><label>เงื่อนไข</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>วันเริ่ม <span class="req">*</span></label><input type="date"></div><div class="form-group"><label>วันสิ้นสุด <span class="req">*</span></label><input type="date"></div></div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือก</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+<button class="btn-gold" style="width:100%;margin-top:6px">📋 ส่งคำขอเปิดอบรม</button>
+</div>
+
+<div id="csplit-3" style="display:none">
+<div style="font-size:0.95em;font-weight:700;color:#e2e8f0;margin-bottom:12px">📊 ส่งผลอบรม <span style="font-size:0.65em;color:#60a5fa;font-weight:400">(รองรับหลายคน)</span></div>
+<div style="overflow-x:auto">
+<table class="mini-table" style="font-size:0.72em">
+<thead><tr><th>#</th><th>รหัส</th><th>ชื่อ</th><th>BU</th><th>คะแนน</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><input type="text" style="width:65px" placeholder="รหัส"></td><td><input type="text" style="width:95px" placeholder="ชื่อ"></td><td><select style="width:60px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" style="width:45px" placeholder="85"></td><td><input type="number" style="width:38px" placeholder="6"></td><td><input type="number" style="width:50px" step="0.01" placeholder="3.5"></td><td><select style="width:65px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option></select></td></tr>
+<tr><td>2</td><td><input type="text" style="width:65px" placeholder="รหัส"></td><td><input type="text" style="width:95px" placeholder="ชื่อ"></td><td><select style="width:60px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" style="width:45px" placeholder="78"></td><td><input type="number" style="width:38px" placeholder="6"></td><td><input type="number" style="width:50px" step="0.01" placeholder="3.2"></td><td><select style="width:65px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option></select></td></tr>
+</tbody>
+</table>
+</div>
+<div class="add-row" style="font-size:0.75em;padding:8px 12px">➕ เพิ่มรายการ</div>
+<div class="form-group" style="margin-top:10px"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์" style="font-size:0.78em"></div>
+<button class="btn-primary" style="width:100%;margin-top:6px">📊 ส่งผลอบรม</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== DESIGN D: Glassmorphism ==================== -->
+<div class="design-section" id="design-d">
+<div class="design-label"><h2>🪟 แบบที่ 4 — Glassmorphism</h2><p>การ์ดเรือนแก้วลอยเคลื่อน ดู Premium ประทับใจ</p></div>
+<div class="design-pros"><span>✅ ดู Premium</span><span>✅ แยกสัดส่วนชัด</span><span>✅ รองรับหลายคน</span><span>✅ สวยที่สุด</span></div>
+
+<div class="glass-bg">
+<!-- Card 1 -->
+<div class="glass-card">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="card-icon-sm" style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#16a34a,#0d5a2b);display:flex;align-items:center;justify-content:center;font-size:0.8em;color:#fff;flex-shrink:0">📋</div><h3 style="margin:0">ลงทะเบียนหลักสูตร</h3></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>ชื่อหลักสูตร <span class="req">*</span></label><input type="text" placeholder="ชื่อหลักสูตร"></div>
+<div class="form-group"><label>ระดับ <span class="req">*</span></label><select><option value="">เลือกระดับ</option><option>ปฐมนิเทศ</option><option>ทุติยนิเทศ</option><option>ตติยนิเทศ</option><option>จตุรนิเทศ</option><option>ปัญจนิเทศ</option><option>ภาวะผู้นำผู้รับใช้</option></select></div>
+<div class="form-group"><label>หน่วยกิต</label><input type="number" value="6"></div>
+<div class="form-group"><label>รูปแบบ</label><select><option>On-site</option><option>Online</option><option>Hybrid</option></select></div>
+<div class="form-group"><label>วิทยากร</label><input type="text" placeholder="ชื่อวิทยากร"></div>
+<div class="form-group"><label>สถานที่</label><input type="text" placeholder="ห้องอบรม / Link"></div>
+</div>
+<div class="form-group"><label>วัตถุประสงค์</label><textarea rows="2" placeholder="อธิบายวัตถุประสงค์หลักสูตร"></textarea></div>
+</div>
+
+<!-- Card 2 -->
+<div class="glass-card">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="card-icon-sm" style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#d4a017,#a67c00);display:flex;align-items:center;justify-content:center;font-size:0.8em;color:#fff;flex-shrink:0">📝</div><h3 style="margin:0">ขอเปิดอบรม</h3></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>BU <span class="req">*</span></label><select><option value="">เลือก BU</option><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option><option>ทุก BU</option></select></div>
+<div class="form-group"><label>จำนวนสูงสุด</label><input type="number" value="30"></div>
+<div class="form-group"><label>กลุ่มน้องเลี้ยง</label><select><option value="">เลือกกลุ่ม</option><option>กลุ่ม 1</option><option>กลุ่ม 2</option><option>กลุ่ม 4</option><option>ทุกกลุ่ม</option></select></div>
+<div class="form-group"><label>เงื่อนไข</label><select><option>เปิดทุกคน</option><option>ผ่านระดับก่อน</option><option>เสนอชื่อ</option></select></div>
+<div class="form-group"><label>วันเริ่ม <span class="req">*</span></label><input type="date"></div>
+<div class="form-group"><label>วันสิ้นสุด <span class="req">*</span></label><input type="date"></div>
+<div class="form-group"><label>เวลาเริ่ม</label><input type="time" value="09:00"></div>
+<div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" value="16:00"></div>
+</div>
+<div class="form-group"><label>ผู้อนุมัติ</label><select><option value="">เลือกผู้อนุมัติ</option><option>คุณแนน — ADMIN PAD</option><option>ผู้จัดการ BU</option></select></div>
+</div>
+
+<!-- Card 3 -->
+<div class="glass-card">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="card-icon-sm" style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:0.8em;color:#fff;flex-shrink:0">📊</div><h3 style="margin:0">ส่งผลอบรม <span style="font-size:0.6em;color:#60a5fa;font-weight:400">(รองรับหลายคน)</span></h3></div>
+
+<div style="overflow-x:auto">
+<table class="mini-table" style="font-size:0.7em">
+<thead><tr><th>#</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>BU</th><th>คะแนน</th><th>หน่วยกิต</th><th>GPA</th><th>สถานะ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><input type="text" placeholder="6407049" style="width:68px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:100px"></td><td><select style="width:58px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="85" style="width:45px"></td><td><input type="number" placeholder="6" style="width:38px"></td><td><input type="number" placeholder="3.5" step="0.01" style="width:50px"></td><td><select style="width:62px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอ</option></select></td></tr>
+<tr><td>2</td><td><input type="text" placeholder="6407050" style="width:68px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:100px"></td><td><select style="width:58px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="78" style="width:45px"></td><td><input type="number" placeholder="6" style="width:38px"></td><td><input type="number" placeholder="3.2" step="0.01" style="width:50px"></td><td><select style="width:62px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอ</option></select></td></tr>
+<tr><td>3</td><td><input type="text" placeholder="6407051" style="width:68px"></td><td><input type="text" placeholder="ชื่อ นามสกุล" style="width:100px"></td><td><select style="width:58px"><option>PMSG</option><option>CPDG</option><option>AAMG</option><option>RPLCG</option><option>RAFCOG</option></select></td><td><input type="number" placeholder="92" style="width:45px"></td><td><input type="number" placeholder="6" style="width:38px"></td><td><input type="number" placeholder="3.8" step="0.01" style="width:50px"></td><td><select style="width:62px"><option>✅ ผ่าน</option><option>❌ ไม่ผ่าน</option><option>⏳ รอ</option></select></td></tr>
+</tbody>
+</table>
+</div>
+<div class="add-row" style="font-size:0.75em;padding:8px 12px">➕ เพิ่มรายการผู้เข้าอบรม</div>
+<div class="form-group" style="margin-top:8px"><label>เอกสารแนบ</label><input type="text" placeholder="ชื่อไฟล์ใบรับรอง / รายงานผล"></div>
+</div>
+
+<div style="text-align:center;margin-top:16px;position:relative;z-index:1">
+<button class="btn-gold" style="width:100%;max-width:400px">✨ ส่งข้อมูลทั้งหมด (ลงทะเบียน + ขอเปิด + ส่งผล)</button>
+</div>
+</div>
+</div>
+
+<script>
+function showDesign(d){document.querySelectorAll('.design-section').forEach(s=>s.classList.remove('active'));document.getElementById('design-'+d).classList.add('active');document.querySelectorAll('.design-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.design-btn').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function goStepA(n){for(let i=1;i<=3;i++){document.getElementById('stepA'+i).style.display=i===n?'block':'none';}const dots=document.querySelectorAll('#stepBarA .step-dot');dots.forEach((d,i)=>{d.className='step-dot '+(i<n?'done':(i===n-1?'active':''));});}
+function showCSplit(n){[1,2,3].forEach(i=>{document.getElementById('csplit-'+i).style.display=i===n?'block':'none';});document.querySelectorAll('.split-right .toggle-btn').forEach((b,i)=>b.classList.toggle('active',i===n-1));}
+</script>
+</body>
+</html>

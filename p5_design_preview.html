@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5 Design Preview — เลือกสไตล์ดีไซน์</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Inter',sans-serif;background:#f0f2f5;color:#1a1a2e}
+.page{max-width:1400px;margin:0 auto;padding:20px}
+h1{text-align:center;font-size:1.4em;margin-bottom:8px;color:#1a1a2e}
+.subtitle{text-align:center;font-size:0.85em;color:#666;margin-bottom:24px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px}
+@media(max-width:900px){.choice-grid{grid-template-columns:1fr}}
+.preview-box{border-radius:16px;overflow:hidden;border:3px solid transparent;cursor:pointer;transition:0.3s;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.preview-box:hover{box-shadow:0 8px 30px rgba(0,0,0,0.15);transform:translateY(-2px)}
+.preview-box.selected{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.2)}
+.preview-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.preview-header h3{font-size:0.95em;font-weight:700}
+.preview-header .badge{padding:4px 10px;border-radius:20px;font-size:0.7em;font-weight:600}
+.preview-body{height:300px;overflow:hidden;position:relative}
+.preview-footer{padding:10px 16px;background:#f8fafc;font-size:0.75em;color:#666;border-top:1px solid #eee}
+
+/* ===== LAYOUT A: TOP NAV ===== */
+.layout-a{display:flex;flex-direction:column;height:100%}
+.layout-a .topbar{background:#0f172a;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:0.75em}
+.layout-a .topbar .logo{font-weight:800;font-size:0.9em}
+.layout-a .topbar .nav-items{display:flex;gap:8px;margin-left:auto}
+.layout-a .topbar .nav-item{padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.1);font-size:0.7em}
+.layout-a .topbar .nav-item.active{background:#2563eb}
+.layout-a .content{flex:1;padding:12px;background:#f1f5f9}
+.layout-a .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.layout-a .kpi-card{background:#fff;border-radius:8px;padding:10px;text-align:center;border:1px solid #e2e8f0}
+.layout-a .kpi-card .val{font-size:1.2em;font-weight:800}
+.layout-a .kpi-card .lbl{font-size:0.6em;color:#666}
+.layout-a .bu-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.layout-a .bu-card{background:#fff;border-radius:8px;padding:10px;border:1px solid #e2e8f0}
+.layout-a .bu-card .bu-name{font-size:0.75em;font-weight:700;margin-bottom:4px}
+.layout-a .bu-card .bu-bar{height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-top:4px}
+.layout-a .bu-card .bu-bar .fill{height:100%;border-radius:3px}
+
+/* ===== LAYOUT B: SIDEBAR ===== */
+.layout-b{display:flex;height:100%}
+.layout-b .sidebar{width:140px;background:linear-gradient(180deg,#1a1a2e,#16213e);color:#fff;padding:12px 0;flex-shrink:0}
+.layout-b .sidebar .s-logo{padding:8px 12px 16px;font-size:0.8em;font-weight:800;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:8px}
+.layout-b .sidebar .s-item{padding:8px 12px;font-size:0.7em;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer}
+.layout-b .sidebar .s-item.active{background:rgba(99,102,241,0.2);color:#fff;border-left:3px solid #6366f1}
+.layout-b .sidebar .s-item .icon{font-size:0.9em}
+.layout-b .main-area{flex:1;background:#f8fafc;padding:12px;overflow:auto}
+.layout-b .main-area h2{font-size:0.85em;margin-bottom:10px;color:#1a1a2e}
+.layout-b .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.layout-b .stat-card{background:#fff;border-radius:8px;padding:10px;border-left:4px solid #6366f1}
+.layout-b .stat-card .val{font-size:1.1em;font-weight:800;color:#1a1a2e}
+.layout-b .stat-card .lbl{font-size:0.6em;color:#666}
+.layout-b .chart-area{background:#fff;border-radius:8px;padding:10px;border:1px solid #eee}
+.layout-b .chart-bar{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.65em}
+.layout-b .chart-bar .bar{height:8px;border-radius:4px}
+
+/* ===== LAYOUT C: TOP+SIDEBAR ===== */
+.layout-c{display:flex;flex-direction:column;height:100%}
+.layout-c .topbar-c{background:linear-gradient(135deg,#059669,#10b981);color:#fff;padding:8px 16px;display:flex;align-items:center;gap:10px;font-size:0.75em}
+.layout-c .topbar-c .logo{font-weight:800;font-size:0.9em}
+.layout-c .topbar-c .user{margin-left:auto;font-size:0.7em;opacity:0.9}
+.layout-c .body-area{display:flex;flex:1;overflow:hidden}
+.layout-c .sidebar-c{width:120px;background:#064e3b;color:#d1fae5;padding:8px 0;flex-shrink:0}
+.layout-c .sidebar-c .sc-item{padding:7px 10px;font-size:0.65em;display:flex;align-items:center;gap:4px;cursor:pointer;color:#a7f3d0}
+.layout-c .sidebar-c .sc-item.active{background:rgba(255,255,255,0.15);color:#fff;font-weight:600}
+.layout-c .main-c{flex:1;background:#f0fdf4;padding:10px;overflow:auto}
+.layout-c .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.layout-c .kpi-card{background:#fff;border-radius:8px;padding:8px 10px;border:1px solid #d1fae5}
+.layout-c .kpi-card .val{font-size:1em;font-weight:800;color:#059669}
+.layout-c .kpi-card .lbl{font-size:0.6em;color:#666}
+.layout-c .table-area{background:#fff;border-radius:8px;padding:8px;border:1px solid #d1fae5}
+.layout-c .table-area .th{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-size:0.6em;font-weight:700;color:#065f46;padding:4px 0;border-bottom:1px solid #d1fae5}
+.layout-c .table-area .tr{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-size:0.6em;padding:4px 0;border-bottom:1px solid #f0fdf4}
+.layout-c .table-area .tr .pass{color:#059669}
+.layout-c .table-area .tr .fail{color:#dc2626}
+
+/* ===== COLOR THEMES ===== */
+.theme-navy .topbar{background:#0f172a!important}
+.theme-navy .kpi-card .val{color:#1e40af!important}
+.theme-navy .bu-card .bu-bar .fill{background:#2563eb!important}
+
+.theme-purple .topbar{background:#2e1065!important}
+.theme-purple .kpi-card .val{color:#7c3aed!important}
+.theme-purple .bu-card .bu-bar .fill{background:linear-gradient(90deg,#7c3aed,#a855f7)!important}
+.theme-purple .sidebar{background:linear-gradient(180deg,#2e1065,#4c1d95)!important}
+.theme-purple .stat-card{border-left-color:#7c3aed!important}
+
+/* Color labels */
+.color-row{display:flex;gap:12px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.color-btn{padding:10px 20px;border-radius:10px;border:2px solid #e2e8f0;cursor:pointer;font-size:0.85em;font-weight:600;transition:0.2s;display:flex;align-items:center;gap:8px}
+.color-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.color-btn.selected{border-color:#10b981;background:#f0fdf4}
+.color-btn .swatch{width:20px;height:20px;border-radius:4px}
+
+.btn-row{text-align:center;margin-top:20px}
+.btn-confirm{padding:12px 40px;border-radius:10px;border:none;background:#10b981;color:#fff;font-size:1em;font-weight:700;cursor:pointer;transition:0.2s}
+.btn-confirm:hover{background:#059669;transform:translateY(-1px)}
+.btn-confirm:disabled{background:#94a3b8;cursor:not-allowed}
+
+.result-box{display:none;margin-top:20px;padding:16px;background:#f0fdf4;border-radius:12px;border:1px solid #10b981}
+.result-box h3{font-size:1em;color:#059669;margin-bottom:8px}
+.result-box p{font-size:0.85em;color:#1a1a2e;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>🎨 P5 — เลือกสไตล์ดีไซน์</h1>
+<p class="subtitle">เลือกเลย์เอาต์ + สีที่ชอบ แล้วกด "ยืนยัน" ด้านล่าง</p>
+
+<!-- LAYOUT CHOICES -->
+<h2 style="font-size:1em;margin-bottom:12px;color:#1a1a2e">📐 เลย์เอาต์ (เลือก 1 อัน)</h2>
+<div class="choice-grid">
+
+<!-- LAYOUT A: TOP NAVIGATION -->
+<div class="preview-box" onclick="selectLayout('A')" id="layoutA">
+<div class="preview-header">
+<h3>🅰️ Top Navigation</h3>
+<span class="badge" style="background:#dbeafe;color:#1e40af">เหมาะกับมือถือ</span>
+</div>
+<div class="preview-body">
+<div class="layout-a">
+<div class="topbar">
+<span class="logo">P5</span>
+<span style="opacity:0.7;font-size:0.7em">ระบบพัฒนาสมาชิก PKG</span>
+<div class="nav-items">
+<span class="nav-item active">Dashboard</span>
+<span class="nav-item">Training</span>
+<span class="nav-item">Mentor</span>
+<span class="nav-item">Coach</span>
+<span class="nav-item">Roleplay</span>
+<span class="nav-item">ทุน</span>
+</div>
+</div>
+<div class="content">
+<div class="kpi-row">
+<div class="kpi-card"><div class="val">492</div><div class="lbl">สมาชิกทั้งหมด</div></div>
+<div class="kpi-card"><div class="val">78%</div><div class="lbl">ผ่านเกณฑ์</div></div>
+<div class="kpi-card"><div class="val">3.65</div><div class="lbl">GPA เฉลี่ย</div></div>
+<div class="kpi-card"><div class="val">38/44</div><div class="lbl">หน่วยกิจเฉลี่ย</div></div>
+</div>
+<div class="bu-row">
+<div class="bu-card"><div class="bu-name">PMSG</div><div style="font-size:0.65em;color:#666">85% ผ่าน</div><div class="bu-bar"><div class="fill" style="width:85%;background:#2563eb"></div></div></div>
+<div class="bu-card"><div class="bu-name">CPDG</div><div style="font-size:0.65em;color:#666">72% ผ่าน</div><div class="bu-bar"><div class="fill" style="width:72%;background:#2563eb"></div></div></div>
+<div class="bu-card"><div class="bu-name">AAMG</div><div style="font-size:0.65em;color:#666">80% ผ่าน</div><div class="bu-bar"><div class="fill" style="width:80%;background:#2563eb"></div></div></div>
+<div class="bu-card"><div class="bu-name">RPLCG</div><div style="font-size:0.65em;color:#666">68% ผ่าน</div><div class="bu-bar"><div class="fill" style="width:68%;background:#2563eb"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="preview-footer">✅ เมนูอยู่ด้านบน • เลื่อนดูง่าย • มือถือกดได้เลย</div>
+</div>
+
+<!-- LAYOUT B: SIDEBAR -->
+<div class="preview-box" onclick="selectLayout('B')" id="layoutB">
+<div class="preview-header">
+<h3>🅱️ Sidebar (ด้านซ้าย)</h3>
+<span class="badge" style="background:#ede9fe;color:#6b21a8">เหมาะกับ Desktop</span>
+</div>
+<div class="preview-body">
+<div class="layout-b">
+<div class="sidebar">
+<div class="s-logo">📊 P5</div>
+<div class="s-item active"><span class="icon">📈</span>Dashboard</div>
+<div class="s-item"><span class="icon">📚</span>Training</div>
+<div class="s-item"><span class="icon">👥</span>Mentor</div>
+<div class="s-item"><span class="icon">🎯</span>Coach</div>
+<div class="s-item"><span class="icon">🎭</span>Roleplay</div>
+<div class="s-item"><span class="icon">🏛️</span>ทุนองค์กร</div>
+<div class="s-item"><span class="icon">⚙️</span>อื่นๆ</div>
+</div>
+<div class="main-area">
+<h2>📊 Dashboard P5</h2>
+<div class="stat-grid">
+<div class="stat-card"><div class="val">492</div><div class="lbl">สมาชิกทั้งหมด</div></div>
+<div class="stat-card"><div class="val">78%</div><div class="lbl">ผ่านเกณฑ์</div></div>
+</div>
+<div class="chart-area">
+<div style="font-size:0.7em;font-weight:700;margin-bottom:6px">PMSG — 85%</div>
+<div class="chart-bar"><div class="bar" style="width:85%;background:#6366f1"></div></div>
+<div style="font-size:0.7em;font-weight:700;margin-bottom:6px">CPDG — 72%</div>
+<div class="chart-bar"><div class="bar" style="width:72%;background:#6366f1"></div></div>
+<div style="font-size:0.7em;font-weight:700;margin-bottom:6px">AAMG — 80%</div>
+<div class="chart-bar"><div class="bar" style="width:80%;background:#6366f1"></div></div>
+<div style="font-size:0.7em;font-weight:700;margin-bottom:6px">RPLCG — 68%</div>
+<div class="chart-bar"><div class="bar" style="width:68%;background:#6366f1"></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="preview-footer">✅ เมนูเยอะได้ • เห็นตัวเลขชัด • Desktop เหมาะ</div>
+</div>
+
+<!-- LAYOUT C: TOP + SIDEBAR (GREEN-GOLD) -->
+<div class="preview-box" onclick="selectLayout('C')" id="layoutC">
+<div class="preview-header">
+<h3>🅲 Top + Sidebar (เขียว-ทอง)</h3>
+<span class="badge" style="background:#d1fae5;color:#065f46">สี PKG</span>
+</div>
+<div class="preview-body">
+<div class="layout-c">
+<div class="topbar-c">
+<span class="logo">🏛️ P5 — ระบบพัฒนาสมาชิก PKG</span>
+<span class="user">👤 lookmee (ADMIN PAD)</span>
+</div>
+<div class="body-area">
+<div class="sidebar-c">
+<div class="sc-item active">📈 Dashboard</div>
+<div class="sc-item">📚 Training</div>
+<div class="sc-item">👥 Mentor</div>
+<div class="sc-item">🎯 Coach</div>
+<div class="sc-item">🎭 Roleplay</div>
+<div class="sc-item">🏛️ ทุน</div>
+<div class="sc-item">⚙️ อื่นๆ</div>
+</div>
+<div class="main-c">
+<div class="kpi-row">
+<div class="kpi-card"><div class="val">492</div><div class="lbl">สมาชิก</div></div>
+<div class="kpi-card"><div class="val">78%</div><div class="lbl">ผ่านเกณฑ์</div></div>
+<div class="kpi-card"><div class="val">3.65</div><div class="lbl">GPA</div></div>
+</div>
+<div class="table-area">
+<div class="th"><span>BU</span><span>สมาชิก</span><span>ผ่าน</span><span>%</span></div>
+<div class="tr"><span>PMSG</span><span>68</span><span class="pass">58</span><span>85%</span></div>
+<div class="tr"><span>CPDG</span><span>125</span><span class="pass">90</span><span>72%</span></div>
+<div class="tr"><span>AAMG</span><span>210</span><span class="pass">168</span><span>80%</span></div>
+<div class="tr"><span>RPLCG</span><span>62</span><span class="fail">42</span><span>68%</span></div>
+<div class="tr"><span>RAFCOG</span><span>27</span><span class="pass">20</span><span>74%</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="preview-footer">✅ สีองค์กร • ท็อปบาร์+ไซด์บาร์ • ดูเป็นตาราง</div>
+</div>
+
+<!-- LAYOUT D: MINIMAL CARD -->
+<div class="preview-box" onclick="selectLayout('D')" id="layoutD">
+<div class="preview-header">
+<h3>🅳 Modern Card (เรียบง่าย)</h3>
+<span class="badge" style="background:#fef3c7;color:#92400e">Minimal</span>
+</div>
+<div class="preview-body" style="background:#fafafa;padding:12px;overflow:auto">
+<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #eee;margin-bottom:10px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<span style="font-size:0.85em;font-weight:700;color:#1a1a2e">P5 ระบบพัฒนาสมาชิก</span>
+<span style="font-size:0.65em;padding:3px 8px;background:#f0fdf4;border-radius:6px;color:#059669">ADMIN PAD</span>
+</div>
+<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+<span style="padding:5px 10px;background:#f8fafc;border-radius:20px;font-size:0.65em;cursor:pointer;border:1px solid #e2e8f0">📊 Dashboard</span>
+<span style="padding:5px 10px;background:#eff6ff;border-radius:20px;font-size:0.65em;cursor:pointer;color:#2563eb;border:1px solid #bfdbfe">📚 Training</span>
+<span style="padding:5px 10px;background:#f8fafc;border-radius:20px;font-size:0.65em;cursor:pointer;border:1px solid #e2e8f0">👥 Mentor</span>
+<span style="padding:5px 10px;background:#f8fafc;border-radius:20px;font-size:0.65em;cursor:pointer;border:1px solid #e2e8f0">🎯 Coach</span>
+<span style="padding:5px 10px;background:#f8fafc;border-radius:20px;font-size:0.65em;cursor:pointer;border:1px solid #e2e8f0">🎭 Roleplay</span>
+<span style="padding:5px 10px;background:#f8fafc;border-radius:20px;font-size:0.65em;cursor:pointer;border:1px solid #e2e8f0">🏛️ ทุน</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div style="background:#f0fdf4;border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#059669">492</div><div style="font-size:0.6em;color:#666">สมาชิก</div></div>
+<div style="background:#eff6ff;border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#2563eb">78%</div><div style="font-size:0.6em;color:#666">ผ่านเกณฑ์</div></div>
+<div style="background:#fffbeb;border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.1em;font-weight:800;color:#d97706">3.65</div><div style="font-size:0.6em;color:#666">GPA</div></div>
+</div>
+</div>
+<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #eee">
+<div style="font-size:0.75em;font-weight:700;margin-bottom:8px">📊 ระบบ Training</div>
+<div style="font-size:0.65em;color:#666;margin-bottom:4px">PMSG — 85% <span style="color:#059669">✓ ครบ</span></div>
+<div style="font-size:0.65em;color:#666;margin-bottom:4px">CPDG — 72% <span style="color:#d97706">⚠ ยังไม่ครบ</span></div>
+<div style="font-size:0.65em;color:#666">AAMG — 80% <span style="color:#d97706">⚠ ยังไม่ครบ</span></div>
+</div>
+</div>
+<div class="preview-footer">✅ เรียบง่าย • การ์ดเลื่อน • มือถือเป็นหลัก</div>
+</div>
+</div>
+
+<!-- COLOR CHOICES -->
+<h2 style="font-size:1em;margin:24px 0 12px;color:#1a1a2e">🎨 สีธีม (เลือก 1 อัน)</h2>
+<div class="color-row">
+<div class="color-btn selected" onclick="selectColor('navy')" id="colorNavy">
+<span class="swatch" style="background:linear-gradient(135deg,#0f172a,#1e40af)"></span>
+Navy Blue + White<br><span style="font-size:0.7em;color:#999">สุขุม มืออาชีพ</span>
+</div>
+<div class="color-btn" onclick="selectColor('purple')" id="colorPurple">
+<span class="swatch" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"></span>
+Purple-Blue Gradient<br><span style="font-size:0.7em;color:#999">สดใส ทันสมัย</span>
+</div>
+<div class="color-btn" onclick="selectColor('green')" id="colorGreen">
+<span class="swatch" style="background:linear-gradient(135deg,#059669,#10b981)"></span>
+เขียว-ทอง (PKG)<br><span style="font-size:0.7em;color:#999">สีองค์กร PKG</span>
+</div>
+<div class="color-btn" onclick="selectColor('dark')" id="colorDark">
+<span class="swatch" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"></span>
+Dark Mode<br><span style="font-size:0.7em;color:#999">ดูสบายตา มือถือ</span>
+</div>
+</div>
+
+<!-- CONFIRM BUTTON -->
+<div class="btn-row">
+<button class="btn-confirm" onclick="confirmChoice()">✅ ยืนยันการเลือก</button>
+</div>
+
+<!-- RESULT -->
+<div class="result-box" id="resultBox">
+<h3>✅ สรุปการเลือกของคุณ</h3>
+<p id="resultText"></p>
+</div>
+</div>
+
+<script>
+var selectedLayout = 'A';
+var selectedColor = 'navy';
+
+function selectLayout(layout) {
+  selectedLayout = layout;
+  document.querySelectorAll('.preview-box').forEach(function(box) {
+    box.classList.remove('selected');
+  });
+  document.getElementById('layout' + layout).classList.add('selected');
+}
+
+function selectColor(color) {
+  selectedColor = color;
+  document.querySelectorAll('.color-btn').forEach(function(btn) {
+    btn.classList.remove('selected');
+  });
+  document.getElementById('color' + color.charAt(0).toUpperCase() + color.slice(1)).classList.add('selected');
+}
+
+selectLayout('A');
+
+function confirmChoice() {
+  var layoutNames = {
+    'A': 'Top Navigation — เมนูด้านบน (เหมาะกับมือถือ)',
+    'B': 'Sidebar — เมนูด้านซ้าย (เหมาะกับ Desktop)',
+    'C': 'Top + Sidebar — เขียว-ทอง สี PKG',
+    'D': 'Modern Card — เรียบง่าย มือถือเป็นหลัก'
+  };
+  var colorNames = {
+    'navy': 'Navy Blue + White (สุขุม มืออาชีพ)',
+    'purple': 'Purple-Blue Gradient (สดใส ทันสมัย)',
+    'green': 'เขียว-ทอง (สีองค์กร PKG)',
+    'dark': 'Dark Mode (ดูสบายตา มือถือ)'
+  };
+  
+  var text = '<strong>เลย์เอาต์:</strong> ' + layoutNames[selectedLayout] + '<br>';
+  text += '<strong>สีธีม:</strong> ' + colorNames[selectedColor] + '<br><br>';
+  text += '🚀 จะเริ่มสร้าง P5 ตามสไตล์ที่เลือกทันที!';
+  
+  document.getElementById('resultText').innerHTML = text;
+  document.getElementById('resultBox').style.display = 'block';
+}
+</script>
+</body>
+</html>

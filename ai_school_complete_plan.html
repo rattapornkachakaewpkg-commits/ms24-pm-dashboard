@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แผนโครงการ: โรงเรียนฝึกผู้ใช้ AI (AI User Training School) - ฉบับสมบูรณ์</title>
+    <style>
+        body { font-family: 'Sarabun', 'Segoe UI', sans-serif; background-color: #f4f6f8; color: #333; line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 3px solid #2980b9; padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { color: #2980b9; margin-top: 35px; border-left: 6px solid #2980b9; padding-left: 15px; }
+        h3 { color: #16a085; margin-top: 20px; }
+        ul { margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        .highlight { background-color: #e8f8f5; padding: 15px; border-radius: 5px; border-left: 4px solid #1abc9c; margin: 15px 0; font-weight: 500; }
+        .kpi-box { background-color: #f0f7ff; padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 4px solid #3498db; }
+        .kpi-title { font-weight: bold; color: #2c3e50; font-size: 1.1em; }
+        .rmm-table, .roadmap-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95em; }
+        .rmm-table th, .rmm-table td, .roadmap-table th, .roadmap-table td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+        .rmm-table th, .roadmap-table th { background-color: #34495e; color: white; }
+        .rmm-table tr:nth-child(even), .roadmap-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .prompt-box { background-color: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap; }
+        .prompt-title { font-weight: bold; color: #f39c12; margin-bottom: 5px; font-family: 'Segoe UI', sans-serif; }
+        .footer { text-align: center; margin-top: 50px; font-size: 0.9em; color: #777; border-top: 1px solid #ddd; padding-top: 20px; }
+        .phase-1 { background-color: #e8f8f5; border-left: 5px solid #1abc9c; padding: 5px; }
+        .phase-2 { background-color: #fef9e7; border-left: 5px solid #f1c40f; padding: 5px; }
+        .phase-3 { background-color: #eaf2f8; border-left: 5px solid #3498db; padding: 5px; }
+        @media print { body { background: white; padding: 0; } .container { box-shadow: none; padding: 20px; max-width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📜 โครงการ: โรงเรียนฝึกผู้ใช้ AI (AI User Training School)<br><span style="font-size: 0.7em; color: #7f8c8d;">Human-AI Workflow Transformation & 3PASS System</span></h1>
+
+        <div class="highlight">
+            <strong>เป้าหมายสูงสุด:</strong> เปลี่ยนผ่านองค์กรสู่การเป็น <strong>"Data-Driven & AI-Augmented Organization"</strong> ที่สมาชิกทุกคนสามารถใช้งาน AI เพื่อลดงานซ้ำซ้อน เพิ่มผลิตภาพ และสร้างนวัตกรรมได้อย่างมีจริยธรรมและปลอดภัย
+        </div>
+
+        <h2>1. หลักการและเหตุผล (Principles & Rationale)</h2>
+        <p>ปัจจุบันเทคโนโลยี AI เปลี่ยนรูปแบบการทำงานจาก Human Workflow สู่ <strong>Human-AI Workflow</strong> องค์กรจึงต้องพัฒนาสมาชิกให้สามารถ:</p>
+        <ul>
+            <li>ใช้ AI เป็นผู้ช่วย (Concierge) และพันธมิตร (Co-Worker)</li>
+            <li>ลดงาน Routine, เพิ่มผลิตภาพ (Productivity) และตัดสินใจแม่นยำขึ้น</li>
+            <li>ประยุกต์ใช้ AI ผ่านกระบวนการ <strong>3PASS</strong>:
+                <ol>
+                    <li><strong>ผ่านที่ 1 (Knowledge):</strong> รู้หลักการและข้อจำกัด</li>
+                    <li><strong>ผ่านที่ 2 (Application):</strong> ทำเป็นและนำไปใช้ได้</li>
+                    <li><strong>ผ่านที่ 3 (Performance):</strong> ทำได้ตามเป้าหมายและวัดผลได้</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h2>2. วัตถุประสงค์และขอบเขต (Objectives & Scope)</h2>
+        <h3>2.1 วัตถุประสงค์ 5 ประการ</h3>
+        <ol>
+            <li>พัฒนาทักษะสมาชิกทุกระดับให้ใช้ AI ได้ตามบทบาทหน้าที่</li>
+            <li>ส่งเสริมการประยุกต์ใช้ AI เพื่อเพิ่มประสิทธิภาพงานจริง (Real World Impact)</li>
+            <li>สร้างวัฒนธรรม <strong>Human-AI Collaboration</strong> ในองค์กร</li>
+            <li>พัฒนาระบบการเรียนรู้ต่อเนื่องผ่าน Mentor, Coach และ AI Knowledge Base</li>
+            <li>สนับสนุนเป้าหมายเชิงกลยุทธ์: <strong>ผลิตภาพสูง, รายได้สูง, ความผูกพันสูง</strong></li>
+        </ol>
+
+        <h3>2.2 โครงสร้างหลักสูตร (3 Levels)</h3>
+        <ul>
+            <li>🟢 <strong>Level 1: AI Concierge (7 ชม.)</strong> สำหรับพนักงานทั่วไป/บริการ (เน้นงาน Routine/Prompt พื้นฐาน)</li>
+            <li>🟡 <strong>Level 2: AI Co-Worker (20 ชม.)</strong> สำหรับหัวหน้างาน/วิเคราะห์ (เน้น Workflow/Insight/Strategic)</li>
+            <li>🔴 <strong>Level 3: AI Expert (28 ชม.)</strong> สำหรับ IT/HRD/Innovation (เน้น System Design/Governance/ROI)</li>
+        </ul>
+
+        <h2>3. รายละเอียดหลักสูตร Level 2: AI Co-Worker (Strategic Partner)</h2>
+        <p>เนื่องจากเป็นระดับที่ส่งผลต่อ "ประสิทธิภาพการทำงาน" มากที่สุด รายละเอียดมีดังนี้:</p>
+        
+        <h3>📚 5 Modules หลัก (20 ชั่วโมง)</h3>
+        <ul>
+            <li><strong>Module 1: Advanced Prompting</strong> - Chain of Thought, Tree of Thoughts, การแก้โจทย์ซับซ้อน</li>
+            <li><strong>Module 2: Data Analysis & Insight</strong> - วิเคราะห์แนวโน้ม, สรุป Insight, สร้าง Dashboard</li>
+            <li><strong>Module 3: Workflow Automation</strong> - ออกแบบ AI ลดงานซ้ำซ้อน, Auto-Report, เชื่อมต่อ Tools</li>
+            <li><strong>Module 4: Strategic Decision Support</strong> - AI ช่วยทำ SWOT/BCG, Scenario Planning, ประเมินความเสี่ยง</li>
+            <li><strong>Module 5: Coaching & Performance</strong> - วิเคราะห์ประสิทธิภาพทีม, สร้างแผนพัฒนาพนักงาน</li>
+        </ul>
+
+        <h3>🛠️ Prompt Template สำหรับ Level 2 (Strategic Partner)</h3>
+        
+        <div class="prompt-box"><span class="prompt-title">Template 1: วิเคราะห์ข้อมูลและสรุป Insight</span>
+[บทบาท] นักวิเคราะห์ข้อมูลและผู้ช่วยตัดสินใจเชิงกลยุทธ์
+[บริบท] ฉันมีข้อมูล [ระบุข้อมูล] จำนวน [ระบุจำนวน] รายการ
+[ภารกิจ] วิเคราะห์แนวโน้ม จุดแข็ง จุดอ่อน และให้ Insight ที่นำไปปรับแผนงานได้จริง
+[รูปแบบ] • สรุปภาพรวม (1 ย่อหน้า) • 3 แนวโน้มสำคัญ • 2 จุดที่ต้องแก้ไข • ข้อเสนอแนะ 3 ข้อ
+[ข้อจำกัด] ใช้ข้อมูลจริงเท่านั้น ห้ามสมมติ</div>
+
+        <div class="prompt-box"><span class="prompt-title">Template 2: ออกแบบ Workflow ลดงานซ้ำซ้อน</span>
+[บทบาท] ผู้เชี่ยวชาญด้านกระบวนการทำงานและ Automation
+[บริบท] ทีมมีขั้นตอน [ระบุงาน] ที่ใช้เวลานานและทำซ้ำทุกสัปดาห์
+[ภารกิจ] ออกแบบ AI Workflow ที่ลดขั้นตอน manual ลงอย่างน้อย 50% โดยคงคุณภาพงาน
+[รูปแบบ] • แผนผังขั้นตอนเดิม vs ใหม่ • จุดที่นำ AI มาช่วย • เครื่องมือที่แนะนำ • ตัวชี้วัด KPI
+[ข้อจำกัด] สอดคล้องกับนโยบาย PDPA และใช้งานง่ายสำหรับบุคลากร</div>
+
+        <div class="prompt-box"><span class="prompt-title">Template 3: วิเคราะห์ความเสี่ยงและวางแผนสำรอง (Scenario Planning)</span>
+[บทบาท] ที่ปรึกษาเชิงกลยุทธ์และผู้จัดการความเสี่ยง
+[บริบท] องค์กรกำลังจะ [ระบุโครงการ/การเปลี่ยนแปลง] ภายใน [ระยะเวลา]
+[ภารกิจ] วิเคราะห์ความเสี่ยง 3 ระดับ (สูง/กลาง/ต่ำ) และเสนอแผนรับมือ
+[รูปแบบ] ตาราง: ความเสี่ยง | ความน่าจะเป็น | ผลกระทบ | มาตรการป้องกัน | แผนสำรอง
+[ข้อจำกัด] เน้นความเสี่ยงด้านคน กระบวนการ และเทคโนโลยี</div>
+
+        <div class="prompt-box"><span class="prompt-title">Template 4: วิเคราะห์ประสิทธิภาพทีมและวางแผน Coaching</span>
+[บทบาท] Coach ผู้บริหารทีมและนักพัฒนาทรัพยากรมนุษย์
+[บริบท] ทีม [ระบุทีม] มีผลงาน [ระบุข้อมูล] ในไตรมาสที่ผ่านมา
+[ภารกิจ] วิเคราะห์จุดแข็ง-จุดพัฒนา และเสนอแผน Coaching รายบุคคล
+[รูปแบบ] • สรุปประสิทธิภาพทีม • รายชื่อจุดพัฒนาหลัก 3 ข้อ • แผน Coaching 30-60-90 วัน
+[ข้อจำกัด] ใช้ภาษาเชิงบวก เน้นการพัฒนา สอดคล้องกับค่านิยม 6 รับ</div>
+
+        <div class="prompt-box"><span class="prompt-title">Template 5: สรุปข้อมูลลูกค้า/Feedback สู่ Action Plan</span>
+[บทบาท] ผู้เชี่ยวชาญด้านการบริการลูกค้าและ Voice of Customer (VoC)
+[บริบท] มี Feedback จำนวน [ระบุจำนวน] รายการ ในหัวข้อ [ระบุหัวข้อ]
+[ภารกิจ] จัดกลุ่มประเด็น วิเคราะห์ความรู้สึก และเสนอ Action Plan เพื่อปรับปรุง
+[รูปแบบ] • สรุปสัดส่วน (บวก/กลาง/ลบ) • 3 ประเด็นหลัก • แผนดำเนินการ 3 ขั้นตอน • ตัวชี้วัดเป้าหมาย
+[ข้อจำกัด] ห้ามระบุข้อมูลส่วนบุคคล เน้นกระบวนการ</div>
+
+        <h2>4. การบริหารความเสี่ยง (Risk Management Measures - RMM)</h2>
+        <table class="rmm-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">ความเสี่ยง (Risk)</th>
+                    <th style="width: 30%;">ผลกระทบ (Impact)</th>
+                    <th style="width: 45%;">มาตรการป้องกัน (Mitigation Plan)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. AI Hallucination</strong><br>ข้อมูลผิดพลาด</td>
+                    <td>นำไปตัดสินใจผิดพลาด</td>
+                    <td>บังคับใช้กฎ <strong>Human-in-the-Loop</strong> (ต้องตรวจสอบก่อนใช้ทุกครั้ง) และอบรมข้อจำกัด AI</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Data Privacy (PDPA)</strong><br>ข้อมูลรั่วไหล</td>
+                    <td>ผิดกฎหมาย/เสียชื่อเสียง</td>
+                    <td>ห้ามป้อนข้อมูลลับลง Public AI Tools, ใช้เครื่องมือระดับ Enterprise ที่มีการรับรอง</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Resistance to Change</strong><br>ต่อต้านการเปลี่ยนแปลง</td>
+                    <td>โครงการไม่ถูกนำไปใช้</td>
+                    <td>สื่อ Vision ว่า AI คือ "ผู้ช่วย" ไม่ใช่ "ผู้แทนที่" และสร้าง Quick Wins ให้เห็นผลจริง</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Skill Gap</strong><br>ทักษะไม่พอ</td>
+                    <td>ใช้งานไม่ได้จริง</td>
+                    <td>จัดระบบ <strong>Mentor/Coach</strong> คู่หูดูแล และออกแบบเนื้อหาแบบ Step-by-Step</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Copyright</strong><br>ละเมิดลิขสิทธิ์</td>
+                    <td>ถูกฟ้องร้อง</td>
+                    <td>อบรม AI Ethics และตรวจสอบผลงานก่อนเผยแพร่เชิงพาณิชย์</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5. เป้าหมายและตัวชี้วัด (Goals & KPIs)</h2>
+        
+        <div class="kpi-box">
+            <div class="kpi-title">🎯 Objective 1: พัฒนาสมาชิกให้สามารถใช้ AI ในการทำงานได้จริง</div>
+            <ul>
+                <li><strong>KPI 1.1:</strong> สมาชิก 100% ผ่านการพัฒนาตามระบบ 3PASS</li>
+                <li><strong>KPI 1.2:</strong> สมาชิก ≥ 80% ใช้ AI ช่วยทำงานจริงตามบทบาท</li>
+                <li><strong>KPI 1.3:</strong> สมาชิก ≥ 80% มี AI Use Case ที่ประยุกต์ใช้กับงานจริง</li>
+            </ul>
+        </div>
+
+        <div class="kpi-box">
+            <div class="kpi-title">🎯 Objective 2: เพิ่มประสิทธิภาพผ่าน Human-AI Workflow</div>
+            <ul>
+                <li><strong>KPI 2.1:</strong> ลดเวลางานซ้ำซ้อน (Manual Work) ≥ 20%</li>
+                <li><strong>KPI 2.2:</strong> แต่ละสายงานมี AI Workflow Improvement อย่างน้อย 1 เรื่อง/ไตรมาส</li>
+                <li><strong>KPI 2.3:</strong> Productivity เพิ่มขึ้นตามเป้าหมายองค์กร</li>
+            </ul>
+        </div>
+
+        <div class="kpi-box">
+            <div class="kpi-title">🎯 Objective 3: สร้างวัฒนธรรมการเรียนรู้และ AI Collaboration</div>
+            <ul>
+                <li><strong>KPI 3.1:</strong> สมาชิก ≥ 80% เรียนรู้และพัฒนาทักษะอย่างต่อเนื่อง</li>
+                <li><strong>KPI 3.2:</strong> สมาชิก ≥ 80% เข้าถึง AI Knowledge ได้แบบ Real-Time</li>
+                <li><strong>KPI 3.3:</strong> ความพึงพอใจต่อระบบการเรียนรู้ ≥ 85%</li>
+            </ul>
+        </div>
+
+        <h2>6. แผนการดำเนินงาน (Implementation Roadmap)</h2>
+        <table class="roadmap-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">ระยะ</th>
+                    <th style="width: 15%;">วันที่</th>
+                    <th style="width: 45%;">กิจกรรมสำคัญ (Key Activities)</th>
+                    <th style="width: 20%;">ผู้รับผิดชอบ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="phase-1">
+                    <td rowspan="3"><strong>Phase 1:</strong><br>เตรียมการ<br>(Preparation)</td>
+                    <td>30 พ.ค. 69</td>
+                    <td>🛠️ <strong>ทีม CI/AI:</strong> เตรียมระบบและ Bot AI ให้พร้อมใช้งาน<br>🤝 <strong>แต่งตั้งทีม AI Support:</strong> กำหนดหน้าที่สนับสนุนผู้ใช้งาน</td>
+                    <td>คุณศิวัช มุ่งกลาง</td>
+                </tr>
+                <tr class="phase-1">
+                    <td>30 พ.ค. 69</td>
+                    <td>⚙️ <strong>ทีม OST (Admin+Implement):</strong> เตรียมติดตั้งระบบลงในกลุ่มรับใช้</td>
+                    <td>คุณอรรถชัย / คุณณัฐฑริณี</td>
+                </tr>
+                <tr class="phase-1">
+                    <td>30 พ.ค. 69</td>
+                    <td>📘 <strong>ทีม OST:</strong> จัดทำคู่มือเพื่อใช้สอน (Trainer Manual & User Guide)</td>
+                    <td>คุณอรรถชัย / คุณณัฐฑริณี</td>
+                </tr>
+                <tr class="phase-2">
+                    <td rowspan="2"><strong>Phase 2:</strong><br>ดำเนินการ<br>(Execution)</td>
+                    <td>15 มิ.ย. 69</td>
+                    <td>🎓 <strong>Train AI Policy (สำคัญ):</strong> เริ่มต้นโรงเรียนฝึก AI อบรมเชิงนโยบายและทักษะ</td>
+                    <td>คุณอรรถชัย / คุณณัฐฑริณี</td>
+                </tr>
+                <tr class="phase-2">
+                    <td>17-30 มิ.ย. 69</td>
+                    <td>🚀 <strong>OST Implement:</strong> ติดตั้งระบบและเริ่มใช้งานจริงภายในกลุ่มรับใช้</td>
+                    <td>คุณอรรถชัย / คุณณัฐฑริณี</td>
+                </tr>
+                <tr class="phase-3">
+                    <td rowspan="2"><strong>Phase 3:</strong><br>ทดลองใช้<br>(Pilot)</td>
+                    <td>01 ก.ค. 69</td>
+                    <td>🟢 <strong>Pilot กลุ่ม CPDG:</strong> เริ่มสอนและใช้งานจริงภายในกลุ่มรับใช้ CPDG</td>
+                    <td>คุณอรรถชัย / คุณณัฐฑริณี</td>
+                </tr>
+                <tr class="phase-3">
+                    <td>01 ก.ค. 69</td>
+                    <td>🟡 <strong>Pilot กลุ่ม PKG:</strong> ขยายผลทดลองใช้กับทีมรับใช้ PKG (ตลอดเดือน ก.ค.)</td>
+                    <td>คุณรัฐพร / คุณไชยา</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p>📄 แผนงานโครงการโรงเรียนฝึกผู้ใช้ AI (ฉบับสมบูรณ์) | จัดทำโดย ฝ่าย HRD & AI School | PKG Organization</p>
+        </div>
+    </div>
+</body>
+</html>

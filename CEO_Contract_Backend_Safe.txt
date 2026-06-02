@@ -1,0 +1,701 @@
+/**
+ * PKG Data Hub v3.2 — CEO Contract Backend (Safe Version)
+ * เวอร์ชันที่ไม่ใช้ || เพื่อป้องกันปัญหา Telegram ตัดอักขระ
+ * ใช้ฟังก์ชันช่วย _d() แทน ||'' และ _or() แทน || ในเงื่อนไข
+ */
+
+var SPREADSHEET_ID = '1E9wn_4vgWTpOvBxcztMkEmUmlj66MqOIt0RWpSRWGZY';
+
+// Helper: คืนค่า default ถ้า val เป็น falsy (แทน val || '')
+function _d(val, def) { return val ? val : (def !== undefined ? def : ''); }
+// Helper: คืนค่าตัวแรกที่ truthy (แทน a || b)
+function _or(a, b) { return a ? a : b; }
+
+function getSpreadsheetId() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SPREADSHEET_ID');
+  if (!id) {
+    id = SPREADSHEET_ID;
+    props.setProperty('SPREADSHEET_ID', id);
+  }
+  return id;
+}
+
+// ===== ROUTING =====
+
+function doGet(e) {
+  if (!e) return serveCEOContract();
+  if (!e.parameter) return serveCEOContract();
+  if (e.parameter.page === 'ceo') return serveCEOContract();
+  if (e.parameter.action === 'memberData') return getMemberData();
+  return serveCEOContract();
+}
+
+function doPost(e) {
+  return ContentService.createTextOutput(JSON.stringify({status:'error',message:'POST not supported'})).setMimeType(ContentService.MimeType.JSON);
+}
+
+// ===== SERVE CEO CONTRACT FORM =====
+// ใช้ getMemberData() ที่ทำงานถูกต้องอยู่แล้ว แทนการอ่าน sheet เอง
+
+function serveCEOContract() {
+  // ใช้ google.script.run.getMembersForClient() โหลดข้อมูลสมาชิก
+  // ไม่ฝังข้อมูลใน HTML เพื่อหลีกเลี่ยงปัญหา GAS escape quotes
+  var html = HtmlService.createHtmlOutputFromFile('CEO_Contract_Form');
+  var output = html.setTitle('CEO Contract of Extreme Ownership').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  return output;
+}
+
+// ดึง members array (ใช้ร่วมกับ serveCEOContract และ getMemberData)
+function getMembersArray() {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var sheet = ss.getSheetByName('Members');
+  if (!sheet) return [];
+  if (sheet.getLastRow() < 2) return [];
+  
+  // ใช้ logic เดียวกับ getMemberData() ที่ทำงานถูกต้อง
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0];
+  var idCol = -1, nameCol = -1, surnameCol = -1, roleCol = -1, teamCol = -1, buCol = -1;
+  
+  for (var h = 0; h < headers.length; h++) {
+    var header = String(headers[h]).trim();
+    var hl = header.toLowerCase();
+    if (idCol === -1) {
+      if (header === '\u0e23\u0e2b\u0e31\u0e2a\u0e2a\u0e21\u0e32\u0e0a\u0e34\u0e01') idCol = h;
+      else if (hl === 'member_id') idCol = h;
+      else if (hl === 'id') idCol = h;
+      else if (hl === '\u0e23\u0e2b\u0e31\u0e2a') idCol = h;
+    }
+    if (nameCol === -1) {
+      if (header === '\u0e0a\u0e37\u0e48\u0e2d-\u0e19\u0e32\u0e21\u0e2a\u0e01\u0e38\u0e25') nameCol = h;
+      else if (header === '\u0e0a\u0e37\u0e48\u0e2d') nameCol = h;
+      else if (hl === 'name') nameCol = h;
+      else if (hl === 'fullname') nameCol = h;
+      else if (hl === 'full_name') nameCol = h;
+    }
+    if (surnameCol === -1) {
+      if (header === '\u0e19\u0e32\u0e21\u0e2a\u0e01\u0e38\u0e25') surnameCol = h;
+      else if (hl === 'surname') surnameCol = h;
+      else if (hl === 'surname_th') surnameCol = h;
+    }
+    if (roleCol === -1) {
+      if (header === '\u0e1a\u0e17\u0e1a\u0e32\u0e17') roleCol = h;
+      else if (hl === 'role') roleCol = h;
+      else if (header === '\u0e1a\u0e17\u0e1a\u0e32\u0e17/role') roleCol = h;
+    }
+    if (teamCol === -1) {
+      if (header === '\u0e0a\u0e37\u0e48\u0e2d\u0e17\u0e35\u0e21') teamCol = h;
+      else if (hl === 'team') teamCol = h;
+      else if (hl === 'team_name') teamCol = h;
+      else if (hl === 'division_name') teamCol = h;
+    }
+    if (buCol === -1) {
+      if (header === 'BU') buCol = h;
+      else if (hl === 'bu') buCol = h;
+      else if (header === '\u0e01\u0e25\u0e38\u0e48\u0e21\u0e1a\u0e23\u0e34\u0e29\u0e31\u0e17') buCol = h;
+    }
+  }
+  
+  // Fallback
+  if (idCol === -1) idCol = 0;
+  if (nameCol === -1) nameCol = 1;
+  if (surnameCol === -1) surnameCol = 2;
+  if (roleCol === -1) roleCol = 5;
+  if (teamCol === -1) teamCol = 7;
+  if (buCol === -1) buCol = 9;
+  
+  var members = [];
+  for (var r = 1; r < values.length; r++) {
+    var id = idCol >= 0 ? values[r][idCol] : '';
+    var name = nameCol >= 0 ? values[r][nameCol] : '';
+    var surname = surnameCol >= 0 ? values[r][surnameCol] : '';
+    var role = roleCol >= 0 ? values[r][roleCol] : '';
+    var team = teamCol >= 0 ? values[r][teamCol] : '';
+    var bu = buCol >= 0 ? values[r][buCol] : '';
+    if (!id) continue;
+    if (String(id).trim() === '') continue;
+    var idStr = String(id).trim();
+    if (idStr === 'ID') continue;
+    if (idStr === '\u0e23\u0e2b\u0e31\u0e2a\u0e2a\u0e21\u0e32\u0e0a\u0e34\u0e01') continue;
+    if (idStr === 'member_id') continue;
+    var fullName = String(name).trim();
+    if (surname) {
+      var sv = String(surname).trim();
+      if (sv) fullName += ' ' + sv;
+    }
+    members.push({id: idStr, name: fullName, team: String(team).trim(), bu: String(bu).trim(), role: String(role).trim()});
+  }
+  
+  return members;
+}
+
+// ===== GET MEMBERS FOR CLIENT (google.script.run) =====
+function getMembersForClient() {
+  var members = getMembersArray();
+  return members;
+}
+
+// ===== GET MEMBER DATA =====
+
+function getMemberData() {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var sheet = ss.getSheetByName('Members');
+  if (!sheet) return ContentService.createTextOutput('var MEMBERS = [];').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  if (sheet.getLastRow() < 2) return ContentService.createTextOutput('var MEMBERS = [];').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0];
+  var idCol = -1, nameCol = -1, surnameCol = -1, roleCol = -1, teamCol = -1, buCol = -1;
+  
+  for (var h = 0; h < headers.length; h++) {
+    var header = String(headers[h]).trim();
+    var hl = header.toLowerCase();
+    if (idCol === -1) {
+      if (header === '\u0e23\u0e2b\u0e31\u0e2a\u0e2a\u0e21\u0e32\u0e0a\u0e34\u0e01') idCol = h;
+      else if (hl === 'member_id') idCol = h;
+      else if (hl === 'id') idCol = h;
+      else if (hl === '\u0e23\u0e2b\u0e31\u0e2a') idCol = h;
+    }
+    if (nameCol === -1) {
+      if (header === '\u0e0a\u0e37\u0e48\u0e2d-\u0e19\u0e32\u0e21\u0e2a\u0e01\u0e38\u0e25') nameCol = h;
+      else if (header === '\u0e0a\u0e37\u0e48\u0e2d') nameCol = h;
+      else if (hl === 'name') nameCol = h;
+      else if (hl === 'fullname') nameCol = h;
+      else if (hl === 'full_name') nameCol = h;
+    }
+    if (surnameCol === -1) {
+      if (header === '\u0e19\u0e32\u0e21\u0e2a\u0e01\u0e38\u0e25') surnameCol = h;
+      else if (hl === 'surname') surnameCol = h;
+      else if (hl === 'surname_th') surnameCol = h;
+    }
+    if (roleCol === -1) {
+      if (header === '\u0e1a\u0e17\u0e1a\u0e32\u0e17') roleCol = h;
+      else if (hl === 'role') roleCol = h;
+      else if (header === '\u0e1a\u0e17\u0e1a\u0e32\u0e17/role') roleCol = h;
+    }
+    if (teamCol === -1) {
+      if (header === '\u0e0a\u0e37\u0e48\u0e2d\u0e17\u0e35\u0e21') teamCol = h;
+      else if (hl === 'team') teamCol = h;
+      else if (hl === 'team_name') teamCol = h;
+      else if (hl === 'division_name') teamCol = h;
+    }
+    if (buCol === -1) {
+      if (header === 'BU') buCol = h;
+      else if (hl === 'bu') buCol = h;
+      else if (header === '\u0e01\u0e25\u0e38\u0e48\u0e21\u0e1a\u0e23\u0e34\u0e29\u0e31\u0e17') buCol = h;
+    }
+  }
+  
+  // Fallback
+  if (idCol === -1) idCol = 0;
+  if (nameCol === -1) nameCol = 1;
+  if (surnameCol === -1) surnameCol = 2;
+  if (roleCol === -1) roleCol = 5;
+  if (teamCol === -1) teamCol = 7;
+  if (buCol === -1) buCol = 9;
+  
+  var js = 'var MEMBERS = [';
+  for (var r = 1; r < values.length; r++) {
+    var id = idCol >= 0 ? values[r][idCol] : '';
+    var name = nameCol >= 0 ? values[r][nameCol] : '';
+    var surname = surnameCol >= 0 ? values[r][surnameCol] : '';
+    var role = roleCol >= 0 ? values[r][roleCol] : '';
+    var team = teamCol >= 0 ? values[r][teamCol] : '';
+    var bu = buCol >= 0 ? values[r][buCol] : '';
+    if (!id) continue;
+    if (String(id).trim() === '') continue;
+    var idStr = String(id).trim();
+    if (idStr === 'ID') continue;
+    if (idStr === '\u0e23\u0e2b\u0e31\u0e2a\u0e2a\u0e21\u0e32\u0e0a\u0e34\u0e01') continue;
+    if (idStr === 'member_id') continue;
+    var fullName = String(name).trim();
+    if (surname) {
+      var sv = String(surname).trim();
+      if (sv) fullName += ' ' + sv;
+    }
+    js += '{id:' + JSON.stringify(idStr) + ',name:' + JSON.stringify(fullName) + ',team:' + JSON.stringify(String(team).trim()) + ',bu:' + JSON.stringify(String(bu).trim()) + ',role:' + JSON.stringify(String(role).trim()) + '},';
+  }
+  js += '];';
+  
+  return ContentService.createTextOutput(js).setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+// ===== READ DATA FROM SHEETS =====
+
+function readSheetData(sheetName, bu) {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return [];
+  var data = sheet.getDataRange().getValues();
+  if (data.length < 2) return [];
+  var headers = data[0];
+  var results = [];
+  
+  var buCol = -1;
+  for (var h = 0; h < headers.length; h++) {
+    var hdr = String(headers[h]).trim();
+    if (hdr === 'BU') { buCol = h; break; }
+    if (hdr === 'bu') { buCol = h; break; }
+    if (hdr === 'company_management') { buCol = h; break; }
+  }
+  
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    if (!row[0]) continue;
+    if (buCol >= 0 && bu) {
+      if (String(row[buCol]).trim().toLowerCase() !== bu.toLowerCase()) continue;
+    }
+    var obj = {};
+    for (var j = 0; j < headers.length; j++) {
+      obj[String(headers[j]).trim()] = row[j];
+    }
+    results.push(obj);
+  }
+  return results;
+}
+
+// ===== SAVE ALL DATA =====
+
+function saveAllData(formData) {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var contractSheet = ss.getSheetByName('CEO_Contract');
+  var now = new Date();
+  
+  if (!formData.member_id && !formData.name) {
+    return {status: 'error', message: '\u0e01\u0e23\u0e38\u0e13\u0e32\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e2a\u0e21\u0e32\u0e0a\u0e34\u0e01\u0e01\u0e48\u0e2d\u0e19\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01'};
+  }
+  
+  var contractId = '';
+  var existingRow = -1;
+  
+  if (contractSheet) {
+    var contractData = contractSheet.getDataRange().getValues();
+    for (var r = 1; r < contractData.length; r++) {
+      if (String(contractData[r][0]).trim() === String(formData.member_id).trim()) {
+        existingRow = r + 1;
+        contractId = String(_or(contractData[r][1], 'CEO-' + Date.now()));
+        break;
+      }
+    }
+  }
+  
+  if (!contractId) contractId = 'CEO-' + Date.now();
+  
+  var row = [
+    _d(formData.member_id), _d(contractId), _d(formData.name), _d(formData.bu),
+    _d(formData.team), _d(formData.role), _d(formData.service_leader),
+    _d(formData.mentor1), _d(formData.mentor2), _d(formData.mentor3),
+    _d(formData.accountability), _d(formData.purpose), _d(formData.vision),
+    _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].type : ''), _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].target : ''),
+    _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].desc : ''), _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].progress : ''),
+    'Saved', now, now
+  ];
+  
+  if (!contractSheet) {
+    contractSheet = ss.insertSheet('CEO_Contract');
+    var headers = ['member_id','contract_id','name','bu','team','role','service_leader','mentor1','mentor2','mentor3','accountability','purpose','vision','personal_type','personal_target','personal_desc','personal_progress','status','created_date','updated_date'];
+    contractSheet.getRange(1,1,1,headers.length).setValues([headers]);
+    contractSheet.getRange(1,1,1,headers.length).setFontWeight('bold').setBackground('#1a237e').setFontColor('#ffffff');
+    contractSheet.setFrozenRows(1);
+    contractSheet.appendRow(row);
+  } else if (existingRow > 0) {
+    row[row.length - 1] = now;
+    contractSheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
+  } else {
+    var existingHeaders = contractSheet.getDataRange().getValues()[0];
+    if (existingHeaders.length < row.length) {
+      for (var c = existingHeaders.length; c < row.length; c++) {
+        contractSheet.insertColumnAfter(c);
+      }
+    }
+    contractSheet.appendRow(row);
+  }
+  
+  // OKRs Business Growth
+  var okrSheet = ss.getSheetByName('OKRs');
+  if (okrSheet && formData.bu_objectives) {
+    var buObjs = formData.bu_objectives;
+    for (var b = 0; b < buObjs.length; b++) {
+      if (buObjs[b].objective) {
+        okrSheet.appendRow([
+          'OKR-' + Date.now() + '-B' + (b+1), contractId, 'BU',
+          _d(buObjs[b].objective),
+          _d(buObjs[b].kr1) + ';' + _d(buObjs[b].kr2) + ';' + _d(buObjs[b].kr3),
+          '', '', 'On Track', now, now
+        ]);
+      }
+    }
+  }
+  
+  // OKRs Team Growth
+  if (okrSheet && formData.team_objectives) {
+    var teamObjs = formData.team_objectives;
+    for (var t = 0; t < teamObjs.length; t++) {
+      if (teamObjs[t].objective) {
+        okrSheet.appendRow([
+          'OKR-' + Date.now() + '-T' + (t+1), contractId, 'Team',
+          _d(teamObjs[t].objective),
+          _d(teamObjs[t].kr1) + ';' + _d(teamObjs[t].kr2) + ';' + _d(teamObjs[t].kr3),
+          '', '', 'On Track', now, now
+        ]);
+      }
+    }
+  }
+  
+  // Personal Growth (multiple rows)
+  var personalSheet = ss.getSheetByName('Personal Growth');
+  if (personalSheet && formData.personal_growths) {
+    var pgs = formData.personal_growths;
+    for (var p = 0; p < pgs.length; p++) {
+      if (pgs[p].type || pgs[p].target || pgs[p].desc) {
+        personalSheet.appendRow([
+          'PG-' + Date.now() + '-' + (p+1), contractId,
+          _d(pgs[p].type), _d(pgs[p].desc),
+          _d(pgs[p].target), _d(pgs[p].progress || ''),
+          '', now, now
+        ]);
+      }
+    }
+  }
+  
+  // KPI
+  var kpiSheet = ss.getSheetByName('Operational Excellence (WI)');
+  if (kpiSheet) {
+    var kpis = _or(formData.kpis, []);
+    for (var k = 0; k < kpis.length; k++) {
+      if (kpis[k].name) {
+        kpiSheet.appendRow([
+          'KPI-' + Date.now() + '-' + (k+1), contractId,
+          kpis[k].name, _d(kpis[k].target),
+          '', _d(kpis[k].freq), 'On Track',
+          now.getMonth() + 1, now.getFullYear(), now, now
+        ]);
+      }
+    }
+  }
+  
+  // Telegram notification
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var botToken = props.getProperty('TELEGRAM_BOT_TOKEN');
+    var chatId = props.getProperty('TELEGRAM_CHAT_ID');
+    if (botToken && chatId) {
+      var msg = '\u0e1a\u0e2d\u0e01\u0e23\u0e31\u0e1a\u0e23\u0e2d\u0e1a\u0e40\u0e07\u0e34\u0e19 CEO Contract \u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\n' +
+        '\u0e1c\u0e39\u0e49\u0e01\u0e23\u0e2d\u0e01: ' + _d(formData.name, '-') + '\n' +
+        'BU: ' + _d(formData.bu, '-') + ' / ' + _d(formData.team, '-') + '\n' +
+        '\u0e1a\u0e17\u0e1a\u0e32\u0e17: ' + _d(formData.role, '-') + '\n' +
+        'Status: Saved\n' +
+        '\u0e40\u0e27\u0e25\u0e32: ' + now.toLocaleString('th-TH');
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + botToken + '/sendMessage', {
+        method: 'post',
+        payload: { chat_id: chatId, text: msg }
+      });
+    }
+  } catch(e) {}
+  
+  return { status: 'ok', contractId: contractId, message: '\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08', timestamp: now.toLocaleString('th-TH') };
+}
+
+// ===== SUBMIT CEO CONTRACT =====
+
+function submitCEOContract(formData) {
+  if(!formData || !formData.member_id){
+    Logger.log('submitCEOContract ERROR: formData is ' + (formData ? 'object with keys: ' + Object.keys(formData).join(',') : 'null/undefined'));
+    return {status:'error', message:'formData is missing or has no member_id'};
+  }
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var contractSheet = ss.getSheetByName('CEO_Contract');
+  var now = new Date();
+  var contractId = 'CEO-' + Date.now();
+  
+  if (!contractSheet) {
+    contractSheet = ss.insertSheet('CEO_Contract');
+    var headers = ['member_id','contract_id','name','bu','team','role','service_leader','mentor1','mentor2','mentor3','accountability','purpose','vision','personal_type','personal_target','personal_desc','personal_progress','status','created_date','updated_date'];
+    contractSheet.getRange(1,1,1,headers.length).setValues([headers]);
+    contractSheet.getRange(1,1,1,headers.length).setFontWeight('bold').setBackground('#1a237e').setFontColor('#ffffff');
+    contractSheet.setFrozenRows(1);
+  }
+  
+  var row = [
+    _d(formData.member_id), contractId, _d(formData.name), _d(formData.bu),
+    _d(formData.team), _d(formData.role), _d(formData.service_leader),
+    _d(formData.mentor1), _d(formData.mentor2), _d(formData.mentor3),
+    _d(formData.accountability), _d(formData.purpose), _d(formData.vision),
+    _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].type : ''), _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].target : ''),
+    _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].desc : ''), _d(formData.personal_growths && formData.personal_growths.length > 0 ? formData.personal_growths[0].progress : ''),
+    'Pending', now, now
+  ];
+  
+  var existingData = contractSheet.getDataRange().getValues();
+  var existingRow = -1;
+  for (var r = 1; r < existingData.length; r++) {
+    if (String(existingData[r][0]).trim() === String(formData.member_id).trim()) {
+      existingRow = r + 1;
+      break;
+    }
+  }
+  
+  if (existingRow > 0) {
+    row[row.length - 2] = 'Pending';
+    row[row.length - 1] = now;
+    contractSheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
+  } else {
+    contractSheet.appendRow(row);
+  }
+  
+  // OKRs Business Growth
+  var okrSheet = ss.getSheetByName('OKRs');
+  if (okrSheet && formData.bu_objectives) {
+    var buObjs = formData.bu_objectives;
+    for (var b = 0; b < buObjs.length; b++) {
+      if (buObjs[b].objective) {
+        okrSheet.appendRow([
+          'OKR-' + Date.now() + '-B' + (b+1), contractId, 'BU',
+          _d(buObjs[b].objective),
+          _d(buObjs[b].kr1) + ';' + _d(buObjs[b].kr2) + ';' + _d(buObjs[b].kr3),
+          '', '', 'On Track', now, now
+        ]);
+      }
+    }
+  }
+  
+  // OKRs Team Growth
+  if (okrSheet && formData.team_objectives) {
+    var teamObjs = formData.team_objectives;
+    for (var t = 0; t < teamObjs.length; t++) {
+      if (teamObjs[t].objective) {
+        okrSheet.appendRow([
+          'OKR-' + Date.now() + '-T' + (t+1), contractId, 'Team',
+          _d(teamObjs[t].objective),
+          _d(teamObjs[t].kr1) + ';' + _d(teamObjs[t].kr2) + ';' + _d(teamObjs[t].kr3),
+          '', '', 'On Track', now, now
+        ]);
+      }
+    }
+  }
+  
+  // Personal Growth (multiple rows)
+  var personalSheet = ss.getSheetByName('Personal Growth');
+  if (personalSheet && formData.personal_growths) {
+    var pgs = formData.personal_growths;
+    for (var p = 0; p < pgs.length; p++) {
+      if (pgs[p].type || pgs[p].target || pgs[p].desc) {
+        personalSheet.appendRow([
+          'PG-' + Date.now() + '-' + (p+1), contractId,
+          _d(pgs[p].type), _d(pgs[p].desc),
+          _d(pgs[p].target), _d(pgs[p].progress || ''),
+          '', now, now
+        ]);
+      }
+    }
+  }
+  
+  // KPI
+  var kpiSheet = ss.getSheetByName('Operational Excellence (WI)');
+  if (kpiSheet && formData.kpis) {
+    var kpis = formData.kpis;
+    for (var k = 0; k < kpis.length; k++) {
+      if (kpis[k].name) {
+        kpiSheet.appendRow([
+          'KPI-' + Date.now() + '-' + (k+1), contractId,
+          kpis[k].name, _d(kpis[k].target),
+          '', _d(kpis[k].freq), 'On Track',
+          now.getMonth() + 1, now.getFullYear(), now, now
+        ]);
+      }
+    }
+  }
+  
+  // Telegram notification
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var botToken = props.getProperty('TELEGRAM_BOT_TOKEN');
+    var chatId = props.getProperty('TELEGRAM_CHAT_ID');
+    if (botToken && chatId) {
+      var msg = '\u0e28\u0e36\u0e01\u0e2a\u0e31\u0e0d\u0e0d\u0e32 CEO Contract \u0e43\u0e2b\u0e21\u0e48\n' +
+        '\u0e1c\u0e39\u0e49\u0e01\u0e23\u0e2d\u0e01: ' + _d(formData.name, '-') + '\n' +
+        'BU: ' + _d(formData.bu, '-') + ' / ' + _d(formData.team, '-') + '\n' +
+        '\u0e1a\u0e17\u0e1a\u0e32\u0e17: ' + _d(formData.role, '-') + '\n' +
+        '\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23: ' + _d(formData.accountability, '-') + '\n' +
+        '\u23f3 \u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34 Mentor';
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + botToken + '/sendMessage', {
+        method: 'post',
+        payload: { chat_id: chatId, text: msg }
+      });
+    }
+  } catch(e) {}
+  
+  return { status: 'ok', contractId: contractId };
+}
+
+// ===== SAVE SHEET DATA (บันทึกส่วนต่างๆ แยก) =====
+
+function saveSheetData(data) {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var action = _d(data.action);
+  
+  if (action === 'savePurpose') {
+    var sheet = ss.getSheetByName('Purpose');
+    if (!sheet) {
+      sheet = ss.insertSheet('Purpose');
+      sheet.getRange(1,1,1,4).setValues([['BU','Purpose_Vision','Created_Date','Updated_Date']]);
+      sheet.getRange(1,1,1,4).setFontWeight('bold').setBackground('#7c3aed').setFontColor('#ffffff');
+      sheet.setFrozenRows(1);
+    }
+    var bu = _d(data.bu);
+    var rows = sheet.getDataRange().getValues();
+    var found = false;
+    for (var i = 1; i < rows.length; i++) {
+      if (rows[i][0] && String(rows[i][0]).trim().toLowerCase() === bu.toLowerCase()) {
+        sheet.getRange(i+1, 2).setValue(_or(data.purpose, _or(data.vision, '')));
+        sheet.getRange(i+1, 4).setValue(new Date());
+        found = true; break;
+      }
+    }
+    if (!found) { sheet.appendRow([bu, _or(data.purpose, _or(data.vision, '')), new Date(), new Date()]); }
+    return {status: 'ok', message: '\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01 Purpose/Vision \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08'};
+  }
+  
+  if (action === 'saveAccountability') {
+    var sheet = ss.getSheetByName('Accountability');
+    if (!sheet) {
+      sheet = ss.insertSheet('Accountability');
+      sheet.getRange(1,1,1,4).setValues([['BU','Accountability_Items','Created_Date','Updated_Date']]);
+      sheet.getRange(1,1,1,4).setFontWeight('bold').setBackground('#7c3aed').setFontColor('#ffffff');
+      sheet.setFrozenRows(1);
+    }
+    var bu = _d(data.bu);
+    var rows = sheet.getDataRange().getValues();
+    var found = false;
+    for (var i = 1; i < rows.length; i++) {
+      if (rows[i][0] && String(rows[i][0]).trim().toLowerCase() === bu.toLowerCase()) {
+        sheet.getRange(i+1, 2).setValue(_d(data.items));
+        sheet.getRange(i+1, 4).setValue(new Date());
+        found = true; break;
+      }
+    }
+    if (!found) { sheet.appendRow([bu, _d(data.items), new Date(), new Date()]); }
+    return {status: 'ok', message: '\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01 Accountability \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08'};
+  }
+  
+  if (action === 'saveOKR') {
+    var sheet = ss.getSheetByName('OKRs');
+    if (!sheet) return {status: 'error', message: '\u0e44\u0e21\u0e48\u0e1e\u0e1a Sheet OKRs'};
+    var mid = _d(data.member_id);
+    var level = _d(data.level, 'BU');
+    var krs = [];
+    if (data.kr1) krs.push(data.kr1);
+    if (data.kr2) krs.push(data.kr2);
+    if (data.kr3) krs.push(data.kr3);
+    sheet.appendRow(['OKR-'+Date.now()+'-'+level.charAt(0), mid, level, _d(data.objective), krs.join(';'), '', '', 'On Track', new Date(), new Date()]);
+    return {status: 'ok', message: '\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01 OKR \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08'};
+  }
+  
+  return {status: 'error', message: 'action \u0e44\u0e21\u0e48\u0e23\u0e2d\u0e07\u0e23\u0e31\u0e1a: ' + action};
+}
+
+// ===== LOAD CEO CONTRACT DATA =====
+
+function loadCEOContract(memberId) {
+  var ss = SpreadsheetApp.openById(getSpreadsheetId());
+  var sheet = ss.getSheetByName('CEO_Contract');
+  if (!sheet) return null;
+  
+  var data = sheet.getDataRange().getValues();
+  if (data.length < 2) return null;
+  
+  for (var r = 1; r < data.length; r++) {
+    if (String(data[r][0]).trim() === String(memberId).trim()) {
+      var headers = data[0];
+      var result = {};
+      for (var c = 0; c < headers.length; c++) {
+        result[String(headers[c]).trim()] = data[r][c];
+      }
+      return result;
+    }
+  }
+  return null;
+}
+
+// ===== SUBMIT WITH IMAGE — ส่งข้อมูล + ภาพ JPG เข้า Telegram =====
+
+function submitCEOContractWithImage(formData, imageBase64, caption) {
+  Logger.log('submitCEOContractWithImage called: formData=' + (formData ? 'object' : 'null/undefined') + ', imageBase64=' + (imageBase64 ? imageBase64.substring(0,30) + '...' : 'null') + ', caption=' + caption);
+  // Step 1: บันทึกข้อมูลเหมือน submitCEOContract
+  var result = submitCEOContract(formData);
+  
+  // Step 2: ส่งภาพ JPG เข้า Telegram
+  if (imageBase64) {
+    try {
+      // ดึง base64 data (ตัด prefix data:image/jpeg;base64, ออก)
+      var base64Data = imageBase64;
+      if (base64Data.indexOf(',') >= 0) {
+        base64Data = base64Data.split(',')[1];
+      }
+      
+      // สร้าง blob จาก base64
+      var blob = Utilities.newBlob(Utilities.base64Decode(base64Data), 'image/jpeg', 'CEO_Contract_' + _d(formData.member_id) + '.jpg');
+      
+      // ส่งเข้า Telegram
+      var telegramBotToken = getTelegramBotToken_();
+      var telegramChatId = getTelegramChatId_();
+      
+      if (telegramBotToken && telegramChatId) {
+        var url = 'https://api.telegram.org/bot' + telegramBotToken + '/sendPhoto';
+        
+        var payload = {
+          chat_id: telegramChatId,
+          photo: blob,
+          caption: _d(caption),
+          parse_mode: 'HTML'
+        };
+        
+        var options = {
+          method: 'post',
+          payload: payload,
+          muteHttpExceptions: true
+        };
+        
+        var response = UrlFetchApp.fetch(url, options);
+        var json = JSON.parse(response.getContentText());
+        
+        if (!json.ok) {
+          Logger.log('Telegram sendPhoto failed: ' + response.getContentText());
+          return {status: 'error', message: 'Telegram failed: ' + _d(json.description)};
+        }
+      } else {
+        Logger.log('Telegram config missing: token=' + (telegramBotToken ? 'set' : 'empty') + ', chatId=' + (telegramChatId ? 'set' : 'empty'));
+        return {status: 'error', message: 'Telegram config missing'};
+      }
+    } catch(e) {
+      Logger.log('submitCEOContractWithImage error: ' + e.message);
+      return {status: 'error', message: 'Image send error: ' + e.message};
+    }
+  }
+  
+  return {status: 'ok'};
+}
+
+// ===== TELEGRAM HELPERS =====
+
+function getTelegramBotToken_() {
+  var props = PropertiesService.getScriptProperties();
+  var token = props.getProperty('TELEGRAM_BOT_TOKEN');
+  return _d(token);
+}
+
+function getTelegramChatId_() {
+  var props = PropertiesService.getScriptProperties();
+  var chatId = props.getProperty('TELEGRAM_CHAT_ID');
+  return _d(chatId);
+}
+
+// ===== SET TELEGRAM CONFIG (เรียกจาก Apps Script Console) =====
+
+function setTelegramConfig(token, chatId) {
+  var props = PropertiesService.getScriptProperties();
+  props.setProperty('TELEGRAM_BOT_TOKEN', String(token));
+  props.setProperty('TELEGRAM_CHAT_ID', String(chatId));
+  return {status: 'ok', message: 'Telegram config saved: token=' + String(token).substring(0,10) + '..., chatId=' + String(chatId)};
+}

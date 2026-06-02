@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Exam - วิทยาศาสตร์ ป.6</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f5f5;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+.quiz-container{max-width:600px;width:100%;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden}
+.header{background:linear-gradient(135deg,#4caf50 0%,#2e7d32 100%);color:#fff;padding:20px}
+.header h1{font-size:18px;margin-bottom:4px}
+.header .subtitle{font-size:13px;opacity:0.9}
+.progress-bar{background:#e8e8e8;height:8px;border-radius:4px;margin:16px 0 8px;overflow:hidden}
+.progress-fill{height:100%;background:#81c784;border-radius:4px;transition:width 0.3s ease}
+.progress-info{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-top:4px}
+.progress-info .q-num{font-weight:600}
+.score-display{display:flex;gap:12px}
+.score-item{display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:12px}
+.score-correct{background:rgba(255,255,255,0.2);color:#fff}
+.score-wrong{background:rgba(255,255,255,0.2);color:#fff}
+.question-area{padding:24px 20px}
+.question-number{font-size:14px;color:#666;margin-bottom:8px}
+.question-text{font-size:17px;color:#333;line-height:1.6;margin-bottom:24px;font-weight:500}
+.subject-tag{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:2px 10px;border-radius:12px;font-size:12px;margin-bottom:12px}
+.options{display:flex;flex-direction:column;gap:12px}
+.option-btn{display:flex;align-items:center;gap:12px;padding:16px;background:#f8f9fa;border:2px solid #e8e8e8;border-radius:12px;cursor:pointer;transition:all 0.2s ease;text-align:left;width:100%;font-size:15px}
+.option-btn:hover:not(.disabled){background:#e8f5e9;border-color:#4caf50}
+.option-btn.selected{background:#e8f5e9;border-color:#4caf50}
+.option-btn.correct{background:#e8f5e9;border-color:#4caf50}
+.option-btn.wrong{background:#ffebee;border-color:#f44336}
+.option-btn.disabled{cursor:default;opacity:0.7}
+.option-label{width:32px;height:32px;border-radius:50%;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option-btn.selected .option-label{background:#4caf50;color:#fff}
+.option-btn.correct .option-label{background:#4caf50;color:#fff}
+.option-btn.wrong .option-label{background:#f44336;color:#fff}
+.explanation{display:none;margin-top:20px;padding:16px;background:#f1f8e9;border-radius:12px;border-left:4px solid #4caf50}
+.explanation.show{display:block}
+.explanation h4{color:#2e7d32;margin-bottom:8px;font-size:14px}
+.explanation p{color:#555;line-height:1.6;font-size:14px}
+.next-btn{display:none;width:100%;padding:16px;background:linear-gradient(135deg,#4caf50 0%,#2e7d32 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:20px;transition:all 0.2s ease}
+.next-btn.show{display:block}
+.next-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(76,175,80,0.4)}
+.results{display:none;padding:30px 20px;text-align:center}
+.results.show{display:block}
+.results .score-circle{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#4caf50 0%,#2e7d32 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;color:#fff}
+.results .score-circle .score-num{font-size:36px;font-weight:700}
+.results .score-circle .score-total{font-size:14px;opacity:0.9}
+.results h2{font-size:22px;color:#333;margin-bottom:8px}
+.results .grade{font-size:16px;color:#666;margin-bottom:24px}
+.results .summary{text-align:left;background:#f8f9fa;border-radius:12px;padding:16px;margin-bottom:20px}
+.results .summary h3{font-size:14px;color:#333;margin-bottom:12px}
+.result-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;color:#555}
+.result-item .icon{font-size:16px}
+.restart-btn{width:100%;padding:16px;background:linear-gradient(135deg,#4caf50 0%,#2e7d32 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.2s ease}
+.restart-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(76,175,80,0.4)}
+@media(max-width:480px){body{padding:10px}.question-text{font-size:16px}.option-btn{padding:12px;font-size:15px}}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+<div class="header">
+<h1>🔬 Mock Exam - วิทยาศาสตร์ ป.6</h1>
+<div class="subtitle" id="subjectInfo">หลักสูตรโรงเรียนรัฐบาลชั้นนำ | 40 ข้อ</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="progress-info">
+<span class="q-num" id="qNum">1 / 40</span>
+<div class="score-display">
+<span class="score-item score-wrong">✗ <span id="wrongCount">0</span></span>
+<span class="score-item score-correct">✓ <span id="correctCount">0</span></span>
+</div>
+</div>
+</div>
+<div class="question-area" id="questionArea">
+<span class="subject-tag" id="subjectTag">สิ่งมีชีวิต</span>
+<div class="question-number" id="questionNumber">ข้อที่ 1/40</div>
+<div class="question-text" id="questionText"></div>
+<div class="options" id="optionsContainer"></div>
+<div class="explanation" id="explanation"><h4>💡 คำอธิบาย</h4><p id="explanationText"></p></div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">ถัดไป →</button>
+</div>
+<div class="results" id="resultsArea">
+<div class="score-circle"><span class="score-num" id="finalScore">0</span><span class="score-total">/ 40</span></div>
+<h2 id="resultTitle">เสร็จสิ้น!</h2>
+<div class="grade" id="resultGrade"></div>
+<div class="summary"><h3>📝 สรุปคำตอบ</h3><div id="summaryList"></div></div>
+<button class="restart-btn" onclick="restartQuiz()">🔄 ทำข้อสอบใหม่</button>
+</div>
+</div>
+<script>
+const questions = [
+{subject:"เซลล์",question:"หน่วยที่เล็กที่สุดของสิ่งมีชีวิตคือข้อใด?",options:["เนื้อเยื่อ","อวัยวะ","เซลล์","ระบบอวัยวะ"],answer:2,explain:"เซลล์เป็นหน่วยที่เล็กที่สุดของสิ่งมีชีวิต ทำหน้าที่พื้นฐานของชีวิต"},
+{subject:"เซลล์",question:"ส่วนใดของเซลล์พืชที่เซลล์สัตว์ไม่มี?",options:["เยื่อหุ้มเซลล์","ไซโทพลาซึม","ผนังเซลล์","นิวเคลียส"],answer:2,explain:"ผนังเซลล์ (Cell Wall) มีเฉพาะในเซลล์พืช ทำหน้าที่ปกป้องและคงรูปทรงเซลล์"},
+{subject:"เซลล์",question:"ออร์แกเนลล์ใดทำหน้าที่ผลิตพลังงานให้เซลล์?",options:["นิวเคลียส","ไรโบโซม","ไมโทคอนเดรีย","กอลจิ"],answer:2,explain:"ไมโทคอนเดรียเป็นแหล่งผลิตพลังงาน (ATP) ของเซลล์ เรียกว่า 'Powerhouse'"},
+{subject:"เซลล์",question:"ส่วนใดของเซลล์ทำหน้าที่ควบคุมกิจกรรมทั้งหมด?",options:["เยื่อหุ้มเซลล์","ไซโทพลาซึม","นิวเคลียส","แวคิวโอล"],answer:2,explain:"นิวเคลียสมี DNA ควบคุมกิจกรรมทั้งหมดของเซลล์"},
+{subject:"พืช",question:"กระบวนการสังเคราะห์ด้วยแสงเกิดขึ้นที่ส่วนใดของพืช?",options:["ราก","ลำต้น","ใบ","ดอก"],answer:2,explain:"ใบมีคลอโรพลาสต์ เป็นแหล่งสังเคราะห์ด้วยแสง สร้างอาหาร (กลูโคส) จาก CO₂ + น้ำ + แสง"},
+{subject:"พืช",question:"แก๊สใดที่พืชดูดเข้าในกระบวนการสังเคราะห์ด้วยแสง?",options:["ออกซิเจน","ไนโตรเจน","คาร์บอนไดออกไซด์","ไฮโดรเจน"],answer:2,explain:"พืชดูด CO₂ ผ่านปากใบ ใช้ร่วมกับน้ำและแสง สร้างกลูโคส + O₂"},
+{subject:"พืช",question:"แก๊สใดที่พืชคายออกมาหลังสังเคราะห์ด้วยแสง?",options:["คาร์บอนไดออกไซด์","ไนโตรเจน","ออกซิเจน","ไฮโดรเจน"],answer:2,explain:"พืชคาย O₂ ออกสู่บรรยากาศ ผ่านปากใบ หลังสังเคราะห์ด้วยแสง"},
+{subject:"พืช",question:"อวัยวะใดของพืชทำหน้าที่ดูดน้ำและแร่ธาตุ?",options:["ใบ","ลำต้น","ราก","ดอก"],answer:2,explain:"รากมีขนราก (Root hair) ทำหน้าที่ดูดน้ำและแร่ธาตุจากดิน"},
+{subject:"พืช",question:"ส่วนใดของดอกทำหน้าที่ผลิตละอองเรณู?",options:["กลีบดอก","กลีบเลี้ยง","เกสรเพศผู้","เกสรเพศเมีย"],answer:2,explain:"เกสรเพศผู้ (Stamen) ประกอบด้วยก้านชูอับเรณูและอับเรณู ผลิตละอองเรณู"},
+{subject:"สัตว์",question:"ระบบใดของร่างกายทำหน้าที่ลำเลียงสารอาหารไปทั่วร่างกาย?",options:["ระบบหายใจ","ระบบหมุนเวียนโลหิต","ระบบย่อยอาหาร","ระบบประสาท"],answer:1,explain:"ระบบหมุนเวียนโลหิตมีหัวใจและหลอดเลือด ลำเลียงสารอาหาร O₂ ไปทั่วร่างกาย"},
+{subject:"สัตว์",question:"อวัยวะใดทำหน้าที่แลกเปลี่ยนแก๊สในระบบหายใจ?",options:["หลอดลม","ปอด","กล่องเสียง","จมูก"],answer:1,explain:"ปอดมีถุงลม (Alveoli) เป็นแหล่งแลกเปลี่ยน O₂ และ CO₂"},
+{subject:"สัตว์",question:"เอนไซม์ใดในน้ำลายช่วยย่อยแป้ง?",options:["เปปซิน","อะไมเลส","ไลเปส","ไตรปซิน"],answer:1,explain:"อะไมเลส (Amylase) ในน้ำลายช่วยย่อยแป้งเป็นน้ำตาลมอลโทส"},
+{subject:"สัตว์",question:"อวัยวะใดดูดซึมสารอาหารมากที่สุด?",options:["กระเพาะอาหาร","ลำไส้เล็ก","ลำไส้ใหญ่","ปาก"],answer:1,explain:"ลำไส้เล็กมีวิลลัส (Villus) เพิ่มพื้นที่ผิว ดูดซึมสารอาหารมากที่สุด"},
+{subject:"ระบบนิเวศ",question:"สิ่งมีชีวิตใดเป็นผู้ผลิตในห่วงโซ่อาหาร?",options:["กระต่าย","สิงโต","พืชสีเขียว","เห็ดรา"],answer:2,explain:"พืชสีเขียวเป็นผู้ผลิต (Producer) สร้างอาหารเองได้จากการสังเคราะห์ด้วยแสง"},
+{subject:"ระบบนิเวศ",question:"ความสัมพันธ์แบบใดที่สิ่งมีชีวิตทั้งคู่ได้ประโยชน์?",options:["ภาวะกาฝาก","ภาวะอิงอาศัย","ภาวะพึ่งพา","ภาวะแข่งขัน"],answer:2,explain:"ภาวะพึ่งพา (Mutualism) = ทั้งคู่ได้ประโยชน์ เช่น ผึ้งกับดอกไม้"},
+{subject:"ระบบนิเวศ",question:"สิ่งมีชีวิตใดเป็นผู้ย่อยสลาย?",options:["พืช","สัตว์กินพืช","สัตว์กินสัตว์","แบคทีเรียและเห็ดรา"],answer:3,explain:"แบคทีเรียและเห็ดราเป็นผู้ย่อยสลาย (Decomposer) สลายซากสิ่งมีชีวิต"},
+{subject:"ระบบนิเวศ",question:"ห่วงโซ่อาหารเริ่มต้นด้วยสิ่งมีชีวิตใด?",options:["สัตว์กินพืช","ผู้ผลิต","ผู้ย่อยสลาย","สัตว์กินสัตว์"],answer:1,explain:"ห่วงโซ่อาหารเริ่มต้นด้วยผู้ผลิต (พืช) → สัตว์กินพืช → สัตว์กินสัตว์ → ผู้ย่อยสลาย"},
+{subject:"สาร",question:"ข้อใดเป็นการเปลี่ยนแปลงทางกายภาพ?",options:["เหล็กเป็นสนิม","นมเปรี้ยว","น้ำแข็งละลาย","ไม้ผุ"],answer:2,explain:"น้ำแข็งละลาย = การเปลี่ยนแปลงทางกายภาพ (ได้สารเดิมกลับคืนได้)"},
+{subject:"สาร",question:"ข้อใดเป็นการเปลี่ยนแปลงทางเคมี?",options:["น้ำแข็งละลาย","น้ำตาลละลายน้ำ","เหล็กเป็นสนิม","กระดาษฉีกขาด"],answer:2,explain:"เหล็กเป็นสนิม = การเปลี่ยนแปลงทางเคมี (เกิดสารใหม่ Fe₂O₃)"},
+{subject:"สาร",question:"สารละลายประกอบด้วยอะไรบ้าง?",options:["ตัวทำละลาย + ตัวละลาย","ตัวทำละลาย + ตัวทำละลาย","ตัวละลาย + ตัวละลาย","สารบริสุทธิ์ + สารบริสุทธิ์"],answer:0,explain:"สารละลาย = ตัวทำละลาย (Solvent) + ตัวละลาย (Solute)"},
+{subject:"สาร",question:"ข้อใดเป็นสารประกอบ?",options:["O₂","Fe","H₂O","He"],answer:2,explain:"H₂O = สารประกอบ (ธาตุ H และ O รวมกัน) O₂, Fe, He = ธาตุ"},
+{subject:"สาร",question:"วิธีใดแยกเกลือออกจากน้ำได้?",options:["กรอง","ระเหยแห้ง","ใช้แม่เหล็ก","ใช้มือหยิบ"],answer:1,explain:"ระเหยแห้ง = แยกสารละลายที่ได้ของแข็งละลายในของเหลว (เกลือจากน้ำเกลือ)"},
+{subject:"พลังงาน",question:"พลังงานแสงเปลี่ยนเป็นพลังงานไฟฟ้าด้วยอุปกรณ์ใด?",options:["หลอดไฟ","เซลล์สุริยะ","มอเตอร์","เครื่องกำเนิดไฟฟ้า"],answer:1,explain:"เซลล์สุริยะ (Solar Cell) เปลี่ยนพลังงานแสง → พลังงานไฟฟ้า"},
+{subject:"พลังงาน",question:"เสียงเดินทางได้เร็วที่สุดในตัวกลางใด?",options:["อากาศ","น้ำ","เหล็ก","สุญญากาศ"],answer:2,explain:"เสียงเดินทางในเหล็ก (ของแข็ง) ~5,000 m/s เร็วกว่าน้ำและอากาศ"},
+{subject:"พลังงาน",question:"ข้อใดเป็นแหล่งพลังงานหมุนเวียน?",options:["ถ่านหิน","ก๊าซธรรมชาติ","พลังงานแสงอาทิตย์","น้ำมัน"],answer:2,explain:"พลังงานแสงอาทิตย์ = หมุนเวียน (ใช้ไม่หมด) ข้ออื่น = ฟอสซิล (หมดไป)"},
+{subject:"พลังงาน",question:"วงจรไฟฟ้าแบบใดที่ถ้าหลอดหนึ่งดับ หลอดอื่นยังสว่าง?",options:["วงจรอนุกรม","วงจรขนาน","วงจรผสม","วงจรเปิด"],answer:1,explain:"วงจรขนาน = กระแสไฟฟ้าไหลแยกกัน หลอดหนึ่งดับ หลอดอื่นยังสว่าง"},
+{subject:"โลก",question:"ชั้นบรรยากาศชั้นใดที่มนุษย์อาศัยอยู่?",options:["โทรโพสเฟียร์","สตราโตสเฟียร์","มีโซสเฟียร์","เทอร์โมสเฟียร์"],answer:0,explain:"โทรโพสเฟียร์เป็นชั้นล่างสุด มีอากาศ เมฆ ฝน มนุษย์อาศัยอยู่"},
+{subject:"โลก",question:"แก๊สใดมีมากที่สุดในบรรยากาศ?",options:["ออกซิเจน","ไนโตรเจน","คาร์บอนไดออกไซด์","อาร์กอน"],answer:1,explain:"ไนโตรเจน ~78%, ออกซิเจน ~21%, อาร์กอน ~0.9%, CO₂ ~0.04%"},
+{subject:"โลก",question:"ปรากฏการณ์ใดเกิดจากการหมุนรอบตัวเองของโลก?",options:["ฤดูกาล","กลางวันกลางคืน","สุริยุปราคา","จันทรุปราคา"],answer:1,explain:"โลกหมุนรอบตัวเอง → เกิดกลางวันกลางคืน (1 รอบ = 24 ชั่วโมง)"},
+{subject:"โลก",question:"สุริยุปราคาเกิดขึ้นเมื่อใด?",options:["โลกอยู่ระหว่างดวงอาทิตย์และดวงจันทร์","ดวงจันทร์อยู่ระหว่างดวงอาทิตย์และโลก","ดวงอาทิตย์อยู่ระหว่างโลกและดวงจันทร์","โลกอยู่ห่างดวงอาทิตย์ที่สุด"],answer:1,explain:"สุริยุปราคา = ดวงจันทร์บังดวงอาทิตย์ (ดวงจันทร์อยู่ตรงกลาง)"},
+{subject:"อากาศ",question:"เมฆชนิดใดทำให้เกิดพายุฝนฟ้าคะนอง?",options:["เซอรัส","สตราตัส","คิวมูโลนิมบัส","นิมบัส"],answer:2,explain:"คิวมูโลนิมบัส (Cumulonimbus) = เมฆฝนฟ้าคะนอง สูงมาก มีฟ้าแลบฟ้าร้อง"},
+{subject:"อากาศ",question:"ลมเกิดจากอะไร?",options:["การหมุนของโลก","ความแตกต่างของความดันอากาศ","แรงดึงดูดของดวงจันทร์","การโคจรของโลกรอบดวงอาทิตย์"],answer:1,explain:"ลม = อากาศเคลื่อนที่จากบริเวณความดันสูง → ความดันต่ำ"},
+{subject:"หิน",question:"หินชนิดใดเกิดจากการเย็นตัวของหินหลอมเหลว?",options:["หินชั้น","หินแปร","หินอัคนี","หินทราย"],answer:2,explain:"หินอัคนี = หินหลอมเหลว (Magma/Lava) เย็นตัว เช่น หินแกรนิต หินบะซอลต์"},
+{subject:"หิน",question:"หินทรายจัดเป็นหินชนิดใด?",options:["หินอัคนี","หินชั้น","หินแปร","หินอัคนีพุ"],answer:1,explain:"หินทราย = หินชั้น (Sedimentary Rock) เกิดจากการทับถมของตะกอน"},
+{subject:"หิน",question:"หินอ่อนจัดเป็นหินชนิดใด?",options:["หินอัคนี","หินชั้น","หินแปร","หินตะกอน"],answer:2,explain:"หินอ่อน = หินแปร (Metamorphic Rock) เกิดจากหินปูนถูกความร้อนและแรงดัน"},
+{subject:"แรง",question:"แรงใดทำให้วัตถุตกสู่พื้น?",options:["แรงเสียดทาน","แรงโน้มถ่วง","แรงแม่เหล็ก","แรงลอยตัว"],answer:1,explain:"แรงโน้มถ่วงของโลกดึงดูดวัตถุลงสู่พื้น (g ≈ 9.8 m/s²)"},
+{subject:"แรง",question:"แม่เหล็กขั้วเหมือนกันจะเกิดอะไร?",options:["ดูดกัน","ผลักกัน","ไม่มีผล","หลอมรวมกัน"],answer:1,explain:"แม่เหล็กขั้วเหมือนกัน (N-N หรือ S-S) ผลักกัน ขั้วต่างกันดูดกัน"},
+{subject:"น้ำ",question:"น้ำเดือดที่อุณหภูมิเท่าใดที่ระดับน้ำทะเล?",options:["90°C","95°C","100°C","110°C"],answer:2,explain:"น้ำเดือดที่ 100°C ที่ระดับน้ำทะเล (ความดัน 1 บรรยากาศ)"},
+{subject:"น้ำ",question:"วัฏจักรน้ำเริ่มต้นด้วยกระบวนการใด?",options:["การควบแน่น","การระเหย","การตกตะกอน","การซึม"],answer:1,explain:"วัฏจักรน้ำ: การระเหย → การควบแน่น → เมฆ → ฝน → ซึม → ระเหย (วนซ้ำ)"},
+{subject:"เทคโนโลยี",question:"อุปกรณ์ใดเปลี่ยนพลังงานไฟฟ้าเป็นพลังงานกล?",options:["หลอดไฟ","มอเตอร์ไฟฟ้า","เซลล์สุริยะ","แบตเตอรี่"],answer:1,explain:"มอเตอร์ไฟฟ้า เปลี่ยนพลังงานไฟฟ้า → พลังงานกล (การหมุน)"}
+];
+let currentQ = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let userAnswers = [];
+function loadQuestion(){
+answered = false;
+const q = questions[currentQ];
+document.getElementById('subjectTag').textContent = q.subject;
+document.getElementById('questionNumber').textContent = `ข้อที่ ${currentQ + 1}/40`;
+document.getElementById('questionText').textContent = q.question;
+document.getElementById('qNum').textContent = `${currentQ + 1} / 40`;
+document.getElementById('progressFill').style.width = `${(currentQ / 40) * 100}%`;
+const container = document.getElementById('optionsContainer');
+container.innerHTML = '';
+const labels = ['ก', 'ข', 'ค', 'ง'];
+q.options.forEach((opt, i) => {
+const btn = document.createElement('button');
+btn.className = 'option-btn';
+btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${opt}</span>`;
+btn.onclick = () => selectAnswer(i);
+container.appendChild(btn);
+});
+document.getElementById('explanation').classList.remove('show');
+document.getElementById('nextBtn').classList.remove('show');
+}
+function selectAnswer(index){
+if(answered) return;
+answered = true;
+const q = questions[currentQ];
+const btns = document.querySelectorAll('.option-btn');
+btns.forEach((btn, i) => {
+btn.classList.add('disabled');
+if(i === q.answer) btn.classList.add('correct');
+else if(i === index && i !== q.answer) btn.classList.add('wrong');
+});
+if(index === q.answer){
+correct++;
+document.getElementById('correctCount').textContent = correct;
+} else {
+wrong++;
+document.getElementById('wrongCount').textContent = wrong;
+}
+userAnswers.push({question:q.question,user:index,correct:q.answer,isCorrect:index===q.answer,subject:q.subject});
+document.getElementById('explanationText').textContent = q.explain;
+document.getElementById('explanation').classList.add('show');
+document.getElementById('nextBtn').classList.add('show');
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ < questions.length) loadQuestion();
+else showResults();
+}
+function showResults(){
+document.getElementById('questionArea').style.display = 'none';
+document.getElementById('resultsArea').classList.add('show');
+document.getElementById('finalScore').textContent = correct;
+const percent = (correct / 40) * 100;
+let grade = '';
+if(percent >= 80) grade = '🌟 ดีมาก! พร้อมสอบเข้าโรงเรียนชั้นนำ!';
+else if(percent >= 60) grade = '👍 ดี! แต่ควรฝึกเพิ่มอีกนิด';
+else if(percent >= 40) grade = '📚 พอใช้! ต้องทบทวนเพิ่ม';
+else grade = '💪 ต้องฝึกอีกมาก! สู้ๆ!';
+document.getElementById('resultGrade').textContent = grade;
+const labels = ['ก', 'ข', 'ค', 'ง'];
+let summary = '';
+userAnswers.forEach((a, i) => {
+const icon = a.isCorrect ? '✅' : '❌';
+summary += `<div class="result-item"><span class="icon">${icon}</span> ข้อ ${i+1} (${a.subject}): ตอบ ${labels[a.user]} / เฉลย ${labels[a.correct]}</div>`;
+});
+document.getElementById('summaryList').innerHTML = summary;
+}
+function restartQuiz(){
+currentQ = 0; correct = 0; wrong = 0; userAnswers = [];
+document.getElementById('correctCount').textContent = '0';
+document.getElementById('wrongCount').textContent = '0';
+document.getElementById('questionArea').style.display = 'block';
+document.getElementById('resultsArea').classList.remove('show');
+loadQuestion();
+}
+loadQuestion();
+</script>
+</body>
+</html>
