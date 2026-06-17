@@ -16,8 +16,9 @@
 set -e  # หยุดทันทีถ้าเกิด error
 
 # --- Config (แก้ได้ถ้า URL เปลี่ยน) ---
-SHEET_ID="15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0"
-GID="1104115053"
+# v0.4.1: เปลี่ยนเป็น Sheet ใหม่ (ลูกหมีอนุมัติ 17 มิ.ย. 2569)
+SHEET_ID="1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM"
+GID="0"
 CSV_URL="https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}"
 SHEET_URL="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?gid=${GID}#gid=${GID}"
 
