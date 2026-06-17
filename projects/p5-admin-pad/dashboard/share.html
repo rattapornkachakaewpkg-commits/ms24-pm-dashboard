@@ -468,10 +468,10 @@ body::after {
             <i class="fa-solid fa-chart-line"></i>
             สรุปรายงานวัดผลสถานการณ์ฝึกอบรม ณ ปัจจุบัน
           </div>
-          <div class="section-subtitle">ข้อมูลภาพรวม 6 บริษัท</div>
+          <div class="section-subtitle">ข้อมูล 6 บริษัท: หน่วยกิต + GPA</div>
         </div>
-        <div class="kpi-section">
-          <div class="kpi-grid" id="summaryGrid"></div>
+        <div class="lg-wrap">
+          <table class="lg-table" id="summaryTable"></table>
         </div>
       </div>
 
@@ -557,6 +557,46 @@ body::after {
 </div>
 
 <script>
+// ============================================================
+// Render Summary Table (6 บริษัท)
+// ============================================================
+function renderSummaryTable(data) {
+  const table = document.getElementById('summaryTable');
+  if (!table || !data || !data.rows || data.rows.length === 0) {
+    table.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
+    return;
+  }
+  // Sort by credit_pct desc
+  const sorted = [...data.rows].sort((a, b) => (b.credit_pct || 0) - (a.credit_pct || 0));
+  
+  let html = '<thead><tr>';
+  html += '<th class="cname">บริษัท</th>';
+  html += '<th class="num">สมาชิก</th>';
+  html += '<th class="num">ครบ 44 หน่วย</th>';
+  html += '<th class="num">ยังไม่ครบ</th>';
+  html += '<th class="num">% ครบ</th>';
+  html += '<th class="num">GPA ผ่าน</th>';
+  html += '<th class="num">GPA ไม่ผ่าน</th>';
+  html += '<th class="num">% GPA</th>';
+  html += '</tr></thead>';
+  
+  html += '<tbody>';
+  sorted.forEach(c => {
+    html += `<tr>`;
+    html += `<td class="cname">${c.name || ''}</td>`;
+    html += `<td class="num">${c.members || 0}</td>`;
+    html += `<td class="num">${c.credit_done || 0}</td>`;
+    html += `<td class="num">${c.credit_remain || 0}</td>`;
+    html += `<td class="num"><strong>${(c.credit_pct || 0).toFixed(2)}%</strong></td>`;
+    html += `<td class="num">${c.gpa_pass || 0}</td>`;
+    html += `<td class="num">${c.gpa_fail || 0}</td>`;
+    html += `<td class="num">${(c.gpa_pct || 0).toFixed(2)}%</td>`;
+    html += `</tr>`;
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
 // ============================================================
 // Render KPI grid from JSON items
 // ============================================================
@@ -648,8 +688,10 @@ async function loadData() {
       if (ftEl) ftEl.textContent = data.timestamp;
     }
 
-    // Render ส่วนที่ 3-7 (KPI grids)
-    renderKpiGrid('summaryGrid', data.summary || []);
+    // Render ส่วนที่ 3 (Summary table)
+    renderSummaryTable(data.summary || {});
+
+    // Render ส่วนที่ 4-7 (KPI grids)
     renderKpiGrid('trainingGrid', data.training || []);
     renderKpiGrid('roleplayGrid', data.roleplay || []);
     renderKpiGrid('mentorGrid', data.mentor || []);

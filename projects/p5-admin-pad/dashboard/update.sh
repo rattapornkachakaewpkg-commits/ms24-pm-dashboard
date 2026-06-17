@@ -92,8 +92,49 @@ CSV_FILES = {
   "lg": "${CSV_FILES[lg]}",
 }
 
+def parse_summary_table(filepath):
+    """Parse Tab สรุปรายงาน — ตาราง 6 บริษัท (members, credit_done, credit_remain, credit_pct, gpa_pass, gpa_fail, gpa_pct)"""
+    rows = []
+    with open(filepath, "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if not row or not any(c.strip() for c in row):
+                continue
+            rows.append([c.strip() for c in row])
+    if len(rows) < 3:
+        return {"rows": []}
+    # Row 0 = main header, Row 1 = sub-header, Row 2+ = data
+    # Columns: [0]บริษัท, [1]สมาชิก, [2]ครบ 44 หน่วย, [3]ยังไม่ครบ, [4]%ครบ,
+    #          [5]GPAผ่าน 3.5, [6]GPAไม่ผ่าน, [7]%GPA
+    data_rows = []
+    for row in rows[2:]:
+        if len(row) < 8 or not row[0].strip():
+            continue
+        try:
+            members = int(row[1].replace(",", "")) if row[1].strip() else 0
+            credit_done = int(row[2].replace(",", "")) if row[2].strip() else 0
+            credit_remain = int(row[3].replace(",", "")) if row[3].strip() else 0
+            credit_pct = float(row[4].replace("%", "").replace(",", "")) if row[4].strip() else 0
+            gpa_pass = int(row[5].replace(",", "")) if row[5].strip() else 0
+            gpa_fail = int(row[6].replace(",", "")) if row[6].strip() else 0
+            gpa_pct = float(row[7].replace("%", "").replace(",", "")) if row[7].strip() else 0
+            data_rows.append({
+                "name": row[0].strip(),
+                "members": members,
+                "credit_done": credit_done,
+                "credit_remain": credit_remain,
+                "credit_pct": credit_pct,
+                "gpa_pass": gpa_pass,
+                "gpa_fail": gpa_fail,
+                "gpa_pct": gpa_pct,
+            })
+        except (ValueError, IndexError):
+            continue
+    return {"rows": data_rows}
+
+
 def parse_kv(filepath):
-    """Parse CSV แบบ key-value (มี 2 columns: label, value)"""
+    """Parse CSV แบบ key-value (3 columns: label, value, unit) — ใช้กับ Training/Roleplay/Mentor/Coach"""
     result = []
     with open(filepath, "r", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -107,7 +148,7 @@ def parse_kv(filepath):
                 continue
             # แปลงตัวเลข
             try:
-                value_num = float(value.replace(",", "")) if value else 0
+                value_num = float(value.replace(",", "").replace("%", "")) if value else 0
             except ValueError:
                 value_num = None
             result.append({
@@ -162,7 +203,7 @@ data = {
 }
 
 try:
-    data["summary"] = parse_kv(CSV_FILES["summary"])
+    data["summary"] = parse_summary_table(CSV_FILES["summary"])
     data["training"] = parse_kv(CSV_FILES["training"])
     data["roleplay"] = parse_kv(CSV_FILES["roleplay"])
     data["mentor"] = parse_kv(CSV_FILES["mentor"])
@@ -177,7 +218,7 @@ with open(DATA_FILE, "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 
 print(f"✅ บันทึก data.json สำเร็จ")
-print(f"   Summary: {len(data['summary'])} items")
+print(f"   Summary: {len(data['summary']['rows'])} rows (ตาราง)")
 print(f"   Training: {len(data['training'])} items")
 print(f"   Roleplay: {len(data['roleplay'])} items")
 print(f"   Mentor: {len(data['mentor'])} items")
@@ -218,7 +259,7 @@ echo "📊 Data sections:"
 python3 -c "
 import json
 d = json.load(open('$DATA_FILE'))
-print(f'  - summary: {len(d.get(\"summary\", []))} items')
+print(f'  - summary: {len(d.get(\"summary\", {}).get(\"rows\", []))} rows (ตาราง)')
 print(f'  - training: {len(d.get(\"training\", []))} items')
 print(f'  - roleplay: {len(d.get(\"roleplay\", []))} items')
 print(f'  - mentor: {len(d.get(\"mentor\", []))} items')

@@ -1,51 +1,71 @@
 {
-  "timestamp": "17 มิถุนายน 2026 เวลา 17:14 น.",
-  "last_updated_iso": "2026-06-17T09:14:24Z",
+  "timestamp": "17 มิถุนายน 2026 เวลา 17:27 น.",
+  "last_updated_iso": "2026-06-17T09:27:15Z",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM/edit?usp=sharing",
-  "summary": [
-    {
-      "label": "บริษัท",
-      "value": "จำนวนสมาชิก",
-      "value_num": null,
-      "unit": "เป้าหมายหน่วยกิตประจำปี /คน"
-    },
-    {
-      "label": "PGHg",
-      "value": "0",
-      "value_num": 0.0,
-      "unit": "0"
-    },
-    {
-      "label": "PMSg",
-      "value": "173",
-      "value_num": 173.0,
-      "unit": "172"
-    },
-    {
-      "label": "AAMg",
-      "value": "100",
-      "value_num": 100.0,
-      "unit": "98"
-    },
-    {
-      "label": "RPLCg",
-      "value": "31",
-      "value_num": 31.0,
-      "unit": "13"
-    },
-    {
-      "label": "RAFCOg",
-      "value": "22",
-      "value_num": 22.0,
-      "unit": "3"
-    },
-    {
-      "label": "CPDg",
-      "value": "33",
-      "value_num": 33.0,
-      "unit": "15"
-    }
-  ],
+  "summary": {
+    "rows": [
+      {
+        "name": "PGHg",
+        "members": 0,
+        "credit_done": 0,
+        "credit_remain": 0,
+        "credit_pct": 0.0,
+        "gpa_pass": 0,
+        "gpa_fail": 0,
+        "gpa_pct": 0.0
+      },
+      {
+        "name": "PMSg",
+        "members": 173,
+        "credit_done": 172,
+        "credit_remain": 1,
+        "credit_pct": 99.42,
+        "gpa_pass": 165,
+        "gpa_fail": 8,
+        "gpa_pct": 95.38
+      },
+      {
+        "name": "AAMg",
+        "members": 100,
+        "credit_done": 98,
+        "credit_remain": 2,
+        "credit_pct": 98.0,
+        "gpa_pass": 100,
+        "gpa_fail": 0,
+        "gpa_pct": 100.0
+      },
+      {
+        "name": "RPLCg",
+        "members": 31,
+        "credit_done": 13,
+        "credit_remain": 18,
+        "credit_pct": 41.94,
+        "gpa_pass": 31,
+        "gpa_fail": 0,
+        "gpa_pct": 100.0
+      },
+      {
+        "name": "RAFCOg",
+        "members": 22,
+        "credit_done": 3,
+        "credit_remain": 19,
+        "credit_pct": 13.64,
+        "gpa_pass": 20,
+        "gpa_fail": 2,
+        "gpa_pct": 90.91
+      },
+      {
+        "name": "CPDg",
+        "members": 33,
+        "credit_done": 15,
+        "credit_remain": 18,
+        "credit_pct": 45.45,
+        "gpa_pass": 26,
+        "gpa_fail": 7,
+        "gpa_pct": 78.79
+      }
+    ]
+  },
   "training": [
     {
       "label": "แผนหลักสูตรที่เปิดอบรมประจำเดือน จำนวน",
@@ -86,7 +106,7 @@
     {
       "label": "จำนวนหลักสูตรที่ส่งผลแล้ว คิดเป็น",
       "value": "11.11%",
-      "value_num": null,
+      "value_num": 11.11,
       "unit": ""
     }
   ],
