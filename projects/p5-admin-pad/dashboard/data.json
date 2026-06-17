@@ -1,89 +1,247 @@
 {
-  "timestamp": "17 มิถุนายน 2026 เวลา 13:15 น.",
-  "last_updated_iso": "2026-06-17T05:15:18Z",
-  "sheet_url": "https://docs.google.com/spreadsheets/d/1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM/edit?gid=0#gid=0",
-  "summary": {
-    "total_members": 359,
-    "total_credit_done": 301,
-    "total_credit_remain": 58,
-    "avg_credit_pct": 83.84,
-    "total_gpa_pass": 342,
-    "avg_gpa_pct": 95.26,
-    "risky_count": 3,
-    "company_count": 6
-  },
-  "companies": [
+  "timestamp": "17 มิถุนายน 2026 เวลา 17:14 น.",
+  "last_updated_iso": "2026-06-17T09:14:24Z",
+  "sheet_url": "https://docs.google.com/spreadsheets/d/1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM/edit?usp=sharing",
+  "summary": [
     {
-      "name": "PMSg",
-      "members": 173,
-      "credit_done": 172,
-      "credit_remain": 1,
-      "credit_pct": 99.42,
-      "gpa_pass": 165,
-      "gpa_fail": 8,
-      "gpa_pct": 95.38,
-      "status_class": "good",
-      "status_text": "✅ ดี"
+      "label": "บริษัท",
+      "value": "จำนวนสมาชิก",
+      "value_num": null,
+      "unit": "เป้าหมายหน่วยกิตประจำปี /คน"
     },
     {
-      "name": "AAMg",
-      "members": 100,
-      "credit_done": 98,
-      "credit_remain": 2,
-      "credit_pct": 98.0,
-      "gpa_pass": 100,
-      "gpa_fail": 0,
-      "gpa_pct": 100.0,
-      "status_class": "good",
-      "status_text": "✅ ดี"
+      "label": "PGHg",
+      "value": "0",
+      "value_num": 0.0,
+      "unit": "0"
     },
     {
-      "name": "CPDg",
-      "members": 33,
-      "credit_done": 15,
-      "credit_remain": 18,
-      "credit_pct": 45.45,
-      "gpa_pass": 26,
-      "gpa_fail": 7,
-      "gpa_pct": 78.79,
-      "status_class": "bad",
-      "status_text": "🚨 วิกฤต"
+      "label": "PMSg",
+      "value": "173",
+      "value_num": 173.0,
+      "unit": "172"
     },
     {
-      "name": "RPLCg",
-      "members": 31,
-      "credit_done": 13,
-      "credit_remain": 18,
-      "credit_pct": 41.94,
-      "gpa_pass": 31,
-      "gpa_fail": 0,
-      "gpa_pct": 100.0,
-      "status_class": "bad",
-      "status_text": "🚨 วิกฤต"
+      "label": "AAMg",
+      "value": "100",
+      "value_num": 100.0,
+      "unit": "98"
     },
     {
-      "name": "RAFCOg",
-      "members": 22,
-      "credit_done": 3,
-      "credit_remain": 19,
-      "credit_pct": 13.64,
-      "gpa_pass": 20,
-      "gpa_fail": 2,
-      "gpa_pct": 90.91,
-      "status_class": "bad",
-      "status_text": "🚨 วิกฤต"
+      "label": "RPLCg",
+      "value": "31",
+      "value_num": 31.0,
+      "unit": "13"
     },
     {
-      "name": "PGHg",
-      "members": 0,
-      "credit_done": 0,
-      "credit_remain": 0,
-      "credit_pct": 0.0,
-      "gpa_pass": 0,
-      "gpa_fail": 0,
-      "gpa_pct": 0.0,
-      "status_class": "zero",
-      "status_text": "ยังไม่เริ่ม"
+      "label": "RAFCOg",
+      "value": "22",
+      "value_num": 22.0,
+      "unit": "3"
+    },
+    {
+      "label": "CPDg",
+      "value": "33",
+      "value_num": 33.0,
+      "unit": "15"
     }
-  ]
+  ],
+  "training": [
+    {
+      "label": "แผนหลักสูตรที่เปิดอบรมประจำเดือน จำนวน",
+      "value": "9",
+      "value_num": 9.0,
+      "unit": "หลักสูตร"
+    },
+    {
+      "label": "เปิดอบรมตามแผน",
+      "value": "1",
+      "value_num": 1.0,
+      "unit": "หลักสูตร"
+    },
+    {
+      "label": "รอส่งผลอบรม",
+      "value": "9",
+      "value_num": 9.0,
+      "unit": "หลักสูตร"
+    },
+    {
+      "label": "จำนวนสมาชิกที่เข้าอบรมแต่ละหลักสูตรประจำเดือนปัจจุบัน",
+      "value": "604",
+      "value_num": 604.0,
+      "unit": "คน"
+    },
+    {
+      "label": "จำนวนสมาชิกที่ได้รับการฝึกอบรมประจำเดือนปัจจุบัน",
+      "value": "0",
+      "value_num": 0.0,
+      "unit": "คน"
+    },
+    {
+      "label": "จำนวนสมาชิกที่ยังไม่บรรลุเป้าหมายการฝึกอบรม",
+      "value": "0",
+      "value_num": 0.0,
+      "unit": "คน"
+    },
+    {
+      "label": "จำนวนหลักสูตรที่ส่งผลแล้ว คิดเป็น",
+      "value": "11.11%",
+      "value_num": null,
+      "unit": ""
+    }
+  ],
+  "roleplay": [
+    {
+      "label": "ทีม Roleplay",
+      "value": "55",
+      "value_num": 55.0,
+      "unit": "ทีม"
+    },
+    {
+      "label": "ทีมที่ Roleplay ผ่าน",
+      "value": "2",
+      "value_num": 2.0,
+      "unit": "ทีม"
+    },
+    {
+      "label": "ทีมที่ยังไม่ส่ง Roleplay",
+      "value": "53",
+      "value_num": 53.0,
+      "unit": "ทีม"
+    },
+    {
+      "label": "ทีมบรรลุเป้าหมายการ Roleplay คิดเป็น",
+      "value": "3.64",
+      "value_num": 3.64,
+      "unit": "%"
+    }
+  ],
+  "mentor": [
+    {
+      "label": "สมาชิกที่อยู่ในระบบ Mentor",
+      "value": "30",
+      "value_num": 30.0,
+      "unit": "คน"
+    },
+    {
+      "label": "สมาชิกที่มีวินัยการส่งรายงาน มากกว่า 90%",
+      "value": "8",
+      "value_num": 8.0,
+      "unit": "คน"
+    },
+    {
+      "label": "สมาชิกที่มีวินัยการส่งรายงาน น้อยกว่า 90%",
+      "value": "22",
+      "value_num": 22.0,
+      "unit": "คน"
+    },
+    {
+      "label": "สมาชิกที่มีวินัยการส่งรายงาน มากกว่า 90%",
+      "value": "26.67",
+      "value_num": 26.67,
+      "unit": "%"
+    }
+  ],
+  "coach": [
+    {
+      "label": "สมาชิกที่อยู่ในระบบมอบหมายบทบาทผู้ Coach",
+      "value": "58",
+      "value_num": 58.0,
+      "unit": "คน"
+    },
+    {
+      "label": "สมาชิกที่มีวินัยการ Coach ตามเป้าหมาย",
+      "value": "58",
+      "value_num": 58.0,
+      "unit": "คน"
+    },
+    {
+      "label": "สมาชิกที่มีวินัยการ Coach น้อยกว่าเป้าหมาย",
+      "value": "0",
+      "value_num": 0.0,
+      "unit": "คน"
+    },
+    {
+      "label": "พี่เลี้ยงที่ยังไม่ได้โค้ชน้องเลี้ยง คิดเป็น",
+      "value": "100",
+      "value_num": 100.0,
+      "unit": "%"
+    }
+  ],
+  "lg": {
+    "headers": [
+      "Capital",
+      "PKG",
+      "PGHg",
+      "PMSg",
+      "AAMg",
+      "RPLCg",
+      "RAFCOg",
+      "CPDg",
+      "รวม",
+      "อ้างอิงสถานะ"
+    ],
+    "rows": [
+      {
+        "name": "ทุนมนุษย์ (Human Capital)",
+        "PKG": 5,
+        "PGHg": 1,
+        "PMSg": 12,
+        "AAMg": 37,
+        "RPLCg": 5,
+        "RAFCOg": 1,
+        "CPDg": 1,
+        "total": 62,
+        "reference": "AOE (ทุนมนุษย์ BU/FU )"
+      },
+      {
+        "name": "ทุนสารสนเทศ (Information Capital)",
+        "PKG": 21,
+        "PGHg": 1,
+        "PMSg": 21,
+        "AAMg": 1,
+        "RPLCg": 1,
+        "RAFCOg": 1,
+        "CPDg": 6,
+        "total": 52,
+        "reference": "ทุนสารสนเทศ"
+      },
+      {
+        "name": "ทุนองค์กร (Organizational Capital)",
+        "PKG": 7,
+        "PGHg": 1,
+        "PMSg": 2,
+        "AAMg": 1,
+        "RPLCg": 1,
+        "RAFCOg": 1,
+        "CPDg": 1,
+        "total": 14,
+        "reference": "Core competency (ทุนองค์กร SMC)"
+      },
+      {
+        "name": "ทุนองค์กร PKG",
+        "PKG": 5,
+        "PGHg": 1,
+        "PMSg": 1,
+        "AAMg": 1,
+        "RPLCg": 1,
+        "RAFCOg": 1,
+        "CPDg": 1,
+        "total": 11,
+        "reference": "หลักสูตรเลือก(PAD)"
+      },
+      {
+        "name": "รวม",
+        "PKG": 38,
+        "PGHg": 4,
+        "PMSg": 36,
+        "AAMg": 40,
+        "RPLCg": 8,
+        "RAFCOg": 4,
+        "CPDg": 9,
+        "total": 0,
+        "reference": ""
+      }
+    ]
+  }
 }

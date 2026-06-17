@@ -36,7 +36,6 @@ body {
   min-height: 100vh;
 }
 
-/* Glow Effect */
 body::before {
   content: '';
   position: fixed; top: -20%; left: -10%;
@@ -71,8 +70,7 @@ body::after {
   border-right: 1px solid var(--border-slate);
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
   display: flex; flex-direction: column; flex-shrink: 0;
-  z-index: 10;
-  min-height: 100vh;
+  z-index: 10; min-height: 100vh;
 }
 .sidebar-brand {
   padding: 24px;
@@ -80,13 +78,11 @@ body::after {
   border-bottom: 1px solid var(--border-slate);
 }
 .logo-text {
-  font-size: 1.1em;
-  font-weight: 800;
+  font-size: 1.1em; font-weight: 800;
   letter-spacing: 0.02em;
   color: var(--neon-purple);
   text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
-  white-space: nowrap;
-  line-height: 1.2;
+  white-space: nowrap; line-height: 1.2;
 }
 .role-selector-wrap {
   padding: 12px 24px;
@@ -176,9 +172,7 @@ body::after {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 24px; flex-shrink: 0;
 }
-.top-header h2 {
-  font-size: 1.05em; font-weight: 700; color: var(--text-primary);
-}
+.top-header h2 { font-size: 1.05em; font-weight: 700; color: var(--text-primary); }
 .user-info { text-align: right; }
 .user-name { color: var(--text-primary); font-size: 0.82em; font-weight: 600; margin: 0; }
 .online-status {
@@ -206,14 +200,13 @@ body::after {
   position: relative; overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px;
 }
 .glow-card:hover {
   border-color: var(--border-glow);
   box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
 }
 
-/* === Section 1 === */
-.section-1 { padding: 20px 24px; margin-bottom: 16px; }
 .section-title {
   font-size: 1.1em; font-weight: 700; color: var(--text-primary);
   display: flex; align-items: center; gap: 10px;
@@ -231,11 +224,11 @@ body::after {
   animation: pulse 2s infinite;
 }
 
-/* === Section 2 === */
-.section-2 { padding: 20px 24px; }
-.section-2::-webkit-scrollbar { width: 6px; }
-.section-2::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 3px; }
+/* === Section 1: PAD-02 Header === */
+.section-1 { padding: 20px 24px; }
 
+/* === Section 2: Strategy === */
+.section-2 { padding: 20px 24px; }
 .strategy-block {
   background: rgba(167, 139, 250, 0.05);
   border-left: 3px solid var(--neon-purple);
@@ -268,7 +261,6 @@ body::after {
 .kr-item.status-green { border-left-color: var(--status-green); }
 .kr-item.status-yellow { border-left-color: var(--status-yellow); }
 .kr-item.status-red { border-left-color: var(--status-red); }
-
 .kr-title {
   font-size: 0.92em; font-weight: 600;
   color: var(--text-primary);
@@ -284,12 +276,68 @@ body::after {
 .status-yellow .status-icon { color: var(--status-yellow); }
 .status-red .status-icon { color: var(--status-red); }
 
+/* === KPI Section (สำหรับ Training/Roleplay/Mentor/Coach) === */
+.kpi-section {
+  padding: 20px 24px;
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.kpi-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-slate);
+  border-radius: 10px;
+  padding: 14px 16px;
+  border-left-width: 3px;
+}
+.kpi-item.info { border-left-color: var(--neon-cyan); }
+.kpi-item.good { border-left-color: var(--status-green); }
+.kpi-item.warn { border-left-color: var(--status-yellow); }
+.kpi-item.bad { border-left-color: var(--status-red); }
+.kpi-item .k-label { font-size: 0.75em; color: var(--text-mute); margin-bottom: 6px; }
+.kpi-item .k-value { font-size: 1.5em; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.kpi-item .k-unit { font-size: 0.7em; color: var(--text-secondary); margin-top: 2px; }
+
+/* === LG Table === */
+.lg-wrap { padding: 16px 24px 24px; overflow-x: auto; }
+.lg-table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+.lg-table th {
+  background: rgba(11, 17, 30, 0.7);
+  color: var(--text-mute);
+  border-bottom: 2px solid var(--border-slate);
+  padding: 10px 12px;
+  font-size: 0.7em; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  text-align: left;
+  white-space: nowrap;
+}
+.lg-table th.num { text-align: right; }
+.lg-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-slate);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.lg-table td.num { text-align: right; }
+.lg-table td.cname { color: var(--text-primary); font-weight: 600; }
+.lg-table tbody tr:hover { background: rgba(180, 123, 255, 0.05); }
+.lg-table tbody tr:last-child td { border-bottom: none; }
+.lg-table tfoot td {
+  padding: 12px;
+  background: rgba(180, 123, 255, 0.08);
+  border-top: 2px solid var(--neon-purple);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
 /* === Footer === */
 .footer {
   text-align: center;
   color: var(--text-mute);
   font-size: 0.78em;
-  margin-top: 24px;
+  margin-top: 16px;
   padding: 12px;
 }
 .footer a { color: var(--neon-cyan); text-decoration: none; }
@@ -300,7 +348,9 @@ body::after {
   .sidebar { width: 240px; }
   .main-view { padding: 16px; }
   .top-header { padding: 0 16px; }
-  .kr-text { font-size: 0.78em; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .lg-table { font-size: 0.72em; }
+  .lg-table th, .lg-table td { padding: 6px 4px; }
 }
 </style>
 </head>
@@ -357,80 +407,264 @@ body::after {
     </header>
 
     <section class="main-view">
-      <div class="dashboard-grid">
 
-        <!-- ส่วนที่ 1 -->
-        <div class="glow-card section-1">
-          <div class="section-title">
-            <i class="fa-solid fa-file-lines"></i>
-            PAD-02 : รายงาน PP5 ระบบพัฒนาบุคลากร (PAD Team)
-          </div>
-          <div class="section-subtitle">
-            ขึ้นออโต้ · ประจำวันที่ 17 มิถุนายน 2569
-          </div>
+      <!-- ส่วนที่ 1: PAD-02 Header -->
+      <div class="glow-card section-1">
+        <div class="section-title">
+          <i class="fa-solid fa-file-lines"></i>
+          PAD-02 : รายงาน PP5 ระบบพัฒนาบุคลากร (PAD Team)
         </div>
-
-        <!-- ส่วนที่ 2 -->
-        <div class="glow-card section-2">
-          <div class="section-title" style="margin-bottom: 14px;">
-            <i class="fa-solid fa-bullseye"></i>
-            ยุทธศาสตร์ (Strategy)
-          </div>
-
-          <div class="strategy-block">
-            <div class="strategy-label">🎯 จุดมุ่งหมาย</div>
-            <div class="strategy-text">พัฒนาสมาชิกตาม Core competency PKG</div>
-          </div>
-
-          <div class="strategy-block">
-            <div class="strategy-label">🌟 ภาพความสำเร็จที่อยากเห็น</div>
-            <div class="strategy-text">สมาชิก PKG มีทักษะที่เป็นเลิศ ตาม CC PKG และ AOE BU</div>
-          </div>
-
-          <div class="strategy-block">
-            <div class="strategy-label">📌 OKR</div>
-            <div class="strategy-text">สมาชิกมีแผนและได้รับการพัฒนาศักยภาพตามแผนครบทุกคน</div>
-          </div>
-
-          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-slate);">
-            <div class="strategy-label" style="margin-bottom: 10px;">🎯 Key Results</div>
-
-            <div class="kr-item status-green">
-              <div class="kr-title">
-                <span class="status-icon">✅</span>
-                <span>KR 1. ระบบอบรม</span>
-              </div>
-              <div class="kr-text">สมาชิกได้รับการฝึกอบรมตามแผนและสามารถนำความรู้ไปใช้ในการบรรลุเป้าหมายการทำงานที่ได้รับ 100%</div>
-            </div>
-
-            <div class="kr-item status-yellow">
-              <div class="kr-title">
-                <span class="status-icon">🟡</span>
-                <span>KR 2. ระบบ Mentor</span>
-              </div>
-              <div class="kr-text">สมาชิกใหม่/สมาชิกจับคู่คนกับงานใหม่/สมาชิกปรับบทบาท/สมาชิกพัฒนาศักยภาพ ได้รับการดูแลจากพี่เลี้ยงแบบ 1:3 ครบ 100%</div>
-            </div>
-
-            <div class="kr-item status-red">
-              <div class="kr-title">
-                <span class="status-icon">🔴</span>
-                <span>KR 3. ระบบ Coach</span>
-              </div>
-              <div class="kr-text">สมาชิกที่ได้รับมอบหมายบทบาทเป็นผู้ Coach ได้พัฒนาทักษะการ Coach ผู้อื่น</div>
-            </div>
-          </div>
+        <div class="section-subtitle">
+          ขึ้นออโต้ · ประจำวันที่ <span id="timestamp">17 มิถุนายน 2569</span>
         </div>
-
-        <div class="footer">
-          🐻 AliClaw · P5 Admin Pad · Share Version · 17 มิถุนายน 2569<br>
-          <a href="https://docs.google.com/spreadsheets/d/1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM/edit?gid=0#gid=0" target="_blank">
-            <i class="fa-solid fa-file-spreadsheet"></i> เปิด Google Sheet ต้นทาง
-          </a>
-        </div>
-
       </div>
+
+      <!-- ส่วนที่ 2: ยุทธศาสตร์ (Strategy) -->
+      <div class="glow-card section-2">
+        <div class="section-title" style="margin-bottom: 14px;">
+          <i class="fa-solid fa-bullseye"></i>
+          ยุทธศาสตร์ (Strategy)
+        </div>
+
+        <div class="strategy-block">
+          <div class="strategy-label">🎯 จุดมุ่งหมาย</div>
+          <div class="strategy-text">พัฒนาสมาชิกตาม Core competency PKG</div>
+        </div>
+
+        <div class="strategy-block">
+          <div class="strategy-label">🌟 ภาพความสำเร็จที่อยากเห็น</div>
+          <div class="strategy-text">สมาชิก PKG มีทักษะที่เป็นเลิศ ตาม CC PKG และ AOE BU</div>
+        </div>
+
+        <div class="strategy-block">
+          <div class="strategy-label">📌 OKR</div>
+          <div class="strategy-text">สมาชิกมีแผนและได้รับการพัฒนาศักยภาพตามแผนครบทุกคน</div>
+        </div>
+
+        <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-slate);">
+          <div class="strategy-label" style="margin-bottom: 10px;">🎯 Key Results</div>
+
+          <div class="kr-item status-green">
+            <div class="kr-title"><span class="status-icon">✅</span><span>KR 1. ระบบอบรม</span></div>
+            <div class="kr-text">สมาชิกได้รับการฝึกอบรมตามแผนและสามารถนำความรู้ไปใช้ในการบรรลุเป้าหมายการทำงานที่ได้รับ 100%</div>
+          </div>
+
+          <div class="kr-item status-yellow">
+            <div class="kr-title"><span class="status-icon">🟡</span><span>KR 2. ระบบ Mentor</span></div>
+            <div class="kr-text">สมาชิกใหม่/สมาชิกจับคู่คนกับงานใหม่/สมาชิกปรับบทบาท/สมาชิกพัฒนาศักยภาพ ได้รับการดูแลจากพี่เลี้ยงแบบ 1:3 ครบ 100%</div>
+          </div>
+
+          <div class="kr-item status-red">
+            <div class="kr-title"><span class="status-icon">🔴</span><span>KR 3. ระบบ Coach</span></div>
+            <div class="kr-text">สมาชิกที่ได้รับมอบหมายบทบาทเป็นผู้ Coach ได้พัฒนาทักษะการ Coach ผู้อื่น</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 3: สรุปรายงานวัดผลสถานการณ์ฝึกอบรม ณ ปัจจุบัน -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-chart-line"></i>
+            สรุปรายงานวัดผลสถานการณ์ฝึกอบรม ณ ปัจจุบัน
+          </div>
+          <div class="section-subtitle">ข้อมูลภาพรวม 6 บริษัท</div>
+        </div>
+        <div class="kpi-section">
+          <div class="kpi-grid" id="summaryGrid"></div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 4: Training (ผ่านที่ 1) -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Training (ผ่านที่ 1)
+          </div>
+          <div class="section-subtitle">แผนหลักสูตรที่เปิดอบรมประจำเดือน</div>
+        </div>
+        <div class="kpi-section">
+          <div class="kpi-grid" id="trainingGrid"></div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 5: Roleplay -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-masks-theater"></i>
+            Roleplay
+          </div>
+          <div class="section-subtitle">จำนวนทีม Roleplay และผลการดำเนินงาน</div>
+        </div>
+        <div class="kpi-section">
+          <div class="kpi-grid" id="roleplayGrid"></div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 6: Mentor -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-user-group"></i>
+            Mentor
+          </div>
+          <div class="section-subtitle">สมาชิกในระบบ Mentor และวินัยการส่งรายงาน</div>
+        </div>
+        <div class="kpi-section">
+          <div class="kpi-grid" id="mentorGrid"></div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 7: Coach -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            Coach
+          </div>
+          <div class="section-subtitle">สมาชิกที่ได้รับมอบหมายบทบาทผู้ Coach</div>
+        </div>
+        <div class="kpi-section">
+          <div class="kpi-grid" id="coachGrid"></div>
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 8: การเรียนรู้และการเติบโต (Learning & Growth) -->
+      <div class="glow-card">
+        <div class="kpi-section">
+          <div class="section-title" style="margin-bottom: 4px;">
+            <i class="fa-solid fa-seedling"></i>
+            การเรียนรู้และการเติบโต (Learning & Growth)
+          </div>
+          <div class="section-subtitle">ทุนมนุษย์/สารสนเทศ/องค์กร แยกตามบริษัท</div>
+        </div>
+        <div class="lg-wrap">
+          <table class="lg-table" id="lgTable"></table>
+        </div>
+      </div>
+
+      <div class="footer">
+        🐻 AliClaw · P5 Admin Pad · Share Version · <span id="footerTimestamp">17 มิถุนายน 2569</span><br>
+        <a href="https://docs.google.com/spreadsheets/d/1CkBSi_votE01b0fxFFwU1EQb_7mzEJgGvWGaegocbeM/edit?usp=sharing" target="_blank">
+          <i class="fa-solid fa-file-spreadsheet"></i> เปิด Google Sheet ต้นทาง
+        </a>
+      </div>
+
     </section>
   </main>
 </div>
+
+<script>
+// ============================================================
+// Render KPI grid from JSON items
+// ============================================================
+function classifyKpi(label, value, unit) {
+  // ตรวจสอบสถานะจากค่า value
+  let cls = 'info';
+  const labelLower = label.toLowerCase();
+  if (labelLower.includes('ครบ') || labelLower.includes('ผ่าน') || labelLower.includes('บรรลุ')) {
+    cls = 'good';
+  } else if (labelLower.includes('รอ') || labelLower.includes('ไม่บรรลุ') || labelLower.includes('น้อยกว่า')) {
+    cls = 'warn';
+  } else if (labelLower.includes('วิกฤต') || labelLower.includes('ยังไม่บรรลุ')) {
+    cls = 'bad';
+  }
+  return cls;
+}
+
+function renderKpiGrid(elementId, items, skipFirstLabel) {
+  const grid = document.getElementById(elementId);
+  if (!grid) return;
+  grid.innerHTML = items
+    .filter(item => !skipFirstLabel || !item.label.toLowerCase().includes(skipFirstLabel))
+    .map(item => {
+      const cls = classifyKpi(item.label, item.value, item.unit);
+      return `
+        <div class="kpi-item ${cls}">
+          <div class="k-label">${item.label}</div>
+          <div class="k-value">${item.value}</div>
+          <div class="k-unit">${item.unit || ''}</div>
+        </div>
+      `;
+    }).join('');
+}
+
+// ============================================================
+// Render LG table
+// ============================================================
+function renderLgTable(data) {
+  const table = document.getElementById('lgTable');
+  if (!table || !data || !data.rows || data.rows.length === 0) {
+    table.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
+    return;
+  }
+  // headers: ["Capital", "PKG", "PGHg", "PMSg", "AAMg", "RPLCg", "RAFCOg", "CPDg", "รวม", "อ้างอิงสถานะ"]
+  const headers = data.headers;
+  const companyCols = headers.slice(1, -2); // บริษัทต่าง ๆ
+  const hasTotal = headers.includes('รวม');
+  const hasRef = headers.includes('อ้างอิงสถานะ');
+
+  // Header
+  let html = '<thead><tr>';
+  html += '<th class="cname">Capital</th>';
+  companyCols.forEach(c => html += `<th class="num">${c}</th>`);
+  if (hasTotal) html += '<th class="num">รวม</th>';
+  if (hasRef) html += '<th>อ้างอิงสถานะ</th>';
+  html += '</tr></thead>';
+
+  // Body
+  html += '<tbody>';
+  data.rows.forEach(row => {
+    html += `<tr>`;
+    html += `<td class="cname">${row.name || ''}</td>`;
+    companyCols.forEach(c => {
+      const v = row[c] !== undefined ? row[c] : '-';
+      html += `<td class="num">${v}</td>`;
+    });
+    if (hasTotal) html += `<td class="num">${row.total !== undefined ? row.total : '-'}</td>`;
+    if (hasRef) html += `<td style="font-size:0.78em;color:var(--text-mute);">${row.reference || ''}</td>`;
+    html += `</tr>`;
+  });
+  html += '</tbody>';
+
+  table.innerHTML = html;
+}
+
+// ============================================================
+// Load data.json + render
+// ============================================================
+async function loadData() {
+  try {
+    const res = await fetch(`data.json?t=${Date.now()}`, { cache: 'no-store' });
+    const data = await res.json();
+
+    // Update timestamp
+    if (data.timestamp) {
+      const tsEl = document.getElementById('timestamp');
+      const ftEl = document.getElementById('footerTimestamp');
+      if (tsEl) tsEl.textContent = data.timestamp;
+      if (ftEl) ftEl.textContent = data.timestamp;
+    }
+
+    // Render ส่วนที่ 3-7 (KPI grids)
+    renderKpiGrid('summaryGrid', data.summary || []);
+    renderKpiGrid('trainingGrid', data.training || []);
+    renderKpiGrid('roleplayGrid', data.roleplay || []);
+    renderKpiGrid('mentorGrid', data.mentor || []);
+    renderKpiGrid('coachGrid', data.coach || []);
+
+    // Render ส่วนที่ 8 (LG table)
+    renderLgTable(data.lg || {});
+  } catch (e) {
+    console.error('❌ โหลด data.json ไม่สำเร็จ:', e);
+  }
+}
+
+// Init
+loadData();
+setInterval(loadData, 5 * 60 * 1000); // Auto-refresh ทุก 5 นาที
+</script>
 </body>
 </html>
