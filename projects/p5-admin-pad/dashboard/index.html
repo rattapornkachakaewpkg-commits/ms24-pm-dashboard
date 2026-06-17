@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P5 ระบบพัฒนาบุคลากร PKG</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* === CSS RESET === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+:root {
+  --bg-main: #0A0E1A;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-solid: #161F30;
+  --border-slate: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(167, 139, 250, 0.4);
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8;
+  --text-mute: #64748B;
+  --neon-purple: #A78BFA;
+  --neon-cyan: #60A5FA;
+  --neon-magenta: #F472B6;
+  --neon-mint: #34D399;
+  --neon-purple-dim: rgba(167, 139, 250, 0.15);
+  --neon-cyan-dim: rgba(96, 165, 250, 0.15);
+  --neon-magenta-dim: rgba(244, 114, 182, 0.15);
+  --neon-mint-dim: rgba(52, 211, 153, 0.15);
+  --neon-yellow: #FACC15;
+  --neon-green: #10B981;
+  --status-red: #F87171;
+}
+
+body {
+  font-family: 'Sarabun', 'Inter', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* === Glow Effect (ม่วง + ฟ้า) === */
+body::before {
+  content: '';
+  position: fixed; top: -20%; left: -10%;
+  width: 70%; height: 70%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.4), transparent 60%);
+  filter: blur(100px);
+  z-index: 0; pointer-events: none;
+  animation: float1 18s ease-in-out infinite;
+}
+body::after {
+  content: '';
+  position: fixed; bottom: -20%; right: -10%;
+  width: 70%; height: 70%;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.35), transparent 60%);
+  filter: blur(100px);
+  z-index: 0; pointer-events: none;
+  animation: float2 22s ease-in-out infinite;
+}
+@keyframes float1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(5%,4%);} }
+@keyframes float2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-4%,-3%);} }
+
+/* === Layout === */
+.app {
+  position: relative; z-index: 1;
+  display: flex; min-height: 100vh;
+}
+
+/* === Sidebar === */
+.sidebar {
+  width: 288px;
+  background: linear-gradient(180deg, #0F1729 0%, #0B111E 100%);
+  border-right: 1px solid var(--border-slate);
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+  display: flex; flex-direction: column; flex-shrink: 0;
+  z-index: 10;
+  min-height: 100vh;
+}
+.sidebar-brand {
+  padding: 24px;
+  background: linear-gradient(90deg, rgba(180, 123, 255, 0.08), transparent);
+  border-bottom: 1px solid var(--border-slate);
+}
+.logo-p5-text {
+  font-size: 1.5em; font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--neon-purple);
+  text-shadow: 0 0 20px rgba(180, 123, 255, 0.4);
+}
+.logo-subtitle {
+  font-size: 0.75em;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+.role-selector-wrap {
+  padding: 12px 24px;
+  background: rgba(11, 17, 30, 0.6);
+  border-bottom: 1px solid var(--border-slate);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.75em;
+}
+.role-selector-wrap > span { color: var(--text-mute); }
+.role-selector-wrap select {
+  background: rgba(22, 31, 48, 0.8);
+  border: 1px solid var(--border-slate);
+  color: var(--text-primary);
+  border-radius: 6px; padding: 4px 8px; outline: none;
+  cursor: pointer; font-size: 0.95em; font-family: inherit;
+}
+.role-selector-wrap select option { background: #0F1729; color: var(--text-primary); }
+
+.sidebar-menu { flex: 1; overflow-y: auto; padding: 16px; }
+.sidebar-menu::-webkit-scrollbar { width: 6px; }
+.sidebar-menu::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 3px; }
+
+.menu-section-title {
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+  padding: 8px 16px;
+  margin-top: 8px;
+  font-size: 0.7em; font-weight: 700;
+  text-transform: uppercase;
+  display: flex; align-items: center;
+}
+.menu-section-title i { margin-right: 8px; }
+
+.menu-item {
+  width: 100%;
+  background: transparent; border: none;
+  border-left: 3px solid transparent;
+  color: var(--text-secondary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.95em; font-family: inherit;
+  text-align: left; cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex; align-items: center;
+}
+.menu-item i.fa-solid { width: 24px; text-align: center; margin-right: 12px; font-size: 1.05em; }
+.menu-item:hover { background: rgba(180, 123, 255, 0.06); color: var(--text-primary); }
+.menu-item.active {
+  background: linear-gradient(90deg, rgba(180, 123, 255, 0.15), rgba(180, 123, 255, 0.04));
+  color: var(--neon-purple);
+  border-left-color: var(--neon-purple);
+  font-weight: 600;
+  box-shadow: inset 0 0 20px rgba(180, 123, 255, 0.05);
+}
+.menu-subitem {
+  width: 100%;
+  background: transparent; border: none;
+  color: var(--text-mute);
+  padding: 8px 16px 8px 48px;
+  border-radius: 6px;
+  font-size: 0.85em; font-family: inherit;
+  text-align: left; cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex; align-items: center;
+}
+.menu-subitem:hover { color: var(--text-primary); background: rgba(180, 123, 255, 0.05); }
+.menu-subitem.active { color: var(--neon-cyan); background: rgba(0, 224, 255, 0.08); font-weight: 600; }
+.menu-subitem .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; margin-right: 12px; opacity: 0.6;
+}
+.menu-subitem.active .dot { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); opacity: 1; }
+
+.sidebar-footer {
+  padding: 16px; text-align: center;
+  font-size: 0.7em; color: var(--text-mute);
+  background: rgba(0,0,0,0.3);
+  border-top: 1px solid var(--border-slate);
+}
+
+/* === Main === */
+.main {
+  flex: 1; display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+.top-header {
+  height: 64px;
+  background: rgba(11, 17, 30, 0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-slate);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.top-header h2 {
+  font-size: 1.25em; font-weight: 700; color: var(--text-primary);
+}
+.user-info { text-align: right; }
+.user-name { color: var(--text-primary); font-size: 0.875em; font-weight: 600; margin: 0; }
+.online-status {
+  color: var(--neon-mint); font-size: 0.75em;
+  display: flex; align-items: center; justify-content: flex-end;
+  margin-top: 2px;
+}
+.online-dot {
+  display: inline-block; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--neon-mint);
+  box-shadow: 0 0 8px var(--neon-mint);
+  margin-right: 4px; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.main-view {
+  flex: 1;
+  padding: 32px;
+  position: relative; z-index: 1;
+}
+.main-view::-webkit-scrollbar { width: 8px; }
+.main-view::-webkit-scrollbar-track { background: var(--bg-main); }
+.main-view::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 4px; }
+
+/* === Glow Card === */
+.glow-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--border-slate);
+  border-radius: 16px;
+  position: relative; overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
+}
+.glow-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
+}
+
+/* === Section Header === */
+.section-head {
+  padding: 24px;
+  background: rgba(180, 123, 255, 0.05);
+  border-bottom: 1px solid var(--border-slate);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.section-head h3 {
+  font-size: 1.05em; font-weight: 700; color: var(--text-primary);
+  display: flex; align-items: center;
+}
+.section-head h3 i { color: var(--neon-purple); margin-right: 8px; }
+.section-subtitle {
+  font-size: 0.78em; color: var(--text-mute);
+  margin-top: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.section-subtitle strong { color: var(--neon-cyan); font-weight: 600; }
+.dot-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--neon-mint);
+  box-shadow: 0 0 6px var(--neon-mint);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+.btn-refresh {
+  background: linear-gradient(135deg, var(--neon-cyan), #0099CC);
+  color: white; border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.82em; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+  transition: all 0.2s ease;
+}
+.btn-refresh:hover { box-shadow: 0 0 20px rgba(96, 165, 250, 0.6); transform: translateY(-1px); }
+.btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-refresh.spinning i { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.countdown-badge {
+  background: var(--neon-purple-dim);
+  color: var(--neon-purple);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  font-size: 0.72em; font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+
+/* === Real KPI Grid === */
+.real-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 24px;
+}
+.real-kpi {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-slate);
+  border-radius: 12px;
+  border-left-width: 3px;
+}
+.real-kpi.info { border-left-color: var(--neon-cyan); }
+.real-kpi.good { border-left-color: var(--neon-mint); }
+.real-kpi.warn { border-left-color: var(--neon-yellow); }
+.real-kpi.bad { border-left-color: var(--status-red); }
+.real-kpi .lbl { font-size: 0.78em; color: var(--text-mute); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.real-kpi .val { font-size: 1.95em; font-weight: 800; color: var(--text-primary); line-height: 1.1; }
+.real-kpi .sub { font-size: 0.72em; color: var(--text-secondary); margin-top: 4px; }
+
+/* === Alerts === */
+.alert-list {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 20px 24px;
+}
+.alert-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  border-left: 3px solid;
+}
+.alert-row.danger { background: rgba(248, 113, 113, 0.08); border-left-color: var(--status-red); }
+.alert-row.warning { background: rgba(250, 204, 21, 0.08); border-left-color: var(--neon-yellow); }
+.alert-row.success { background: rgba(52, 211, 153, 0.08); border-left-color: var(--neon-mint); }
+.alert-row.info { background: rgba(96, 165, 250, 0.08); border-left-color: var(--neon-cyan); }
+.alert-row .ico { font-size: 1.3em; }
+.alert-row .name { font-weight: 700; color: var(--text-primary); }
+.alert-row .detail { color: var(--text-secondary); font-size: 0.92em; margin-top: 2px; }
+
+/* === Company Progress === */
+.company-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 20px 24px;
+}
+.company-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 100px;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-slate);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.company-row:hover { background: rgba(180, 123, 255, 0.04); border-color: var(--border-glow); }
+.company-row .cname { font-weight: 700; color: var(--text-primary); font-size: 0.95em; }
+.company-row .cname small { display: block; color: var(--text-mute); font-weight: 400; font-size: 0.75em; margin-top: 2px; }
+.bar-wrap { display: flex; flex-direction: column; gap: 6px; }
+.bar-wrap .bar-label { font-size: 0.7em; color: var(--text-mute); display: flex; justify-content: space-between; }
+.bar-wrap .bar-label strong { color: var(--text-primary); font-weight: 600; }
+.bar-bg {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px; overflow: hidden;
+  position: relative;
+}
+.bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s ease; }
+.bar-fill.good { background: linear-gradient(90deg, var(--neon-mint), #10B981); box-shadow: 0 0 8px rgba(52, 211, 153, 0.5); }
+.bar-fill.warn { background: linear-gradient(90deg, var(--neon-yellow), #F59E0B); box-shadow: 0 0 8px rgba(250, 204, 21, 0.5); }
+.bar-fill.bad  { background: linear-gradient(90deg, var(--status-red), #DC2626); box-shadow: 0 0 8px rgba(248, 113, 113, 0.5); }
+.bar-fill.zero { background: var(--text-mute); }
+.cbadge {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.72em; font-weight: 600;
+  white-space: nowrap;
+}
+.cbadge.good { background: rgba(52, 211, 153, 0.15); color: var(--neon-mint); }
+.cbadge.warn { background: rgba(250, 204, 21, 0.12); color: var(--neon-yellow); }
+.cbadge.bad  { background: rgba(248, 113, 113, 0.12); color: var(--status-red); }
+.cbadge.zero { background: rgba(148, 163, 184, 0.12); color: var(--text-mute); }
+
+/* === GPA Table === */
+.gpa-wrap { padding: 16px 24px 24px; }
+.gpa-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+.gpa-table th {
+  background: rgba(11, 17, 30, 0.5);
+  color: var(--text-mute);
+  border-bottom: 1px solid var(--border-slate);
+  padding: 12px 14px;
+  font-size: 0.72em; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  text-align: left;
+}
+.gpa-table th.num { text-align: right; }
+.gpa-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-slate);
+  color: var(--text-secondary);
+}
+.gpa-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.gpa-table td.cname { color: var(--text-primary); font-weight: 600; }
+.gpa-table tbody tr { transition: background 0.2s ease; }
+.gpa-table tbody tr:hover { background: rgba(180, 123, 255, 0.04); }
+.gpa-table tbody tr:last-child td { border-bottom: none; }
+
+.footer {
+  text-align: center; color: var(--text-mute);
+  font-size: 0.78em; margin-top: 24px; padding: 16px;
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .real-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .sidebar { width: 100%; max-width: 240px; position: fixed; left: -240px; top: 0; height: 100vh; z-index: 100; transition: left 0.3s ease; }
+  .sidebar.open { left: 0; }
+  .real-kpi-grid { grid-template-columns: 1fr; padding: 16px; }
+  .main-view { padding: 16px; }
+  .top-header { padding: 0 16px; }
+  .company-row { grid-template-columns: 1fr; gap: 8px; }
+  .gpa-table { font-size: 0.78em; }
+  .gpa-table th, .gpa-table td { padding: 8px 6px; }
+  .section-head { padding: 16px; }
+  .section-head h3 { font-size: 0.95em; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-p5-text">P5 SYSTEM</div>
+      <div class="logo-subtitle">ระบบพัฒนาบุคลากร PKG</div>
+    </div>
+
+    <div class="role-selector-wrap">
+      <span><i class="fa-solid fa-user-shield"></i> สิทธิ์ผู้ใช้งาน:</span>
+      <select id="roleSelector" onchange="changePermission(this.value)">
+        <option value="Admin">Admin (เห็นทั้งหมด)</option>
+        <option value="Manager">Manager</option>
+        <option value="Member">Member (ทั่วไป)</option>
+      </select>
+    </div>
+
+    <nav id="dynamicMenu" class="sidebar-menu"></nav>
+
+    <div class="sidebar-footer">&copy; 2026 PKG All Rights Reserved.</div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="top-header">
+      <h2 id="currentPageTitle">Dashboard · ภาพรวม P5 Training</h2>
+      <div class="user-info">
+        <p class="user-name" id="userDisplayName">ผู้ดูแลระบบ (Admin)</p>
+        <p class="online-status">
+          <span class="online-dot"></span> Online
+        </p>
+      </div>
+    </header>
+
+    <section id="mainView" class="main-view">
+      <!-- ==== Section 1: Header + Refresh + Countdown ==== -->
+      <div class="glow-card">
+        <div class="section-head">
+          <div>
+            <h3><i class="fa-solid fa-chart-pie"></i> ภาพรวม 6 บริษัท · P5 Training Plan 2569</h3>
+            <div class="section-subtitle">
+              <span class="dot-live"></span>
+              <span>อัปเดตล่าสุด: <strong id="lastUpdated">กำลังโหลด...</strong></span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="countdown-badge">
+              <i class="fa-regular fa-clock"></i>
+              <span>รีเฟรชใน <strong id="countdown">5:00</strong></span>
+            </span>
+            <button id="btnRefresh" class="btn-refresh" onclick="refreshData(true)">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>รีเฟรช</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==== Section 2: Summary KPIs ==== -->
+        <div class="real-kpi-grid">
+          <div class="real-kpi info">
+            <div class="lbl"><i class="fa-solid fa-users"></i> สมาชิกรวม</div>
+            <div class="val" id="kpiMembers">-</div>
+            <div class="sub" id="kpiCompanies">- บริษัท</div>
+          </div>
+          <div class="real-kpi warn">
+            <div class="lbl"><i class="fa-solid fa-graduation-cap"></i> ครบ 44 หน่วยกิต เฉลี่ย</div>
+            <div class="val" id="kpiCredit">-</div>
+            <div class="sub" id="kpiCreditSub">-</div>
+          </div>
+          <div class="real-kpi good">
+            <div class="lbl"><i class="fa-solid fa-medal"></i> GPA ผ่าน 3.5 เฉลี่ย</div>
+            <div class="val" id="kpiGpa">-</div>
+            <div class="sub" id="kpiGpaSub">-</div>
+          </div>
+          <div class="real-kpi bad">
+            <div class="lbl"><i class="fa-solid fa-triangle-exclamation"></i> บริษัทที่ต้องเร่ง</div>
+            <div class="val" id="kpiRisky">-</div>
+            <div class="sub">ต่ำกว่าเกณฑ์ 90%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==== Section 3: Alerts ==== -->
+      <div class="glow-card">
+        <div class="section-head">
+          <div>
+            <h3><i class="fa-solid fa-bell"></i> สถานการณ์ที่ต้องติดตาม</h3>
+            <div class="section-subtitle">เรียงตาม % ครบหน่วยกิต (มาก → น้อย)</div>
+          </div>
+        </div>
+        <div class="alert-list" id="alertList">
+          <div class="alert-row info">
+            <span class="ico">⏳</span>
+            <div>
+              <div class="name">กำลังโหลดข้อมูล...</div>
+              <div class="detail">ดึงจาก data.json</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==== Section 4: Company Progress ==== -->
+      <div class="glow-card">
+        <div class="section-head">
+          <div>
+            <h3><i class="fa-solid fa-bars-progress"></i> เป้าหมายหน่วยกิตประจำปี (44 หน่วยกิต/คน)</h3>
+            <div class="section-subtitle">คลิกบริษัทเพื่อดูรายละเอียดเพิ่มเติม</div>
+          </div>
+        </div>
+        <div class="company-grid" id="companyGrid">
+          <div class="company-row">
+            <div class="cname">กำลังโหลด...<small>รอสักครู่</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==== Section 5: GPA Table ==== -->
+      <div class="glow-card">
+        <div class="section-head">
+          <div>
+            <h3><i class="fa-solid fa-medal"></i> เป้าหมายเกรดเฉลี่ย (GPA ≥ 3.5)</h3>
+            <div class="section-subtitle">จำนวนสมาชิกที่ผ่าน/ไม่ผ่านเกณฑ์</div>
+          </div>
+        </div>
+        <div class="gpa-wrap">
+          <table class="gpa-table">
+            <thead>
+              <tr>
+                <th>บริษัท</th>
+                <th class="num">สมาชิก</th>
+                <th class="num">GPA ผ่าน 3.5</th>
+                <th class="num">GPA ไม่ผ่าน</th>
+                <th class="num">% ผ่าน</th>
+                <th>สถานะ</th>
+              </tr>
+            </thead>
+            <tbody id="gpaTbody">
+              <tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-mute);">⏳ กำลังโหลด...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="footer">
+        🐻 AliClaw · P5 Admin Pad · v0.4 · Auto-refresh ทุก 5 นาที ·
+        <a href="https://docs.google.com/spreadsheets/d/15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0/edit?gid=1104115053" target="_blank" style="color: var(--neon-cyan); text-decoration: none;">
+          <i class="fa-solid fa-file-spreadsheet"></i> Google Sheet
+        </a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// ============================================================
+// 1. Sidebar Menu (5 sections, 12 menus)
+// ============================================================
+const menuData = [
+  { id: "m1", title: "Dashboard", icon: "fa-chart-pie", permissions: ["Admin", "Manager", "Member"] },
+  {
+    id: "m2", title: "Training", icon: "fa-graduation-cap", permissions: ["Admin", "Manager", "Member"],
+    subMenus: [
+      { id: "m2_1", title: "2.1 ลงทะเบียนหลักสูตร", permissions: ["Admin", "Manager", "Member"] },
+      { id: "m2_2", title: "2.2 ขอเปิดอบรม ภายใน/ภายนอก", permissions: ["Admin", "Manager"] },
+      { id: "m2_3", title: "2.3 ส่งผลอบรม ภายใน/ภายนอก", permissions: ["Admin", "Manager", "Member"] },
+      { id: "m2_4", title: "2.4 รายงานการอบรมภายนอก", permissions: ["Admin", "Manager"] }
+    ]
+  },
+  {
+    id: "m3", title: "Mentor", icon: "fa-user-group", permissions: ["Admin", "Manager"],
+    subMenus: [
+      { id: "m3_1", title: "3.1 Set ระบบพี่เลี้ยงน้องเลี้ยง", permissions: ["Admin"] },
+      { id: "m3_2", title: "3.2 แบบ From การส่งรายงานน้องเลี้ยง PKG", permissions: ["Admin", "Manager"] }
+    ]
+  },
+  {
+    id: "m4", title: "Coach", icon: "fa-chalkboard-user", permissions: ["Admin", "Manager", "Member"],
+    subMenus: [
+      { id: "m4_1", title: "4.1 Menter Coach เชื่อมสมุดพก", permissions: ["Admin", "Manager"] },
+      { id: "m4_2", title: "4.2 อื่นๆ", permissions: ["Admin", "Manager", "Member"] }
+    ]
+  },
+  {
+    id: "m5", title: "Roleplay", icon: "fa-masks-theater", permissions: ["Admin", "Manager", "Member"],
+    subMenus: [
+      { id: "m5_1", title: "5.1 รายงานการ Roleplay", permissions: ["Admin", "Manager"] },
+      { id: "m5_2", title: "5.2 แบบ From ส่ง Roleplay", permissions: ["Admin", "Manager", "Member"] }
+    ]
+  },
+  {
+    id: "m6", title: "กำกับทุนองค์กร", icon: "fa-sack-dollar", permissions: ["Admin"],
+    subMenus: [
+      { id: "m6_1", title: "6.1 รายงานการอบรม", permissions: ["Admin"] },
+      { id: "m6_2", title: "6.2 อื่นๆ", permissions: ["Admin"] }
+    ]
+  }
+];
+
+let currentRole = "Admin";
+
+function renderMenu() {
+  const menuContainer = document.getElementById('dynamicMenu');
+  menuContainer.innerHTML = '';
+  menuData.forEach(menu => {
+    if (!menu.permissions.includes(currentRole)) return;
+    const hasSubs = menu.subMenus && menu.subMenus.filter(s => s.permissions.includes(currentRole)).length > 0;
+    const wrapper = document.createElement('div');
+    if (!hasSubs) {
+      wrapper.innerHTML = `
+        <button class="menu-item active">
+          <i class="fa-solid ${menu.icon}"></i><span>${menu.title}</span>
+        </button>`;
+    } else {
+      let subsHtml = '';
+      menu.subMenus.forEach(sub => {
+        if (!sub.permissions.includes(currentRole)) return;
+        subsHtml += `
+          <button class="menu-subitem">
+            <span class="dot"></span><span>${sub.title}</span>
+          </button>`;
+      });
+      wrapper.innerHTML = `
+        <div class="menu-section-title"><i class="fa-solid ${menu.icon}"></i> ${menu.title}</div>
+        <div>${subsHtml}</div>`;
+    }
+    menuContainer.appendChild(wrapper);
+  });
+}
+
+function changePermission(role) {
+  currentRole = role;
+  const names = { 'Admin': 'ผู้ดูแลระบบ (Admin)', 'Manager': 'ผู้จัดการฝ่าย (Manager)', 'Member': 'สมาชิกทีม (Member)' };
+  document.getElementById('userDisplayName').innerText = names[role];
+  renderMenu();
+}
+
+// ============================================================
+// 2. Fetch & Render Real Data from data.json
+// ============================================================
+let countdownSeconds = 300; // 5 minutes
+let countdownTimer = null;
+let dataCache = null;
+
+async function refreshData(manual = false) {
+  const btn = document.getElementById('btnRefresh');
+  if (btn) { btn.disabled = true; btn.classList.add('spinning'); }
+  
+  try {
+    // Cache busting: ?t=timestamp
+    const url = `data.json?t=${Date.now()}`;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    dataCache = data;
+    renderData(data);
+    countdownSeconds = 300; // reset countdown
+    if (manual) {
+      console.log('✅ Refreshed data manually');
+    }
+  } catch (e) {
+    console.error('❌ Failed to fetch data.json:', e);
+    document.getElementById('lastUpdated').innerHTML = '<span style="color:var(--status-red);">⚠️ โหลดไม่สำเร็จ</span>';
+  } finally {
+    if (btn) { btn.disabled = false; btn.classList.remove('spinning'); }
+  }
+}
+
+function renderData(d) {
+  const s = d.summary;
+  
+  // === Section 1: Header (last updated) ===
+  document.getElementById('lastUpdated').textContent = d.timestamp || '-';
+  
+  // === Section 2: Summary KPIs ===
+  document.getElementById('kpiMembers').textContent = s.total_members.toLocaleString();
+  document.getElementById('kpiCompanies').textContent = `${s.company_count} บริษัท`;
+  document.getElementById('kpiCredit').textContent = s.avg_credit_pct.toFixed(2) + '%';
+  document.getElementById('kpiCreditSub').textContent = `${s.total_credit_done.toLocaleString()}/${s.total_members.toLocaleString()} คน | เป้าหมาย: 100%`;
+  document.getElementById('kpiGpa').textContent = s.avg_gpa_pct.toFixed(2) + '%';
+  document.getElementById('kpiGpaSub').textContent = `${s.total_gpa_pass.toLocaleString()}/${s.total_members.toLocaleString()} คน | เป้าหมาย: 100%`;
+  document.getElementById('kpiRisky').textContent = `${s.risky_count} / ${s.company_count}`;
+  
+  // === Section 3: Alerts ===
+  const alertList = document.getElementById('alertList');
+  if (!d.companies || d.companies.length === 0) {
+    alertList.innerHTML = '<div class="alert-row info"><span class="ico">ℹ️</span><div><div class="name">ไม่มีข้อมูล</div></div></div>';
+  } else {
+    const activeCos = d.companies.filter(c => c.members > 0);
+    const alertHtml = activeCos.map(c => {
+      let cls, ico, label;
+      if (c.credit_pct < 30)      { cls = 'danger';  ico = '🚨'; label = 'วิกฤต!'; }
+      else if (c.credit_pct < 70) { cls = 'danger';  ico = '⚠️'; label = 'เสี่ยงสูง'; }
+      else if (c.credit_pct < 90) { cls = 'warning'; ico = '⚠️'; label = 'เสี่ยงปานกลาง'; }
+      else                        { cls = 'success'; ico = '✅'; label = 'ดีเยี่ยม'; }
+      return `
+        <div class="alert-row ${cls}">
+          <span class="ico">${ico}</span>
+          <div>
+            <div class="name">${c.name} — ${label}</div>
+            <div class="detail">
+              หน่วยกิต <strong>${c.credit_pct.toFixed(2)}%</strong>
+              (ครบ ${c.credit_done}/${c.members} คน)
+              | GPA <strong>${c.gpa_pct.toFixed(2)}%</strong>
+              (${c.gpa_pass}/${c.members} คน)
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    alertList.innerHTML = alertHtml || '<div class="alert-row info"><span class="ico">ℹ️</span><div><div class="name">ยังไม่มีข้อมูลบริษัท</div></div></div>';
+  }
+  
+  // === Section 4: Company Progress Bars ===
+  const companyGrid = document.getElementById('companyGrid');
+  if (!d.companies || d.companies.length === 0) {
+    companyGrid.innerHTML = '<div class="company-row"><div class="cname">ไม่มีข้อมูล</div></div>';
+  } else {
+    companyGrid.innerHTML = d.companies.map(c => {
+      const pct = Math.max(c.credit_pct, 0.01);
+      return `
+        <div class="company-row" title="${c.name}: ${c.credit_done}/${c.members} คนครบหน่วยกิต">
+          <div class="cname">${c.name}<small>${c.members} คน</small></div>
+          <div class="bar-wrap">
+            <div class="bar-label"><span>ครบ 44 หน่วยกิต</span><strong>${c.credit_pct.toFixed(2)}%</strong></div>
+            <div class="bar-bg"><div class="bar-fill ${c.status_class}" style="width:${pct.toFixed(2)}%"></div></div>
+          </div>
+          <div><span class="cbadge ${c.status_class}">${c.status_text}</span></div>
+        </div>`;
+    }).join('');
+  }
+  
+  // === Section 5: GPA Table ===
+  const gpaTbody = document.getElementById('gpaTbody');
+  if (!d.companies || d.companies.length === 0) {
+    gpaTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
+  } else {
+    gpaTbody.innerHTML = d.companies.map(c => {
+      const gpaCls = c.members === 0 ? 'zero'
+        : c.gpa_pct >= 90 ? 'good'
+        : c.gpa_pct >= 50 ? 'warn' : 'bad';
+      const gpaLabel = c.members === 0 ? 'ยังไม่เริ่ม'
+        : c.gpa_pct >= 90 ? '✅ ดี'
+        : c.gpa_pct >= 50 ? '⚠️ เสี่ยง' : '🚨 วิกฤต';
+      return `
+        <tr>
+          <td class="cname">${c.name}</td>
+          <td class="num">${c.members}</td>
+          <td class="num">${c.gpa_pass}</td>
+          <td class="num">${c.gpa_fail}</td>
+          <td class="num">${c.gpa_pct.toFixed(2)}%</td>
+          <td><span class="cbadge ${gpaCls}">${gpaLabel}</span></td>
+        </tr>`;
+    }).join('');
+  }
+}
+
+// ============================================================
+// 3. Countdown + Auto-refresh
+// ============================================================
+function startCountdown() {
+  if (countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    countdownSeconds--;
+    if (countdownSeconds <= 0) {
+      refreshData(false);
+      countdownSeconds = 300;
+    }
+    const m = Math.floor(countdownSeconds / 60);
+    const s = countdownSeconds % 60;
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+// ============================================================
+// 4. Init
+// ============================================================
+renderMenu();
+refreshData(false);  // load immediately
+startCountdown();    // start auto-refresh timer
+</script>
+</body>
+</html>

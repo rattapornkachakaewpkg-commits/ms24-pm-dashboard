@@ -1,0 +1,89 @@
+{
+  "timestamp": "17 มิถุนายน 2026 เวลา 13:07 น.",
+  "last_updated_iso": "2026-06-17T05:07:36Z",
+  "sheet_url": "https://docs.google.com/spreadsheets/d/15a8s_tLpuwBdIqJqwEv0be8Sy8162gnYti6kTggngh0/edit?gid=1104115053#gid=1104115053",
+  "summary": {
+    "total_members": 359,
+    "total_credit_done": 301,
+    "total_credit_remain": 58,
+    "avg_credit_pct": 83.84,
+    "total_gpa_pass": 342,
+    "avg_gpa_pct": 95.26,
+    "risky_count": 3,
+    "company_count": 6
+  },
+  "companies": [
+    {
+      "name": "PMSg",
+      "members": 173,
+      "credit_done": 172,
+      "credit_remain": 1,
+      "credit_pct": 99.42,
+      "gpa_pass": 165,
+      "gpa_fail": 8,
+      "gpa_pct": 95.38,
+      "status_class": "good",
+      "status_text": "✅ ดี"
+    },
+    {
+      "name": "AAMg",
+      "members": 100,
+      "credit_done": 98,
+      "credit_remain": 2,
+      "credit_pct": 98.0,
+      "gpa_pass": 100,
+      "gpa_fail": 0,
+      "gpa_pct": 100.0,
+      "status_class": "good",
+      "status_text": "✅ ดี"
+    },
+    {
+      "name": "CPDg",
+      "members": 33,
+      "credit_done": 15,
+      "credit_remain": 18,
+      "credit_pct": 45.45,
+      "gpa_pass": 26,
+      "gpa_fail": 7,
+      "gpa_pct": 78.79,
+      "status_class": "bad",
+      "status_text": "🚨 วิกฤต"
+    },
+    {
+      "name": "RPLCg",
+      "members": 31,
+      "credit_done": 13,
+      "credit_remain": 18,
+      "credit_pct": 41.94,
+      "gpa_pass": 31,
+      "gpa_fail": 0,
+      "gpa_pct": 100.0,
+      "status_class": "bad",
+      "status_text": "🚨 วิกฤต"
+    },
+    {
+      "name": "RAFCOg",
+      "members": 22,
+      "credit_done": 3,
+      "credit_remain": 19,
+      "credit_pct": 13.64,
+      "gpa_pass": 20,
+      "gpa_fail": 2,
+      "gpa_pct": 90.91,
+      "status_class": "bad",
+      "status_text": "🚨 วิกฤต"
+    },
+    {
+      "name": "PGHg",
+      "members": 0,
+      "credit_done": 0,
+      "credit_remain": 0,
+      "credit_pct": 0.0,
+      "gpa_pass": 0,
+      "gpa_fail": 0,
+      "gpa_pct": 0.0,
+      "status_class": "zero",
+      "status_text": "ยังไม่เริ่ม"
+    }
+  ]
+}
