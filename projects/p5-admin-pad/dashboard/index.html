@@ -372,6 +372,93 @@ body::after {
 .cbadge.bad  { background: rgba(248, 113, 113, 0.12); color: var(--status-red); }
 .cbadge.zero { background: rgba(148, 163, 184, 0.12); color: var(--text-mute); }
 
+/* === A3: ตารางแยกประเภท v0.4.2 === */
+.tbl-wrap { padding: 16px 24px 24px; }
+.tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.86em;
+}
+.tbl thead th {
+  background: rgba(11, 17, 30, 0.7);
+  color: var(--text-mute);
+  border-bottom: 2px solid var(--border-slate);
+  padding: 12px 14px;
+  font-size: 0.72em; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  text-align: left;
+  position: sticky; top: 0;
+  cursor: pointer; user-select: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.tbl thead th:hover { color: var(--neon-cyan); }
+.tbl thead th.sorted { color: var(--neon-cyan); }
+.tbl thead th.sorted::after {
+  content: ' ▼'; font-size: 0.85em; opacity: 0.7;
+}
+.tbl thead th.sorted.asc::after { content: ' ▲'; }
+.tbl thead th.num { text-align: right; }
+.tbl tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-slate);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.tbl tbody td.num { text-align: right; }
+.tbl tbody td.cname { color: var(--text-primary); font-weight: 700; }
+.tbl tbody tr { transition: background 0.2s ease; }
+.tbl tbody tr:hover { background: rgba(180, 123, 255, 0.05); }
+.tbl tbody tr:last-child td { border-bottom: none; }
+.tbl tfoot td {
+  padding: 14px;
+  background: rgba(180, 123, 255, 0.06);
+  border-top: 2px solid var(--neon-purple);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.tbl tfoot td.cname { color: var(--neon-purple); }
+.tbl .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 14px; font-size: 0.78em; font-weight: 600; white-space: nowrap; }
+.tbl .badge.good { background: rgba(52, 211, 153, 0.15); color: var(--neon-mint); }
+.tbl .badge.warn { background: rgba(250, 204, 21, 0.12); color: var(--neon-yellow); }
+.tbl .badge.bad  { background: rgba(248, 113, 113, 0.12); color: var(--status-red); }
+.tbl .badge.zero { background: rgba(148, 163, 184, 0.12); color: var(--text-mute); }
+
+/* Status pill (in combined table) */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78em; font-weight: 600;
+  white-space: nowrap;
+}
+.status-pill.good { background: rgba(52, 211, 153, 0.15); color: var(--neon-mint); }
+.status-pill.warn { background: rgba(250, 204, 21, 0.12); color: var(--neon-yellow); }
+.status-pill.bad  { background: rgba(248, 113, 113, 0.12); color: var(--status-red); }
+.status-pill.zero { background: rgba(148, 163, 184, 0.12); color: var(--text-mute); }
+
+/* Combined table layout */
+.tbl-combined .pct-bar {
+  display: inline-block;
+  width: 50px; height: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 3px; overflow: hidden;
+  vertical-align: middle; margin-right: 8px;
+}
+.tbl-combined .pct-bar > div { height: 100%; border-radius: 3px; }
+.tbl-combined .pct-bar > div.good { background: var(--neon-mint); }
+.tbl-combined .pct-bar > div.warn { background: var(--neon-yellow); }
+.tbl-combined .pct-bar > div.bad  { background: var(--status-red); }
+.tbl-combined .pct-bar > div.zero { background: var(--text-mute); }
+
+@media (max-width: 768px) {
+  .tbl { font-size: 0.78em; }
+  .tbl thead th, .tbl tbody td, .tbl tfoot td { padding: 8px 6px; }
+  .tbl-wrap { padding: 12px 16px 16px; }
+}
+
 /* === GPA Table === */
 .gpa-wrap { padding: 16px 24px 24px; }
 .gpa-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
@@ -522,43 +609,103 @@ body::after {
         </div>
       </div>
 
-      <!-- ==== Section 4: Company Progress ==== -->
+      <!-- ==== ตารางที่ 1: หน่วยกิต (44 หน่วยกิต/คน) ==== -->
       <div class="glow-card">
         <div class="section-head">
           <div>
-            <h3><i class="fa-solid fa-bars-progress"></i> เป้าหมายหน่วยกิตประจำปี (44 หน่วยกิต/คน)</h3>
-            <div class="section-subtitle">คลิกบริษัทเพื่อดูรายละเอียดเพิ่มเติม</div>
+            <h3><i class="fa-solid fa-graduation-cap"></i> ตารางที่ 1: เป้าหมายหน่วยกิตประจำปี (44 หน่วยกิต/คน)</h3>
+            <div class="section-subtitle">คลิกหัวคอลัมน์เพื่อเรียงลำดับ · เรียงตาม % ครบ (มาก → น้อย)</div>
           </div>
         </div>
-        <div class="company-grid" id="companyGrid">
-          <div class="company-row">
-            <div class="cname">กำลังโหลด...<small>รอสักครู่</small></div>
-          </div>
+        <div class="tbl-wrap" style="overflow-x: auto;">
+          <table class="tbl" id="tblCredit">
+            <thead>
+              <tr>
+                <th data-col="name" class="cname">บริษัท</th>
+                <th data-col="members" class="num">สมาชิก</th>
+                <th data-col="credit_done" class="num">ครบ 44 หน่วยกิต</th>
+                <th data-col="credit_remain" class="num">ยังไม่ครบ</th>
+                <th data-col="credit_pct" class="num sorted desc">% ครบ</th>
+                <th data-col="status" style="text-align:center;">สถานะ</th>
+              </tr>
+            </thead>
+            <tbody id="tblCreditBody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">⏳ กำลังโหลด...</td></tr>
+            </tbody>
+            <tfoot id="tblCreditFoot">
+              <tr>
+                <td class="cname">รวมทั้งหมด</td>
+                <td class="num" id="creditFootMembers">-</td>
+                <td class="num" id="creditFootDone">-</td>
+                <td class="num" id="creditFootRemain">-</td>
+                <td class="num" id="creditFootPct">-</td>
+                <td style="text-align:center;">-</td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
-      <!-- ==== Section 5: GPA Table ==== -->
+      <!-- ==== ตารางที่ 2: GPA (≥ 3.5) ==== -->
       <div class="glow-card">
         <div class="section-head">
           <div>
-            <h3><i class="fa-solid fa-medal"></i> เป้าหมายเกรดเฉลี่ย (GPA ≥ 3.5)</h3>
-            <div class="section-subtitle">จำนวนสมาชิกที่ผ่าน/ไม่ผ่านเกณฑ์</div>
+            <h3><i class="fa-solid fa-medal"></i> ตารางที่ 2: เป้าหมายเกรดเฉลี่ย (GPA ≥ 3.5)</h3>
+            <div class="section-subtitle">จำนวนสมาชิกที่ผ่าน/ไม่ผ่านเกณฑ์ · เรียงตาม % GPA (มาก → น้อย)</div>
           </div>
         </div>
-        <div class="gpa-wrap">
-          <table class="gpa-table">
+        <div class="tbl-wrap" style="overflow-x: auto;">
+          <table class="tbl" id="tblGpa">
             <thead>
               <tr>
-                <th>บริษัท</th>
-                <th class="num">สมาชิก</th>
-                <th class="num">GPA ผ่าน 3.5</th>
-                <th class="num">GPA ไม่ผ่าน</th>
-                <th class="num">% ผ่าน</th>
-                <th>สถานะ</th>
+                <th data-col="name" class="cname">บริษัท</th>
+                <th data-col="members" class="num">สมาชิก</th>
+                <th data-col="gpa_pass" class="num">GPA ผ่าน 3.5</th>
+                <th data-col="gpa_fail" class="num">GPA ไม่ผ่าน</th>
+                <th data-col="gpa_pct" class="num sorted desc">% ผ่าน</th>
+                <th data-col="status" style="text-align:center;">สถานะ</th>
               </tr>
             </thead>
-            <tbody id="gpaTbody">
-              <tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-mute);">⏳ กำลังโหลด...</td></tr>
+            <tbody id="tblGpaBody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">⏳ กำลังโหลด...</td></tr>
+            </tbody>
+            <tfoot id="tblGpaFoot">
+              <tr>
+                <td class="cname">รวมทั้งหมด</td>
+                <td class="num" id="gpaFootMembers">-</td>
+                <td class="num" id="gpaFootPass">-</td>
+                <td class="num" id="gpaFootFail">-</td>
+                <td class="num" id="gpaFootPct">-</td>
+                <td style="text-align:center;">-</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==== ตารางที่ 3: สถานะรวม (ภาพรวม 6 บริษัท) ==== -->
+      <div class="glow-card">
+        <div class="section-head">
+          <div>
+            <h3><i class="fa-solid fa-chart-line"></i> ตารางที่ 3: สถานะรวม 6 บริษัท</h3>
+            <div class="section-subtitle">ดูหน่วยกิต + GPA + สถานะรวมในตารางเดียว · เรียงตาม % ครบ (มาก → น้อย)</div>
+          </div>
+        </div>
+        <div class="tbl-wrap" style="overflow-x: auto;">
+          <table class="tbl tbl-combined" id="tblCombined">
+            <thead>
+              <tr>
+                <th data-col="name" class="cname">บริษัท</th>
+                <th data-col="members" class="num">สมาชิก</th>
+                <th data-col="credit_pct" class="num sorted desc">หน่วยกิต</th>
+                <th data-col="gpa_pct" class="num">GPA</th>
+                <th data-col="credit" style="text-align:center;">สถานะหน่วยกิต</th>
+                <th data-col="gpa" style="text-align:center;">สถานะ GPA</th>
+                <th data-col="overall" style="text-align:center;">ภาพรวม</th>
+              </tr>
+            </thead>
+            <tbody id="tblCombinedBody">
+              <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-mute);">⏳ กำลังโหลด...</td></tr>
             </tbody>
           </table>
         </div>
@@ -732,52 +879,193 @@ function renderData(d) {
     alertList.innerHTML = alertHtml || '<div class="alert-row info"><span class="ico">ℹ️</span><div><div class="name">ยังไม่มีข้อมูลบริษัท</div></div></div>';
   }
   
-  // === Section 4: Company Progress Bars ===
-  const companyGrid = document.getElementById('companyGrid');
+  // === ตารางที่ 1: หน่วยกิต ===
+  const tblCreditBody = document.getElementById('tblCreditBody');
   if (!d.companies || d.companies.length === 0) {
-    companyGrid.innerHTML = '<div class="company-row"><div class="cname">ไม่มีข้อมูล</div></div>';
+    tblCreditBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
   } else {
-    companyGrid.innerHTML = d.companies.map(c => {
-      const pct = Math.max(c.credit_pct, 0.01);
-      return `
-        <div class="company-row" title="${c.name}: ${c.credit_done}/${c.members} คนครบหน่วยกิต">
-          <div class="cname">${c.name}<small>${c.members} คน</small></div>
-          <div class="bar-wrap">
-            <div class="bar-label"><span>ครบ 44 หน่วยกิต</span><strong>${c.credit_pct.toFixed(2)}%</strong></div>
-            <div class="bar-bg"><div class="bar-fill ${c.status_class}" style="width:${pct.toFixed(2)}%"></div></div>
-          </div>
-          <div><span class="cbadge ${c.status_class}">${c.status_text}</span></div>
-        </div>`;
-    }).join('');
+    // เรียงตาม credit_pct (มาก→น้อย)
+    const sortedByCredit = [...d.companies].sort((a, b) => b.credit_pct - a.credit_pct);
+    tblCreditBody.innerHTML = sortedByCredit.map(c => `
+      <tr>
+        <td class="cname">${c.name}</td>
+        <td class="num">${c.members.toLocaleString()}</td>
+        <td class="num">${c.credit_done.toLocaleString()}</td>
+        <td class="num">${c.credit_remain.toLocaleString()}</td>
+        <td class="num">${c.credit_pct.toFixed(2)}%</td>
+        <td style="text-align:center;"><span class="badge ${c.status_class}">${c.status_text}</span></td>
+      </tr>`).join('');
+    // Footer
+    document.getElementById('creditFootMembers').textContent = s.total_members.toLocaleString();
+    document.getElementById('creditFootDone').textContent = s.total_credit_done.toLocaleString();
+    document.getElementById('creditFootRemain').textContent = s.total_credit_remain.toLocaleString();
+    document.getElementById('creditFootPct').textContent = s.avg_credit_pct.toFixed(2) + '%';
   }
   
-  // === Section 5: GPA Table ===
-  const gpaTbody = document.getElementById('gpaTbody');
+  // === ตารางที่ 2: GPA ===
+  const tblGpaBody = document.getElementById('tblGpaBody');
   if (!d.companies || d.companies.length === 0) {
-    gpaTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
+    tblGpaBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
   } else {
-    gpaTbody.innerHTML = d.companies.map(c => {
+    const sortedByGpa = [...d.companies].sort((a, b) => b.gpa_pct - a.gpa_pct);
+    tblGpaBody.innerHTML = sortedByGpa.map(c => {
       const gpaCls = c.members === 0 ? 'zero'
         : c.gpa_pct >= 90 ? 'good'
         : c.gpa_pct >= 50 ? 'warn' : 'bad';
       const gpaLabel = c.members === 0 ? 'ยังไม่เริ่ม'
-        : c.gpa_pct >= 90 ? '✅ ดี'
+        : c.gpa_pct >= 90 ? '✅ ผ่าน'
         : c.gpa_pct >= 50 ? '⚠️ เสี่ยง' : '🚨 วิกฤต';
       return `
         <tr>
           <td class="cname">${c.name}</td>
-          <td class="num">${c.members}</td>
-          <td class="num">${c.gpa_pass}</td>
-          <td class="num">${c.gpa_fail}</td>
+          <td class="num">${c.members.toLocaleString()}</td>
+          <td class="num">${c.gpa_pass.toLocaleString()}</td>
+          <td class="num">${c.gpa_fail.toLocaleString()}</td>
           <td class="num">${c.gpa_pct.toFixed(2)}%</td>
-          <td><span class="cbadge ${gpaCls}">${gpaLabel}</span></td>
+          <td style="text-align:center;"><span class="badge ${gpaCls}">${gpaLabel}</span></td>
+        </tr>`;
+    }).join('');
+    document.getElementById('gpaFootMembers').textContent = s.total_members.toLocaleString();
+    document.getElementById('gpaFootPass').textContent = s.total_gpa_pass.toLocaleString();
+    const totalGpaFail = s.total_members - s.total_gpa_pass;
+    document.getElementById('gpaFootFail').textContent = totalGpaFail.toLocaleString();
+    document.getElementById('gpaFootPct').textContent = s.avg_gpa_pct.toFixed(2) + '%';
+  }
+  
+  // === ตารางที่ 3: สถานะรวม (Combined) ===
+  const tblCombinedBody = document.getElementById('tblCombinedBody');
+  if (!d.companies || d.companies.length === 0) {
+    tblCombinedBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-mute);">ไม่มีข้อมูล</td></tr>';
+  } else {
+    const sortedByCombined = [...d.companies].sort((a, b) => b.credit_pct - a.credit_pct);
+    tblCombinedBody.innerHTML = sortedByCombined.map(c => {
+      const gpaCls = c.members === 0 ? 'zero'
+        : c.gpa_pct >= 90 ? 'good'
+        : c.gpa_pct >= 50 ? 'warn' : 'bad';
+      // สถานะภาพรวม = เอาที่แย่ที่สุด
+      const worst = [c.status_class, gpaCls];
+      let overallCls, overallLabel;
+      if (worst.includes('bad'))      { overallCls = 'bad';  overallLabel = '🚨 เร่งด่วน'; }
+      else if (worst.includes('warn')){ overallCls = 'warn'; overallLabel = '⚠️ ต้องปรับ'; }
+      else if (worst.includes('zero')){ overallCls = 'zero'; overallLabel = 'ยังไม่เริ่ม'; }
+      else                            { overallCls = 'good'; overallLabel = '✅ ดีเยี่ยม'; }
+      
+      const creditPct = Math.max(c.credit_pct, 0.01);
+      return `
+        <tr>
+          <td class="cname">${c.name}</td>
+          <td class="num">${c.members.toLocaleString()}</td>
+          <td class="num">
+            <span class="pct-bar"><div class="${c.status_class}" style="width:${creditPct.toFixed(2)}%"></div></span>
+            <strong>${c.credit_pct.toFixed(2)}%</strong>
+          </td>
+          <td class="num">
+            <span class="pct-bar"><div class="${gpaCls}" style="width:${Math.max(c.gpa_pct, 0.01).toFixed(2)}%"></div></span>
+            <strong>${c.gpa_pct.toFixed(2)}%</strong>
+          </td>
+          <td style="text-align:center;"><span class="badge ${c.status_class}">${c.status_text}</span></td>
+          <td style="text-align:center;"><span class="badge ${gpaCls}">${c.gpa_pct >= 90 ? '✅ ผ่าน' : c.gpa_pct >= 50 ? '⚠️ เสี่ยง' : '🚨 วิกฤต'}</span></td>
+          <td style="text-align:center;"><span class="status-pill ${overallCls}">${overallLabel}</span></td>
         </tr>`;
     }).join('');
   }
+  
+  // เปิดใช้ sortable บนตารางทั้ง 3
+  makeSortable('tblCredit', sortedCompaniesCredit);
+  makeSortable('tblGpa', sortedCompaniesGpa);
+  makeSortable('tblCombined', sortedCompaniesCombined);
 }
 
 // ============================================================
-// 3. Countdown + Auto-refresh
+// 3. Sortable Tables (3 tables)
+// ============================================================
+let sortedCompaniesCredit = [];
+let sortedCompaniesGpa = [];
+let sortedCompaniesCombined = [];
+
+function makeSortable(tableId, data) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const headers = table.querySelectorAll('thead th');
+  const tbody = table.querySelector('tbody');
+  
+  headers.forEach((th, idx) => {
+    if (th.textContent.trim() === 'สถานะ' || th.textContent.trim() === 'ภาพรวม' || th.textContent.trim() === 'สถานะหน่วยกิต' || th.textContent.trim() === 'สถานะ GPA') return;
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      const isAsc = th.classList.contains('sorted') && th.classList.contains('asc');
+      // Clear all sorted
+      headers.forEach(h => h.classList.remove('sorted', 'asc', 'desc'));
+      th.classList.add('sorted', isAsc ? 'desc' : 'asc');
+      
+      // Sort
+      const dir = isAsc ? 1 : -1; // desc ก่อน (สูง→ต่ำ) แล้ว asc (ต่ำ→สูง)
+      const sorted = [...data].sort((a, b) => {
+        let va = a[col], vb = b[col];
+        if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+        if (va < vb) return -1 * dir;
+        if (va > vb) return 1 * dir;
+        return 0;
+      });
+      
+      // Re-render tbody
+      const colMap = {
+        'tblCredit': sorted.map(c => `
+          <tr>
+            <td class="cname">${c.name}</td>
+            <td class="num">${c.members.toLocaleString()}</td>
+            <td class="num">${c.credit_done.toLocaleString()}</td>
+            <td class="num">${c.credit_remain.toLocaleString()}</td>
+            <td class="num">${c.credit_pct.toFixed(2)}%</td>
+            <td style="text-align:center;"><span class="badge ${c.status_class}">${c.status_text}</span></td>
+          </tr>`).join(''),
+        'tblGpa': sorted.map(c => {
+          const gpaCls = c.members === 0 ? 'zero' : c.gpa_pct >= 90 ? 'good' : c.gpa_pct >= 50 ? 'warn' : 'bad';
+          return `
+            <tr>
+              <td class="cname">${c.name}</td>
+              <td class="num">${c.members.toLocaleString()}</td>
+              <td class="num">${c.gpa_pass.toLocaleString()}</td>
+              <td class="num">${c.gpa_fail.toLocaleString()}</td>
+              <td class="num">${c.gpa_pct.toFixed(2)}%</td>
+              <td style="text-align:center;"><span class="badge ${gpaCls}">${c.members === 0 ? 'ยังไม่เริ่ม' : c.gpa_pct >= 90 ? '✅ ผ่าน' : c.gpa_pct >= 50 ? '⚠️ เสี่ยง' : '🚨 วิกฤต'}</span></td>
+            </tr>`;
+        }).join(''),
+        'tblCombined': sorted.map(c => {
+          const gpaCls = c.members === 0 ? 'zero' : c.gpa_pct >= 90 ? 'good' : c.gpa_pct >= 50 ? 'warn' : 'bad';
+          const worst = [c.status_class, gpaCls];
+          let overallCls, overallLabel;
+          if (worst.includes('bad'))      { overallCls = 'bad';  overallLabel = '🚨 เร่งด่วน'; }
+          else if (worst.includes('warn')){ overallCls = 'warn'; overallLabel = '⚠️ ต้องปรับ'; }
+          else if (worst.includes('zero')){ overallCls = 'zero'; overallLabel = 'ยังไม่เริ่ม'; }
+          else                            { overallCls = 'good'; overallLabel = '✅ ดีเยี่ยม'; }
+          const creditPct = Math.max(c.credit_pct, 0.01);
+          return `
+            <tr>
+              <td class="cname">${c.name}</td>
+              <td class="num">${c.members.toLocaleString()}</td>
+              <td class="num">
+                <span class="pct-bar"><div class="${c.status_class}" style="width:${creditPct.toFixed(2)}%"></div></span>
+                <strong>${c.credit_pct.toFixed(2)}%</strong>
+              </td>
+              <td class="num">
+                <span class="pct-bar"><div class="${gpaCls}" style="width:${Math.max(c.gpa_pct, 0.01).toFixed(2)}%"></div></span>
+                <strong>${c.gpa_pct.toFixed(2)}%</strong>
+              </td>
+              <td style="text-align:center;"><span class="badge ${c.status_class}">${c.status_text}</span></td>
+              <td style="text-align:center;"><span class="badge ${gpaCls}">${c.gpa_pct >= 90 ? '✅ ผ่าน' : c.gpa_pct >= 50 ? '⚠️ เสี่ยง' : '🚨 วิกฤต'}</span></td>
+              <td style="text-align:center;"><span class="status-pill ${overallCls}">${overallLabel}</span></td>
+            </tr>`;
+        }).join(''),
+      };
+      tbody.innerHTML = colMap[tableId] || '';
+    });
+  });
+}
+
+// ============================================================
+// 4. Countdown + Auto-refresh
 // ============================================================
 function startCountdown() {
   if (countdownTimer) clearInterval(countdownTimer);
