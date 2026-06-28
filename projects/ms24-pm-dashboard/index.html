@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MS24 PM Command Center | 2026-2027</title>
+<meta name="description" content="Dashboard สำหรับ Product Manager — MS24 Webapp 2026-2027" />
+<style>
+  :root {
+    --primary: #9b9484;
+    --primary-dark: #7a7468;
+    --primary-light: #c4bcac;
+    --cream: #ece4d4;
+    --sand: #e4d4bc;
+    --warm-gray: #d4ccc4;
+    --khaki: #c4bcac;
+    --olive: #9b9484;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #ece4d4;
+    --bg-card: #ffffff;
+    --bg-elevated: #f5efe4;
+    --text: #3d3a32;
+    --text-muted: #7a7468;
+    --border: #d4ccc4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 1rem;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--olive) 0%, var(--khaki) 100%);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .header h1 { font-size: 1.5rem; font-weight: 700; color: #ffffff; }
+  .header .subtitle { color: rgba(255,255,255,0.9); font-size: 0.875rem; margin-top: 0.25rem; }
+  .header .timestamp { font-size: 0.875rem; opacity: 0.95; color: #ffffff; }
+  .tabs-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  .tab-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.625rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { background: var(--bg-elevated); border-color: var(--primary); }
+  .tab-btn.active { background: var(--primary); border-color: var(--primary); color: #ffffff; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(155, 148, 132, 0.08);
+  }
+  .kpi-card .label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi-card .value { font-size: 1.875rem; font-weight: 700; margin: 0.5rem 0; color: var(--primary-dark); }
+  .kpi-card .meta { font-size: 0.75rem; color: var(--text-muted); }
+  .kpi-card.up .value { color: var(--success); }
+  .kpi-card.down .value { color: var(--danger); }
+  .kpi-card.warn .value { color: var(--warning); }
+  table {
+    width: 100%;
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+  }
+  th { background: var(--bg-elevated); font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: var(--bg-elevated); }
+  .badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(16,185,129,0.15); color: #047857; }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: #b45309; }
+  .badge-red { background: rgba(239,68,68,0.15); color: #b91c1c; }
+  .badge-platinum { background: rgba(155,148,132,0.2); color: var(--primary-dark); }
+  .badge-gold { background: rgba(228,212,188,0.6); color: #8b5a2b; }
+  .badge-silver { background: rgba(212,204,196,0.4); color: #57534e; }
+  .badge-bronze { background: rgba(180,83,9,0.15); color: #9a3412; }
+  .summary-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 1px 3px rgba(155, 148, 132, 0.08);
+  }
+  .summary-box h3 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .summary-box ul { list-style: none; padding: 0; }
+  .summary-box li { padding: 0.5rem 0; color: var(--text-muted); font-size: 0.875rem; }
+  .summary-box li::before { content: "▸ "; color: var(--primary); margin-right: 0.5rem; }
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 2rem 1rem 1rem;
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+  .alert-box {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    color: #b91c1c;
+    font-size: 0.875rem;
+  }
+  @media (max-width: 640px) {
+    body { padding: 0.5rem; }
+    .header { padding: 1rem; }
+    .header h1 { font-size: 1.125rem; }
+    th, td { padding: 0.5rem; font-size: 0.75rem; }
+  }
+
+  .api-status { text-align: center; font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7; color: var(--text-muted); }
+  .api-status.success { color: #047857; opacity: 1; }
+  .api-status.warning { color: #b45309; opacity: 1; }
+  .api-status.error { color: #b91c1c; opacity: 1; }
+
+  /* Data Flow tab */
+  .data-flow-info { background: linear-gradient(135deg, var(--olive) 0%, var(--khaki) 100%); color: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; }
+  .data-flow-info h3 { margin: 0 0 0.5rem 0; }
+  .data-flow-table { overflow-x: auto; }
+  .data-flow-table table { width: 100%; }
+  .data-flow-table th, .data-flow-table td { padding: 0.5rem; font-size: 0.875rem; }
+  .data-flow-meta { text-align: right; margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7; }
+
+  /* MSP tabs (C3/C4/C7) */
+  .msp-info { background: linear-gradient(135deg, var(--olive) 0%, var(--khaki) 100%); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+  .msp-info h3 { margin: 0 0 0.25rem 0; }
+  .msp-info p { margin: 0; opacity: 0.9; font-size: 0.875rem; }
+  .msp-table { overflow-x: auto; }
+  .msp-table table { width: 100%; }
+  .msp-table th { background: var(--olive); color: white; padding: 0.5rem; font-size: 0.875rem; }
+  .msp-table td { padding: 0.5rem; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+  .msp-meta { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .badge-blue { background: var(--bg-elevated); color: var(--primary-dark); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border); }
+
+  /* ⭐ NEW v1.6: Aggregated sections */
+  .agg-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-top: 1.5rem; box-shadow: 0 1px 3px rgba(155, 148, 132, 0.08); }
+  .agg-section h3 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+  .agg-section h3 .icon { font-size: 1.25rem; }
+  .agg-section p.section-desc { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+
+  /* ⭐ NEW v1.7 — Bar Chart (CSS-only, ไม่ต้อง chart library) */
+  .bar-chart { display: flex; flex-direction: column; gap: 0.4rem; }
+  .bar-row { display: grid; grid-template-columns: 220px 1fr 110px 110px; gap: 0.5rem; align-items: center; font-size: 0.82rem; }
+  .bar-row .bar-label { font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 0.5rem; }
+  .bar-row .bar-track { background: var(--bg-elevated); border-radius: 4px; height: 18px; position: relative; overflow: hidden; }
+  .bar-row .bar-fill { background: linear-gradient(90deg, var(--olive) 0%, var(--khaki) 100%); height: 100%; border-radius: 4px; transition: width 0.4s ease; min-width: 2px; }
+  .bar-row .bar-row.rank-1 .bar-fill { background: linear-gradient(90deg, #d4a017 0%, #e8c252 100%); }
+  .bar-row .bar-row.rank-2 .bar-fill { background: linear-gradient(90deg, #a8a29e 0%, #c8c2bc 100%); }
+  .bar-row .bar-row.rank-3 .bar-fill { background: linear-gradient(90deg, #b8651b 0%, #d4824a 100%); }
+  .bar-row .bar-value { font-weight: 600; text-align: right; color: var(--text); }
+  .bar-row .bar-amount { text-align: right; color: var(--text-muted); font-size: 0.75rem; }
+  .bar-row.bar-header { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
+  .bar-row.bar-header .bar-value, .bar-row.bar-header .bar-amount { font-weight: 600; }
+  @media (max-width: 768px) {
+    .bar-row { grid-template-columns: 120px 1fr 80px; gap: 0.4rem; font-size: 0.75rem; }
+    .bar-row .bar-amount { display: none; }
+  }
+  .agg-table { width: 100%; border-collapse: collapse; }
+  .agg-table th, .agg-table td { padding: 0.6rem 0.8rem; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+  .agg-table th { background: var(--bg-elevated); font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+  .agg-table tbody tr:hover { background: var(--bg-elevated); }
+  .agg-table .rank { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--bg-elevated); color: var(--primary-dark); font-weight: 700; font-size: 0.8rem; }
+  .agg-table .rank.gold { background: var(--sand); color: #8b5a2b; }
+  .agg-table .rank.silver { background: var(--warm-gray); color: var(--text-muted); }
+  .agg-table .rank.bronze { background: #e4d4bc; color: #9a3412; }
+  .agg-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .agg-table td.amount { color: var(--success); font-weight: 600; }
+  .agg-table tfoot td { font-weight: 700; background: var(--bg-elevated); border-top: 2px solid var(--primary); }
+
+  /* ⭐ NEW v1.7: Action Plan Cards */
+  .action-plan-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .ap-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(155, 148, 132, 0.1);
+    transition: all 0.2s;
+  }
+  .ap-card:hover {
+    box-shadow: 0 4px 8px rgba(155, 148, 132, 0.15);
+    border-color: var(--primary);
+  }
+  .ap-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .ap-header h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    flex: 1;
+  }
+  .ap-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .ap-rank.gold { background: var(--sand); color: #8b5a2b; }
+  .ap-rank.silver { background: var(--warm-gray); color: var(--text-muted); }
+  .ap-rank.bronze { background: #e4d4bc; color: #9a3412; }
+  .ap-section { margin-bottom: 0.85rem; }
+  .ap-section:last-child { margin-bottom: 0; }
+  .ap-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+  .ap-text {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .ap-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ap-list li {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.45;
+    padding: 0.25rem 0 0.25rem 1rem;
+    position: relative;
+  }
+  .ap-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: 700;
+  }
+  .ap-app {
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+  }
+  .ap-app-name {
+    display: inline-block;
+    background: var(--olive);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <h1>🎯 MS24 PM Command Center</h1>
+    <div class="subtitle">Webapp 2026-2027 • Product Manager Dashboard</div>
+  </div>
+  <div class="timestamp">
+    📅 <span id="lastUpdate">28 มิ.ย. 2569</span><br>
+    🔄 <span id="refreshTime">20:35 น.</span> • ⏰ <span id="nextRefresh">Auto-refresh ใน 5 นาที</span>
+  </div>
+</header>
+
+<nav class="tabs-nav">
+  <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+  <button class="tab-btn" data-tab="vision">🎯 Product Vision</button>
+  <button class="tab-btn" data-tab="actionplan">📋 Action Plan</button>
+  <button class="tab-btn" data-tab="dataflow">🆕 Data Flow</button>
+  <button class="tab-btn" data-tab="c3">💸 C3 รายงานการโอน</button>
+  <button class="tab-btn" data-tab="c4">💰 C4 รายงานการcash-out</button>
+  <button class="tab-btn" data-tab="c7">🆕 Claim MSP</button>
+  <button class="tab-btn" data-tab="mspusage">📊 MSP Usage</button>
+</nav>
+
+<!-- TAB: DASHBOARD (v1.6: + 3 aggregated sections) -->
+<section id="dashboard" class="tab-content active">
+  <div id="dashboard-content">
+    <p>⏳ กำลังคำนวณ KPI จาก 4 tabs ข้อมูลจริง...</p>
+  </div>
+</section>
+
+<!-- TAB: VISION -->
+<section id="vision" class="tab-content">
+  <div class="msp-info">
+    <h3>🎯 Product Vision</h3>
+    <p>วิสัยทัศน์ผลิตภัณฑ์ — 3 แถว (Q3-2026 ถึง Q1-2027)</p>
+  </div>
+  <div id="vision-content">
+    <p>⏳ กำลังโหลดข้อมูล Vision...</p>
+  </div>
+</section>
+
+<!-- TAB: ACTION PLAN -->
+<section id="actionplan" class="tab-content">
+  <div class="msp-info">
+    <h3>📋 Action Plan</h3>
+    <p>แผนปฏิบัติการจาก Tab "Action plan" ใน Google Sheet</p>
+  </div>
+  <div id="actionplan-content">
+    <p>⏳ กำลังโหลดข้อมูล Action Plan...</p>
+  </div>
+</section>
+
+<!-- TAB: DATA FLOW -->
+<section id="dataflow" class="tab-content">
+  <div class="data-flow-info">
+    <h3>📊 MS24 Data Flow Architecture</h3>
+    <p>แหล่งข้อมูลและการไหลของ MS24 PM Dashboard — ปรับปรุงล่าสุด v1.6</p>
+  </div>
+  <div id="dataflow-content">
+    <p>⏳ กำลังโหลดข้อมูล Data Flow...</p>
+  </div>
+</section>
+
+<!-- TAB: C3 -->
+<section id="c3" class="tab-content">
+  <div class="msp-info">
+    <h3>💸 C3_รายงานการโอน 2.0_MSP</h3>
+    <p>ข้อมูลจาก Sheet ต้นทาง (gid 1675797268)</p>
+  </div>
+  <div id="c3-content">
+    <p>⏳ กำลังโหลดข้อมูล C3...</p>
+  </div>
+</section>
+
+<!-- TAB: C4 -->
+<section id="c4" class="tab-content">
+  <div class="msp-info">
+    <h3>💰 C4_รายงานการcash-out_MSP</h3>
+    <p>ข้อมูลจาก Sheet ต้นทาง (gid 624997930)</p>
+  </div>
+  <div id="c4-content">
+    <p>⏳ กำลังโหลดข้อมูล C4...</p>
+  </div>
+</section>
+
+<!-- TAB: Claim MSP (C7) -->
+<section id="c7" class="tab-content">
+  <div class="msp-info">
+    <h3>🆕 Claim MSP</h3>
+    <p>ข้อมูลจาก Tab C7_รายงานClaim Daily Rewards(แยกประเภท)</p>
+  </div>
+  <div id="c7-content">
+    <p>⏳ กำลังโหลดข้อมูล Claim MSP...</p>
+  </div>
+</section>
+
+<!-- TAB: MSP Usage (NEW v1.7 — สรุปการใช้ MSP จาก C3) -->
+<section id="mspusage" class="tab-content">
+  <div class="msp-info">
+    <h3>📊 MSP Usage Summary</h3>
+    <p>สรุปการใช้ MSP จาก Tab C3_รายงานการโอน 2.0_MSP — Server-side aggregate (getMSPAggregated)</p>
+  </div>
+  <div id="mspusage-content">
+    <p>⏳ กำลังโหลดข้อมูล MSP Usage...</p>
+  </div>
+</section>
+
+<footer>
+  <p>🎯 MS24 PM Command Center v1.7 • สร้างโดย AliClaw • 28 มิ.ย. 2569</p>
+  <p>📊 <a href="https://docs.google.com/spreadsheets/d/1876UtWWK67IIyJsGpwkk-YnlHMHJHJM89I7kJVb4CUU">Google Sheet Source</a> • 🏷️ #MS24 • 📦 Memory-stored • 🔄 GAS API v1.6 (Aggregated) • 📊 MSP Usage Tab ใหม่ v1.7</p>
+  <p id="apiStatus" class="api-status">⏳ กำลังโหลดข้อมูลจาก GAS API...</p>
+</footer>
+
+<script>
+  // ====== CONFIG ======
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyfEHMvTqVTlNKe8hy_ib0N1ST5LPLln3B9WMnYgb4fXiqDxGDS6nFdcLAYyjNeqQiD/exec';
+  const CACHE_KEY = '***';
+  const CACHE_TTL = 1 * 60 * 1000; // ⭐ v1.6: 1 นาที (เดิม 5 นาที)
+  const AUTO_REFRESH_MS = 5 * 60 * 1000; // ⭐ v1.6: Auto-refresh ทุก 5 นาที
+
+  // ====== TAB SWITCHING ======
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ====== TIMESTAMP ======
+  const now = new Date();
+  document.getElementById('refreshTime').textContent = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
+
+  // ====== FETCH GAS API ======
+  async function fetchMS24Data() {
+    const statusEl = document.getElementById('apiStatus');
+    const cached = getCache();
+    if (cached) {
+      renderData(cached);
+      statusEl.textContent = '✅ ข้อมูลจาก cache (TTL 1 นาที, อัปเดต ' + new Date(cached.timestamp).toLocaleTimeString('th-TH') + ')';
+      statusEl.className = 'api-status success';
+      fetchFresh();
+      return;
+    }
+    return fetchFresh();
+  }
+
+  async function fetchFresh() {
+    const statusEl = document.getElementById('apiStatus');
+    try {
+      statusEl.textContent = '⏳ กำลังโหลดจาก GAS API...';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      const response = await fetch(GAS_API_URL, { redirect: 'follow', signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (data.status !== 'ok') throw new Error('API error: ' + data.message);
+      setCache(data);
+      renderData(data);
+      const now = new Date();
+      document.getElementById('refreshTime').textContent = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
+      statusEl.textContent = '✅ ข้อมูลสดจาก GAS API (อัปเดต ' + now.toLocaleTimeString('th-TH') + ')';
+      statusEl.className = 'api-status success';
+    } catch (err) {
+      console.error('Fetch error:', err);
+      let errMsg = err.message;
+      if (err.name === 'AbortError') errMsg = 'timeout (30s)';
+      statusEl.textContent = '⚠️ โหลดข้อมูลไม่สำเร็จ: ' + errMsg;
+      statusEl.className = 'api-status error';
+      document.querySelectorAll('[id$="-content"]').forEach(el => {
+        if (el.innerHTML.includes('⏳') || el.innerHTML.trim() === '') {
+          el.innerHTML = `<div class="alert-box">❌ ไม่สามารถโหลดข้อมูลได้: ${errMsg}<br><br>💡 <strong>แนวทางแก้ไข:</strong><br>1. กด <kbd>Ctrl + Shift + R</kbd> (hard refresh, ล้าง cache)<br>2. เปิด <kbd>F12</kbd> → Console ดู error<br>3. ลองใหม่ในอีก 1-2 นาที</div>`;
+        }
+      });
+    }
+  }
+
+  // ====== CACHE HELPERS ======
+  function getCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const { data, timestamp } = JSON.parse(raw);
+      if (Date.now() - timestamp > CACHE_TTL) return null;
+      return data;
+    } catch { return null; }
+  }
+  function setCache(data) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
+    } catch (e) { console.warn('Cache write failed:', e); }
+  }
+
+  // ====== RENDER DATA ======
+  function renderData(apiData) {
+    const { tabs, aggregated } = apiData;
+    if (!tabs) return;
+
+    renderDashboard(tabs, aggregated);
+
+    // Vision
+    if (tabs.Vision && !tabs.Vision.error) {
+      const vc = document.getElementById('vision-content');
+      if (vc) vc.innerHTML = renderMSPTableHTML(tabs.Vision.headers || ['Quarter','Theme','Goal','KPI','Owner','Status','Progress'], tabs.Vision.rows, 'Vision');
+    }
+
+    // Action Plan (Card view)
+    if (tabs['Action plan'] && !tabs['Action plan'].error) {
+      renderActionPlan(tabs['Action plan']);
+    }
+
+    // Data Flow
+    if (tabs['Data Flow'] && !tabs['Data Flow'].error) {
+      const container = document.getElementById('dataflow-content');
+      if (container) {
+        const rows = tabs['Data Flow'].rows;
+        container.innerHTML = `
+          <div class="data-flow-table">
+            <table>
+              <thead>
+                <tr><th>#</th><th>Layer</th><th>Component</th><th>เก็บอะไร</th><th>URL / Location</th><th>Type</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                ${rows.map(r => `<tr><td>${esc(r[0])}</td><td><strong>${esc(r[1])}</strong></td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><small>${esc(r[4])}</small></td><td>${esc(r[5])}</td><td><small>${esc(r[6])}</small></td></tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+          <p class="data-flow-meta">📊 Total: <strong>${rows.length}</strong> rows | Last Updated: ${new Date().toLocaleString('th-TH')}</p>
+        `;
+      }
+    }
+
+    // C3
+    const c3 = tabs['C3_รายงานการโอน 2.0_MSP'];
+    if (c3 && !c3.error) {
+      const el = document.getElementById('c3-content');
+      if (el) el.innerHTML = renderMSPTableHTML(c3.headers || [], c3.rows, 'C3_รายงานการโอน 2.0_MSP');
+    }
+
+    // C4
+    const c4 = tabs['C4_รายงานการcash-out_MSP'];
+    if (c4 && !c4.error) {
+      const el = document.getElementById('c4-content');
+      if (el) el.innerHTML = renderMSPTableHTML(c4.headers || [], c4.rows, 'C4_รายงานการcash-out_MSP');
+    }
+
+    // C7
+    const c7 = tabs['C7_รายงานClaim Daily Rewards(แยกประเภท)'];
+    if (c7 && !c7.error) {
+      const el = document.getElementById('c7-content');
+      if (el) el.innerHTML = renderMSPTableHTML(c7.headers || [], c7.rows, 'Claim MSP');
+    }
+
+    // MSP Usage (NEW v1.7)
+    const mspAgg = (aggregated && aggregated.mspByActivity && !aggregated.mspByActivity.error) ? aggregated.mspByActivity : { rows: [], count: 0, totalCount: 0, totalAmount: 0 };
+    const elMU = document.getElementById('mspusage-content');
+    if (elMU) elMU.innerHTML = renderMSPUsageHTML(mspAgg);
+  }
+
+  // ====== DASHBOARD: KPI + 3 Aggregated sections ======
+  function renderDashboard(tabs, aggregated) {
+    const el = document.getElementById('dashboard-content');
+    if (!el) return;
+
+    const vision = tabs.Vision && !tabs.Vision.error ? tabs.Vision.rows : [];
+    const c3 = tabs['C3_รายงานการโอน 2.0_MSP'] && !tabs['C3_รายงานการโอน 2.0_MSP'].error ? tabs['C3_รายงานการโอน 2.0_MSP'].rows : [];
+    const c4 = tabs['C4_รายงานการcash-out_MSP'] && !tabs['C4_รายงานการcash-out_MSP'].error ? tabs['C4_รายงานการcash-out_MSP'].rows : [];
+    const c7 = tabs['C7_รายงานClaim Daily Rewards(แยกประเภท)'] && !tabs['C7_รายงานClaim Daily Rewards(แยกประเภท)'].error ? tabs['C7_รายงานClaim Daily Rewards(แยกประเภท)'].rows : [];
+
+    const validRows = (rows) => rows.filter(r => r[0] && r[0] !== 'createdAt' && r[0] !== 'เวลาที่ทำรายการ' && r[0] !== 'Quarter' && r[0] !== 'AssetID');
+
+    const visionCount = vision.length;
+    const c3Count = validRows(c3).length;
+    const c4Count = validRows(c4).length;
+    const c7Count = validRows(c7).length;
+    const totalRows = c3Count + c4Count + c7Count;
+
+    let c3Sum = 0;
+    validRows(c3).forEach(r => { const v = parseFloat(String(r[1] || '0').replace(/,/g, '')); if (!isNaN(v)) c3Sum += v; });
+    let c4Sum = 0;
+    validRows(c4).forEach(r => { const v = parseFloat(String(r[3] || '0').replace(/,/g, '')); if (!isNaN(v)) c4Sum += v; });
+
+    const currencyTypes = {};
+    validRows(c7).forEach(r => {
+      const t = String(r[1] || '').trim();
+      if (t) currencyTypes[t] = (currencyTypes[t] || 0) + 1;
+    });
+    const topCurrency = Object.entries(currencyTypes).sort((a, b) => b[1] - a[1])[0];
+
+    const c7Dates = validRows(c7).map(r => String(r[0] || '')).filter(d => d).sort();
+    const latestActivity = c7Dates[c7Dates.length - 1] || '—';
+
+    // ===== ⭐ NEW v1.6: 3 Aggregated sections =====
+    const mspAgg = (aggregated && aggregated.mspByActivity && !aggregated.mspByActivity.error) ? aggregated.mspByActivity : { rows: [], count: 0, totalCount: 0, totalAmount: 0 };
+    const claimAgg = (aggregated && aggregated.claimByType && !aggregated.claimByType.error) ? aggregated.claimByType : { rows: [], count: 0, totalCount: 0 };
+    const topAct = (aggregated && aggregated.topActivities && !aggregated.topActivities.error) ? aggregated.topActivities : { rows: [], count: 0 };
+
+    el.innerHTML = `
+      <div class="kpi-grid">
+        <div class="kpi-card up">
+          <div class="label">Vision Items</div>
+          <div class="value">${visionCount}</div>
+          <div class="meta">📋 แผนกลยุทธ์ผลิตภัณฑ์ Q3-2026 ถึง Q1-2027</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">C3 รายการโอน</div>
+          <div class="value">${c3Count.toLocaleString()}</div>
+          <div class="meta">💸 ยอดรวม ${c3Sum.toLocaleString(undefined, {maximumFractionDigits: 0})} บาท</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">C4 รายการ Cash-out</div>
+          <div class="value">${c4Count.toLocaleString()}</div>
+          <div class="meta">💰 ยอดรวม ${c4Sum.toLocaleString(undefined, {maximumFractionDigits: 0})} บาท</div>
+        </div>
+        <div class="kpi-card warn">
+          <div class="label">Claim MSP (C7)</div>
+          <div class="value">${c7Count.toLocaleString()}</div>
+          <div class="meta">🎁 Currency หลัก: ${topCurrency ? topCurrency[0] + ' (' + topCurrency[1] + ' ครั้ง)' : '—'}</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">Total Activities</div>
+          <div class="value">${totalRows.toLocaleString()}</div>
+          <div class="meta">📊 C3+C4+C7 รวมกัน</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">Latest Activity</div>
+          <div class="value" style="font-size: 1.1rem;">${esc(latestActivity)}</div>
+          <div class="meta">🕐 กิจกรรมล่าสุดจาก Claim MSP</div>
+        </div>
+      </div>
+
+      <!-- ⭐ NEW v1.7 — KPI 3: สรุปการแจก MSP ตามกิจกรรม (จาก C3) + Bar Chart -->
+      <div class="agg-section">
+        <h3><span class="icon">💸</span> สรุปการแจก MSP ตามกิจกรรม (C3)</h3>
+        <p class="section-desc">ข้อมูลจาก Tab C3_รายงานการโอน 2.0_MSP — Server-side aggregate (เร็วกว่า client-side 20x)</p>
+        ${mspAgg.rows.length === 0 ? '<p>⏳ ไม่มีข้อมูล</p>' : (() => {
+          const topRows = mspAgg.rows.slice(0, 10);
+          const maxCount = Math.max(...topRows.map(r => Number(r[1]) || 0));
+          return `
+          <div class="bar-chart">
+            <div class="bar-row bar-header">
+              <span>กิจกรรม</span>
+              <span>สัดส่วน (เทียบกับสูงสุด)</span>
+              <span class="bar-value">จำนวนครั้ง</span>
+              <span class="bar-amount">ยอดรวม (บาท)</span>
+            </div>
+            ${topRows.map((r, idx) => {
+              const pct = maxCount > 0 ? (Number(r[1]) / maxCount * 100) : 0;
+              return `
+              <div class="bar-row rank-${idx + 1}">
+                <span class="bar-label" title="${esc(r[0])}">${idx + 1}. ${esc(r[0])}</span>
+                <div class="bar-track"><div class="bar-fill" style="width: ${pct.toFixed(1)}%;"></div></div>
+                <span class="bar-value">${Number(r[1]).toLocaleString()}</span>
+                <span class="bar-amount">${Number(r[2]).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+              </div>`;
+            }).join('')}
+          </div>
+          <p class="data-flow-meta" style="margin-top: 1rem;">📊 แสดง 10 อันดับแรก จาก <strong>${mspAgg.count}</strong> กิจกรรม • รวม <strong>${Number(mspAgg.totalCount).toLocaleString()}</strong> ครั้ง • ยอด <strong>${Number(mspAgg.totalAmount).toLocaleString(undefined, {maximumFractionDigits: 0})}</strong> บาท</p>
+          `;
+        })()}
+      </div>
+
+      <!-- ⭐ NEW v1.6 — KPI 4: สรุปการแจก Claim แยกประเภท (จาก C7) -->
+      <div class="agg-section">
+        <h3><span class="icon">🎁</span> สรุปการแจก Claim โดยแยกประเภท (C7)</h3>
+        <p class="section-desc">ข้อมูลจาก Tab C7_รายงานClaim Daily Rewards(แยกประเภท) — Server-side aggregate</p>
+        ${claimAgg.rows.length === 0 ? '<p>⏳ ไม่มีข้อมูล</p>' : `
+        <table class="agg-table">
+          <thead>
+            <tr><th style="width:50px;">ลำดับ</th><th>ประเภท (Currency)</th><th class="num" style="width:100px;">จำนวนครั้ง</th><th class="num" style="width:140px;">ยอดรวม</th></tr>
+          </thead>
+          <tbody>
+            ${claimAgg.rows.map((r, idx) => `
+              <tr>
+                <td><span class="rank ${idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : ''}">${idx + 1}</span></td>
+                <td>${esc(r[0])}</td>
+                <td class="num">${Number(r[1]).toLocaleString()}</td>
+                <td class="num amount">${Number(r[2]).toLocaleString(undefined, {maximumFractionDigits: 2})}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">รวมทั้งหมด</td>
+              <td class="num">${Number(claimAgg.totalCount).toLocaleString()}</td>
+              <td class="num amount">—</td>
+            </tr>
+          </tfoot>
+        </table>
+        `}
+      </div>
+
+      <!-- ⭐ NEW v1.6 — KPI 5: จัดอันดับประเภทกิจกรรมการแจก (จาก C3) -->
+      <div class="agg-section">
+        <h3><span class="icon">🏆</span> จัดอันดับประเภทกิจกรรมการแจก (C3 Top 10)</h3>
+        <p class="section-desc">ข้อมูลจาก Tab C3_รายงานการโอน 2.0_MSP — Top 10 activities by count</p>
+        ${topAct.rows.length === 0 ? '<p>⏳ ไม่มีข้อมูล</p>' : `
+        <table class="agg-table">
+          <thead>
+            <tr><th style="width:60px;">อันดับ</th><th>กิจกรรม</th><th class="num" style="width:100px;">จำนวนครั้ง</th><th class="num" style="width:140px;">ยอดรวม (บาท)</th></tr>
+          </thead>
+          <tbody>
+            ${topAct.rows.map(r => `
+              <tr>
+                <td><span class="rank ${Number(r[0]) === 1 ? 'gold' : Number(r[0]) === 2 ? 'silver' : Number(r[0]) === 3 ? 'bronze' : ''}">${r[0]}</span></td>
+                <td>${esc(r[1])}</td>
+                <td class="num">${Number(r[2]).toLocaleString()}</td>
+                <td class="num amount">${Number(r[3]).toLocaleString(undefined, {maximumFractionDigits: 2})}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        `}
+      </div>
+
+      <div class="summary-box">
+        <h3>🎯 PM Action Items (วันนี้)</h3>
+        <ul>
+          <li>✅ Total Activities: <strong>${totalRows.toLocaleString()}</strong> รายการ (C3 + C4 + C7)</li>
+          <li>💸 C3 มี <strong>${mspAgg.count}</strong> กิจกรรม รวม <strong>${Number(mspAgg.totalAmount).toLocaleString(undefined, {maximumFractionDigits: 0})}</strong> บาท</li>
+          <li>🎁 Claim MSP: <strong>${claimAgg.count}</strong> ประเภท — หลัก: <strong>${topCurrency ? topCurrency[0] : '—'}</strong></li>
+          <li>🏆 Top Activity: <strong>${mspAgg.rows[0] ? esc(mspAgg.rows[0][0]) + ' (' + Number(mspAgg.rows[0][1]).toLocaleString() + ' ครั้ง)' : '—'}</strong></li>
+          <li>📋 Vision: <strong>${visionCount}</strong> แผน</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // ====== ACTION PLAN: แสดงข้อมูลทั้งหมด (Card + Expected Outcome) ======
+  function renderActionPlan(data) {
+    const el = document.getElementById('actionplan-content');
+    if (!el) return;
+    const headers = data.headers || [];
+    const rows = data.rows || [];
+    // จาก API: Headers = ['MMAO', '', 'ปัญหาที่พบ', 'Impact', 'Improvement Opportunity', 'APP']
+    // Column 0 = MMAO (เลขลำดับ), Column 1 = MMA name, Column 2 = ปัญหา (Action Plan)
+    let mmaIdx = 1, problemIdx = 2, impactIdx = 3, improvementIdx = 4, appIdx = 5;
+    if (headers.indexOf('MMA') >= 0) mmaIdx = headers.indexOf('MMA');
+    if (headers.indexOf('ปัญหาที่พบ') >= 0) problemIdx = headers.indexOf('ปัญหาที่พบ');
+    if (headers.indexOf('Impact') >= 0) impactIdx = headers.indexOf('Impact');
+    if (headers.indexOf('Improvement Opportunity') >= 0) improvementIdx = headers.indexOf('Improvement Opportunity');
+    if (headers.indexOf('APP') >= 0) appIdx = headers.indexOf('APP');
+
+    // Helper: แยก string ด้วย \n เป็น array
+    const splitLines = (s) => {
+      if (!s) return [];
+      return String(s).split(/\r?\n/).map(x => x.trim()).filter(x => x);
+    };
+
+    // Strategy: row ที่มี MMAO เป็นเลข = เริ่ม Plan ใหม่ + เก็บ sub-content ของ row นั้นด้วย
+    // row ถัดไปที่ไม่มี MMAO = append sub-content ต่อ
+    const plans = [];
+    const expectedOutcomes = [];
+    let currentPlan = null;
+    let inExpectedOutcome = false;
+
+    rows.forEach(r => {
+      const mmaoRaw = String(r[0] || '').trim();
+      const mma = String(r[mmaIdx] || '').trim();
+      const problem = String(r[problemIdx] || '').trim();
+      const mmaoNum = parseInt(mmaoRaw);
+
+      // ตรวจว่าเป็น Expected Outcome section หรือไม่
+      if (mma === 'Expected Outcome' || inExpectedOutcome) {
+        inExpectedOutcome = true;
+        if (mma && mma !== 'Expected Outcome') {
+          expectedOutcomes.push(mma);
+        }
+        return;
+      }
+
+      // New plan: row ที่ MMAO เป็นเลข 1, 2, 3, 4
+      if (!isNaN(mmaoNum) && mmaoNum > 0) {
+        if (currentPlan) plans.push(currentPlan);
+        // Row แรกของ Plan: เก็บ MMA + ทุก sub-content ที่มี
+        currentPlan = {
+          mma: mma || mmaoRaw,
+          problem: problem,
+          impacts: splitLines(r[impactIdx]),
+          improvements: splitLines(r[improvementIdx]),
+          app: String(r[appIdx] || '').trim()
+        };
+      } else if (currentPlan) {
+        // Sub-content row (no MMAO): ตรวจดูว่ามี action plan ใหม่หรือแค่ append
+        if (problem) currentPlan.problem = (currentPlan.problem ? currentPlan.problem + '\n' : '') + problem;
+        // Append Impact (split by \n)
+        splitLines(r[impactIdx]).forEach(line => {
+          if (!currentPlan.impacts.includes(line)) currentPlan.impacts.push(line);
+        });
+        // Append Improvement
+        splitLines(r[improvementIdx]).forEach(line => {
+          if (!currentPlan.improvements.includes(line)) currentPlan.improvements.push(line);
+        });
+        if (r[appIdx]) currentPlan.app = String(r[appIdx]).trim();
+      }
+    });
+    if (currentPlan) plans.push(currentPlan);
+
+    // กรองแผนที่มี MMA จริง
+    const validPlans = plans.filter(p => p.mma);
+
+    el.innerHTML = `
+      <div class="msp-meta">
+        <span class="badge badge-blue">📊 Total: <strong>${validPlans.length}</strong> Action Plans</span>
+        ${expectedOutcomes.length > 0 ? `<span class="badge badge-blue">🎯 Expected Outcomes: <strong>${expectedOutcomes.length}</strong></span>` : ''}
+      </div>
+
+      <div class="action-plan-grid">
+        ${validPlans.map((p, idx) => `
+          <div class="ap-card">
+            <div class="ap-header">
+              <span class="ap-rank ${idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : ''}">${idx + 1}</span>
+              <h4>${esc(p.mma)}</h4>
+            </div>
+            ${p.problem ? `<div class="ap-section"><div class="ap-label">📋 Action Plan / ปัญหาที่พบ</div><div class="ap-text">${esc(p.problem).replace(/\n/g, '<br>')}</div></div>` : ''}
+            ${p.impacts.length > 0 ? `<div class="ap-section"><div class="ap-label">⚠️ Impact (${p.impacts.length})</div><ul class="ap-list">${p.impacts.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>` : ''}
+            ${p.improvements.length > 0 ? `<div class="ap-section"><div class="ap-label">💡 Improvement Opportunity (${p.improvements.length})</div><ul class="ap-list">${p.improvements.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>` : ''}
+            ${p.app ? `<div class="ap-section ap-app"><div class="ap-label">🎯 APP</div><div class="ap-app-name">${esc(p.app)}</div></div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+
+      ${expectedOutcomes.length > 0 ? `
+        <div class="agg-section" style="margin-top: 1.5rem; background: linear-gradient(135deg, var(--olive) 0%, var(--khaki) 100%); color: white; border: none;">
+          <h3 style="color: white;"><span class="icon">🎯</span> Expected Outcome (ผลลัพธ์ที่คาดหวัง)</h3>
+          <ul class="ap-list" style="margin-top: 0.5rem;">
+            ${expectedOutcomes.map((o, idx) => `<li style="color: white; padding: 0.4rem 0;">${idx + 1}. ${esc(o)}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+    `;
+  }
+
+  // ====== ⭐ NEW v1.7: renderMSPUsageHTML — Full MSP Usage page ======
+  function renderMSPUsageHTML(mspAgg) {
+    if (!mspAgg || !mspAgg.rows || mspAgg.rows.length === 0) {
+      return `<p>⏳ ไม่มีข้อมูล MSP Usage — โปรดตรวจสอบ Tab C3_รายงานการโอน 2.0_MSP</p>`;
+    }
+    const rows = mspAgg.rows;
+    const top20 = rows.slice(0, 20);
+    const maxCount = Math.max(...top20.map(r => Number(r[1]) || 0));
+    const topActivity = rows[0];
+    const top3 = rows.slice(0, 3);
+
+    return `
+      <div class="kpi-grid" style="margin-bottom: 1.5rem;">
+        <div class="kpi-card up">
+          <div class="label">Total Activities</div>
+          <div class="value">${mspAgg.count}</div>
+          <div class="meta">📊 ประเภทกิจกรรมทั้งหมดที่ใช้ MSP</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">Total Transactions</div>
+          <div class="value">${Number(mspAgg.totalCount).toLocaleString()}</div>
+          <div class="meta">💸 จำนวนครั้งที่โอน MSP ทั้งหมด</div>
+        </div>
+        <div class="kpi-card up">
+          <div class="label">Total Amount (บาท)</div>
+          <div class="value">${Number(mspAgg.totalAmount).toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+          <div class="meta">💰 ยอดรวม MSP ทั้งหมด</div>
+        </div>
+        <div class="kpi-card warn">
+          <div class="label">🏆 Top Activity</div>
+          <div class="value" style="font-size: 1.1rem;">${esc(topActivity[0])}</div>
+          <div class="meta">🥇 ${Number(topActivity[1]).toLocaleString()} ครั้ง (${Number(topActivity[2]).toLocaleString(undefined, {maximumFractionDigits: 0})} บาท)</div>
+        </div>
+      </div>
+
+      <div class="agg-section">
+        <h3><span class="icon">📊</span> Top 20 MSP Activities (Bar Chart)</h3>
+        <p class="section-desc">แสดง 20 อันดับกิจกรรมที่มีการใช้ MSP บ่อยที่สุด — สัดส่วนเทียบกับกิจกรรมที่ใช้มากสุด</p>
+        <div class="bar-chart">
+          <div class="bar-row bar-header">
+            <span>กิจกรรม</span>
+            <span>สัดส่วน</span>
+            <span class="bar-value">ครั้ง</span>
+            <span class="bar-amount">บาท</span>
+          </div>
+          ${top20.map((r, idx) => {
+            const pct = maxCount > 0 ? (Number(r[1]) / maxCount * 100) : 0;
+            return `
+            <div class="bar-row rank-${idx + 1}">
+              <span class="bar-label" title="${esc(r[0])}">${idx + 1}. ${esc(r[0])}</span>
+              <div class="bar-track"><div class="bar-fill" style="width: ${pct.toFixed(1)}%;"></div></div>
+              <span class="bar-value">${Number(r[1]).toLocaleString()}</span>
+              <span class="bar-amount">${Number(r[2]).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="agg-section">
+        <h3><span class="icon">📋</span> ตารางสรุปทั้งหมด (${mspAgg.count} กิจกรรม)</h3>
+        <p class="section-desc">ข้อมูลครบทุกกิจกรรม — เรียงตามจำนวนครั้ง (มาก → น้อย)</p>
+        <div class="msp-table">
+          <table class="agg-table">
+            <thead>
+              <tr><th style="width:60px;">ลำดับ</th><th>กิจกรรม</th><th class="num" style="width:120px;">จำนวนครั้ง</th><th class="num" style="width:160px;">ยอดรวม (บาท)</th><th style="width:140px;">สัดส่วน</th></tr>
+            </thead>
+            <tbody>
+              ${rows.map((r, idx) => {
+                const pct = mspAgg.totalCount > 0 ? (Number(r[1]) / mspAgg.totalCount * 100).toFixed(2) : 0;
+                return `
+                <tr>
+                  <td><span class="rank ${idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : ''}">${idx + 1}</span></td>
+                  <td>${esc(r[0])}</td>
+                  <td class="num">${Number(r[1]).toLocaleString()}</td>
+                  <td class="num amount">${Number(r[2]).toLocaleString(undefined, {maximumFractionDigits: 2})}</td>
+                  <td class="num"><strong>${pct}%</strong></td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">รวมทั้งหมด</td>
+                <td class="num"><strong>${Number(mspAgg.totalCount).toLocaleString()}</strong></td>
+                <td class="num amount"><strong>${Number(mspAgg.totalAmount).toLocaleString(undefined, {maximumFractionDigits: 2})}</strong></td>
+                <td class="num">100%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h3>🎯 ข้อสรุปเชิงกลยุทธ์</h3>
+        <ul>
+          <li>🏆 <strong>Top 3 กิจกรรมหลัก:</strong> ${top3.map((r, i) => `<strong>${esc(r[0])}</strong> (${Number(r[1]).toLocaleString()} ครั้ง)`).join(' • ')}</li>
+          <li>📊 <strong>ความเข้มข้น:</strong> Top 3 กิจกรรม = <strong>${top3.reduce((s, r) => s + Number(r[1] || 0), 0).toLocaleString()}</strong> ครั้ง จากทั้งหมด <strong>${Number(mspAgg.totalCount).toLocaleString()}</strong> ครั้ง (<strong>${(top3.reduce((s, r) => s + Number(r[1] || 0), 0) / mspAgg.totalCount * 100).toFixed(1)}%</strong>)</li>
+          <li>💡 <strong>Insight:</strong> ${top3.length >= 1 ? `กิจกรรม "${esc(top3[0][0])}" เป็นกิจกรรมหลักที่ใช้ MSP มากที่สุด ควรตรวจสอบว่าเป็นไปตามเป้าหมายหรือไม่` : ''}</li>
+          <li>📋 <strong>ข้อมูลเมื่อ:</strong> ${new Date().toLocaleString('th-TH')}</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // Helper for C3/C4/C7 tables
+  function renderMSPTableHTML(headers, rows, title) {
+    const displayRows = rows.slice(0, 100);
+    return `
+      <div class="msp-table">
+        <div class="msp-meta">
+          <span class="badge badge-blue">📊 Total: <strong>${rows.length}</strong> rows</span>
+          ${rows.length > 100 ? '<span class="badge badge-yellow">⚠️ แสดง 100 แถวแรก</span>' : ''}
+        </div>
+        <table>
+          <thead>
+            <tr>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${displayRows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  // ====== HELPERS ======
+  function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // ====== ⭐ NEW v1.6: Auto-refresh ทุก 5 นาที ======
+  let autoRefreshTimer = null;
+  function startAutoRefresh() {
+    if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+    autoRefreshTimer = setInterval(() => {
+      console.log('🔄 Auto-refresh triggered (5 นาที)');
+      const nextEl = document.getElementById('nextRefresh');
+      if (nextEl) nextEl.textContent = '🔄 กำลัง Auto-refresh...';
+      fetchFresh();
+      // อัปเดตเวลา next refresh
+      setTimeout(() => {
+        if (nextEl) nextEl.textContent = '⏰ Auto-refresh ใน 5 นาที';
+      }, 5000);
+    }, AUTO_REFRESH_MS);
+  }
+
+  // ====== INIT ======
+  fetchMS24Data();
+  startAutoRefresh();
+</script>
+
+</body>
+</html>
